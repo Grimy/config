@@ -2,6 +2,7 @@ set updatetime=1000
 "TODO: colors
 "TODO: retab
 "TODO: doc
+set t_RV=
 " https://github.com/tpope/vim-obsession
 " https://github.com/tpope/vim-sensible
 " https://github.com/tpope/vim-afterimage
@@ -154,6 +155,13 @@ augroup SmartHLSearch
 augroup END
 nnoremap / :set nohlsearch<CR>:redraw<CR>/
 nnoremap ? :set nohlsearch<CR>:redraw<CR>?
+
+nnoremap <silent> <expr> f Search() . 'n'
+nnoremap <silent> <expr> F Search() . 'N'
+function! Search()
+	let @/ = GetChar()
+	return ''
+endfunction
 
 cnoremap <expr> <CR> CommandLineLeave()
 let g:last_cmd_type = ':'
@@ -402,9 +410,6 @@ if has('gui_running')
 	set mousetime=200
 	set mouseshape+=v:beam,sd:updown,vd:leftright
 	set guicursor+=a:blinkon0 " disable blinking
-	if has('vim_starting')
-		set guifont=Inconsolata\ Medium\ 13
-	endif
 
 	noremenu Plugin.g&undo :GundoToggle<CR>
 
@@ -418,9 +423,15 @@ if has('gui_running')
 
 	Map clinov <expr> <C-ScrollWheelUp>   FontSize('+1')
 	Map clinov <expr> <C-ScrollWheelDown> FontSize('-1')
+	Map n cof :set guifont=*<CR>
 
-	" Because coding on a white background is an heresy
 	if has('vim_starting')
+		set guifont=Inconsolata\ Bold\ 11
+		" set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 11
+		set guifont=Liberation\ Mono\ for\ Powerline\ 11
+		" $@[]{}()|\/ blah/fox Illegal10Oo :;MH,.!?&=+-
+
+		" Because coding on a white background is an heresy
 		set background=dark
 		colorscheme solarized
 		highlight! link SignColumn LineNr
@@ -432,7 +443,7 @@ else
 	set mouse=nvr  " Disable the mouse in insert mode
 	let &t_SI .= "\<Esc>[6 q"
 	let &t_EI .= "\<Esc>[2 q"
-	colorscheme rainbow
+	" colorscheme rainbow
 endif
 
 "syntax match SpecialKey '^\s\+' containedin=ALL
@@ -443,7 +454,8 @@ set matchpairs+=<:>
 
 " Better replacement characters
 set fillchars=stl:\ ,stlnc:\ ,diff:X
-set list listchars=tab:→\ ,nbsp:␣,precedes:«,extends:»
+set list listchars=tab:⇥\ ,nbsp:␣,precedes:«,extends:»
+
 set showbreak=↩\ 
 set display=lastline  " don’t replace the last line with @’s
 
@@ -463,32 +475,6 @@ set linebreak
 set showcmd
 set shortmess=atToO
 
-" }}}
-
-" Status {{{
-
-"set rulerformat=%25(%=%-(:b%-4n0x%-4B%5l,%-4v%P%)%)
-	"let s  = '%<%{Shorten(bufname(""), 30)} %w%m%r%y%='
-	"let s .= synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name").'  '
-	"let s .= &rulerformat
-
-"Set the highlighting and the tab page number (for mouse clicks)
-"let s .= tab == tabpagenr() ? '%#TabLineSel#' : '%#TabLine#'
-"let s .= '%' . tab . 'T'
-
- "The label itself
-"let s .= '['
-
-"let s .= " %{Head('" . dir . "')}"
-
-"function! Head(dir)
-	"let save = exists('b:git_dir') ? b:git_dir : ''
-	"let b:git_dir = fugitive#extract_git_dir(a:dir)
-	"let head = len(b:git_dir) ? fugitive#head(6) : ''
-	"let b:git_dir = save
-	"return head
-"endfunction
-	
 " }}}
 
 " Folding {{{
@@ -571,7 +557,7 @@ nnoremap <silent> g< :set nomore<CR>:messages<CR>:set more
 set whichwrap=[,<,>,]
 
 " Escape sequences and insert mode timeout instantly
-set notimeout ttimeout timeoutlen=1
+set notimeout ttimeout timeoutlen=50
 augroup InsertTimeout
 	autocmd!
 	autocmd InsertEnter * set   timeout
@@ -786,7 +772,7 @@ let g:NERDSpaceDelims = 1
 
 inoremap <C-C> <C-O>:call NERDComment('n', 'toggle')<CR>
 nnoremap <C-C>      :call NERDComment('n', 'toggle')<CR>j
-vnoremap <C-C>      :call NERDComment('v', 'sexy')<CR>gv
+vnoremap <C-C>      :call NERDComment('v', 'toggle')<CR>gv
 
 " Subliminal
 nmap <C-LeftMouse> <LeftMouse><C-_>
@@ -836,8 +822,9 @@ Map n <Leader><CR> :execute 'VimShellPop' '-buffer-name=sh' t:cwd<CR>
 " Unite
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 let g:unite_kind_cdable_lcd_command = 'Tcd'
+let g:unite_enable_start_insert = 1
 
-nnoremap <leader>f :<C-u>Unite -start-insert file_rec/async<CR>
+nnoremap <leader>f :<C-u>Unite file_rec/async<CR>
 nnoremap <C-R> :<C-u>Unite file_mru<CR>
 
 " xmledit
@@ -863,14 +850,15 @@ set previewheight=8
 set cmdwinheight=3
 
 " Use Tab to switch between windows
-nnoremap <Tab>   <C-W>w
-nnoremap <S-Tab> <C-W>W
+Map n <Tab>   <C-W>w
+Map n <S-Tab> <C-W>W
 
 " gy is easier to type than gT
 nnoremap gy gT
-" Control-Tab is nice and consistent with browsers, but only works in the GUI
-nnoremap <C-Tab>   gt
-nnoremap <C-S-Tab> gT
+" Control-Tab is nice and consistent with browsers, but only works in the
+" GUI
+Map n <C-Tab>   gt
+Map n <C-S-Tab> gT
 
 " }}}
 
@@ -1039,14 +1027,17 @@ Map n <Leader>q :QuickfixsignsToggle<CR>
 " Make sure all buffers in a tab share the same cwd
 augroup TabDir
 	autocmd!
-	autocmd BufEnter * if isdirectory('t:cwd')
-	autocmd BufEnter *     execute 'lcd' t:cwd
-	autocmd BufEnter * else
-	autocmd BufEnter *     let t:cwd = getcwd()
-	autocmd BufEnter * endif
+	autocmd BufEnter * call TcdBufEnter()
 augroup END
 
 command! -nargs=1 Tcd lcd <args> | call Tcd()
+
+function! TcdBufEnter()
+	if !exists('t:cwd') || !isdirectory(t:cwd)
+		let t:cwd = expand('%:p:h')
+	endif
+	execute 'lcd' t:cwd
+endfunction
 
 function! Tcd()
 	let t:cwd = getcwd()
@@ -1057,7 +1048,6 @@ function! Tcd()
 		unlet s:recursing
 	endif
 endfunction
-
 
 function! WipeHiddenBuffers()
 	for i in range(1, bufnr('$'))

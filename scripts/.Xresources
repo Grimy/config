@@ -1,37 +1,28 @@
+! vim: set ft=xdefaults
 xterm*termName: xterm-256color
-*loginShell: true
-*locale: true
 
-*metaSendsEscape:    true
-*backarrowKey:       true
-!*scrollTTYOutput:   true
-!*scrollTTYKeypress: true
-xterm*ScrollBar:      false
+*loginShell:        true
+*locale:            true
+*bellIsUrgent:      true
 
-! urxvt-specific configuration
-URxvt.scrollBar:   false
-URxvt.iso14755:    false
-URxvt.iso14755_52: false
-URxvt.perl-ext-common: quake
-!URxvt.keysym.C-S-Up:   perl:font-size:incglobal
-!URxvt.keysym.C-S-Down: perl:font-size:decglobal
+*metaSendsEscape:   true
+*backarrowKey:      true
 
-! The following line crashes vim
-! DO NOT UNCOMMENT
-!*allowScrollLock: true
+*saveLines:         65535
+*scrollTTYOutput:   true
+*scrollTTYKeypress: true
+*scrollBar:         false
 
-*saveLines: 65535
-
-*bellIsUrgent: true
-*eightBitOutput: true
+URxvt.iso14755:     false
+URxvt.iso14755_52:  false
 
 *borderWidth: 0
-
-*faceName: Source Code Pro for Powerline
-*faceSize: 12
-
+! *faceName: Droid Sans Mono for Powerline
+*faceName: Liberation Mono for Powerline
+*faceSize: 11
 *scaleHeight: 1
 *showBlinkAsBold: True
+
 ! xcursor.theme: Vanilla-DMZ-AA
 
 ! Vinyl Scratch
