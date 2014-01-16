@@ -13,7 +13,8 @@ function! repeat#set(sequence,...)
 	let g:repeat_tick = b:changedtick
 	augroup repeat_custom_motion
 		autocmd!
-		autocmd CursorMoved <buffer> let g:repeat_tick = b:changedtick | autocmd! repeat_custom_motion
+		autocmd CursorMoved <buffer> let g:repeat_tick = b:changedtick
+		autocmd CursorMoved <buffer> autocmd! repeat_custom_motion
 	augroup END
 endfunction
 
@@ -52,13 +53,18 @@ function! repeat#wrap(command,count)
 	endif
 endfunction
 
-nnoremap <silent> .		:<C-U>call repeat#run(v:count)<CR>
-nnoremap <silent> u		:<C-U>call repeat#wrap('u', v:count1)<CR>
-nnoremap <silent> U		:<C-U>call repeat#wrap("\<C-R>", v:count1)<CR>
+nnoremap <silent> . :<C-U>call repeat#run(v:count)<CR>
+xnoremap <silent> . :<C-U>call repeat#run(v:count)<CR>gv
+
+nnoremap <silent> u :<C-U>call repeat#wrap('u', v:count1)<CR>
+nnoremap <silent> U :<C-U>call repeat#wrap("\<C-R>", v:count1)<CR>
 
 augroup repeatPlugin
 	autocmd!
-	autocmd BufLeave,BufWritePre,BufReadPre * let g:repeat_tick = (g:repeat_tick == b:changedtick || g:repeat_tick == 0) ? 0 : -1
-	autocmd BufEnter,BufWritePost * if g:repeat_tick == 0|let g:repeat_tick = b:changedtick|endif
+	autocmd BufLeave,BufWritePre,BufReadPre * let g:repeat_tick =
+				\ g:repeat_tick != b:changedtick && g:repeat_tick != 0
+	autocmd BufEnter,BufWritePost * if g:repeat_tick
+	autocmd BufEnter,BufWritePost *     let g:repeat_tick = b:changedtick
+	autocmd BufEnter,BufWritePost * endif
 augroup END
 

@@ -37,7 +37,7 @@ function! Map(modes, ...)
 					\ lhs rhs
 	endfor
 endfunction
-command! -bang -nargs=+ Map call Map(<f-args>)
+command! -nargs=+ Map call Map(<f-args>)
 
 " }}}
 
@@ -50,7 +50,7 @@ Map clinov <recursive> <C-?> <C-BS>
 Map clinov <recursive> <C-@> <C-Space>
 
 " Disable the annoying beep when pressing Esc twice
-Map! n <Esc> <Nop>
+Map n <Esc> <Nop>
 
 " Vim needs a POSIX-Compliant shell. Fish is not.
 if &shell =~ 'fish'
@@ -416,8 +416,8 @@ if has('gui_running')
 		return ''
 	endfunction
 
-	Map! clinov <expr> <C-ScrollWheelUp>   FontSize('+1')
-	Map! clinov <expr> <C-ScrollWheelDown> FontSize('-1')
+	Map clinov <expr> <C-ScrollWheelUp>   FontSize('+1')
+	Map clinov <expr> <C-ScrollWheelDown> FontSize('-1')
 
 	" Because coding on a white background is an heresy
 	if has('vim_starting')
@@ -552,6 +552,15 @@ Map nox ²³ []
 " Fixes {{{
 " For when vim doesn’t Do What I Mean
 
+" Y yanks until EOL, like D and C
+" Default: Y means yy
+nnoremap Y y$
+
+" The cursor can always go over the EOL
+" Default: only works if the line is empty
+set virtualedit=onemore,block
+nnoremap cov :set virtualedit=block,<C-R>=&ve=~'all'?'onemore':'all'<CR><CR>
+
 " clipboard=unnamed doesn’t work in v-mode
 xnoremap <silent> y y:let @*=@"<CR>
 
@@ -633,8 +642,8 @@ endfunction
 xnoremap y ygv<Esc>
 
 " Replace relative to the screen (e.g. it takes 4 letters te replace a tab)
-Map! n R gR
-Map! n gR R
+Map n R gR
+Map n gR R
 inoremap <Insert> <C-O>gR
 
 " Vertical movement relative to the screen (matters when 'wrap' is on)
@@ -645,21 +654,19 @@ noremap <silent> <Up>   gk
 
 " }}}
 
-" Improved consistency {{{
-" Y yanks until EOL, like D and C
-" Default: Y means yy
-nnoremap Y y$
+" UNIX shortcuts {{{
 
-" The cursor can always go over the EOL
-" Default: only works if the line is empty
-set virtualedit=onemore,block
-nnoremap cov :set virtualedit=block,<C-R>=&ve=~'all'?'onemore':'all'<CR><CR>
-
+" H W A E U
 " Ctrl-H is always equivalent to Backspace
 Map clinov <recursive> <C-H> <Backspace>
 Map clinov <recursive> <C-B> <Left>
 Map clinov <recursive> <C-F> <Right>
 Map clinov <recursive> <C-Backspace> <C-W>
+
+" Ctrl-U: delete to beginning
+" Already defined in insert and command modes
+nnoremap <C-U> d^
+onoremap <C-U>  ^
 
 " Ctrl-A / Ctrl-E always move to start / end of line, like shells and emacs
 " Default: can only be done in command mode with Ctrl-B / Ctrl-E
@@ -668,8 +675,8 @@ Map clinov <recursive> <C-Backspace> <C-W>
 " Overrides:   CTRL-A (increment number) -- use Ctrl-S instead
 " Overrides: i_CTRL-E (copy from below)  -- use Ctrl-Q instead
 " Overrides:   CTRL-E (scroll one down)  -- see scrolling
-Map! novicl <C-A> <Home>
-Map! novicl <C-E> <End>
+Map novicl <C-A> <Home>
+Map novicl <C-E> <End>
 
 " Ctrl-Q / Ctrl-Y always copy the character above / below the cursor
 " Default: can only be done in insert mode with Ctrl-E / Ctrl-Y
@@ -679,30 +686,21 @@ nnoremap <C-Q> i<C-E><Esc>l
 nnoremap <C-Y> i<C-Y><Esc>l
 inoremap <C-Q> <C-E>
 
-function! VSelWidth()
-	return abs(virtcol("'<") - virtcol("'>")) + 1
-endfunction
-
 " Ctrl-T / Ctrl-D always add / remove indent
 " Default: only works in insert mode; << and >> behave differently
 " Overrides: CTRL-T (pop tag) CTRL-D (scroll half-page down)
+" TODO: use a function for this?
 nnoremap <C-T>   :><CR>
 nnoremap <C-D>   :<<CR>
-vnoremap <C-T>    ><CR>gv
-vnoremap <C-D>    <<CR>gv
-vnoremap <Tab>    ><CR>gv
-vnoremap <S-Tab>  <<CR>gv
+vnoremap <C-T>   :><CR>gv
+vnoremap <C-D>   :<<CR>gv
+vnoremap <Tab>   :><CR>gv
+vnoremap <S-Tab> :<<CR>gv
 
 " Increment / decrement
 inoremap <C-S> <C-O><C-A>
 inoremap <C-X> <C-O><C-X>
 nnoremap <C-S> <C-A>
-
-" Delete to beginning
-nnoremap <C-U> d^
-onoremap <C-U>  ^
-
-" Delete word
 
 " }}}
 
@@ -712,7 +710,7 @@ let mapleader = '_'
 
 " c selects current line, without the line break at the end
 " TODO: use text-obj-user instead
-onoremap <silent> c :<C-U>normal! 0v$h<CR>
+onoremap <silent> c :<C-U>normal! 0v$<CR>
 
 nnoremap a A
 nnoremap A a
@@ -756,8 +754,8 @@ nnoremap <Leader>= :Tabularize /
 nnoremap <Leader>: :\zs/l0r1<Home>Tabularize /
 
 " Map Q to something useful
-Map! nx Q gw
-Map! o  Q ap
+Map nx Q gw
+Map o  Q ap
 
 " Executes current line
 nnoremap <silent> <Leader>e :execute getline('.')<CR>
@@ -773,15 +771,11 @@ nnoremap <CR> <C-]>
 inoremap <C-G> <C-A>
 
 " Swap charwise and blockwise visual modes
-Map! nx v <C-V>
-Map! nx <C-V> v
-
-" . in v-mode redoes the last command on each line
-xnoremap . :<C-U>call repeat#run(v:count)<CR>gv
+Map nx v <C-V>
+Map nx <C-V> v
 
 " Select the last modified text
 nnoremap gc  `[v`]
-
 
 " }}}
 
@@ -835,9 +829,9 @@ let g:vimfiler_safe_mode_by_default = 0
 let g:vimfiler_enable_auto_cd       = 1
 " TODO: patch vimfiler for winwidth
 
-Map! n cd :VimFiler -buffer-name=cd -winwidth=49 -split -toggle<CR>
-Map! n cD :VimFilerTab -buffer-name=cD ~<CR>
-Map! n <Leader><CR> :execute 'VimShellPop' '-buffer-name=sh' t:cwd<CR>
+Map n cd :VimFiler -buffer-name=cd -winwidth=49 -split -toggle<CR>
+Map n cD :VimFilerTab -buffer-name=cD ~<CR>
+Map n <Leader><CR> :execute 'VimShellPop' '-buffer-name=sh' t:cwd<CR>
 
 " Unite
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
@@ -896,10 +890,10 @@ Map nov G  G$l
 set sidescroll=2
 set sidescrolloff=1
 
-Map! nx zh zH
-Map! nx zl zL
-Map! nx zH zh
-Map! nx zL zl
+Map nx zh zH
+Map nx zl zL
+Map nx zH zh
+Map nx zL zl
 
 function! Scroll(lines, up)
 	let lines = v:count1 * a:lines
@@ -910,19 +904,19 @@ function! Scroll(lines, up)
 endfunction
 
 " Mouse scrolls the cursor
-Map! nvi <expr> <ScrollWheelDown> Scroll(4, 0)
-Map! nvi <expr> <ScrollWheelUp>   Scroll(4, 1)
-Map! nv  <expr> <Space>           Scroll(&lines-5, 0)
-Map! nv  <expr> <S-Space>         Scroll(&lines-5, 1)
-Map! nvi <expr> <PageDown>        Scroll(&lines-5, 0)
-Map! nvi <expr> <PageUp>          Scroll(&lines-5, 1)
-Map! nv  <expr> <C-J>             Scroll(mode() ==# 'n' ? 20 : 8, 0)
-Map! nv  <expr> <C-K>             Scroll(mode() ==# 'n' ? 20 : 8, 1)
+Map nvi <expr> <ScrollWheelDown> Scroll(4, 0)
+Map nvi <expr> <ScrollWheelUp>   Scroll(4, 1)
+Map nv  <expr> <Space>           Scroll(&lines-5, 0)
+Map nv  <expr> <S-Space>         Scroll(&lines-5, 1)
+Map nvi <expr> <PageDown>        Scroll(&lines-5, 0)
+Map nvi <expr> <PageUp>          Scroll(&lines-5, 1)
+Map nv  <expr> <C-J>             Scroll(mode() ==# 'n' ? 20 : 8, 0)
+Map nv  <expr> <C-K>             Scroll(mode() ==# 'n' ? 20 : 8, 1)
 
-Map! c <C-J> <Down>
-Map! c <C-K> <Up>
-Map! i <expr> <C-J> "\<Esc>j" . g:last_insert_col . "\<Bar>i"
-Map! i <expr> <C-K> "\<Esc>k" . g:last_insert_col . "\<Bar>i"
+Map c <C-J> <Down>
+Map c <C-K> <Up>
+Map i <expr> <C-J> "\<Esc>j" . g:last_insert_col . "\<Bar>i"
+Map i <expr> <C-K> "\<Esc>k" . g:last_insert_col . "\<Bar>i"
 
 augroup SaveLastInsertColumn
 	autocmd!
@@ -986,7 +980,7 @@ nmap <Leader>pp <Plug>UnconditionalPastePlusAfter
 nmap <Leader>PP <Plug>UnconditionalPasteGPlusBefore
 nmap <Leader>pP <Plug>UnconditionalPasteGPlusAfter
 
-Map! n "" :let g:repeat_reg[1] = '"'<CR>""
+Map n "" :let g:repeat_reg[1] = '"'<CR>""
 
 " Block-mode paste pastes on each block
 xnoremap p "_c<C-R>"<Esc>
@@ -1036,7 +1030,7 @@ endfunction
 let g:quickfixsigns_blacklist_buffer =
 			\ '\v(vimfiler|vimshell|unite|Command Line)'
 let g:quickfixsigns_icons = {}
-Map! n <Leader>q :QuickfixsignsToggle<CR>
+Map n <Leader>q :QuickfixsignsToggle<CR>
 
 " }}}
 
