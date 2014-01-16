@@ -1,0 +1,2 @@
+VimPager 
+%!col -b 

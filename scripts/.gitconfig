@@ -1,0 +1,19 @@
+[push]
+default = current
+
+[user]
+name = Victor Adam
+email = Victor.Adam@derpymail.org
+
+[diff]
+tool = vimdiff
+
+[difftool]
+prompt = false
+
+[difftool "vimdiff"]
+cmd = vim -d $REMOTE $LOCAL
+
+[core]
+editor = vim
+pager = less

@@ -1,0 +1,73 @@
+! vim: filetype=sh
+xterm*termName: xterm-256color
+xterm*loginShell: true
+xterm*locale: true
+
+xterm*metaSendsEscape: true
+!xterm*scrollTTYOutput: true
+!xterm*scrollTTYKeypress: true
+
+! The following line crashes vim
+! DO NOT UNCOMMENT
+!xterm*allowScrollLock: true
+
+xterm*saveLines: 65535
+
+xterm*bellIsUrgent: true
+xterm*eightBitOutput: true
+
+xterm*borderWidth: 0
+xterm*faceName: inconsolata-dz:size=12:antialias=true
+xterm.showBlinkAsBold: True
+! xcursor.theme: Vanilla-DMZ-AA
+
+! Vinyl Scratch
+xterm*foreground: rgb:fe/fd/e7
+
+! Sublime text
+xterm*background: rgb:15/15/15
+
+! True black & white
+xterm*color0:  rgb:00/00/00
+xterm*color15: rgb:ff/ff/ff
+
+! King Sombra
+xterm*color8:  rgb:51/51/51
+
+! Rainbow Dash (coat, mane ROYGBP, eyes)
+! xterm*color12: rgb:9d/da/f8
+! xterm*color1:  rgb:ec/45/42
+! xterm*color9:  rgb:f2/6f/33
+! xterm*color11: rgb:fb/f4/ae
+! xterm*color2:  rgb:5f/ba/4c
+! xterm*color4:  rgb:1d/97/d4
+! xterm*color13: rgb:65/2d/87
+! xterm*color5:  rgb:ba/1b/76
+
+! Now color corrected!
+xterm*color12: rgb:90/e4/ff
+xterm*color1:  rgb:ff/12/30
+xterm*color9:  rgb:ff/53/11
+xterm*color11: rgb:ff/ff/9b
+xterm*color2:  rgb:4f/d9/2e
+xterm*color4:  rgb:0a/98/e4
+xterm*color13: rgb:62/0a/92
+xterm*color5:  rgb:e4/28/a3
+
+! Applejack
+xterm*color3:  rgb:ff/c3/6b 
+
+! Lyra!
+xterm*color14: rgb:39/ff/af
+xterm*color6:  rgb:09/cf/7f
+
+! Derpy Hooves
+xterm*color7:  rgb:c1/c5/d3
+
+! Frederic (eyes)
+xterm*color10: rgb:8d/e2/31
+
+! Diff
+xterm*color17: rgb: 15/15/23
+xterm*color22: rgb: 15/23/15
+xterm*color52: rgb: 23/15/15

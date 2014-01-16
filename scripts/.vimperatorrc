@@ -1,0 +1,76 @@
+" Clean useless visual clutter
+set noscrollbars
+set gui=none
+set visualbell
+set editor=gvim\ --remote-tab-wait-silent
+
+nnoremap <C-S> <C-A>
+nnoremap !q d
+
+" Don’t quit like that!
+nnoremap <C-Q> <Nop>
+inoremap <C-Q> <Nop>
+cnoremap <C-Q> <Nop>
+vnoremap <C-Q> <Nop>
+
+" Other
+nnoremap e :js toggle_bottombar(false)<CR>i<C-S-E>
+nnoremap gy gT
+nnoremap <S-CR> <C-CR>
+
+" French localization
+nnoremap (j <C-O>
+nnoremap )j <C-I>
+nnoremap (f [f
+nnoremap )f ]f
+nnoremap )) ]]
+nnoremap (( [[
+set nextpattern+=\\bsuivant
+set previouspattern+=\\bprécédent
+
+" Horizontal scrolling? Why?
+nnoremap h H
+nnoremap l L
+nnoremap H h
+nnoremap L l
+
+" Standard shortcuts
+inoremap <C-B> <Left>
+inoremap <C-F> <Right>
+cnoremap <C-B> <Left>
+cnoremap <C-F> <Right>
+
+" Completion
+cnoremap <C-J> <Tab>
+cnoremap <C-K> <S-Tab>
+
+" Scroll more
+nnoremap j j3.
+nnoremap k k3.
+cnoremap <C-N> <Down>
+cnoremap <C-P> <Up>
+nnoremap <C-J> <Space>
+nnoremap <C-K> <S-Space>
+
+" Show/hide status bar
+nnoremap <silent> ! :js toggle_bottombar('toggle')<CR>
+
+nnoremap <silent> : :js toggle_bottombar(true)<CR>:
+nnoremap <silent> / :js toggle_bottombar(true)<CR>/
+nnoremap <silent> ? :js toggle_bottombar(true)<CR>?
+nnoremap <silent> t :js toggle_bottombar(true)<CR>t
+nnoremap <silent> T :js toggle_bottombar(true)<CR>T
+nnoremap <silent> o :js toggle_bottombar(true)<CR>o
+nnoremap <silent> O :js toggle_bottombar(true)<CR>O
+nnoremap <silent> b :js toggle_bottombar(true)<CR>b
+
+:js << EOF
+function toggle_bottombar(visible) {
+	var bb = document.getElementById('liberator-bottombar');
+	if (!bb) return;
+	if (visible === 'toggle') visible = bb.style.height !== ''
+	bb.style.height   = visible ? '' : '0px';
+	bb.style.overflow = visible ? '' : 'hidden';
+}
+EOF
+
