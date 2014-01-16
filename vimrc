@@ -2,6 +2,10 @@ set updatetime=1000
 "TODO: colors
 "TODO: retab
 "TODO: doc
+" https://github.com/tpope/vim-obsession
+" https://github.com/tpope/vim-sensible
+" https://github.com/tpope/vim-afterimage
+" https://github.com/tpope/vim-endwise
 
 " Utility functions {{{
 
@@ -88,7 +92,7 @@ Bundle 'Grimy/vim-default-runtime'
 " Syntax coloring
 Bundle 'Grimy/vim-rainbow'
 Bundle 'altercation/vim-colors-solarized'
-Bundle 'vim-scripts/fish-syntax'
+Bundle 'dag/vim-fish'
 Bundle 'bling/vim-airline'
 
 " File management
@@ -166,13 +170,12 @@ Map nv <expr> <C-P> g:last_cmd_type . "\<Up>"
 
 " Clear screen
 Map cli <expr> <C-L> Redraw() . "\<C-]>"
-Map n   <expr> <C-L> Redraw() . '"_yl'
+Map n   <silent> <expr> <C-L> Redraw() . ":diffupdate\<CR>"
 Map o   <expr> <C-L> Redraw() . "\<Esc>" . v:operator
 Map v   <expr> <C-L> Redraw()
 
 function! Redraw()
 	set nohlsearch
-	diffupdate
 	redraw!
 	return ''
 endfunction
