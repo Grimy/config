@@ -3,8 +3,10 @@ xterm*termName: xterm-256color
 *locale: true
 
 *metaSendsEscape:    true
+*backarrowKey:       true
 !*scrollTTYOutput:   true
 !*scrollTTYKeypress: true
+xterm*ScrollBar:      false
 
 ! urxvt-specific configuration
 URxvt.scrollBar:   false
