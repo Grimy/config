@@ -1,9 +1,5 @@
 " MIT License. Copyright (c) 2013 Bailey Ling.
 
-let s:current_bufnr = -1
-let s:current_tabnr = -1
-let s:current_tabline = ''
-let s:current_modified = 0
 let s:filetype_symbols = { 'vimfiler': '/', 'help': '?', 'vimshell': '>' }
 
 function! s:Shorten(path, maxlen)
@@ -51,31 +47,9 @@ function! airline#extensions#tabline#load_theme(palette)
 endfunction
 
 function! airline#extensions#tabline#get()
-	let curbuf = bufnr('%')
-	let curtab = tabpagenr()
-
-	if curbuf == s:current_bufnr && curtab == s:current_tabnr
-		if !g:airline_detect_modified ||
-					\ getbufvar(curbuf, '&modified') == s:current_modified
-			return s:current_tabline
-		endif
-	endif
-
-	let builder_context = {
-				\ 'active'        : 1,
-				\ }
-
-	if get(g:, 'airline_powerline_fonts', 0)
-		let builder_context.left_sep     = "\ue0b0"
-		let builder_context.left_alt_sep = "\ue0b1"
-	else
-		let builder_context.left_sep     = ' '
-		let builder_context.left_alt_sep = '|'
-	endif
-
-	let b = airline#builder#new(builder_context)
+	let b = airline#builder#new({ 'active': 1 })
 	for i in range(1, tabpagenr('$'))
-		if i == curtab
+		if i == tabpagenr()
 			let group = 'airline_tabsel'
 			if g:airline_detect_modified
 				for bi in tabpagebuflist(i)
@@ -84,12 +58,11 @@ function! airline#extensions#tabline#get()
 					endif
 				endfor
 			endif
-			let s:current_modified = (group == 'airline_tabmod')
 		else
 			let group = 'airline_tab'
 		endif
 		let val = '%('
-		let val .= (g:airline_symbols.space).i
+		" let val .= (g:airline_symbols.space).i
 		call b.add_section(group, val.'%'.i.'T %{airline#extensions#tabline#title('.i.')} %)')
 	endfor
 
@@ -98,21 +71,40 @@ function! airline#extensions#tabline#get()
 	call b.split()
 	call b.add_section('airline_tabtype', ' %{strftime("%H:%M")} ')
 
-	let s:current_bufnr = curbuf
-	let s:current_tabnr = curtab
-	let s:current_tabline = b.build()
-	return s:current_tabline
+	return b.build()
 endfunction
 
+"set rulerformat=%25(%=%-(:b%-4n0x%-4B%5l,%-4v%P%)%)
+"let s  = '%<%{Shorten(bufname(""), 30)} %w%m%r%y%='
+"let s .= synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name").'  '
+"let s .= &rulerformat
+
+"Set the highlighting and the tab page number (for mouse clicks)
+"let s .= '%' . tab . 'T'
+
+"The label itself
+"let s .= '['
+
+"let s .= " %{Head('" . dir . "')}"
+
+"function! Head(dir)
+"let save = exists('b:git_dir') ? b:git_dir : ''
+"let b:git_dir = fugitive#extract_git_dir(a:dir)
+"let head = len(b:git_dir) ? fugitive#head(6) : ''
+"let b:git_dir = save
+"return head
+"endfunction
+
 function! airline#extensions#tabline#title(tab)
-	let s = ''
+	let s = '['
 	for b in tabpagebuflist(a:tab)
 		let s .= get(s:filetype_symbols, getbufvar(b, '&filetype'),
-					\ getbufvar(b, '&modified')   ? '+' :
-					\ getbufvar(b, '&modifiable') ? ' ' : '-')
+					\ getbufvar(b, '&modified')   ? '!' :
+					\ getbufvar(b, '&modifiable') ? '-' : g:airline_symbols.readonly)
 	endfor
+	let s .= '] '
 
-	return s:Shorten(gettabvar(a:tab, 'cwd'), 28 - tabpagewinnr(a:tab, '$'))
+	return s . s:Shorten(gettabvar(a:tab, 'cwd'), 30 - strlen(s))
 endfunction
 
 function! airline#extensions#tabline#get_buffer_name(nr)
@@ -136,7 +128,6 @@ function! s:get_buffer_list()
 		endif
 	endfor
 
-	let s:current_buffer_list = buffers
 	return buffers
 endfunction
 
