@@ -4,13 +4,13 @@ basedir=$(dirname $(realpath $0))
 echo $basedir
 exit
 
-ln -s "$basedir/scripts/.vimperatorrc" ~/.vimperatorrc
-ln -s "$basedir/scripts/.Xresources"   ~/.Xresources
-ln -s "$basedir/scripts/.gitconfig"    ~/.gitconfig
-ln -s "$basedir/scripts/.vimperatorrc" ~/.vimperatorrc
-ln -s "$basedir/scripts/functions/"    ~/.config/fish/functions/
-ln -s "$basedir/scripts/grim"          ~/bin/grim
-ln -s "$basedir/powerline-fonts/"      ~/.local/share/fonts/     && fc-cache -r
+ln -ns "$basedir/scripts/.vimperatorrc" ~/.vimperatorrc
+ln -ns "$basedir/scripts/.Xresources"   ~/.Xresources
+ln -ns "$basedir/scripts/.gitconfig"    ~/.gitconfig
+ln -ns "$basedir/scripts/.vimperatorrc" ~/.vimperatorrc
+ln -ns "$basedir/scripts/grim"          ~/bin/grim
+ln -ns "$basedir/scripts/functions/"    ~/.config/fish/functions
+ln -ns "$basedir/powerline-fonts/"      ~/.local/share/fonts      && fc-cache -r
 
 cd "$basedir"
 mkdir -p bundle cache/swaps cache/backups cache/undos
