@@ -11,7 +11,7 @@ xterm*termName: xterm-256color
 *saveLines:         65535
 *scrollTTYOutput:   true
 *scrollTTYKeypress: true
-*scrollBar:         false
+xterm*scrollBar:    false
 
 URxvt.iso14755:     false
 URxvt.iso14755_52:  false
