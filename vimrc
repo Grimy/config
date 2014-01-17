@@ -57,9 +57,8 @@ if &shell =~ 'fish'
 	set shell=/bin/sh
 endif
 
-set winminwidth=6
-
-set t_RV=
+" Useless setting, but the default value can cause a bug in xterm
+let &t_RV='  Howdy ' . $USERNAME . '!'
 
 " }}}
 
@@ -102,6 +101,8 @@ Bundle 'bling/vim-airline'
 " File management
 Bundle 'Shougo/unite.vim'
 Bundle 'Shougo/unite-ssh'
+Bundle 'Shougo/unite-help'
+Bundle 'tsukkee/unite-tag'
 Bundle 'Shougo/vimproc'
 Bundle 'Shougo/vimfiler'
 Bundle 'Shougo/vimshell'
@@ -267,8 +268,6 @@ autocmd BufReadPost * silent! normal! g`"zz
 
 " }}}
 
-" Command Window {{{
-
 nnoremap !: q:
 nnoremap <silent> !q :q<CR>
 nnoremap <silent> !Q :q!<CR>
@@ -277,28 +276,8 @@ nnoremap <silent> !W :silent w !sudo tee % >/dev/null<CR>
 nnoremap !t :tab drop<Space>
 nnoremap !T :tabedit<Space>
 nnoremap !h :vert help<Space>
+" TODO: Use unite-tag or unite-help
 nnoremap !H :vert helpgrep<Space>
-
-augroup CommandWindow
-	autocmd!
-	autocmd CmdwinEnter * call s:CmdwinConfig()
-augroup END
-
-function! s:CmdwinConfig()
-	setlocal nonumber
-	nnoremap <buffer> <silent> q     :<C-u>quit<CR>
-	nnoremap <buffer> <silent> <Esc> :<C-u>quit<CR>
-	nnoremap <buffer> <silent> <Tab> :<C-u>quit<CR>
-	nnoremap <buffer> <silent> <CR>  i<CR>
-	inoremap <buffer> <expr> <BS> col('.') == 1 ?
-				\ "\<ESC>:quit\<CR>" : neocomplete#cancel_popup()."\<BS>"
-	inoremap <buffer> <expr> <Tab>   pumvisible() ? "\<C-N>" : ""
-	inoremap <buffer> <expr> <S-Tab> pumvisible() ? "\<C-P>" : ""
-	inoremap <CR> <CR>
-	startinsert!
-endfunction
-
-" }}}
 
 " Better macros {{{
 
@@ -627,8 +606,8 @@ inoremap <expr> <CR> MyCR()
 function! MyCR()
 	if match(getline('.'), '^\s*$') < 0
 		return neocomplete#close_popup() . "\<C-G>u\n"
-    endif
-    return strlen(getline('.')) ? "\<C-U>\n" : "\n"
+	endif
+	return strlen(getline('.')) ? "\<C-U>\n" : "\n"
 endfunction
 
 " Don’t move the cursor when yanking in v-mode
@@ -809,18 +788,24 @@ xmap K       <plug>(dragonfly_up)
 xmap L       <plug>(dragonfly_right)
 xmap P       <plug>(dragonfly_copy)
 
+" Filetypes
+call vimfiler#set_execute_file('_', 'grim')
+call vimshell#set_execute_file('_', 'grim')
+call vimshell#set_execute_file('bmp,jpg,png,gif', 'xsiv')
+call vimfiler#set_execute_file('bmp,jpg,png,gif', 'gexe xsiv')
+
 " VimShell
 let g:vimshell_prompt_expr =
 			\ 'escape(fnamemodify(getcwd(), ":~").">", "\\[]()?! ")." "'
 let g:vimshell_prompt_pattern = '^\%(\f\|\\.\)\+> '
 let g:vimshell_vimshrc_path = expand('~/.vim/shrc')
 let g:vimshell_split_command = 'tabnew' " 'vsplit'
-let g:vimfiler_ignore_pattern      = '^$'
 
 " VimFiler
 let g:vimfiler_as_default_explorer  = 1
 let g:vimfiler_safe_mode_by_default = 0
 let g:vimfiler_enable_auto_cd       = 1
+let g:vimfiler_ignore_pattern       = '^$'
 " TODO: patch vimfiler for winwidth
 
 Map n cd :VimFiler -buffer-name=cd -winwidth=49 -split -toggle<CR>
@@ -832,7 +817,22 @@ call unite#filters#matcher_default#use(['matcher_fuzzy'])
 let g:unite_kind_cdable_lcd_command = 'Tcd'
 let g:unite_enable_start_insert = 1
 
+if executable('ag')
+	" Use ag in unite grep source.
+	let g:unite_source_grep_command = 'ag'
+	let g:unite_source_grep_default_opts =
+				\ '--line-numbers --nocolor --nogroup --hidden' .
+				\ "--ignore '.hg' --ignore '.svn' --ignore '.git'"
+	let g:unite_source_grep_recursive_opt = ''
+elseif executable('ack-grep')
+	" Use ack in unite grep source.
+	let g:unite_source_grep_command = 'ack-grep'
+	let g:unite_source_grep_default_opts = '--no-heading --no-color -a -H'
+	let g:unite_source_grep_recursive_opt = ''
+endif
+
 nnoremap <leader>f :<C-u>Unite file_rec/async<CR>
+nnoremap gr        :<C-U>Unite grep:.<CR>
 nnoremap <C-R> :<C-u>Unite file_mru<CR>
 
 " xmledit
@@ -851,11 +851,13 @@ let g:airline#extensions#whitespace#enabled = 0
 
 " Managing multiple windows / tabs {{{
 
+" Geometry
 set splitright splitbelow
 set noequalalways
 set winwidth=88
 set previewheight=8
 set cmdwinheight=3
+set winminwidth=6
 
 " Use Tab to switch between windows
 Map n <Tab>   <C-W>w
@@ -1000,11 +1002,9 @@ set diffopt=filler,context:5,foldcolumn:1
 
 augroup SmartTabClose
 	autocmd!
-	autocmd BufHidden * if winnr('$') == 1 &&
-				\ (&diff || !len(expand('%')))
+	autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%')))
 				\ | q
 				\ | endif
-				\ | echo len(expand('%')) . ',' . winnr('$')
 augroup END
 
 " TODO: Manage hunks, jump more than once, ...
