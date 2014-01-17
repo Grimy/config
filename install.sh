@@ -1,17 +1,21 @@
-#!/bin/sh
+#!/bin/bash
 
-ln -s ~/.vim/scripts/.vimperatorrc ~/.vimperatorrc
-ln -s ~/.vim/scripts/.Xresources   ~/.Xresources
-ln -s ~/.vim/scripts/.gitconfig    ~/.gitconfig
-ln -s ~/.vim/scripts/.vimperatorrc ~/.vimperatorrc
-ln -s ~/.vim/scripts/functions/    ~/.config/fish/functions/
-ln -s ~/.vim/powerline-fonts/      ~/.local/share/fonts
-fc-cache -rv
+basedir=$(dirname $(realpath $0))
+echo $basedir
+exit
 
-cd ~/.vim
+ln -s "$basedir/scripts/.vimperatorrc" ~/.vimperatorrc
+ln -s "$basedir/scripts/.Xresources"   ~/.Xresources
+ln -s "$basedir/scripts/.gitconfig"    ~/.gitconfig
+ln -s "$basedir/scripts/.vimperatorrc" ~/.vimperatorrc
+ln -s "$basedir/scripts/functions/"    ~/.config/fish/functions/
+ln -s "$basedir/scripts/grim"          ~/bin/grim
+ln -s "$basedir/powerline-fonts/"      ~/.local/share/fonts/     && fc-cache -r
+
+cd "$basedir"
 mkdir -p bundle cache/swaps cache/backups cache/undos
 git clone https://github.com/gmarik/vundle bundle/vundle
-hg clone https://vim.googlecode.com/hg/ src
+hg clone  https://vim.googlecode.com/hg/ src
 
 cd src
 hg pull
@@ -22,18 +26,17 @@ hg update
 	--enable-multibyte \
 	--enable-gui=gtk2 \
 	--enable-perlinterp \
-	# --enable-rubyinterp \
 	--enable-pythoninterp \
-	# --enable-python3interp \
 	--enable-luainterp --with-lua-prefix=/usr --with-luajit \
 	--enable-gpm \
 	--enable-cscope \
 	--enable-fontset \
-	--enable-fail-if-missing
+	--enable-fail-if-missing \
+	# --enable-rubyinterp \
+	# --enable-python3interp \
 
 make
 
-src/vim -c 'BundleInstall' -c 'qa'
-cd ..
+src/vim -c 'BundleInstall!' -c 'qa'
 
-make -C bundle/vimproc
+make -C ../bundle/vimproc
