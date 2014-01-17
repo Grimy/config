@@ -3,7 +3,9 @@ setlocal number
 nnoremap <buffer> K :vert help <C-R><C-W><CR>
 
 " Always reload vim files after writing them
-autocmd BufWritePost <buffer> source %
+autocmd BufWritePost <buffer> if expand('%:p:h:t') !=# 'ftplugin'
+			\ | source %
+			\ | end
 
 " Set syntax of user defined commands
 redir => _
