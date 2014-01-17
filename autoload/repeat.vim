@@ -57,7 +57,7 @@ nnoremap <silent> . :<C-U>call repeat#run(v:count)<CR>
 xnoremap <silent> . :<C-U>call repeat#run(v:count)<CR>gv
 
 nnoremap <silent> u :<C-U>call repeat#wrap('u', v:count1)<CR>
-nnoremap <silent> U :<C-U>call repeat#wrap("\<C-R>", v:count1)<CR>
+nnoremap <silent> U :<C-U>call repeat#wrap('<C-V><C-R>', v:count1)<CR>
 
 augroup repeatPlugin
 	autocmd!
