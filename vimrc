@@ -1,3 +1,8 @@
+" Copyright © 2014 Grimy <Victor.Adam@derpymail.org>
+" This work is free software. You can redistribute it and/or modify it under
+" the terms of the Do What The Fuck You Want To Public License, Version 2, as
+" published by Sam Hocevar. See the LICENCE file for more details.
+
 set updatetime=1000
 "TODO: colors
 "TODO: retab
