@@ -2,7 +2,6 @@ set updatetime=1000
 "TODO: colors
 "TODO: retab
 "TODO: doc
-set t_RV=
 " https://github.com/tpope/vim-obsession
 " https://github.com/tpope/vim-sensible
 " https://github.com/tpope/vim-afterimage
@@ -57,6 +56,10 @@ Map n <Esc> <Nop>
 if &shell =~ 'fish'
 	set shell=/bin/sh
 endif
+
+set winminwidth=6
+
+set t_RV=
 
 " }}}
 
@@ -443,7 +446,7 @@ else
 	set mouse=nvr  " Disable the mouse in insert mode
 	let &t_SI .= "\<Esc>[6 q"
 	let &t_EI .= "\<Esc>[2 q"
-	" colorscheme rainbow
+	colorscheme rainbow
 endif
 
 "syntax match SpecialKey '^\s\+' containedin=ALL
@@ -454,10 +457,13 @@ set matchpairs+=<:>
 
 " Better replacement characters
 set fillchars=stl:\ ,stlnc:\ ,diff:X
-set list listchars=tab:⇥\ ,nbsp:␣,precedes:«,extends:»
+set list listchars=tab:»\ ,nbsp:␣,precedes:«,extends:»
 
 set showbreak=↩\ 
 set display=lastline  " don’t replace the last line with @’s
+
+set conceallevel=2
+set concealcursor=n
 
 " Showing trailing whitespace is great, but it shows whenever you append
 " a space
@@ -557,7 +563,8 @@ nnoremap <silent> g< :set nomore<CR>:messages<CR>:set more
 set whichwrap=[,<,>,]
 
 " Escape sequences and insert mode timeout instantly
-set notimeout ttimeout timeoutlen=50
+set notimeout ttimeout timeoutlen=1
+" TODO: use <nowait> instead
 augroup InsertTimeout
 	autocmd!
 	autocmd InsertEnter * set   timeout
@@ -653,6 +660,7 @@ Map clinov <recursive> <C-Backspace> <C-W>
 " Already defined in insert and command modes
 nnoremap <C-U> d^
 onoremap <C-U>  ^
+inoremap <C-U> <C-G>u<C-U>
 
 " Ctrl-A / Ctrl-E always move to start / end of line, like shells and emacs
 " Default: can only be done in command mode with Ctrl-B / Ctrl-E
@@ -1016,7 +1024,7 @@ endfunction
 "g:quickfixsigns_icons Disable signs on those special buffers
 " TODO: patch qfs to operate on a per-buffer basis
 let g:quickfixsigns_blacklist_buffer =
-			\ '\v(vimfiler|vimshell|unite|Command Line)'
+			\ '\v(vimfiler|vimshell|unite|Command Line|\.txt)'
 let g:quickfixsigns_icons = {}
 Map n <Leader>q :QuickfixsignsToggle<CR>
 
