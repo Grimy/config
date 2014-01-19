@@ -5,12 +5,6 @@
 
 set updatetime=1000
 "TODO: colors
-"TODO: retab
-"TODO: doc
-" https://github.com/tpope/vim-obsession
-" https://github.com/tpope/vim-sensible
-" https://github.com/tpope/vim-afterimage
-" https://github.com/tpope/vim-endwise
 
 " Utility functions {{{
 
@@ -67,78 +61,95 @@ let &t_RV='  Howdy ' . $USERNAME . '!'
 
 " }}}
 
-" Manage paths {{{
+" Initialization {{{
+if has('vim_starting')
 
-let s:sep     = s:is_windows ? '\' : '/'
-let s:path    = fnamemodify(resolve(expand('<sfile>')), ':p:h') . s:sep
-let s:cache   = s:path . 'cache'  . s:sep
-let s:bundle  = s:path . 'bundle' . s:sep
-let &helpfile = s:path . 'vimrc'
-" For some reason, vim requires &helpfile to be a valid file, but doesn’t use it
+	" Manage paths {{{
+	let s:sep     = s:is_windows ? '\' : '/'
+	let s:path    = fnamemodify(resolve(expand('<sfile>')), ':p:h') . s:sep
+	let s:cache   = s:path . 'cache'  . s:sep
+	let s:bundle  = s:path . 'bundle' . s:sep
+	let &helpfile = s:path . 'vimrc'
+	" For some reason, vim requires &helpfile to be a valid file, but doesn’t use it
 
-let &viminfo = '!,%,''42,h,s10,n'  . s:cache . 'info'
-let &directory                     = s:cache . 'swaps'
-let &backupdir                     = s:cache . 'backups'
-let &undodir                       = s:cache . 'undos'
-let s:session                      = s:cache . 'session'
-let g:neocomplete#data_directory   = s:cache . 'neocomplete'
-let g:vimfiler_data_directory      = s:cache . 'vimfiler'
-let g:vimshell_temporary_directory = s:cache . 'vimshell'
-let g:unite_data_directory         = s:cache . 'unite'
+	let &viminfo = '!,%,''42,h,s10,n'  . s:cache . 'info'
+	let &directory                     = s:cache . 'swaps'
+	let &backupdir                     = s:cache . 'backups'
+	let &undodir                       = s:cache . 'undos'
+	let g:session                      = s:cache . 'session'
+	let g:neocomplete#data_directory   = s:cache . 'neocomplete'
+	let g:vimfiler_data_directory      = s:cache . 'vimfiler'
+	let g:vimshell_temporary_directory = s:cache . 'vimshell'
+	let g:unite_data_directory         = s:cache . 'unite'
+	let &runtimepath = s:path . ',' . s:bundle . 'neobundle.vim'
+	" }}}
 
-let &runtimepath = s:path . ',' . s:bundle . 'vundle'
+	" Vundle {{{
 
-" }}}
+	" Initialization
+	call neobundle#rc(s:bundle)
+	NeoBundleFetch 'Shougo/neobundle.vim'
+	NeoBundle 'Grimy/vim-default-runtime'
 
-" Vundle {{{
+	" Stupidity
+	NeoBundle 'tpope/vim-afterimage'
 
-" Initialization
-call vundle#rc(s:bundle)
-Bundle 'gmarik/vundle'
-Bundle 'Grimy/vim-default-runtime'
+	" Syntax coloring
+	NeoBundle 'Grimy/vim-rainbow'
+	NeoBundle 'altercation/vim-colors-solarized'
+	NeoBundle 'dag/vim-fish'
+	NeoBundle 'bling/vim-airline'
 
-" Syntax coloring
-Bundle 'Grimy/vim-rainbow'
-Bundle 'altercation/vim-colors-solarized'
-Bundle 'dag/vim-fish'
-Bundle 'bling/vim-airline'
+	" File management
+	NeoBundle 'Shougo/vimproc'
+	call neobundle#config('vimproc', {
+				\ 'build' : {
+				\ 'windows' : 'make -f make_mingw32.mak',
+				\ 'cygwin' : 'make -f make_cygwin.mak',
+				\ 'mac' : 'make -f make_mac.mak',
+				\ 'unix' : 'make -f make_unix.mak',
+				\ },
+				\ })
 
-" File management
-Bundle 'Shougo/unite.vim'
-Bundle 'Shougo/unite-ssh'
-Bundle 'Shougo/unite-help'
-Bundle 'tsukkee/unite-tag'
-Bundle 'Shougo/vimproc'
-Bundle 'Shougo/vimfiler'
-Bundle 'Shougo/vimshell'
-Bundle 'ujihisa/vimshell-ssh'
-Bundle 'tyru/open-browser.vim'
+	NeoBundle 'Shougo/unite.vim'
+	NeoBundle 'Shougo/unite-ssh'
+	NeoBundle 'Shougo/unite-help'
+	NeoBundle 'tsukkee/unite-tag'
+	NeoBundle 'Shougo/vimfiler'
+	NeoBundle 'Shougo/vimshell'
+	NeoBundle 'ujihisa/vimshell-ssh'
+	NeoBundle 'tyru/open-browser.vim'
 
-" Editing functionnality
-Bundle 'vim-scripts/UnconditionalPaste'
-Bundle 'tpope/vim-surround'
-Bundle 'tpope/vim-unimpaired'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'scrooloose/nerdcommenter'
-Bundle 'godlygeek/tabular'
-Bundle 'sukima/xmledit'
-Bundle 'Grimy/dragonfly'
-Bundle 'Grimy/subliminal'
-Bundle 'joedicastro/vim-multiple-cursors'
+	" Editing functionnality
+	NeoBundle 'vim-scripts/UnconditionalPaste'
+	NeoBundle 'tpope/vim-surround'
+	NeoBundle 'tpope/vim-unimpaired'
+	NeoBundle 'Lokaltog/vim-easymotion'
+	NeoBundle 'scrooloose/nerdcommenter'
+	NeoBundle 'godlygeek/tabular'
+	NeoBundle 'sukima/xmledit'
+	NeoBundle 'Grimy/dragonfly'
+	NeoBundle 'Grimy/subliminal'
+	NeoBundle 'joedicastro/vim-multiple-cursors'
 
- "Git power
-Bundle 'tpope/vim-fugitive'
-Bundle 'tomtom/quickfixsigns_vim'
+	"Git power
+	NeoBundle 'tpope/vim-fugitive'
+	NeoBundle 'tomtom/quickfixsigns_vim'
 
-" Completion
-Bundle 'MarcWeber/vim-addon-mw-utils'
-Bundle 'tomtom/tlib_vim'
-Bundle 'Shougo/neocomplete'
-Bundle 'Shougo/neosnippet'
-Bundle 'Shougo/neosnippet-snippets'
-Bundle 'tsaleh/vim-matchit'
-Bundle 'sjl/gundo.vim'
+	" Completion
+	NeoBundle 'tomtom/tlib_vim'
+	NeoBundle 'Shougo/neocomplete'
+	NeoBundle 'Shougo/neosnippet'
+	NeoBundle 'Shougo/neosnippet-snippets'
+	NeoBundle 'tsaleh/vim-matchit'
+	NeoBundle 'sjl/gundo.vim'
+	NeoBundle 'tpope/vim-endwise'
 
+	" Check
+	NeoBundleCheck
+	" }}}
+
+endif
 " }}}
 
 " Search and replace {{{
@@ -254,22 +265,26 @@ set undofile undolevels=65536
 set autowrite
 
 augroup AutomaticSwapRecoveryAndDelete
-    autocmd!
+	autocmd!
 	autocmd WinEnter * checktime
-    autocmd SwapExists  * let v:swapchoice = 'r'
+	autocmd SwapExists  * let v:swapchoice = 'r'
 				\ | let b:swapname = v:swapname
-    autocmd BufWinEnter * if exists('b:swapname')
+	autocmd BufWinEnter * if exists('b:swapname')
 				\ | call delete(b:swapname)
 				\ | unlet b:swapname
 				\ | endif
-augroup end
+augroup END
 
-execute 'nnoremap' '<Leader>ss' ':mksession!'    s:session '<CR>'
-execute 'nnoremap' '<Leader>sq' ':mksession!'    s:session '<CR>:wqa<CR>'
-execute 'nnoremap' '<Leader>sl' ':silent source' s:session '<CR>'
+
+set sessionoptions=blank,curdir,folds,help,resize,tabpages,winpos,winsize
+autocmd VimLeave * execute 'mksession!' g:session
+nnoremap !s :silent source <C-R>=g:session<CR><CR>
 
 " Jump  to  the  last  position  when reopening file
-autocmd BufReadPost * silent! normal! g`"zz
+augroup RecoverLastPosition
+	autocmd!
+	autocmd BufReadPost * silent! normal! g`"zz
+augroup END
 
 " }}}
 
@@ -359,7 +374,7 @@ function! MyTab(shift)
 	if pumvisible()
 		return a:shift ? "\<C-P>" : "\<C-N>"
 	elseif neosnippet#jumpable()
-	   return "\<Plug>(neosnippet_jump)"
+		return "\<Plug>(neosnippet_jump)"
 	elseif neosnippet#expandable()
 		return "\<Plug>(neosnippet_expand)"
 	elseif virtcol('.') <= indent('.') + 1
@@ -404,7 +419,7 @@ if has('gui_running')
 	function! FontSize(d)
 		let &guifont= substitute(&guifont, '\d\+',
 					\ '\=eval(submatch(0)' . a:d . ')', '')
-		set lines=999 columns=999
+		set lines=56 columns=999
 		return ''
 	endfunction
 
@@ -413,18 +428,16 @@ if has('gui_running')
 	Map n cof :set guifont=*<CR>
 
 	if has('vim_starting')
-		set guifont=Inconsolata\ Bold\ 11
-		" set guifont=Droid\ Sans\ Mono\ for\ Powerline\ 11
-		set guifont=Liberation\ Mono\ for\ Powerline\ 11
+		set lsp=-2 guifont=Inconsolata\ 11
+		set lsp=-2 guifont=Droid\ Sans\ Mono\ for\ Powerline\ 11
+		set lsp=-2 guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 11
+		set lsp=0  guifont=Liberation\ Mono\ for\ Powerline\ 11
 		" $@[]{}()|\/ blah/fox Illegal10Oo :;MH,.!?&=+-
 
 		" Because coding on a white background is an heresy
 		set background=dark
 		colorscheme solarized
-		highlight! link SignColumn LineNr
-		highlight! link vimGroup vimHiGroup
-		highlight! link NonText Special
-		highlight! link SpecialKey Special
+
 	endif
 else
 	set mouse=nvr  " Disable the mouse in insert mode
@@ -442,9 +455,17 @@ set matchpairs+=<:>
 " Better replacement characters
 set fillchars=stl:\ ,stlnc:\ ,diff:X
 set list listchars=tab:»\ ,nbsp:␣,precedes:«,extends:»
-
-set showbreak=↩\ 
 set display=lastline  " don’t replace the last line with @’s
+
+let &showbreak                    = '↩ '
+let g:unite_prompt                = '» '
+let g:unite_marked_icon           = '✓'
+let g:vimfiler_marked_file_icon   = '✓'
+let g:vimfiler_tree_leaf_icon     = '│'
+let g:vimfiler_tree_opened_icon   = '▾'
+let g:vimfiler_tree_closed_icon   = '▸'
+let g:vimfiler_file_icon          = ' '
+let g:vimfiler_readonly_file_icon = ''
 
 set conceallevel=2
 set concealcursor=n
@@ -456,7 +477,7 @@ augroup ShowTrailingSpaces
 	autocmd!
 	autocmd InsertEnter * set listchars-=trail:␣
 	autocmd InsertLeave * set listchars+=trail:␣
-augroup end
+augroup END
 
 " Don’t break lines in the middle of a word
 set linebreak
@@ -548,12 +569,6 @@ set whichwrap=[,<,>,]
 
 " Escape sequences and insert mode timeout instantly
 set notimeout ttimeout timeoutlen=1
-" TODO: use <nowait> instead
-augroup InsertTimeout
-	autocmd!
-	autocmd InsertEnter * set   timeout
-	autocmd InsertLeave * set notimeout
-augroup end
 
 " Redo with U
 nnoremap U <C-R>
@@ -677,7 +692,7 @@ vnoremap <S-Tab> :<<CR>gv
 
 " Increment / decrement
 inoremap <C-S> <C-O><C-A>
-inoremap <C-X> <C-O><C-X>
+inoremap <nowait> <C-X> <C-O><C-X>
 nnoremap <C-S> <C-A>
 
 " }}}
@@ -746,7 +761,7 @@ nnoremap !d :1,9s/Last change: \zs.*/\=strftime("%c")/<CR>
 nnoremap <CR> <C-]>
 
 " Preserve CTRL-A
-inoremap <C-G> <C-A>
+inoremap <nowait> <C-G> <C-A>
 
 " Swap charwise and blockwise visual modes
 Map nx v <C-V>
@@ -826,8 +841,8 @@ if executable('ag')
 	" Use ag in unite grep source.
 	let g:unite_source_grep_command = 'ag'
 	let g:unite_source_grep_default_opts =
-				\ '--line-numbers --nocolor --nogroup --hidden' .
-				\ "--ignore '.hg' --ignore '.svn' --ignore '.git'"
+				\ '--line-numbers --nocolor --nogroup --hidden ' .
+				\ '--ignore .hg --ignore .svn --ignore .git'
 	let g:unite_source_grep_recursive_opt = ''
 elseif executable('ack-grep')
 	" Use ack in unite grep source.
@@ -838,7 +853,7 @@ endif
 
 nnoremap <leader>f :<C-u>Unite file_rec/async<CR>
 nnoremap gr        :<C-U>Unite grep:.<CR>
-nnoremap <C-R> :<C-u>Unite file_mru<CR>
+nnoremap <C-R>     :<C-u>Unite file_mru<CR>
 
 " xmledit
 let g:xmledit_enable_html = 1

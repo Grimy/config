@@ -14,8 +14,8 @@ ln -ns "$basedir/powerline-fonts/"      ~/.local/share/fonts      && fc-cache -r
 
 cd "$basedir"
 mkdir -p bundle cache/swaps cache/backups cache/undos
-git clone https://github.com/gmarik/vundle bundle/vundle
 hg clone  https://vim.googlecode.com/hg/ src
+git clone https://github.com/Shougo/neobundle.vim bundle/neobundle.vim/
 
 cd src
 hg pull
@@ -37,6 +37,4 @@ hg update
 
 make
 
-src/vim -c 'BundleInstall!' -c 'qa'
-
-make -C ../bundle/vimproc
+src/vim -c 'NeoBundleInstall!' -c 'qa'
