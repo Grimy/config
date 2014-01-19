@@ -10,5 +10,7 @@ function fish_greeting
 		ssh-add
 	end
 
+	stty erase 
+
 	echo 'Howdy!'
 end
