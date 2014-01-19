@@ -1,6 +1,8 @@
-silent! nunmap <buffer> <Tab>
+silent! iunmap <buffer> <C-E>
 
-nnoremap <buffer> <Esc> :bwipeout<CR>
-inoremap <buffer> <Tab> <Nop>
-inoremap <buffer> <C-J> <Down>
-inoremap <buffer> <C-K> <Up>
+inoremap <buffer> <silent> <Tab> <Esc><C-W>w
+inoremap <buffer> <silent> <Esc> <Esc>:bwipeout<CR>
+imap <buffer> <silent> <C-J> <Plug>(unite_select_next_line)
+imap <buffer> <silent> <C-K> <Plug>(unite_select_previous_line)
+
+autocmd BufEnter <buffer> startinsert!
