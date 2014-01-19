@@ -40,29 +40,32 @@ command! -nargs=+ Map call Map(<f-args>)
 
 " }}}
 
-" Environment detection {{{
-
-let s:is_windows = has('win16') || has('win32') || has('win64')
-
-" Keycodes not automaitcally recognized
-Map clinov <recursive> <C-?> <C-BS>
-Map clinov <recursive> <C-@> <C-Space>
-
-" Disable the annoying beep when pressing Esc twice
-Map n <Esc> <Nop>
-
-" Vim needs a POSIX-Compliant shell. Fish is not.
-if &shell =~ 'fish'
-	set shell=/bin/sh
-endif
-
-" Useless setting, but the default value can cause a bug in xterm
-let &t_RV='  Howdy ' . $USERNAME . '!'
-
-" }}}
-
 " Initialization {{{
 if has('vim_starting')
+
+	" Environment detection {{{
+
+	let s:is_windows = has('win16') || has('win32') || has('win64')
+
+	" Use English messages.
+	execute 'language' 'message' s:is_windows ? 'en' : 'C'
+
+	" Keycodes not automaitcally recognized
+	Map clinov <recursive> <C-?> <C-BS>
+	Map clinov <recursive> <C-@> <C-Space>
+
+	" Disable the annoying beep when pressing Esc twice
+	Map n <Esc> <Nop>
+
+	" Vim needs a POSIX-Compliant shell. Fish is not.
+	if &shell =~ 'fish'
+		set shell=/bin/sh
+	endif
+
+	" Useless setting, but the default value can cause a bug in xterm
+	let &t_RV='  Howdy ' . $USERNAME . '!'
+
+	" }}}
 
 	" Manage paths {{{
 	let s:sep     = s:is_windows ? '\' : '/'
@@ -91,9 +94,6 @@ if has('vim_starting')
 	NeoBundleFetch 'Shougo/neobundle.vim'
 	NeoBundle 'Grimy/vim-default-runtime'
 
-	" Stupidity
-	NeoBundle 'tpope/vim-afterimage'
-
 	" Syntax coloring
 	NeoBundle 'Grimy/vim-rainbow'
 	NeoBundle 'altercation/vim-colors-solarized'
@@ -119,6 +119,7 @@ if has('vim_starting')
 	NeoBundle 'Shougo/vimshell'
 	NeoBundle 'ujihisa/vimshell-ssh'
 	NeoBundle 'tyru/open-browser.vim'
+	NeoBundle 'tpope/vim-afterimage'
 
 	" Editing functionnality
 	NeoBundle 'vim-scripts/UnconditionalPaste'
@@ -131,6 +132,7 @@ if has('vim_starting')
 	NeoBundle 'Grimy/dragonfly'
 	NeoBundle 'Grimy/subliminal'
 	NeoBundle 'joedicastro/vim-multiple-cursors'
+	NeoBundle 'tpope/vim-endwise'
 
 	"Git power
 	NeoBundle 'tpope/vim-fugitive'
@@ -519,9 +521,6 @@ set foldtext=FoldText()
 
 set spelllang=en,fr
 
-" Use English messages.
-execute 'language' 'message' s:is_windows ? 'en' : 'C'
-
 set langmap=à@,è`,é~,ç_,ù%
 Map l <recursive> à @
 Map l <recursive> è `
@@ -622,9 +621,10 @@ cnoremap <C-Del> <C-\><C-E>substitute(getcmdline(),'\%'.getcmdpos().'c.\{-}\>','
 set cpoptions+=I
 
 " Start a new undoable insert for each new non-empty line and fix indent
-inoremap <expr> <CR> MyCR()
+inoremap <CR> <C-R>=MyCR()<CR>
+
 function! MyCR()
-	if match(getline('.'), '^\s*$') < 0
+	if match(getline('.'), '\v^\s*$') < 0
 		return neocomplete#close_popup() . "\<C-G>u\n"
 	endif
 	return strlen(getline('.')) ? "\<C-U>\n" : "\n"
