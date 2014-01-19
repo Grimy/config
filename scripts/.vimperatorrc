@@ -3,6 +3,7 @@ set noscrollbars
 set gui=none
 set visualbell
 set editor=gvim\ --remote-tab-wait-silent
+set defsearch=duckduckgo
 
 nnoremap <C-S> <C-A>
 nnoremap !q d
