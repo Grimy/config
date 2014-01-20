@@ -3,9 +3,6 @@
 " the terms of the Do What The Fuck You Want To Public License, Version 2, as
 " published by Sam Hocevar. See the LICENCE file for more details.
 
-set updatetime=1000
-"TODO: colors
-
 " Utility functions {{{
 
 function! GetChar(...)
@@ -96,20 +93,16 @@ if has('vim_starting')
 
 	" Syntax coloring
 	NeoBundle 'Grimy/vim-rainbow'
-	NeoBundle 'altercation/vim-colors-solarized'
 	NeoBundle 'dag/vim-fish'
 	NeoBundle 'bling/vim-airline'
 
 	" File management
-	NeoBundle 'Shougo/vimproc'
-	call neobundle#config('vimproc', {
-				\ 'build' : {
-				\ 'windows' : 'make -f make_mingw32.mak',
-				\ 'cygwin' : 'make -f make_cygwin.mak',
-				\ 'mac' : 'make -f make_mac.mak',
-				\ 'unix' : 'make -f make_unix.mak',
-				\ },
-				\ })
+	NeoBundle 'Shougo/vimproc', { 'build' : {
+				\     'windows': 'make -f make_mingw32.mak',
+				\     'cygwin':  'make -f make_cygwin.mak',
+				\     'mac':     'make -f make_mac.mak',
+				\     'unix':    'make -f make_unix.mak',
+				\ }}
 
 	NeoBundle 'Shougo/unite.vim'
 	NeoBundle 'Shougo/unite-ssh'
@@ -125,7 +118,6 @@ if has('vim_starting')
 	NeoBundle 'vim-scripts/UnconditionalPaste'
 	NeoBundle 'tpope/vim-surround'
 	NeoBundle 'tpope/vim-unimpaired'
-	NeoBundle 'Lokaltog/vim-easymotion'
 	NeoBundle 'scrooloose/nerdcommenter'
 	NeoBundle 'godlygeek/tabular'
 	NeoBundle 'sukima/xmledit'
@@ -1051,6 +1043,8 @@ Map n <Leader>q :QuickfixsignsToggle<CR>
 " }}}
 
 " File management {{{
+
+set updatetime=1000 " This is used by a lot of plugins
 
 " Make sure all buffers in a tab share the same cwd
 augroup TabDir
