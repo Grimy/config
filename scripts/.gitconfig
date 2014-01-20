@@ -17,3 +17,6 @@ cmd = vim -d $REMOTE $LOCAL
 [core]
 editor = vim
 pager = less
+
+[interactive]
+singlekey = true
