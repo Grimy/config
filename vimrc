@@ -214,22 +214,6 @@ set shiftwidth=4 " One tab = 4 spaces
 set smarttab     " Backspace at the beginning of a line deletes 4 spaces
 set nojoinspaces " Only one space between sentences
 
-" Vim Pager
-function! s:VimPager()
-	setlocal tabstop=8
-	setlocal synmaxcol&
-	setlocal nolist
-	setlocal virtualedit=all
-	setlocal scrolloff=999
-	setlocal scrolljump=1
-	setlocal buftype=nofile
-	setlocal bufhidden=hide
-	setlocal noswapfile
-	setlocal nofoldenable nonumber
-	normal! M
-endfunction
-command! VimPager call s:VimPager()
-
 " Encoding
 set encoding=utf-8
 set fileencodings=utf-8,cp1252
@@ -1036,7 +1020,7 @@ endfunction
 "g:quickfixsigns_icons Disable signs on those special buffers
 " TODO: patch qfs to operate on a per-buffer basis
 let g:quickfixsigns_blacklist_buffer =
-			\ '\v(vimfiler|vimshell|unite|Command Line|\.txt)'
+			\ '\v(vimfiler|vimshell|unite|Command Line|\.txt|^$)'
 let g:quickfixsigns_icons = {}
 Map n <Leader>q :QuickfixsignsToggle<CR>
 
