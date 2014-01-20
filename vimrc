@@ -736,7 +736,7 @@ xnoremap <silent> <Leader>e :<C-U>execute join(getline("'<", "'>"), "\n")<CR>
 nnoremap !d :1,9s/Last change: \zs.*/\=strftime("%c")/<CR>
 
 " Follow tags with Return
-nnoremap <CR> <C-]>
+Map n <recursive> <CR> <C-]>
 
 " Preserve CTRL-A
 inoremap <nowait> <C-G> <C-A>

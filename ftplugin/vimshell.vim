@@ -23,13 +23,17 @@ endfunction
 function! b:vimman(command, context)
 	if a:command[:3] ==# 'man '
 		stopinsert
-		tabnew
-		" execute 'Man' a:command[4:]
-		" wincmd o
-		silent execute 'read !man ' . a:command[4:]
-		1 delete
+		" Remove the command from vimshell
+		normal dd
+		if winheight('.') > 50
+			vnew
+		else
+			tabnew
+		endif
+		let $MANWIDTH = winwidth('.') + 2
+		silent execute '.!man ' . a:command[4:]
 		setlocal filetype=man
-		return 'echo 42'
+		return 'echo'
 	endif
 	return a:command
 endfunction
