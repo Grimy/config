@@ -597,7 +597,9 @@ cnoremap <C-Del> <C-\><C-E>substitute(getcmdline(),'\%'.getcmdpos().'c.\{-}\>','
 set cpoptions+=I
 
 " Start a new undoable insert for each new non-empty line and fix indent
-inoremap <CR> <C-R>=MyCR()<CR>
+if has('vim_starting')
+	inoremap <CR> <C-R>=MyCR()<CR>
+endif
 
 function! MyCR()
 	if match(getline('.'), '\v^\s*$') < 0
