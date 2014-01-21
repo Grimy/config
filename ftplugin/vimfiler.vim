@@ -1,5 +1,6 @@
 silent! nunmap <buffer> <Tab>
 silent! nunmap <buffer> <C-J>
+silent! nunmap <buffer> gr
 
 nmap <buffer> m          <Plug>(vimfiler_clipboard_move_file)
 nmap <buffer> c          <Plug>(vimfiler_clipboard_copy_file)
