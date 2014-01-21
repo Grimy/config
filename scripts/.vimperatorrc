@@ -50,8 +50,9 @@ nnoremap j j3.
 nnoremap k k3.
 cnoremap <C-N> <Down>
 cnoremap <C-P> <Up>
-nnoremap <C-J> <Space>
-nnoremap <C-K> <S-Space>
+nnoremap <Space> <PageDown>
+nnoremap <C-J>   <PageDown>
+nnoremap <C-K>   <PageUp>
 
 " Show/hide status bar
 nnoremap <silent> ! :js toggle_bottombar('toggle')<CR>
