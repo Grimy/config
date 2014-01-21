@@ -155,26 +155,32 @@ set ignorecase smartcase
 
 " Smart search highlighting
 " Enable highlighting before any search
-nnoremap *  :set hlsearch<CR>*
-nnoremap #  :set hlsearch<CR>#
-nnoremap n  :set hlsearch<CR>n
-nnoremap N  :set hlsearch<CR>N
-nnoremap g* :set hlsearch<CR>g*
-nnoremap g# :set hlsearch<CR>g#
+Map n *   *:call HlSearch()<CR>
+Map n #   #:call HlSearch()<CR>
+Map n n   n:call HlSearch()<CR>
+Map n N   N:call HlSearch()<CR>
+Map n g* g*:call HlSearch()<CR>
+Map n g# g#:call HlSearch()<CR>
+
+function! HlSearch()
+	let &hlsearch = strlen(@/) > 1
+endfunction
 
 " Disable auto-highlighting when switching to another mode
 augroup SmartHLSearch
 	autocmd!
-	autocmd InsertEnter * set nohlsearch
+	autocmd InsertEnter,CursorHold * set nohlsearch
 augroup END
 nnoremap / :set nohlsearch<CR>:redraw<CR>/
 nnoremap ? :set nohlsearch<CR>:redraw<CR>?
 
-nnoremap <silent> <expr> f Search() . 'n'
-nnoremap <silent> <expr> F Search() . 'N'
-function! Search()
-	let @/ = GetChar()
-	return ''
+Map nov <expr> f SearchOne(0, 1)
+Map nov <expr> F SearchOne(1, 1)
+Map nov <expr> t SearchOne(0, 0)
+Map nov <expr> T SearchOne(1, 0)
+function! SearchOne(backward, inclusive)
+	let @/ = GetChar() . (a:inclusive ? '\zs' : '')
+	return a:backward ? 'N' : 'n'
 endfunction
 
 cnoremap <expr> <CR> CommandLineLeave()
@@ -191,15 +197,15 @@ endfunction
 Map nv <expr> <C-P> g:last_cmd_type . "\<Up>"
 
 " Clear screen
-Map cli <expr> <C-L> Redraw() . "\<C-]>"
-Map n   <silent> <expr> <C-L> Redraw() . ":diffupdate\<CR>"
-Map o   <expr> <C-L> Redraw() . "\<Esc>" . v:operator
-Map v   <expr> <C-L> Redraw()
+Map o <C-L> <C-\><C-N>:call Redraw()<CR>:call feedkeys(v:operator, 'n')<CR>
+Map nv <C-L> @=Redraw() ? '' : '' <CR>
+Map c <C-L> <C-C>:call Redraw()<CR>:<C-P>
+Map i <C-L> <C-O>:call Redraw()<CR>
 
 function! Redraw()
 	set nohlsearch
+	diffupdate
 	redraw!
-	return ''
 endfunction
 
 " }}}
@@ -266,16 +272,16 @@ augroup END
 
 " }}}
 
-nnoremap !: q:
-nnoremap <silent> !q :q<CR>
-nnoremap <silent> !Q :q!<CR>
-nnoremap <silent> !w :w<CR>
-nnoremap <silent> !W :silent w !sudo tee % >/dev/null<CR>
-nnoremap !t :tab drop<Space>
-nnoremap !T :tabedit<Space>
-nnoremap !h :vert help<Space>
-" TODO: Use unite-tag or unite-help
-nnoremap !H :vert helpgrep<Space>
+nnoremap <silent> !: q:
+nnoremap <silent> !q :<C-U>q<CR>
+nnoremap <silent> !Q :<C-U>q!<CR>
+nnoremap <silent> !w :<C-U>w<CR>
+nnoremap <silent> !W :<C-U>silent w !sudo tee % >/dev/null<CR>
+nnoremap <silent> !m :<C-U>make<CR>
+nnoremap          !t :<C-U>tab drop<Space>
+nnoremap          !T :<C-U>tabedit<Space>
+nnoremap          !h :<C-U>vert help<Space>
+nnoremap <silent> !H :<C-U>Unite help<CR>
 
 " Better macros {{{
 
@@ -381,8 +387,6 @@ set cursorline
 if has('gui_running')
 	set mouse=ar
 
-	let g:solarized_italic = 0
-
 	set guioptions=Mc
 	set guiheadroom=0
 	set nomousefocus
@@ -390,8 +394,6 @@ if has('gui_running')
 	set mousetime=200
 	set mouseshape+=v:beam,sd:updown,vd:leftright
 	set guicursor+=a:blinkon0 " disable blinking
-
-	noremenu Plugin.g&undo :GundoToggle<CR>
 
 	" Change font size easily
 	function! FontSize(d)
@@ -814,6 +816,7 @@ Map n <Leader><CR> :execute 'VimShellPop' '-buffer-name=sh' t:cwd<CR>
 call unite#filters#matcher_default#use(['matcher_fuzzy'])
 let g:unite_kind_cdable_lcd_command = 'Tcd'
 let g:unite_enable_start_insert = 1
+let g:unite_source_history_yank_enable = 1
 
 if executable('ag')
 	" Use ag in unite grep source.
@@ -829,9 +832,17 @@ elseif executable('ack-grep')
 	let g:unite_source_grep_recursive_opt = ''
 endif
 
-nnoremap <leader>f :<C-u>Unite file_rec/async<CR>
-nnoremap gr        :<C-U>Unite grep:.<CR>
-nnoremap <C-R>     :<C-u>Unite file_mru<CR>
+nnoremap gd gD
+
+nnoremap gf    :<C-u>Unite file_rec/async<CR>
+nnoremap gr    :<C-U>Unite grep:.<CR>
+nnoremap gl    :<C-U>Unite line<CR>
+nnoremap gc    :<C-U>Unite change<CR>
+nnoremap gj    :<C-U>Unite jump<CR>
+nnoremap gk    :<C-U>Unite directory<CR>
+nnoremap gu    :<C-U>Unite undo<CR>
+nnoremap <C-R> :<C-u>Unite file_mru<CR>
+nnoremap gp    :<C-u>Unite history/yank<CR>
 
 " xmledit
 let g:xmledit_enable_html = 1
