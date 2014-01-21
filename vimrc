@@ -84,7 +84,7 @@ if has('vim_starting')
 	let &runtimepath = s:path . ',' . s:bundle . 'neobundle.vim'
 	" }}}
 
-	" Vundle {{{
+	" NeoBundle {{{
 
 	" Initialization
 	call neobundle#rc(s:bundle)
@@ -106,13 +106,24 @@ if has('vim_starting')
 
 	NeoBundle 'Shougo/unite.vim'
 	NeoBundle 'Shougo/unite-ssh'
-	NeoBundle 'Shougo/unite-help'
-	NeoBundle 'tsukkee/unite-tag'
+
+	NeoBundleLazy 'osyo-manga/unite-quickfix',
+				\ { 'unite_sources' : 'quickfix' }
+	NeoBundleLazy 'Shougo/unite-help',
+				\ { 'unite_sources' : 'help' }
+	NeoBundleLazy 'tsukkee/unite-tag',
+				\ { 'unite_sources' : ['tag', 'tag/include', 'tag/file'] }
+	NeoBundleLazy 'thinca/vim-unite-history',
+				\ { 'unite_sources' : ['history/command', 'history/search'] }
+	NeoBundle 'Shougo/unite-outline',
+				\ { 'unite_sources' : 'outline' }
+
 	NeoBundle 'Shougo/vimfiler'
 	NeoBundle 'Shougo/vimshell'
 	NeoBundle 'ujihisa/vimshell-ssh'
 	NeoBundle 'tyru/open-browser.vim'
 	NeoBundle 'tpope/vim-afterimage'
+	NeoBundle 'ujihisa/shadow.vim'
 
 	" Editing functionnality
 	NeoBundle 'vim-scripts/UnconditionalPaste'
@@ -125,6 +136,8 @@ if has('vim_starting')
 	NeoBundle 'Grimy/subliminal'
 	NeoBundle 'joedicastro/vim-multiple-cursors'
 	NeoBundle 'tpope/vim-endwise'
+	NeoBundleLazy 't9md/vim-smalls',
+				\ { 'mappings' : ['<Plug>(smalls)', '<Plug>(smalls-)'] }
 
 	"Git power
 	NeoBundle 'tpope/vim-fugitive'
@@ -155,41 +168,43 @@ set ignorecase smartcase
 
 " Smart search highlighting
 " Enable highlighting before any search
-Map n *   *:call HlSearch()<CR>
-Map n #   #:call HlSearch()<CR>
-Map n n   n:call HlSearch()<CR>
-Map n N   N:call HlSearch()<CR>
-Map n g* g*:call HlSearch()<CR>
-Map n g# g#:call HlSearch()<CR>
+Map n *   *:call HlSearch(@/)<CR>
+Map n #   #:call HlSearch(@/)<CR>
+Map n n   n:call HlSearch(@/)<CR>
+Map n N   N:call HlSearch(@/)<CR>
+Map n g* g*:call HlSearch(@/)<CR>
+Map n g# g#:call HlSearch(@/)<CR>
 
-function! HlSearch()
-	let &hlsearch = strlen(@/) > 1
+augroup NoHlSearch
+augroup END
+
+function! HlSearch(pat)
+	let &hlsearch = strlen(substitute(a:pat, '\\zs', '', 'g')) > 1
+	" Disable auto-highlighting when switching to another mode
+	autocmd NoHlSearch InsertEnter,CursorHold * set nohlsearch | redraw
+	autocmd NoHlSearch InsertEnter,CursorHold * autocmd! NoHlSearch
 endfunction
 
-" Disable auto-highlighting when switching to another mode
-augroup SmartHLSearch
-	autocmd!
-	autocmd InsertEnter,CursorHold * set nohlsearch
-augroup END
-nnoremap / :set nohlsearch<CR>:redraw<CR>/
-nnoremap ? :set nohlsearch<CR>:redraw<CR>?
+let g:last_cmd_type = ':'
+nnoremap : :let g:last_cmd_type = ':'<CR>:doautocmd NoHlSearch InsertEnter<CR>:
+nnoremap / :let g:last_cmd_type = '/'<CR>:doautocmd NoHlSearch InsertEnter<CR>/
+nnoremap ? :let g:last_cmd_type = '?'<CR>:doautocmd NoHlSearch InsertEnter<CR>?
 
-Map nov <expr> f SearchOne(0, 1)
-Map nov <expr> F SearchOne(1, 1)
 Map nov <expr> t SearchOne(0, 0)
+Map nov <expr> f SearchOne(0, 1)
 Map nov <expr> T SearchOne(1, 0)
+Map nov <expr> F SearchOne(1, 1)
+
 function! SearchOne(backward, inclusive)
 	let @/ = GetChar() . (a:inclusive ? '\zs' : '')
 	return a:backward ? 'N' : 'n'
 endfunction
 
 cnoremap <expr> <CR> CommandLineLeave()
-let g:last_cmd_type = ':'
 
 function! CommandLineLeave()
-	if getcmdtype() =~ '\v[?/:]'
-		let g:last_cmd_type = getcmdtype()
-		let &hlsearch = getcmdtype() !=# ':'
+	if g:last_cmd_type !=# ':'
+		call HlSearch(getcmdline())
 	endif
 	return "\<C-]>\<CR>"
 endfunction
@@ -197,13 +212,13 @@ endfunction
 Map nv <expr> <C-P> g:last_cmd_type . "\<Up>"
 
 " Clear screen
-Map o <C-L> <C-\><C-N>:call Redraw()<CR>:call feedkeys(v:operator, 'n')<CR>
+Map o  <C-L> <C-\><C-N>:call Redraw()<CR>:call feedkeys(v:operator, 'n')<CR>
 Map nv <C-L> @=Redraw() ? '' : '' <CR>
-Map c <C-L> <C-C>:call Redraw()<CR>:<C-P>
-Map i <C-L> <C-O>:call Redraw()<CR>
+Map c  <C-L> <C-C>:call Redraw()<CR>:<Up>
+Map i  <C-L> <C-O>:call Redraw()<CR>
 
 function! Redraw()
-	set nohlsearch
+	silent doautocmd NoHlSearch InsertEnter
 	diffupdate
 	redraw!
 endfunction
@@ -662,13 +677,18 @@ inoremap <C-Q> <C-E>
 " Ctrl-T / Ctrl-D always add / remove indent
 " Default: only works in insert mode; << and >> behave differently
 " Overrides: CTRL-T (pop tag) CTRL-D (scroll half-page down)
-" TODO: use a function for this?
-nnoremap <C-T>   :><CR>
-nnoremap <C-D>   :<<CR>
-vnoremap <C-T>   :><CR>gv
-vnoremap <C-D>   :<<CR>gv
-vnoremap <Tab>   :><CR>gv
-vnoremap <S-Tab> :<<CR>gv
+nnoremap <C-T>   :call Indent(0)<CR>
+nnoremap <C-D>   :call Indent(1)<CR>
+
+function! Indent(backward)
+	let save = virtcol('.') - indent('.')
+	if a:backward
+		<
+	else
+		>
+	endif
+	execute 'normal! ' . (save + indent('.')) . '|'
+endfunction
 
 " Increment / decrement
 inoremap <C-S> <C-O><C-A>
@@ -685,14 +705,11 @@ let mapleader = '_'
 " TODO: use text-obj-user instead
 onoremap <silent> c :<C-U>normal! 0v$<CR>
 
-nnoremap a A
-nnoremap A a
-
 " s to search and replace with Perl
 nnoremap s     :perldo s''g<Left><Left>
 xnoremap s VVgv:perldo s''g<Left><Left>
 
-noremap <expr> zz winline() <= &scrolloff + 1 ? 'zz' : 'zt'
+noremap <expr> ,z winline() <= &scrolloff + 1 ? 'zz' : 'zt'
 nmap gs <Plug>(openbrowser-smart-search)
 vmap gs <Plug>(openbrowser-smart-search)
 
@@ -732,7 +749,13 @@ Map o  Q ap
 
 " Executes current line
 nnoremap <silent> <Leader>e :execute getline('.')<CR>
-xnoremap <silent> <Leader>e :<C-U>execute join(getline("'<", "'>"), "\n")<CR>
+xnoremap <silent> <Leader>e :call Execute(join(getline("'<", "'>"), "\n"))<CR>
+
+function! Execute(command) range
+	for line in split(substitute(a:command, '\v\n\s*\', '', 'g'), "\n")
+		execute line
+	endfor
+endfunction
 
 " Insert timestamp
 nnoremap !d :1,9s/Last change: \zs.*/\=strftime("%c")/<CR>
@@ -749,6 +772,15 @@ Map nx <C-V> v
 
 " Select the last modified text
 nnoremap gc  `[v`]
+
+" Out of two similar commands, the most common should be lowercase
+" Goto definition: global > local
+Map n gd gD
+Map n gD gd
+
+" Append to: end of line > one character
+nnoremap a A
+nnoremap A a
 
 " }}}
 
@@ -775,7 +807,9 @@ xnoremap <silent> <C-S>   :SubliminalInsert<CR><C-S>
 xnoremap <silent> <C-X>   :SubliminalInsert<CR><C-X>
 xnoremap <silent> <C-Del> :SubliminalAppend<CR><C-Del>
 xnoremap <silent> <C-Y>   :SubliminalInsert<CR><C-Y>
-xnoremap <silent> <C-Q>   :SubliminalInsert<CR><C-Y>
+xnoremap <silent> <C-Q>   :SubliminalInsert<CR><C-E>
+vnoremap <silent> <C-T>   :SubliminalInsert<CR><C-T>
+vnoremap <silent> <C-D>   :SubliminalInsert<CR><C-D>
 
 " Dragonfly
 xmap <Left>  <plug>(dragonfly_left)
@@ -832,17 +866,16 @@ elseif executable('ack-grep')
 	let g:unite_source_grep_recursive_opt = ''
 endif
 
-nnoremap gd gD
-
 nnoremap gf    :<C-u>Unite file_rec/async<CR>
 nnoremap gr    :<C-U>Unite grep:.<CR>
 nnoremap gl    :<C-U>Unite line<CR>
-nnoremap gc    :<C-U>Unite change<CR>
-nnoremap gj    :<C-U>Unite jump<CR>
 nnoremap gk    :<C-U>Unite directory<CR>
 nnoremap gu    :<C-U>Unite undo<CR>
-nnoremap <C-R> :<C-u>Unite file_mru<CR>
-nnoremap gp    :<C-u>Unite history/yank<CR>
+nnoremap gj    :<C-U>Unite jump<CR>
+nnoremap gc    :<C-U>Unite change<CR><C-O>3G
+nnoremap <C-R> :<C-u>Unite file_mru<CR><C-O>3G
+nnoremap gp    :<C-u>Unite history/yank<CR><C-O>3G
+nnoremap ,n    :<C-U>Unite neobundle/log<CR>[]
 
 " xmledit
 let g:xmledit_enable_html = 1
@@ -868,6 +901,13 @@ set previewheight=8
 set cmdwinheight=3
 set winminwidth=6
 
+augroup SmartTabClose
+	autocmd!
+	autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%')))
+				\ | q
+				\ | endif
+augroup END
+
 " Use Tab to switch between windows
 Map n <Tab>   <C-W>w
 Map n <S-Tab> <C-W>W
@@ -883,24 +923,18 @@ Map n <C-S-Tab> gT
 
 " Scrolling {{{
 
-" Most applications show either scrolling behaviors
 " Keep a few lines around the cursor
 set scrolljump=4
 set scrolloff=10
+
+" Horizontal scrolling
+set sidescroll=2
+set sidescrolloff=8
 
 " Keep cursor column when scrolling
 set nostartofline
 Map nov gg gg0
 Map nov G  G$l
-
-" Horizontal scrolling
-set sidescroll=2
-set sidescrolloff=1
-
-Map nx zh zH
-Map nx zl zL
-Map nx zH zh
-Map nx zL zl
 
 function! Scroll(lines, up)
 	let lines = v:count1 * a:lines
@@ -933,6 +967,9 @@ augroup END
 " }}}
 
 " Pasting {{{
+
+" Emulate xterm behaviour
+Map clinov <S-Insert> <MiddleMouse>
 
 " After a paste, leave the cursor at the end and fix indent
 set clipboard=unnamed
@@ -991,6 +1028,7 @@ Map n "" :let g:repeat_reg[1] = '"'<CR>""
 
 " Block-mode paste pastes on each block
 xnoremap p "_c<C-R>"<Esc>
+
 " }}}
 
 " git power {{{
@@ -1008,13 +1046,6 @@ nnoremap          <Leader>gg :Git!<Space>
 
 " Diffs
 set diffopt=filler,context:5,foldcolumn:1
-
-augroup SmartTabClose
-	autocmd!
-	autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%')))
-				\ | q
-				\ | endif
-augroup END
 
 " TODO: Manage hunks, jump more than once, ...
 function! QFSJump(filter, direction)
@@ -1077,12 +1108,9 @@ function! WipeHiddenBuffers()
 endfunction
 command! WipeHiddenBuffers call WipeHiddenBuffers()
 
-" TODO: Auto-wipe No Name buffers?
-
 " }}}
 
-Map clinov <S-Insert> <MiddleMouse>
-
+" Experimental {{{
 nnoremap <S-LeftMouse>  <LeftMouse>
 nnoremap <LeftDrag>     <C-V><LeftDrag>
 vnoremap <LeftDrag>     <C-V><C-V>gv<LeftDrag>
@@ -1093,6 +1121,11 @@ nnoremap <C-LeftMouse>  <LeftMouse>
 nnoremap <C-LeftDrag>   V<LeftDrag>
 vnoremap <C-LeftDrag>   vvgv<LeftDrag>
 
+Map o <recursive> z <Plug>(smalls-excursion)
+
 " Dirty dirty hacks
-silent! runtime autoload/tabline.vim
+if has('vim_starting')
+	silent! runtime autoload/tabline.vim
+endif
 runtime autoload/subliminal.vim
+
