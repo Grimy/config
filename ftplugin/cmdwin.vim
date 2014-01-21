@@ -8,7 +8,7 @@ inoremap <buffer> <expr> <BS> col('.') == 1 ?
 			\ "\<ESC>:quit\<CR>" : neocomplete#cancel_popup()."\<BS>"
 inoremap <buffer> <expr> <Tab>   pumvisible() ? "\<C-N>" : ""
 inoremap <buffer> <expr> <S-Tab> pumvisible() ? "\<C-P>" : ""
-inoremap <CR> <CR>
+inoremap <buffer> <CR> <CR>
 
 startinsert!
 
