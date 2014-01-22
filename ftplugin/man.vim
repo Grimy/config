@@ -9,7 +9,8 @@ setlocal nowrap
 setlocal nofoldenable nonumber
 
 " The screen moves in sync with the cursor
-setlocal scrolloff=999 scrolljump=1
+autocmd BufEnter <buffer> set scrolloff=999 scrolljump=1
+autocmd BufLeave <buffer> set scrolloff=20  scrolljump=4
 normal! M0
 
 " Don’t save

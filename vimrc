@@ -925,7 +925,7 @@ Map n <C-S-Tab> gT
 
 " Keep a few lines around the cursor
 set scrolljump=4
-set scrolloff=10
+set scrolloff=20
 
 " Horizontal scrolling
 set sidescroll=2
