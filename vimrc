@@ -1081,13 +1081,16 @@ set updatetime=1000 " This is used by a lot of plugins
 " Make sure all buffers in a tab share the same cwd
 augroup TabDir
 	autocmd!
-	autocmd BufEnter * call TcdBufEnter()
+	autocmd BufReadPost,BufNewFile,BufEnter * call SetTcd()
 augroup END
 
 command! -nargs=1 Tcd lcd <args> | call Tcd()
 
-function! TcdBufEnter()
+function! SetTcd()
 	if !exists('t:cwd') || !isdirectory(t:cwd)
+		if strlen(&l:bufhidden) || !strlen(expand('%'))
+			return
+		endif
 		let t:cwd = expand('%:p:h')
 	endif
 	execute 'lcd' t:cwd
