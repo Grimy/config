@@ -11,25 +11,20 @@ function! GetChar(...)
 endfunction
 
 function! Map(modes, ...)
-	let nosilent  = 0
-	let recursive = 0
+	let flags = { 'nosilent': 0, 'recursive': 0 }
 	let i = 0
 
-	if a:000[i] == '<nosilent>'
+	while a:000[i] =~ '\v\C^\<(nosilent|recursive)\>$'
+		let flags[a:000[i][1:-2]] = 1
 		let i = i + 1
-		let nosilent = 1
-	endif
-	if a:000[i] == '<recursive>'
-		let i = i + 1
-		let recursive = 1
-	endif
+	endwhile
 
 	let lhs = a:000[i]
 	let rhs = join(a:000[i+1:])
 
 	for mode in split(a:modes, '.\zs')
-		execute mode  . (recursive ? 'map' : 'noremap')
-					\ (mode() =~ '\v[cli]' && !nosilent ? '<silent>' : '')
+		execute mode  . (flags['recursive'] ? 'map' : 'noremap')
+					\ (mode =~ '\v[cli]') || flags['nosilent'] ? '' : '<silent>'
 					\ lhs rhs
 	endfor
 endfunction
@@ -171,21 +166,23 @@ cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 
 " Smart search highlighting
 " Enable highlighting before any search
-Map n *   *:call HlSearch(@/)<CR>
-Map n #   #:call HlSearch(@/)<CR>
-Map n n   n:call HlSearch(@/)<CR>
-Map n N   N:call HlSearch(@/)<CR>
-Map n g* g*:call HlSearch(@/)<CR>
-Map n g# g#:call HlSearch(@/)<CR>
-
-augroup NoHlSearch
-augroup END
+Map n <silent> *   *:call HlSearch(@/)<CR>
+Map n <silent> #   #:call HlSearch(@/)<CR>
+Map n <silent> n   n:call HlSearch(@/)<CR>
+Map n <silent> N   N:call HlSearch(@/)<CR>
+Map n <silent> g* g*:call HlSearch(@/)<CR>
+Map n <silent> g# g#:call HlSearch(@/)<CR>
 
 function! HlSearch(pat)
-	let &hlsearch = strlen(substitute(a:pat, '\\zs', '', 'g')) > 1
+	let &hlsearch = strlen(substitute(@/, '\\zs', '', 'g')) > 1
+
 	" Disable auto-highlighting when switching to another mode
 	autocmd NoHlSearch InsertEnter,CursorHold * set nohlsearch | redraw
 	autocmd NoHlSearch InsertEnter,CursorHold * autocmd! NoHlSearch
+
+	let save = getpos('.')
+	%s//&/gn
+	call setpos('.', save)
 endfunction
 
 let g:last_cmd_type = ':'
@@ -212,12 +209,12 @@ function! CommandLineLeave()
 	return "\<C-]>\<CR>"
 endfunction
 
-Map nv <expr> <C-P> g:last_cmd_type . "\<Up>"
+Map nv <nosilent> <expr> <C-P> g:last_cmd_type . "\<Up>"
 
 " Clear screen
 Map o  <C-L> <C-\><C-N>:call Redraw()<CR>:call feedkeys(v:operator, 'n')<CR>
 Map nv <C-L> @=Redraw() ? '' : '' <CR>
-Map c  <C-L> <C-C>:call Redraw()<CR>:<Up>
+Map c  <C-L> <C-C>:call Redraw()<CR>@=g:last_cmd_type<CR><Up>
 Map i  <C-L> <C-O>:call Redraw()<CR>
 
 function! Redraw()
