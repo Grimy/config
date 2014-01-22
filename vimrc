@@ -166,6 +166,9 @@ set incsearch
 " Patterns are case sensitive iff they contain at least one uppercase
 set ignorecase smartcase
 
+" Auto-escape '/' in search
+cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
+
 " Smart search highlighting
 " Enable highlighting before any search
 Map n *   *:call HlSearch(@/)<CR>
@@ -672,7 +675,8 @@ Map novicl <C-E> <End>
 " Overrides:   CTRL-Y (scroll one up)    -- see scrolling
 nnoremap <C-Q> i<C-E><Esc>l
 nnoremap <C-Y> i<C-Y><Esc>l
-inoremap <C-Q> <C-E>
+inoremap <expr> <C-Q> neocomplete#close_popup() . "\<C-E>"
+inoremap <expr> <C-Y> neocomplete#close_popup() . "\<C-Y>"
 
 " Ctrl-T / Ctrl-D always add / remove indent
 " Default: only works in insert mode; << and >> behave differently
