@@ -157,90 +157,11 @@ if has('vim_starting')
 endif
 " }}}
 
-" Search and replace {{{
-
+" Show search results as you type
 set incsearch
-
 " Patterns are case sensitive iff they contain at least one uppercase
 set ignorecase smartcase
 
-" Auto-escape '/' in search
-cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
-
-" Smart search highlighting
-" Enable highlighting before any search
-Map n <silent> *   *:call HlSearch()<CR>
-Map n <silent> #   #:call HlSearch()<CR>
-Map n <silent> n   n:call HlSearch()<CR>
-Map n <silent> N   N:call HlSearch()<CR>
-Map n <silent> g* g*:call HlSearch()<CR>
-Map n <silent> g# g#:call HlSearch()<CR>
-
-augroup HlSearch
-augroup END
-
-function! HlSearch()
-	let &hlsearch = strlen(substitute(@/, '\\zs', '', 'g')) > 1
-
-	" Disable auto-highlighting when switching to another mode
-	autocmd NoHlSearch InsertEnter,CursorHold * set nohlsearch | redraw
-	autocmd NoHlSearch InsertEnter,CursorHold * autocmd! NoHlSearch
-
-	let save = getpos('.')
-
-	redir => _
-	silent 1,.~gen
-	redir END
-	let before = str2nr(_[1:])
-
-	redir => _
-	silent .+1,$~gen
-	redir END
-	let after = str2nr(_[1:])
-
-	echo before 'of' before + after 'matches'
-	call setpos('.', save)
-endfunction
-
-let g:last_cmd_type = ':'
-nnoremap : :call CommandLineEnter(':')<CR>:
-nnoremap / :call CommandLineEnter('/')<CR>/
-nnoremap ? :call CommandLineEnter('?')<CR>?
-
-function! CommandLineEnter(type)
-	let g:last_cmd_type = a:type
-	doautocmd NoHlSearch InsertEnter
-	if a:type !=# ':'
-		autocmd NoHlSearch CursorMoved * call HlSearch() | redraw
-		autocmd NoHlSearch CursorMoved * autocmd! NoHlSearch
-	endif
-endfunction
-
-Map nov <expr> t SearchOne(0, 0)
-Map nov <expr> f SearchOne(0, 1)
-Map nov <expr> T SearchOne(1, 0)
-Map nov <expr> F SearchOne(1, 1)
-
-function! SearchOne(backward, inclusive)
-	let @/ = GetChar() . (a:inclusive ? '\zs' : '')
-	return a:backward ? 'N' : 'n'
-endfunction
-
-Map nv <nosilent> <expr> <C-P> g:last_cmd_type . "\<Up>"
-
-" Clear screen
-Map o  <C-L> <C-\><C-N>:call Redraw()<CR>:call feedkeys(v:operator, 'n')<CR>
-Map nv <C-L> @=Redraw() ? '' : '' <CR>
-Map c  <C-L> <C-C>:call Redraw()<CR>@=g:last_cmd_type<CR><Up>
-Map i  <C-L> <C-O>:call Redraw()<CR>
-
-function! Redraw()
-	silent doautocmd HlSearch InsertEnter
-	diffupdate
-	redraw!
-endfunction
-
-" }}}
 
 " Formatting / encoding {{{
 
@@ -513,6 +434,8 @@ set foldcolumn=0
 set foldopen+=insert,jump
 nnoremap <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zc' : 'h'
 nnoremap <expr> l foldclosed(line('.')) != -1 ? 'zv0' : 'l'
+Map n zr zR
+Map n zm zM
 
 " Replacement text for the fold line
 function! FoldText()
@@ -666,6 +589,10 @@ Map clinov <recursive> <C-H> <Backspace>
 Map clinov <recursive> <C-B> <Left>
 Map clinov <recursive> <C-F> <Right>
 Map clinov <recursive> <C-Backspace> <C-W>
+Map clinov <recursive> <C-A> <Home>
+Map clinov <recursive> <C-E> <End>
+
+Map i <Home> <C-O>^
 
 " Ctrl-U: delete to beginning
 " Already defined in insert and command modes
@@ -680,8 +607,6 @@ inoremap <C-U> <C-G>u<C-U>
 " Overrides:   CTRL-A (increment number) -- use Ctrl-S instead
 " Overrides: i_CTRL-E (copy from below)  -- use Ctrl-Q instead
 " Overrides:   CTRL-E (scroll one down)  -- see scrolling
-Map novicl <C-A> <Home>
-Map novicl <C-E> <End>
 
 " Ctrl-Q / Ctrl-Y always copy the character above / below the cursor
 " Default: can only be done in insert mode with Ctrl-E / Ctrl-Y
@@ -725,8 +650,8 @@ onoremap <silent> c :<C-U>normal! 0v$<CR>
 
 " s to search and replace with Perl
 Map nx s /
-nnoremap S     :perldo s''g<Left><Left>
-xnoremap S VVgv:perldo s''g<Left><Left>
+nnoremap S :%s\g<Left><Left>
+xnoremap S :perldo s''g<Left><Left>
 
 noremap <expr> ,z winline() <= &scrolloff + 1 ? 'zz' : 'zt'
 nmap gs <Plug>(openbrowser-smart-search)
