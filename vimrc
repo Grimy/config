@@ -147,6 +147,9 @@ if has('vim_starting')
 	NeoBundle 'sjl/gundo.vim'
 	NeoBundle 'tpope/vim-endwise'
 
+	" New
+	NeoBundle 'vim-scripts/foldsearch'
+
 	" Check
 	NeoBundleCheck
 	" }}}
@@ -166,17 +169,17 @@ cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 
 " Smart search highlighting
 " Enable highlighting before any search
-Map n <silent> *   *:call HlSearch(@/)<CR>
-Map n <silent> #   #:call HlSearch(@/)<CR>
-Map n <silent> n   n:call HlSearch(@/)<CR>
-Map n <silent> N   N:call HlSearch(@/)<CR>
-Map n <silent> g* g*:call HlSearch(@/)<CR>
-Map n <silent> g# g#:call HlSearch(@/)<CR>
+Map n <silent> *   *:call HlSearch()<CR>
+Map n <silent> #   #:call HlSearch()<CR>
+Map n <silent> n   n:call HlSearch()<CR>
+Map n <silent> N   N:call HlSearch()<CR>
+Map n <silent> g* g*:call HlSearch()<CR>
+Map n <silent> g# g#:call HlSearch()<CR>
 
-augroup NoHlSearch
+augroup HlSearch
 augroup END
 
-function! HlSearch(pat)
+function! HlSearch()
 	let &hlsearch = strlen(substitute(@/, '\\zs', '', 'g')) > 1
 
 	" Disable auto-highlighting when switching to another mode
@@ -184,14 +187,34 @@ function! HlSearch(pat)
 	autocmd NoHlSearch InsertEnter,CursorHold * autocmd! NoHlSearch
 
 	let save = getpos('.')
-	%s//&/gn
+
+	redir => _
+	silent 1,.~gen
+	redir END
+	let before = str2nr(_[1:])
+
+	redir => _
+	silent .+1,$~gen
+	redir END
+	let after = str2nr(_[1:])
+
+	echo before 'of' before + after 'matches'
 	call setpos('.', save)
 endfunction
 
 let g:last_cmd_type = ':'
-nnoremap : :let g:last_cmd_type = ':'<CR>:doautocmd NoHlSearch InsertEnter<CR>:
-nnoremap / :let g:last_cmd_type = '/'<CR>:doautocmd NoHlSearch InsertEnter<CR>/
-nnoremap ? :let g:last_cmd_type = '?'<CR>:doautocmd NoHlSearch InsertEnter<CR>?
+nnoremap : :call CommandLineEnter(':')<CR>:
+nnoremap / :call CommandLineEnter('/')<CR>/
+nnoremap ? :call CommandLineEnter('?')<CR>?
+
+function! CommandLineEnter(type)
+	let g:last_cmd_type = a:type
+	doautocmd NoHlSearch InsertEnter
+	if a:type !=# ':'
+		autocmd NoHlSearch CursorMoved * call HlSearch() | redraw
+		autocmd NoHlSearch CursorMoved * autocmd! NoHlSearch
+	endif
+endfunction
 
 Map nov <expr> t SearchOne(0, 0)
 Map nov <expr> f SearchOne(0, 1)
@@ -203,15 +226,6 @@ function! SearchOne(backward, inclusive)
 	return a:backward ? 'N' : 'n'
 endfunction
 
-cnoremap <expr> <CR> CommandLineLeave()
-
-function! CommandLineLeave()
-	if g:last_cmd_type !=# ':'
-		call HlSearch(getcmdline())
-	endif
-	return "\<C-]>\<CR>"
-endfunction
-
 Map nv <nosilent> <expr> <C-P> g:last_cmd_type . "\<Up>"
 
 " Clear screen
@@ -221,7 +235,7 @@ Map c  <C-L> <C-C>:call Redraw()<CR>@=g:last_cmd_type<CR><Up>
 Map i  <C-L> <C-O>:call Redraw()<CR>
 
 function! Redraw()
-	silent doautocmd NoHlSearch InsertEnter
+	silent doautocmd HlSearch InsertEnter
 	diffupdate
 	redraw!
 endfunction
@@ -498,7 +512,7 @@ set foldcolumn=0
 " Open and close folds smartly
 set foldopen+=insert,jump
 nnoremap <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zc' : 'h'
-nnoremap <expr> l foldclosed(line('.')) != -1 ? 'zo0' : 'l'
+nnoremap <expr> l foldclosed(line('.')) != -1 ? 'zv0' : 'l'
 
 " Replacement text for the fold line
 function! FoldText()
@@ -710,8 +724,9 @@ let mapleader = '_'
 onoremap <silent> c :<C-U>normal! 0v$<CR>
 
 " s to search and replace with Perl
-nnoremap s     :perldo s''g<Left><Left>
-xnoremap s VVgv:perldo s''g<Left><Left>
+Map nx s /
+nnoremap S     :perldo s''g<Left><Left>
+xnoremap S VVgv:perldo s''g<Left><Left>
 
 noremap <expr> ,z winline() <= &scrolloff + 1 ? 'zz' : 'zt'
 nmap gs <Plug>(openbrowser-smart-search)
