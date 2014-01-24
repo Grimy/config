@@ -416,11 +416,23 @@ set foldlevelstart=0
 set foldcolumn=0
 
 " Open and close folds smartly
-set foldopen+=insert,jump
-nnoremap <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zc' : 'h'
-nnoremap <expr> l foldclosed(line('.')) != -1 ? 'zv0' : 'l'
+function! ToggleFold()
+	if &foldopen == 'all'
+		set foldopen& foldopen+=insert,jump foldclose=
+		Map n <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zc' : 'h'
+		Map n <expr> l foldclosed(line('.')) != -1 ? 'zv0' : 'l'
+	else
+		set foldopen=all foldclose=all
+		Map n <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zcj' : 'h'
+	endif
+	set foldclose
+endfunction
+
+Map n cof :call ToggleFold()<CR>zMzx
+silent call ToggleFold()
+
 Map n zr zR
-Map n zm zM
+Map n zm zMzx
 
 " Replacement text for the fold line
 function! FoldText()
