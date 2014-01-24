@@ -1070,11 +1070,9 @@ vnoremap <S-LeftDrag>   VVgv<LeftDrag>
 nnoremap <C-LeftMouse>  <LeftMouse>
 nnoremap <C-LeftDrag>   V<LeftDrag>
 vnoremap <C-LeftDrag>   vvgv<LeftDrag>
-
-" Dirty dirty hacks
-if has('vim_starting')
-	silent! runtime autoload/tabline.vim
-endif
-runtime autoload/subliminal.vim
 " }}}
+
+if has('vim_starting')
+	silent! runtime! autoload/tabline.vim
+endif
 
