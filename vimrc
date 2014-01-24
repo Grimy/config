@@ -433,6 +433,8 @@ silent call ToggleFold()
 
 Map n zr zR
 Map n zm zMzx
+Map n [z kzjzkzkzjzxzt
+Map n ]z jzkzjzjzkzxzb
 
 " Replacement text for the fold line
 function! FoldText()
