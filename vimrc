@@ -21,6 +21,7 @@ function! Map(modes, ...)
 
 	let lhs = a:000[i]
 	let rhs = join(a:000[i+1:])
+	let flags['recursive'] += rhs =~ "\<Plug>"
 
 	for mode in split(a:modes, '.\zs')
 		execute mode  . (flags['recursive'] ? 'map' : 'noremap')
@@ -118,7 +119,6 @@ if has('vim_starting')
 	NeoBundle 'ujihisa/vimshell-ssh'
 	NeoBundle 'tyru/open-browser.vim'
 	NeoBundle 'tpope/vim-afterimage'
-	NeoBundle 'ujihisa/shadow.vim'
 
 	" Editing functionnality
 	NeoBundle 'vim-scripts/UnconditionalPaste'
@@ -129,10 +129,8 @@ if has('vim_starting')
 	NeoBundle 'sukima/xmledit'
 	NeoBundle 'Grimy/dragonfly'
 	NeoBundle 'Grimy/subliminal'
-	NeoBundle 'joedicastro/vim-multiple-cursors'
 	NeoBundle 'tpope/vim-endwise'
-	NeoBundleLazy 't9md/vim-smalls',
-				\ { 'mappings' : ['<Plug>(smalls)', '<Plug>(smalls-)'] }
+	NeoBundle 'Grimy/indextrous'
 
 	"Git power
 	NeoBundle 'tpope/vim-fugitive'
@@ -143,12 +141,14 @@ if has('vim_starting')
 	NeoBundle 'Shougo/neocomplete'
 	NeoBundle 'Shougo/neosnippet'
 	NeoBundle 'Shougo/neosnippet-snippets'
-	NeoBundle 'tsaleh/vim-matchit'
-	NeoBundle 'sjl/gundo.vim'
+	NeoBundle 'mmorearty/vim-matchit'
+	NeoBundle 'mbbill/undotree'
 	NeoBundle 'tpope/vim-endwise'
 
-	" New
+	" For testing purposes
+	NeoBundle 'joedicastro/vim-multiple-cursors'
 	NeoBundle 'vim-scripts/foldsearch'
+	NeoBundle 'ujihisa/shadow.vim'
 
 	" Check
 	NeoBundleCheck
@@ -157,13 +157,13 @@ if has('vim_starting')
 endif
 " }}}
 
+" Formatting / encoding {{{
+
 " Show search results as you type
 set incsearch
+
 " Patterns are case sensitive iff they contain at least one uppercase
 set ignorecase smartcase
-
-
-" Formatting / encoding {{{
 
 set cindent      " Not actually C-specific
 
@@ -215,7 +215,7 @@ augroup END
 
 set sessionoptions=blank,curdir,folds,help,resize,tabpages,winpos,winsize
 autocmd VimLeave * execute 'mksession!' g:session
-nnoremap !s :silent source <C-R>=g:session<CR><CR>
+Map n !s :silent source <C-R>=g:session<CR><CR>
 
 " Jump  to  the  last  position  when reopening file
 augroup RecoverLastPosition
@@ -225,22 +225,11 @@ augroup END
 
 " }}}
 
-nnoremap <silent> !: q:
-nnoremap <silent> !q :<C-U>q<CR>
-nnoremap <silent> !Q :<C-U>q!<CR>
-nnoremap <silent> !w :<C-U>w<CR>
-nnoremap <silent> !W :<C-U>silent w !sudo tee % >/dev/null<CR>
-nnoremap <silent> !m :<C-U>make<CR>
-nnoremap          !t :<C-U>tab drop<Space>
-nnoremap          !T :<C-U>tabedit<Space>
-nnoremap          !h :<C-U>vert help<Space>
-nnoremap <silent> !H :<C-U>Unite help<CR>
-
 " Better macros {{{
 
 " Allows mapping q<Anything> without introducing a delay when
 " stopping the recording of a macro
-nnoremap <expr> q HandleQ()
+Map n <expr> q HandleQ()
 
 let g:recording = 'q'
 
@@ -264,7 +253,7 @@ endfunction
 let s:qmap = { ':': ':q' }
 
 " @@ executes the last recorded macro
-nnoremap <expr> @@ '@' . g:recording
+Map n <expr> @@ '@' . g:recording
 
 " }}}
 
@@ -279,8 +268,8 @@ set complete=.
 set completeopt=preview,longest,menuone
 
 " Disables the default completion
-imap <expr> <C-P> pumvisible() ? "\<C-P>" : "\<Up>"
-imap <expr> <C-N> pumvisible() ? "\<C-N>" : "\<Down>"
+Map i <expr> <C-P> pumvisible() ? "\<C-P>" : "\<Up>"
+Map i <expr> <C-N> pumvisible() ? "\<C-N>" : "\<Down>"
 
 " Neocomplete!
 let g:neocomplete#enable_at_startup            = 1
@@ -295,17 +284,17 @@ augroup NeoCompleteConfig
 augroup END
 
 " Key bindings
-imap <expr> <Tab>     MyTab(0)
-imap <expr> <S-Tab>   MyTab(1)
-imap <expr> <C-Space> neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
-			\                               : "\<Plug>(neosnippet_expand)"
+Map i <recursive> <expr> <Tab>     MyTab(0)
+Map i <recursive> <expr> <S-Tab>   MyTab(1)
+Map i <expr> <C-Space> neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
+			\                                : "\<Plug>(neosnippet_expand)"
 
 " Don’t slow down movements with lots of popups
-inoremap <expr> <Left>  neocomplete#close_popup() . "\<Left>"
-inoremap <expr> <Right> neocomplete#close_popup() . "\<Right>"
-inoremap <expr> <Up>    neocomplete#close_popup() . "\<Up>"
-inoremap <expr> <Down>  neocomplete#close_popup() . "\<Down>"
-inoremap <expr> <BS>    neocomplete#smart_close_popup() . "\<BS>"
+Map i <expr> <Left>  neocomplete#close_popup() . "\<Left>"
+Map i <expr> <Right> neocomplete#close_popup() . "\<Right>"
+Map i <expr> <Up>    neocomplete#close_popup() . "\<Up>"
+Map i <expr> <Down>  neocomplete#close_popup() . "\<Down>"
+Map i <expr> <BS>    neocomplete#smart_close_popup() . "\<BS>"
 
 function! MyTab(shift)
 	if pumvisible()
@@ -323,10 +312,6 @@ endfunction
 " }}}
 
 " GUI options {{{
-
-" Rainbow parentheses: on by default, <Leader>( to toggle
-"nnoremap <Leader>( :RainbowParenthesesToggle<CR>
-"let g:rainbow_parentheses_on = 1
 
 " Windows emulation
 set keymodel=startsel,stopsel
@@ -483,18 +468,18 @@ Map nox ²³ []
 
 " Y yanks until EOL, like D and C
 " Default: Y means yy
-nnoremap Y y$
+Map n Y y$
 
 " The cursor can always go over the EOL
 " Default: only works if the line is empty
 set virtualedit=onemore,block
-nnoremap cov :set virtualedit=block,<C-R>=&ve=~'all'?'onemore':'all'<CR><CR>
+Map n cov :set virtualedit=block,<C-R>=&ve=~'all'?'onemore':'all'<CR><CR>
 
 " clipboard=unnamed doesn’t work in v-mode
-xnoremap <silent> y y:let @*=@"<CR>
+Map x p "*p
 
 " g< doesn’t seem to work
-nnoremap <silent> g< :set nomore<CR>:messages<CR>:set more
+Map n g< :set nomore<CR>:messages<CR>:set more
 
 " Arrow keys can cross line borders (but not h and l)
 set whichwrap=[,<,>,]
@@ -503,7 +488,7 @@ set whichwrap=[,<,>,]
 set notimeout ttimeout timeoutlen=1
 
 " Redo with U
-nnoremap U <C-R>
+Map n U <C-R>
 
 " Backspace can cross line borders
 set backspace=indent,eol,start
@@ -541,21 +526,21 @@ function! DeleteOne(count, wrap)
 endfunction
 
 " x/X in v-mode doesn’t yank (d/D still does)
-xnoremap x    "_d
-xnoremap X    "_D
+Map x x "_d
+Map x X "_D
 
 " Control + BS/Del deletes entire words
-nnoremap <C-W>        "_db
-nnoremap <C-Del>      "_dw
-inoremap <C-Del> <C-O>"_dw
-cnoremap <C-Del> <C-\><C-E>substitute(getcmdline(),'\%'.getcmdpos().'c.\{-}\>','','')<CR>
+Map n <C-W>        "_db
+Map n <C-Del>      "_dw
+Map i <C-Del> <C-O>"_dw
+Map c <C-Del> <C-\>esubstitute(getcmdline(),'\v%'.getcmdpos().'c.{-}(><Bar>$)\s*','','')<CR>
 
 " Don’t remove indentation when moving
 set cpoptions+=I
 
 " Start a new undoable insert for each new non-empty line and fix indent
 if has('vim_starting')
-	inoremap <CR> <C-R>=MyCR()<CR>
+	Map i <CR> <C-R>=MyCR()<CR>
 endif
 
 function! MyCR()
@@ -566,7 +551,7 @@ function! MyCR()
 endfunction
 
 " Don’t move the cursor when yanking in v-mode
-xnoremap y ygv<Esc>
+Map x y ygv<Esc>
 
 " Replace relative to the screen (e.g. it takes 4 letters te replace a tab)
 Map n R gR
@@ -644,6 +629,18 @@ nnoremap <C-S> <C-A>
 
 let mapleader = '_'
 
+" Common commands: !
+nnoremap <silent> !: q:
+nnoremap <silent> !q :<C-U>q<CR>
+nnoremap <silent> !Q :<C-U>q!<CR>
+nnoremap <silent> !w :<C-U>w<CR>
+nnoremap <silent> !W :<C-U>silent w !sudo tee % >/dev/null<CR>
+nnoremap <silent> !m :<C-U>make<CR>
+nnoremap          !t :<C-U>tab drop<Space>
+nnoremap          !T :<C-U>tabedit<Space>
+nnoremap          !h :<C-U>vert help<Space>
+nnoremap <silent> !H :<C-U>Unite help<CR>
+
 " c selects current line, without the line break at the end
 " TODO: use text-obj-user instead
 onoremap <silent> c :<C-U>normal! 0v$<CR>
@@ -676,13 +673,7 @@ nnoremap <expr> ]j repeat("\<C-I>", v:count1)
 nnoremap <expr> [c QFSJump('', -1)
 nnoremap <expr> ]c QFSJump('', +1)
 
-" Gundo
-let g:gundo_preview_bottom = 1
-let g:gundo_help = 0
-let g:gundo_close_on_revert = 1
-let g:gundo_preview_statusline = 'Gundo preview'
-let g:gundo_tree_statusline = 'Gundo'
-nnoremap _u :GundoToggle<CR>
+nnoremap _u :UndotreeToggle<CR>
 
 nnoremap <Leader>= :Tabularize /
 nnoremap <Leader>: :\zs/l0r1<Home>Tabularize /
@@ -1068,11 +1059,10 @@ nnoremap <C-LeftMouse>  <LeftMouse>
 nnoremap <C-LeftDrag>   V<LeftDrag>
 vnoremap <C-LeftDrag>   vvgv<LeftDrag>
 
-Map o <recursive> z <Plug>(smalls-excursion)
-
 " Dirty dirty hacks
 if has('vim_starting')
 	silent! runtime autoload/tabline.vim
 endif
 runtime autoload/subliminal.vim
+" }}}
 
