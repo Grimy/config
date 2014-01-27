@@ -1078,3 +1078,4 @@ endif
 runtime autoload/subliminal.vim
 " }}}
 
+nnoremap !H :r !howdoi 

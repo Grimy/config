@@ -1,8 +1,6 @@
 #!/bin/bash
 
 basedir=$(dirname $(realpath $0))
-echo $basedir
-exit
 
 ln -ns "$basedir/scripts/.vimperatorrc" ~/.vimperatorrc
 ln -ns "$basedir/scripts/.Xresources"   ~/.Xresources
