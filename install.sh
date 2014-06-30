@@ -30,7 +30,7 @@ hg update
 	--enable-cscope \
 	--enable-fontset \
 	--enable-fail-if-missing \
-	# --enable-rubyinterp \
+	--enable-rubyinterp \
 	# --enable-python3interp \
 
 make

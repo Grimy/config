@@ -127,7 +127,6 @@ if has('vim_starting')
 	NeoBundle 'sukima/xmledit'
 	NeoBundle 'Grimy/dragonfly'
 	NeoBundle 'Grimy/subliminal'
-	NeoBundle 'tpope/vim-endwise'
 	NeoBundle 'Grimy/indextrous'
 
 	"Git power
@@ -146,6 +145,9 @@ if has('vim_starting')
 
 	" For testing purposes
 	NeoBundle 'vim-scripts/foldsearch'
+
+	" Life saving
+	NeoBundle 'klen/python-mode'
 
 	" Check
 	NeoBundleCheck
@@ -1075,5 +1077,20 @@ autocmd BufReadPost,BufEnter,BufNew ~/drawall/java/drawall/** setf java
 let g:java_ignore_javadoc = 1
 hi! link SpecialKey Comment
 hi! link Special Comment
+
+" Pylint
+let g:pymode_rope = 0
+let g:pymode_doc = 1
+let g:pymode_doc_key = 'K'
+let g:pymode_lint = 1
+let g:pymode_lint_checker = "pyflakes,pep8,pylint"
+let g:pymode_lint_ignore = "W191,E501,C0110,C0111,E223,E302,E126,W0312"
+let g:pymode_lint_write = 1
+let g:pymode_syntax = 1
+let g:pymode_syntax_all = 1
+let g:pymode_syntax_indent_errors = g:pymode_syntax_all
+let g:pymode_syntax_space_errors = g:pymode_syntax_all
+let g:pymode_folding = 0
+nnoremap <Esc> :<C-U>lclose<CR>
 
 " }}}
