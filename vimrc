@@ -73,7 +73,7 @@ if has('vim_starting')
 	let &backupdir                     = s:cache . 'backups'
 	let &undodir                       = s:cache . 'undos'
 	let g:session                      = s:cache . 'session'
-	let g:neocomplete#data_directory   = s:cache . 'neocomplete'
+	" let g:neocomplete#data_directory   = s:cache . 'neocomplete'
 	let g:vimfiler_data_directory      = s:cache . 'vimfiler'
 	let g:vimshell_temporary_directory = s:cache . 'vimshell'
 	let g:unite_data_directory         = s:cache . 'unite'
@@ -117,8 +117,6 @@ if has('vim_starting')
 	NeoBundle 'Shougo/vimfiler'
 	NeoBundle 'Shougo/vimshell'
 	NeoBundle 'ujihisa/vimshell-ssh'
-	NeoBundle 'tyru/open-browser.vim'
-	NeoBundle 'tpope/vim-afterimage'
 
 	" Editing functionnality
 	NeoBundle 'vim-scripts/UnconditionalPaste'
@@ -138,7 +136,8 @@ if has('vim_starting')
 
 	" Completion
 	NeoBundle 'tomtom/tlib_vim'
-	NeoBundle 'Shougo/neocomplete'
+	" NeoBundle 'Shougo/neocomplete'
+	NeoBundle 'Valloric/YouCompleteMe'
 	NeoBundle 'Shougo/neosnippet'
 	NeoBundle 'Shougo/neosnippet-snippets'
 	NeoBundle 'mmorearty/vim-matchit'
@@ -146,9 +145,7 @@ if has('vim_starting')
 	NeoBundle 'tpope/vim-endwise'
 
 	" For testing purposes
-	NeoBundle 'joedicastro/vim-multiple-cursors'
 	NeoBundle 'vim-scripts/foldsearch'
-	NeoBundle 'ujihisa/shadow.vim'
 
 	" Check
 	NeoBundleCheck
@@ -198,7 +195,9 @@ endfunction
 set history=100
 set hidden
 set backup
-set undofile undolevels=65536
+if has('vim_starting') " time consuming operation
+	set undofile undolevels=65536
+endif
 set autowrite
 
 augroup AutomaticSwapRecoveryAndDelete
@@ -211,7 +210,6 @@ augroup AutomaticSwapRecoveryAndDelete
 				\ | unlet b:swapname
 				\ | endif
 augroup END
-
 
 set sessionoptions=blank,curdir,folds,help,resize,tabpages,winpos,winsize
 autocmd VimLeave * execute 'mksession!' g:session
@@ -290,11 +288,11 @@ Map i <expr> <C-Space> neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
 			\                                : "\<Plug>(neosnippet_expand)"
 
 " Don’t slow down movements with lots of popups
-Map i <expr> <Left>  neocomplete#close_popup() . "\<Left>"
-Map i <expr> <Right> neocomplete#close_popup() . "\<Right>"
-Map i <expr> <Up>    neocomplete#close_popup() . "\<Up>"
-Map i <expr> <Down>  neocomplete#close_popup() . "\<Down>"
-Map i <expr> <BS>    neocomplete#smart_close_popup() . "\<BS>"
+" Map i <expr> <Left>  neocomplete#close_popup() . "\<Left>"
+" Map i <expr> <Right> neocomplete#close_popup() . "\<Right>"
+" Map i <expr> <Up>    neocomplete#close_popup() . "\<Up>"
+" Map i <expr> <Down>  neocomplete#close_popup() . "\<Down>"
+" Map i <expr> <BS>    neocomplete#smart_close_popup() . "\<BS>"
 
 function! MyTab(shift)
 	if pumvisible()
@@ -346,10 +344,11 @@ if has('gui_running')
 	Map n cof :set guifont=*<CR>
 
 	if has('vim_starting')
-		set lsp=-2 guifont=Inconsolata\ 11
-		set lsp=-2 guifont=Droid\ Sans\ Mono\ for\ Powerline\ 11
-		set lsp=-2 guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 11
-		set lsp=0  guifont=Liberation\ Mono\ for\ Powerline\ 11
+		" set lsp=-2 guifont=Inconsolata\ 11 " 55 177
+		" set lsp=-2 guifont=Droid\ Sans\ Mono\ for\ Powerline\ 11 " 55 177
+		" set lsp=-2 guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 11 " 55 177
+		" set lsp=0  guifont=Liberation\ Mono\ for\ Powerline\ 11 " 55 177
+		set lsp=1  guifont=Input\ Mono\ Compressed\ Medium\ Extra-Condensed\ 11 " 56 199
 		" $@[]{}()|\/ blah/fox Illegal10Oo :;MH,.!?&=+-
 
 		" Because coding on a white background is an heresy
@@ -553,16 +552,13 @@ Map c <C-Del> <C-\>esubstitute(getcmdline(),'\v%'.getcmdpos().'c.{-}(><Bar>$)\s*
 set cpoptions+=I
 
 " Start a new undoable insert for each new non-empty line and fix indent
-if has('vim_starting')
-	Map i <CR> <C-R>=MyCR()<CR>
-endif
+" if has('vim_starting')
+	" Map i <CR> <C-R>=MyCR()<CR>
+" endif
 
-function! MyCR()
-	if match(getline('.'), '\v^\s*$') < 0
-		return neocomplete#close_popup() . "\<C-G>u\n"
-	endif
-	return strlen(getline('.')) ? "\<C-U>\n" : "\n"
-endfunction
+" function! MyCR()
+	" return match(getline('.'), '\v^\s*$') < 0 ? neocomplete#close_popup() . "\n" : "\n"
+" endfunction
 
 " Don’t move the cursor when yanking in v-mode
 Map x y ygv<Esc>
@@ -613,8 +609,8 @@ inoremap <C-U> <C-G>u<C-U>
 " Overrides:   CTRL-Y (scroll one up)    -- see scrolling
 nnoremap <C-Q> i<C-E><Esc>l
 nnoremap <C-Y> i<C-Y><Esc>l
-inoremap <expr> <C-Q> neocomplete#close_popup() . "\<C-E>"
-inoremap <expr> <C-Y> neocomplete#close_popup() . "\<C-Y>"
+" inoremap <expr> <C-Q> neocomplete#close_popup() . "\<C-E>"
+" inoremap <expr> <C-Y> neocomplete#close_popup() . "\<C-Y>"
 
 " Ctrl-T / Ctrl-D always add / remove indent
 " Default: only works in insert mode; << and >> behave differently
@@ -667,8 +663,6 @@ nnoremap S :%s\g<Left><Left>
 xnoremap S :perldo s''g<Left><Left>
 
 noremap <expr> ,z winline() <= &scrolloff + 1 ? 'zz' : 'zt'
-nmap gs <Plug>(openbrowser-smart-search)
-vmap gs <Plug>(openbrowser-smart-search)
 
 " Skype stupidity
 nnoremap <Leader>ç :call SendLine()<CR>
@@ -865,8 +859,7 @@ Map n <S-Tab> <C-W>W
 
 " gy is easier to type than gT
 nnoremap gy gT
-" Control-Tab is nice and consistent with browsers, but only works in the
-" GUI
+" Control-Tab is nice and consistent with browsers, but only works in the GUI
 Map n <C-Tab>   gt
 Map n <C-S-Tab> gT
 
@@ -1065,16 +1058,6 @@ command! WipeHiddenBuffers call WipeHiddenBuffers()
 " }}}
 
 " Experimental {{{
-nnoremap <S-LeftMouse>  <LeftMouse>
-nnoremap <LeftDrag>     <C-V><LeftDrag>
-vnoremap <LeftDrag>     <C-V><C-V>gv<LeftDrag>
-nnoremap <S-LeftMouse>  <LeftMouse>
-nnoremap <S-LeftDrag>   V<LeftDrag>
-vnoremap <S-LeftDrag>   VVgv<LeftDrag>
-nnoremap <C-LeftMouse>  <LeftMouse>
-nnoremap <C-LeftDrag>   V<LeftDrag>
-vnoremap <C-LeftDrag>   vvgv<LeftDrag>
-" }}}
 
 if has('vim_starting')
 	silent! runtime! autoload/tabline.vim
@@ -1092,4 +1075,5 @@ autocmd BufReadPost,BufEnter,BufNew ~/drawall/java/drawall/** setf java
 let g:java_ignore_javadoc = 1
 hi! link SpecialKey Comment
 hi! link Special Comment
+
 " }}}
