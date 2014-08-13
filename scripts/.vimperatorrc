@@ -1,6 +1,6 @@
 " Clean useless visual clutter
 set noscrollbars
-set gui=none
+set gui=tabs
 set visualbell
 set editor=gvim\ --remote-tab-wait-silent
 set defsearch=duckduckgo
@@ -54,6 +54,9 @@ nnoremap <Space> <PageDown>
 nnoremap <C-J>   <PageDown>
 nnoremap <C-K>   <PageUp>
 
+" YouTube videos
+nnoremap <silent> Y :!yt (xsel)<CR>
+
 " Show/hide status bar
 nnoremap <silent> ! :js toggle_bottombar('toggle')<CR>
 
@@ -75,4 +78,7 @@ function toggle_bottombar(visible) {
 	bb.style.overflow = visible ? '' : 'hidden';
 }
 EOF
+
+autocmd!
+autocmd PageLoad fimfiction.net/story js content.window.document.getElementById('chapter_container').style.textAlign = 'left'
 

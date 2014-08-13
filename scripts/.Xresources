@@ -27,13 +27,11 @@ URxvt.iso14755_52:  false
 
 ! Vinyl Scratch
 *foreground: rgb:fe/fd/e7
+*color15: rgb:fe/fd/e7
 
 ! Sublime text
-*background: rgb:15/15/15
-
-! True black & white
-*color0:  rgb:00/00/00
-*color15: rgb:ff/ff/ff
+*background: rgb:13/13/13
+*color0: rgb:51/51/51
 
 ! King Sombra
 *color8:  rgb:51/51/51
@@ -65,8 +63,8 @@ URxvt.iso14755_52:  false
 *color14: rgb:39/ff/af
 *color6:  rgb:09/cf/7f
 
-! Derpy Hooves
-*color7:  rgb:c1/c5/d3
+! Octavia
+*color7:  rgb:ba/b8/af
 
 ! Frederic (eyes)
 *color10: rgb:8d/e2/31

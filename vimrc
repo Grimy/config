@@ -1,4 +1,4 @@
-" Copyright © 2014 Grimy <Victor.Adam@derpymail.org>
+" Copyright © 2014 Grimy <Victor.Adam@derpymail.org>"{{{"}}}
 " This work is free software. You can redistribute it and/or modify it under
 " the terms of the Do What The Fuck You Want To Public License, Version 2, as
 " published by Sam Hocevar. See the LICENCE file for more details.
@@ -643,6 +643,8 @@ let mapleader = '_'
 
 " Common commands: !
 nnoremap <silent> !: q:
+nnoremap <silent> !e :<C-U>e<CR>
+nnoremap <silent> !E :<C-U>e!<CR>
 nnoremap <silent> !q :<C-U>q<CR>
 nnoremap <silent> !Q :<C-U>q!<CR>
 nnoremap <silent> !w :<C-U>w<CR>
@@ -1076,6 +1078,17 @@ if has('vim_starting')
 	silent! runtime autoload/tabline.vim
 endif
 runtime autoload/subliminal.vim
-" }}}
 
 nnoremap !H :r !howdoi 
+
+augroup Golf
+	autocmd!
+	autocmd BufWritePost ~/Golf/** !cat %.in 2>/dev/null | perl5.8.8 %
+	autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
+augroup END
+
+autocmd BufReadPost,BufEnter,BufNew ~/drawall/java/drawall/** setf java
+let g:java_ignore_javadoc = 1
+hi! link SpecialKey Comment
+hi! link Special Comment
+" }}}
