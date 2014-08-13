@@ -433,6 +433,8 @@ silent call ToggleFold()
 
 Map n zr zR
 Map n zm zMzx
+Map n [z kzjzkzkzjzxzt
+Map n ]z jzkzjzjzkzxzb
 
 " Replacement text for the fold line
 function! FoldText()
@@ -1072,12 +1074,11 @@ vnoremap <S-LeftDrag>   VVgv<LeftDrag>
 nnoremap <C-LeftMouse>  <LeftMouse>
 nnoremap <C-LeftDrag>   V<LeftDrag>
 vnoremap <C-LeftDrag>   vvgv<LeftDrag>
+" }}}
 
-" Dirty dirty hacks
 if has('vim_starting')
-	silent! runtime autoload/tabline.vim
+	silent! runtime! autoload/tabline.vim
 endif
-runtime autoload/subliminal.vim
 
 nnoremap !H :r !howdoi 
 
