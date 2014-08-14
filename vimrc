@@ -73,7 +73,6 @@ if has('vim_starting')
 	let &backupdir                     = s:cache . 'backups'
 	let &undodir                       = s:cache . 'undos'
 	let g:session                      = s:cache . 'session'
-	" let g:neocomplete#data_directory   = s:cache . 'neocomplete'
 	let g:vimfiler_data_directory      = s:cache . 'vimfiler'
 	let g:vimshell_temporary_directory = s:cache . 'vimshell'
 	let g:unite_data_directory         = s:cache . 'unite'
@@ -135,7 +134,6 @@ if has('vim_starting')
 
 	" Completion
 	NeoBundle 'tomtom/tlib_vim'
-	" NeoBundle 'Shougo/neocomplete'
 	NeoBundle 'Valloric/YouCompleteMe'
 	NeoBundle 'Shougo/neosnippet'
 	NeoBundle 'Shougo/neosnippet-snippets'
@@ -271,30 +269,11 @@ set completeopt=preview,longest,menuone
 Map i <expr> <C-P> pumvisible() ? "\<C-P>" : "\<Up>"
 Map i <expr> <C-N> pumvisible() ? "\<C-N>" : "\<Down>"
 
-" Neocomplete!
-let g:neocomplete#enable_at_startup            = 1
-let g:neocomplete#enable_smart_case            = 1
-let g:neocomplete#max_list                     = 8
-let g:neocomplete#auto_completion_start_length = 1
-let g:neocomplete#enable_auto_delimiter        = 1
-let g:neocomplete#enable_fuzzy_completion      = 0
-augroup NeoCompleteConfig
-	autocmd!
-	autocmd InsertLeave * NeoSnippetClearMarkers
-augroup END
-
 " Key bindings
 Map i <recursive> <expr> <Tab>     MyTab(0)
 Map i <recursive> <expr> <S-Tab>   MyTab(1)
 Map i <expr> <C-Space> neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
 			\                                : "\<Plug>(neosnippet_expand)"
-
-" Don’t slow down movements with lots of popups
-" Map i <expr> <Left>  neocomplete#close_popup() . "\<Left>"
-" Map i <expr> <Right> neocomplete#close_popup() . "\<Right>"
-" Map i <expr> <Up>    neocomplete#close_popup() . "\<Up>"
-" Map i <expr> <Down>  neocomplete#close_popup() . "\<Down>"
-" Map i <expr> <BS>    neocomplete#smart_close_popup() . "\<BS>"
 
 function! MyTab(shift)
 	if pumvisible()
@@ -435,7 +414,9 @@ silent call ToggleFold()
 Map n zr zR
 Map n zm zMzx
 Map n [z kzjzkzkzjzxzt
+Map n [Z kzjzkzkzjzxzt
 Map n ]z jzkzjzjzkzxzb
+Map n ]Z jzkzjzjzkzxzb
 
 " Replacement text for the fold line
 function! FoldText()
@@ -553,15 +534,6 @@ Map c <C-Del> <C-\>esubstitute(getcmdline(),'\v%'.getcmdpos().'c.{-}(><Bar>$)\s*
 " Don’t remove indentation when moving
 set cpoptions+=I
 
-" Start a new undoable insert for each new non-empty line and fix indent
-" if has('vim_starting')
-	" Map i <CR> <C-R>=MyCR()<CR>
-" endif
-
-" function! MyCR()
-	" return match(getline('.'), '\v^\s*$') < 0 ? neocomplete#close_popup() . "\n" : "\n"
-" endfunction
-
 " Don’t move the cursor when yanking in v-mode
 Map x y ygv<Esc>
 
@@ -595,7 +567,8 @@ Map i <Home> <C-O>^
 " Already defined in insert and command modes
 nnoremap <C-U> d^
 onoremap <C-U>  ^
-inoremap <C-U> <C-G>u<C-U>
+onoremap UnconditionalPasteCharAfter UnconditionalPasteCharAfter
+" inoremap <C-U> <C-G>u<C-U> " interferes with YCM
 
 " Ctrl-A / Ctrl-E always move to start / end of line, like shells and emacs
 " Default: can only be done in command mode with Ctrl-B / Ctrl-E
@@ -611,8 +584,7 @@ inoremap <C-U> <C-G>u<C-U>
 " Overrides:   CTRL-Y (scroll one up)    -- see scrolling
 nnoremap <C-Q> i<C-E><Esc>l
 nnoremap <C-Y> i<C-Y><Esc>l
-" inoremap <expr> <C-Q> neocomplete#close_popup() . "\<C-E>"
-" inoremap <expr> <C-Y> neocomplete#close_popup() . "\<C-Y>"
+inoremap <C-Q> <C-E>
 
 " Ctrl-T / Ctrl-D always add / remove indent
 " Default: only works in insert mode; << and >> behave differently
@@ -656,13 +628,11 @@ nnoremap          !h :<C-U>vert help<Space>
 nnoremap <silent> !H :<C-U>Unite help<CR>
 
 " c selects current line, without the line break at the end
-" TODO: use text-obj-user instead
 onoremap <silent> c :<C-U>normal! 0v$<CR>
 
 " s to search and replace with Perl
-Map nx s /
-nnoremap S :%s\g<Left><Left>
-xnoremap S :perldo s''g<Left><Left>
+nnoremap s :%s//g<Left><Left>
+xnoremap s :perldo s''g<Left><Left>
 
 noremap <expr> ,z winline() <= &scrolloff + 1 ? 'zz' : 'zt'
 
@@ -690,9 +660,10 @@ nnoremap _u :UndotreeToggle<CR>
 nnoremap <Leader>= :Tabularize /
 nnoremap <Leader>: :\zs/l0r1<Home>Tabularize /
 
-" Map Q to something useful
+" Map Q and ; to something useful
 Map nx Q gw
 Map o  Q ap
+Map n ; .wn
 
 " Executes current line
 nnoremap <silent> <Leader>e :execute getline('.')<CR>
@@ -787,7 +758,6 @@ let g:vimfiler_as_default_explorer  = 1
 let g:vimfiler_safe_mode_by_default = 0
 let g:vimfiler_enable_auto_cd       = 1
 let g:vimfiler_ignore_pattern       = '^$'
-" TODO: patch vimfiler for winwidth
 
 Map n cd :VimFiler -buffer-name=cd -winwidth=49 -split -toggle<CR>
 Map n cD :VimFilerTab -buffer-name=cD ~<CR>
@@ -993,6 +963,7 @@ nnoremap          <Leader>gg :Git!<Space>
 " Diffs
 set diffopt=filler,context:5,foldcolumn:1
 
+" QFS
 " TODO: Manage hunks, jump more than once, ...
 function! QFSJump(filter, direction)
 	let delta = v:count1 * a:direction
@@ -1017,8 +988,6 @@ Map n <Leader>q :QuickfixsignsToggle<CR>
 " }}}
 
 " File management {{{
-
-set updatetime=1000 " This is used by a lot of plugins
 
 " Make sure all buffers in a tab share the same cwd
 augroup TabDir
@@ -1077,6 +1046,7 @@ autocmd BufReadPost,BufEnter,BufNew ~/drawall/java/drawall/** setf java
 let g:java_ignore_javadoc = 1
 hi! link SpecialKey Comment
 hi! link Special Comment
+let g:ycm_global_ycm_extra_conf = '~/.vim/scripts/ycm.py'
 
 " Pylint
 let g:pymode_rope = 0
