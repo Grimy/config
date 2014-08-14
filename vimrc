@@ -682,6 +682,7 @@ nnoremap !d :1,9s/Last change: \zs.*/\=strftime("%c")/<CR>
 Map n <recursive> <CR> <C-]>
 
 " Preserve CTRL-A
+let g:surround_no_insert_mappings = 1
 inoremap <nowait> <C-G> <C-A>
 
 " Swap charwise and blockwise visual modes
@@ -689,7 +690,7 @@ Map nx v <C-V>
 Map nx <C-V> v
 
 " Select the last modified text
-nnoremap gc  `[v`]
+nnoremap gc `[v`]
 
 " Out of two similar commands, the most common should be lowercase
 " Goto definition: global > local
@@ -698,7 +699,6 @@ Map n gD gd
 
 " Append to: end of line > one character
 nnoremap a A
-nnoremap A a
 
 " }}}
 
@@ -1058,8 +1058,8 @@ let g:pymode_lint_ignore = "W191,E501,C0110,C0111,E223,E302,E126,W0312"
 let g:pymode_lint_write = 1
 let g:pymode_syntax = 1
 let g:pymode_syntax_all = 1
-let g:pymode_syntax_indent_errors = g:pymode_syntax_all
-let g:pymode_syntax_space_errors = g:pymode_syntax_all
+let g:pymode_syntax_indent_errors = 1
+let g:pymode_syntax_space_errors = 1
 let g:pymode_folding = 0
 nnoremap <Esc> :<C-U>lclose<CR>
 
