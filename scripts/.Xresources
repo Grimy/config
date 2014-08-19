@@ -11,16 +11,12 @@ xterm*termName: xterm-256color
 *saveLines:         65535
 *scrollTTYOutput:   true
 *scrollTTYKeypress: true
-xterm*scrollBar:    false
-
-URxvt.iso14755:     false
-URxvt.iso14755_52:  false
+*scrollBar:    false
 
 *borderWidth: 0
-! *faceName: Droid Sans Mono for Powerline
-*faceName: Liberation Mono for Powerline
+*faceName: Input Mono Compressed Medium
 *faceSize: 11
-*scaleHeight: 1
+*scaleHeight: 1.05
 *showBlinkAsBold: True
 
 ! xcursor.theme: Vanilla-DMZ-AA
@@ -35,16 +31,6 @@ URxvt.iso14755_52:  false
 
 ! King Sombra
 *color8:  rgb:51/51/51
-
-! Rainbow Dash (coat, mane ROYGBP, eyes)
-! *color12: rgb:9d/da/f8
-! *color1:  rgb:ec/45/42
-! *color9:  rgb:f2/6f/33
-! *color11: rgb:fb/f4/ae
-! *color2:  rgb:5f/ba/4c
-! *color4:  rgb:1d/97/d4
-! *color13: rgb:65/2d/87
-! *color5:  rgb:ba/1b/76
 
 ! Now color corrected!
 *color12: rgb:90/e4/ff
