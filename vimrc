@@ -948,5 +948,12 @@ let g:pymode_syntax_space_errors = 1
 let g:pymode_folding = 0
 Map n <Esc> :<C-U>lclose<CR>
 
+" Ctrl-P repeats last command OR search
+let g:last_cmd_type = ':'
+nnoremap : :let g:last_cmd_type = ':'<CR>:
+nnoremap / :let g:last_cmd_type = '/'<CR>/
+nnoremap ? :let g:last_cmd_type = '?'<CR>?
+noremap <expr> <C-P> g:last_cmd_type . "\<Up>"
+
 " }}}
 
