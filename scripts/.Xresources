@@ -11,12 +11,13 @@ xterm*termName: xterm-256color
 *saveLines:         65535
 *scrollTTYOutput:   true
 *scrollTTYKeypress: true
-*scrollBar:    false
+! 'xterm' is necessary here. Bug?
+xterm*scrollBar:    false
 
 *borderWidth: 0
-*faceName: Input Mono Compressed Medium
+*faceName: Input Mono Condensed Medium
 *faceSize: 11
-*scaleHeight: 1.05
+*scaleHeight: 1.1
 *showBlinkAsBold: True
 
 ! xcursor.theme: Vanilla-DMZ-AA
