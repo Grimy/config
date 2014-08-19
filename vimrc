@@ -1,7 +1,8 @@
-" Copyright © 2014 Grimy <Victor.Adam@derpymail.org>"{{{"}}}
+" Copyright © 2014 Grimy <Victor.Adam@derpymail.org> {{{
 " This work is free software. You can redistribute it and/or modify it under
 " the terms of the Do What The Fuck You Want To Public License, Version 2, as
 " published by Sam Hocevar. See the LICENCE file for more details.
+"}}}
 
 " Utility functions {{{
 
@@ -11,21 +12,14 @@ function! GetChar(...)
 endfunction
 
 function! Map(modes, ...)
-	let flags = { 'nosilent': 0, 'recursive': 0 }
-	let i = 0
-
-	while a:000[i] =~ '\v\C^\<(nosilent|recursive)\>$'
-		let flags[a:000[i][1:-2]] = 1
-		let i = i + 1
-	endwhile
-
+	let i = a:1 ==# '<recursive>'
 	let lhs = a:000[i]
 	let rhs = join(a:000[i+1:])
-	let flags['recursive'] += rhs =~ "\<Plug>"
+	let recursive = i || rhs =~ "\<Plug>"
 
 	for mode in split(a:modes, '.\zs')
-		execute mode  . (flags['recursive'] ? 'map' : 'noremap')
-					\ (mode =~ '\v[cli]') || flags['nosilent'] ? '' : '<silent>'
+		execute mode  . (recursive ? 'map' : 'noremap')
+					\ (mode =~ '\v[cli]') ? '' : '<silent>'
 					\ lhs rhs
 	endfor
 endfunction
@@ -36,19 +30,17 @@ command! -nargs=+ Map call Map(<f-args>)
 " Initialization {{{
 if has('vim_starting')
 
-	" Environment detection {{{
+	" Environment {{{
 
 	let s:is_windows = has('win16') || has('win32') || has('win64')
 
 	" Use English messages.
 	execute 'language' 'message' s:is_windows ? 'en' : 'C'
 
-	" Keycodes not automaitcally recognized
+	" Keycodes not automatically recognized
 	Map clinov <recursive> <C-?> <C-BS>
 	Map clinov <recursive> <C-@> <C-Space>
-
-	" Disable the annoying beep when pressing Esc twice
-	Map n <Esc> <Nop>
+	nmap [3;5~ <C-Del>
 
 	" Vim needs a POSIX-Compliant shell. Fish is not.
 	if &shell =~ 'fish'
@@ -86,9 +78,8 @@ if has('vim_starting')
 	NeoBundleFetch 'Shougo/neobundle.vim'
 	NeoBundle 'Grimy/vim-default-runtime'
 
-	" Syntax coloring
+	" Theming
 	NeoBundle 'Grimy/vim-rainbow'
-	NeoBundle 'dag/vim-fish'
 	NeoBundle 'bling/vim-airline'
 
 	" File management
@@ -112,40 +103,40 @@ if has('vim_starting')
 				\ { 'unite_sources' : ['history/command', 'history/search'] }
 	NeoBundle 'Shougo/unite-outline',
 				\ { 'unite_sources' : 'outline' }
+	NeoBundle 'Shougo/unite-mru'
 
 	NeoBundle 'Shougo/vimfiler'
 	NeoBundle 'Shougo/vimshell'
 	NeoBundle 'ujihisa/vimshell-ssh'
 
 	" Editing functionnality
-	NeoBundle 'vim-scripts/UnconditionalPaste'
+	" NeoBundle 'vim-scripts/UnconditionalPaste'
 	NeoBundle 'tpope/vim-surround'
 	NeoBundle 'tpope/vim-unimpaired'
 	NeoBundle 'scrooloose/nerdcommenter'
 	NeoBundle 'godlygeek/tabular'
-	NeoBundle 'sukima/xmledit'
 	NeoBundle 'Grimy/dragonfly'
 	NeoBundle 'Grimy/subliminal'
 	NeoBundle 'Grimy/indextrous'
+	NeoBundle 'mbbill/undotree'
 
-	"Git power
+	" Git power
 	NeoBundle 'tpope/vim-fugitive'
 	NeoBundle 'tomtom/quickfixsigns_vim'
 
 	" Completion
 	NeoBundle 'tomtom/tlib_vim'
 	NeoBundle 'Valloric/YouCompleteMe'
-	NeoBundle 'Shougo/neosnippet'
-	NeoBundle 'Shougo/neosnippet-snippets'
 	NeoBundle 'mmorearty/vim-matchit'
-	NeoBundle 'mbbill/undotree'
-	NeoBundle 'tpope/vim-endwise'
+	" NeoBundle 'tpope/vim-endwise'
 
 	" For testing purposes
 	NeoBundle 'vim-scripts/foldsearch'
 
-	" Life saving
+	" Specific filetypes
 	NeoBundle 'klen/python-mode'
+	NeoBundle 'sukima/xmledit'
+	NeoBundle 'dag/vim-fish'
 
 	" Check
 	NeoBundleCheck
@@ -211,7 +202,7 @@ augroup AutomaticSwapRecoveryAndDelete
 				\ | endif
 augroup END
 
-set sessionoptions=blank,curdir,folds,help,resize,tabpages,winpos,winsize
+set sessionoptions=blank,curdir,folds,help,resize,tabpages,winpos
 autocmd VimLeave * execute 'mksession!' g:session
 Map n !s :silent source <C-R>=g:session<CR><CR>
 
@@ -220,38 +211,6 @@ augroup RecoverLastPosition
 	autocmd!
 	autocmd BufReadPost * silent! normal! g`"zz
 augroup END
-
-" }}}
-
-" Better macros {{{
-
-" Allows mapping q<Anything> without introducing a delay when
-" stopping the recording of a macro
-Map n <expr> q HandleQ()
-
-let g:recording = 'q'
-
-function! HandleQ()
-	if &cmdheight == 1
-		let reg = GetChar()
-		if (reg =~ '\v[0-9a-zA-Z"]')
-			" Valid register
-			let g:recording = reg
-			set cmdheight=2
-			return 'q' . g:recording
-		endif
-		return get(s:qmap, reg, "\<Esc>")
-	else
-		set cmdheight=1
-		return 'q'
-	endif
-endfunction
-
-" Common typo, q: for :q
-let s:qmap = { ':': ':q' }
-
-" @@ executes the last recorded macro
-Map n <expr> @@ '@' . g:recording
 
 " }}}
 
@@ -272,16 +231,10 @@ Map i <expr> <C-N> pumvisible() ? "\<C-N>" : "\<Down>"
 " Key bindings
 Map i <recursive> <expr> <Tab>     MyTab(0)
 Map i <recursive> <expr> <S-Tab>   MyTab(1)
-Map i <expr> <C-Space> neosnippet#jumpable() ? "\<Plug>(neosnippet_jump)"
-			\                                : "\<Plug>(neosnippet_expand)"
 
 function! MyTab(shift)
 	if pumvisible()
 		return a:shift ? "\<C-P>" : "\<C-N>"
-	elseif neosnippet#jumpable()
-		return "\<Plug>(neosnippet_jump)"
-	elseif neosnippet#expandable()
-		return "\<Plug>(neosnippet_expand)"
 	elseif virtcol('.') <= indent('.') + 1
 		return a:shift ? "\<C-D>" : "\<C-T>"
 	endif
@@ -294,16 +247,15 @@ endfunction
 
 " Windows emulation
 set keymodel=startsel,stopsel
-set selection=exclusive
 set selectmode=key,mouse
 
 " Vim feels much more snappy and responsive this way
-set lazyredraw
+set nolazyredraw
 set cursorline
+set synmaxcol=99
 
 if has('gui_running')
 	set mouse=ar
-
 	set guioptions=Mc
 	set guiheadroom=0
 	set nomousefocus
@@ -312,30 +264,17 @@ if has('gui_running')
 	set mouseshape+=v:beam,sd:updown,vd:leftright
 	set guicursor+=a:blinkon0 " disable blinking
 
-	" Change font size easily
-	function! FontSize(d)
-		let &guifont= substitute(&guifont, '\d\+',
-					\ '\=eval(submatch(0)' . a:d . ')', '')
-		set lines=56 columns=999
-		return ''
-	endfunction
-
-	Map clinov <expr> <C-ScrollWheelUp>   FontSize('+1')
-	Map clinov <expr> <C-ScrollWheelDown> FontSize('-1')
-	Map n cof :set guifont=*<CR>
-
 	if has('vim_starting')
 		" set lsp=-2 guifont=Inconsolata\ 11 " 55 177
 		" set lsp=-2 guifont=Droid\ Sans\ Mono\ for\ Powerline\ 11 " 55 177
 		" set lsp=-2 guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 11 " 55 177
 		" set lsp=0  guifont=Liberation\ Mono\ for\ Powerline\ 11 " 55 177
-		set lsp=1  guifont=Input\ Mono\ Compressed\ Medium\ Extra-Condensed\ 11 " 56 199
+		set lsp=1  guifont=Input\ Mono\ Compressed\ Medium\ 11 " 56 199
 		" $@[]{}()|\/ blah/fox Illegal10Oo :;MH,.!?&=+-
 
 		" Because coding on a white background is an heresy
 		set background=dark
 		colorscheme solarized
-
 	endif
 else
 	set mouse=nvr  " Disable the mouse in insert mode
@@ -343,9 +282,6 @@ else
 	let &t_EI .= "\<Esc>[2 q"
 	colorscheme rainbow
 endif
-
-"syntax match SpecialKey '^\s\+' containedin=ALL
-"match Error /\%>80v.*/
 
 " Show matching brackets
 set matchpairs+=<:>
@@ -414,9 +350,7 @@ silent call ToggleFold()
 Map n zr zR
 Map n zm zMzx
 Map n [z kzjzkzkzjzxzt
-Map n [Z kzjzkzkzjzxzt
 Map n ]z jzkzjzjzkzxzb
-Map n ]Z jzkzjzjzkzxzb
 
 " Replacement text for the fold line
 function! FoldText()
@@ -471,9 +405,6 @@ Map n Y y$
 set virtualedit=onemore,block
 Map n cov :set virtualedit=block,<C-R>=&ve=~'all'?'onemore':'all'<CR><CR>
 
-" clipboard=unnamed doesn’t work in v-mode
-Map x p "*p
-
 " g< doesn’t seem to work
 Map n g< :set nomore<CR>:messages<CR>:set more
 
@@ -492,11 +423,12 @@ set backspace=indent,eol,start
 " - Don’t overwrite registers with single characters
 " - Don’t clutter undo history when deleting 0 characters
 " - Allow Backspace and Del to wrap in normal mode
-Map n x     :call DeleteOne(+v:count1, 0)<CR>
-Map n X     :call DeleteOne(-v:count1, 0)<CR>
-Map n <Del> :call DeleteOne(+v:count1, 1)<CR>
-Map n <BS>  :call DeleteOne(-v:count1, 1)<CR>
+Map n x     :<C-U>call DeleteOne(+v:count1, 0)<CR>
+Map n X     :<C-U>call DeleteOne(-v:count1, 0)<CR>
+Map n <Del> :<C-U>call DeleteOne(+v:count1, 1)<CR>
+Map n <BS>  :<C-U>call DeleteOne(-v:count1, 1)<CR>
 
+" Returns the first virtual column of the current character, rather than the last
 function! s:VirtCol()
 	if col('.') == 1
 		return 1
@@ -548,27 +480,44 @@ nnoremap <silent> k gk
 noremap <silent> <Down> gj
 noremap <silent> <Up>   gk
 
+" Allows mapping q<Anything> without introducing a delay when stopping the
+" recording of a macro. Also adjusts cmdheight for the "recording" message
+nnoremap <expr> q HandleQ()
+
+function! HandleQ()
+	if &cmdheight == 1
+		let reg = GetChar()
+		if (reg =~ '\v[0-9a-zA-Z"]')
+			" @@ executes the last recorded macro
+			call Map('n', '@@', '@' . reg)
+			set cmdheight=2
+			return 'q' . reg
+		endif
+		return get(s:qmap, reg, "\<Esc>")
+	else
+		set cmdheight=1
+		return 'q'
+	endif
+endfunction
+
+" Common typos
+let s:qmap = { ':': ':q', '!': 'q!' }
+
 " }}}
 
 " UNIX shortcuts {{{
 
-" H W A E U
-" Ctrl-H is always equivalent to Backspace
 Map clinov <recursive> <C-H> <Backspace>
 Map clinov <recursive> <C-B> <Left>
 Map clinov <recursive> <C-F> <Right>
 Map clinov <recursive> <C-Backspace> <C-W>
-Map clinov <recursive> <C-A> <Home>
-Map clinov <recursive> <C-E> <End>
-
-Map i <Home> <C-O>^
 
 " Ctrl-U: delete to beginning
 " Already defined in insert and command modes
 nnoremap <C-U> d^
 onoremap <C-U>  ^
-onoremap UnconditionalPasteCharAfter UnconditionalPasteCharAfter
-" inoremap <C-U> <C-G>u<C-U> " interferes with YCM
+onoremap <C-U>  ^
+" inoremap <C-U> <C-O>d^
 
 " Ctrl-A / Ctrl-E always move to start / end of line, like shells and emacs
 " Default: can only be done in command mode with Ctrl-B / Ctrl-E
@@ -577,6 +526,9 @@ onoremap UnconditionalPasteCharAfter UnconditionalPasteCharAfter
 " Overrides:   CTRL-A (increment number) -- use Ctrl-S instead
 " Overrides: i_CTRL-E (copy from below)  -- use Ctrl-Q instead
 " Overrides:   CTRL-E (scroll one down)  -- see scrolling
+Map clinov <recursive> <C-A> <Home>
+Map clinov <recursive> <C-E> <End>
+Map i <Home> <C-O>^
 
 " Ctrl-Q / Ctrl-Y always copy the character above / below the cursor
 " Default: can only be done in insert mode with Ctrl-E / Ctrl-Y
@@ -589,16 +541,14 @@ inoremap <C-Q> <C-E>
 " Ctrl-T / Ctrl-D always add / remove indent
 " Default: only works in insert mode; << and >> behave differently
 " Overrides: CTRL-T (pop tag) CTRL-D (scroll half-page down)
-nnoremap <C-T>   :call Indent(0)<CR>
-nnoremap <C-D>   :call Indent(1)<CR>
+Map n <C-T> :call KeepPos('>')<CR>
+Map n <C-D> :call KeepPos('<')<CR>
+xmap <C-T> VVgv<plug>(dragonfly_right)
+xmap <C-D> VVgv<plug>(dragonfly_left)
 
-function! Indent(backward)
+function! KeepPos(command)
 	let save = virtcol('.') - indent('.')
-	if a:backward
-		<
-	else
-		>
-	endif
+	execute a:command
 	execute 'normal! ' . (save + indent('.')) . '|'
 endfunction
 
@@ -628,26 +578,17 @@ nnoremap          !h :<C-U>vert help<Space>
 nnoremap <silent> !H :<C-U>Unite help<CR>
 
 " c selects current line, without the line break at the end
-onoremap <silent> c :<C-U>normal! 0v$<CR>
+onoremap <silent> c :<C-U>normal! ^v$<CR>
 
 " s to search and replace with Perl
 nnoremap s :%s//g<Left><Left>
-xnoremap s :perldo s''g<Left><Left>
+xnoremap s  :s//g<Left><Left>
+nnoremap S :%s/\<<C-R><C-W>\>//g<Left><Left>
+xnoremap S  :s/\<<C-R><C-W>\>//g<Left><Left>
 
 noremap <expr> ,z winline() <= &scrolloff + 1 ? 'zz' : 'zt'
 
-" Skype stupidity
-nnoremap <Leader>ç :call SendLine()<CR>
-
-function! SendLine()
-	execute "silent! !xdotool key super+s type --delay 0 '"
-				\ . getline('.') . "'\n"
-	execute "silent! !xdotool key Return super+g"
-	normal! dd
-endfunction
-
 nnoremap <Leader>? $?\?\zs<CR>d/\ze :<CR>lgpd/\v\ze[);]<Bar>$<CR>?\?<CR>p
-nnoremap <expr> <Leader>w "\<C-W>" . GetChar()
 
 " Unimpaired-style mappings
 nnoremap <expr> [j repeat("\<C-O>", v:count1)
@@ -666,8 +607,8 @@ Map o  Q ap
 Map n ; .wn
 
 " Executes current line
-nnoremap <silent> <Leader>e :execute getline('.')<CR>
-xnoremap <silent> <Leader>e :call Execute(join(getline("'<", "'>"), "\n"))<CR>
+Map n <silent> <Leader>e :execute getline('.')<CR>
+Map x <silent> <Leader>e :call Execute(join(getline("'<", "'>"), "\n"))<CR>
 
 function! Execute(command) range
 	for line in split(substitute(a:command, '\v\n\s*\', '', 'g'), "\n")
@@ -712,11 +653,6 @@ nnoremap <C-C>      :call NERDComment('n', 'toggle')<CR>j
 vnoremap <C-C>      :call NERDComment('v', 'toggle')<CR>gv
 
 " Subliminal
-nmap <C-LeftMouse> <LeftMouse><C-_>
-xnoremap <silent> I       :SubliminalInsert<CR>
-xnoremap <silent> A       :SubliminalAppend<CR>
-xnoremap <silent> R       :SubliminalInsert<CR><Insert>
-xnoremap <silent> c    xgv:SubliminalInsert<CR>
 xnoremap <silent> <BS>    :SubliminalInsert<CR><BS>
 xnoremap <silent> <Del>   :SubliminalAppend<CR><Del>
 xnoremap <silent> <C-U>   :SubliminalInsert<CR><C-U>
@@ -726,8 +662,6 @@ xnoremap <silent> <C-X>   :SubliminalInsert<CR><C-X>
 xnoremap <silent> <C-Del> :SubliminalAppend<CR><C-Del>
 xnoremap <silent> <C-Y>   :SubliminalInsert<CR><C-Y>
 xnoremap <silent> <C-Q>   :SubliminalInsert<CR><C-E>
-vnoremap <silent> <C-T>   :SubliminalInsert<CR><C-T>
-vnoremap <silent> <C-D>   :SubliminalInsert<CR><C-D>
 
 " Dragonfly
 xmap <Left>  <plug>(dragonfly_left)
@@ -787,12 +721,12 @@ nnoremap gf    :<C-u>Unite file_rec/async<CR>
 nnoremap gr    :<C-U>Unite grep:.<CR>
 nnoremap gl    :<C-U>Unite line<CR>
 nnoremap gk    :<C-U>Unite directory<CR>
-nnoremap gu    :<C-U>Unite undo<CR>
+" nnoremap gu    :<C-U>Unite undo<CR>
 nnoremap gj    :<C-U>Unite jump<CR>
 nnoremap gc    :<C-U>Unite change<CR><C-O>3G
 nnoremap <C-R> :<C-u>Unite file_mru<CR><C-O>3G
 nnoremap gp    :<C-u>Unite history/yank<CR><C-O>3G
-nnoremap ,n    :<C-U>Unite neobundle/log<CR>[]
+nnoremap ,n    :<C-U>Unite neobundle/log<CR>
 
 " xmledit
 let g:xmledit_enable_html = 1
@@ -820,9 +754,7 @@ set winminwidth=6
 
 augroup SmartTabClose
 	autocmd!
-	autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%')))
-				\ | q
-				\ | endif
+	autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
 augroup END
 
 " Use Tab to switch between windows
@@ -834,6 +766,36 @@ nnoremap gy gT
 " Control-Tab is nice and consistent with browsers, but only works in the GUI
 Map n <C-Tab>   gt
 Map n <C-S-Tab> gT
+
+" Restore <C-W>
+nnoremap <expr> <Leader>w "\<C-W>" . GetChar()
+
+" Make sure all buffers in a tab share the same cwd
+augroup TabDir
+	autocmd!
+	autocmd BufReadPost,BufNewFile,BufEnter * call SetTcd()
+augroup END
+
+command! -nargs=1 Tcd lcd <args> | call Tcd()
+
+function! SetTcd()
+	if !exists('t:cwd') || !isdirectory(t:cwd)
+		if strlen(&l:bufhidden) || !strlen(expand('%'))
+			return
+		endif
+		let t:cwd = expand('%:p:h')
+	endif
+	execute 'lcd' t:cwd
+endfunction
+
+function! Tcd()
+	let t:cwd = getcwd()
+	if !exists('s:recursing')
+		let s:recursing = 1
+		normal cdcd
+		unlet s:recursing
+	endif
+endfunction
 
 " }}}
 
@@ -892,58 +854,22 @@ set clipboard=unnamed
 lnoremap <C-R> <C-R><C-P>
 
 function! ConditionalPaste(invert, where)
-	let type = getregtype() =~ "\<C-V>" ? 'Block' :
-				\ xor(a:invert, getreg() =~ "\n") ? 'Indented' : 'Char'
-	execute "normal \<Plug>UnconditionalPaste" . type . a:where
-	call FixPaste() "\<CR>
+	if a:invert
+		call setreg(v:register, getreg(), getregtype() ==# 'v' ? 'V' : 'v')
+		if getregtype() ==# 'v'
+			call setreg(v:register, substitute(getreg(), '\v\n\s+', ' ', 'g'))
+		endif
+	endif
+	let sequence = a:where . '`[v`]=`]$'
+	execute 'normal!' sequence
+	call repeat#set(sequence)
+	let g:repeat_reg = [sequence, v:register]
 endfunction
 
-function! FixPaste()
-	if g:repeat_sequence !~ 'UnconditionalPaste'
-		return
-	endif
-	if g:repeat_sequence =~ 'Indented'
-		normal! `[v`]=`]$
-	elseif g:repeat_sequence =~ 'Block'
-		execute 'normal! `[' . (strpart(getregtype(), 1) - 1) . 'l'
-	else
-		normal! `]
-	endif
-	let g:repeat_sequence .= ":call FixPaste()\<CR>"
-	let g:repeat_tick = b:changedtick
-endfunction
-
-nnoremap <silent> p  :call ConditionalPaste(0, 'After')<CR>
-nnoremap <silent> P  :call ConditionalPaste(0, 'Before')<CR>
-nnoremap <silent> cp :call ConditionalPaste(1, 'After')<CR>
-nnoremap <silent> cP :call ConditionalPaste(1, 'Before')<CR>
-nmap <Leader>Pc <Plug>UnconditionalPasteCharBefore
-nmap <Leader>pc <Plug>UnconditionalPasteCharAfter
-nmap <Leader>Pl <Plug>UnconditionalPasteLineBefore
-nmap <Leader>pl <Plug>UnconditionalPasteLineAfter
-nmap <Leader>Pb <Plug>UnconditionalPasteBlockBefore
-nmap <Leader>pb <Plug>UnconditionalPasteBlockAfter
-nmap <Leader>Pi <Plug>UnconditionalPasteIndentedBefore
-nmap <Leader>pi <Plug>UnconditionalPasteIndentedAfter
-nmap <Leader>P, <Plug>UnconditionalPasteCommaBefore
-nmap <Leader>p, <Plug>UnconditionalPasteCommaAfter
-nmap <Leader>Pq <Plug>UnconditionalPasteQueriedBefore
-nmap <Leader>pq <Plug>UnconditionalPasteQueriedAfter
-nmap <Leader>PQ <Plug>UnconditionalPasteRecallQueriedBefore
-nmap <Leader>pQ <Plug>UnconditionalPasteRecallQueriedAfter
-nmap <Leader>Pu <Plug>UnconditionalPasteUnjoinBefore
-nmap <Leader>pu <Plug>UnconditionalPasteUnjoinAfter
-nmap <Leader>PU <Plug>UnconditionalPasteRecallUnjoinBefore
-nmap <Leader>pU <Plug>UnconditionalPasteRecallUnjoinAfter
-nmap <Leader>Pp <Plug>UnconditionalPastePlusBefore
-nmap <Leader>pp <Plug>UnconditionalPastePlusAfter
-nmap <Leader>PP <Plug>UnconditionalPasteGPlusBefore
-nmap <Leader>pP <Plug>UnconditionalPasteGPlusAfter
-
-Map n "" :let g:repeat_reg[1] = '"'<CR>""
-
-" Block-mode paste pastes on each block
-xnoremap p "_c<C-R>"<Esc>
+nnoremap <silent> p  :call ConditionalPaste(0, 'p')<CR>
+nnoremap <silent> P  :call ConditionalPaste(0, 'P')<CR>
+nnoremap <silent> cp :call ConditionalPaste(1, 'p')<CR>
+nnoremap <silent> cP :call ConditionalPaste(1, 'P')<CR>
 
 " }}}
 
@@ -987,47 +913,6 @@ Map n <Leader>q :QuickfixsignsToggle<CR>
 
 " }}}
 
-" File management {{{
-
-" Make sure all buffers in a tab share the same cwd
-augroup TabDir
-	autocmd!
-	autocmd BufReadPost,BufNewFile,BufEnter * call SetTcd()
-augroup END
-
-command! -nargs=1 Tcd lcd <args> | call Tcd()
-
-function! SetTcd()
-	if !exists('t:cwd') || !isdirectory(t:cwd)
-		if strlen(&l:bufhidden) || !strlen(expand('%'))
-			return
-		endif
-		let t:cwd = expand('%:p:h')
-	endif
-	execute 'lcd' t:cwd
-endfunction
-
-function! Tcd()
-	let t:cwd = getcwd()
-	if !exists('s:recursing')
-		let s:recursing = 1
-		" normal cdcd
-		" Breaks cd in vimfiler
-		unlet s:recursing
-	endif
-endfunction
-
-function! WipeHiddenBuffers()
-	for i in range(1, bufnr('$'))
-		if bufexists(i) && type(tlib#tab#TabWinNr(i)) == 0
-			execute 'bwipeout' i
-		endif
-	endfor
-endfunction
-command! WipeHiddenBuffers call WipeHiddenBuffers()
-
-" }}}
-
 " Experimental {{{
 
 if has('vim_starting')
@@ -1061,6 +946,7 @@ let g:pymode_syntax_all = 1
 let g:pymode_syntax_indent_errors = 1
 let g:pymode_syntax_space_errors = 1
 let g:pymode_folding = 0
-nnoremap <Esc> :<C-U>lclose<CR>
+Map n <Esc> :<C-U>lclose<CR>
 
 " }}}
+
