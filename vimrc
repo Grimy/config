@@ -128,7 +128,8 @@ if has('vim_starting')
 	NeoBundle 'tomtom/tlib_vim'
 	NeoBundle 'Valloric/YouCompleteMe'
 	NeoBundle 'mmorearty/vim-matchit'
-	" NeoBundle 'tpope/vim-endwise'
+	NeoBundle 'tpope/vim-endwise'
+	NeoBundle 'Raimondi/delimitMate'
 
 	" For testing purposes
 	NeoBundle 'vim-scripts/foldsearch'
@@ -229,17 +230,8 @@ Map i <expr> <C-P> pumvisible() ? "\<C-P>" : "\<Up>"
 Map i <expr> <C-N> pumvisible() ? "\<C-N>" : "\<Down>"
 
 " Key bindings
-Map i <recursive> <expr> <Tab>     MyTab(0)
-Map i <recursive> <expr> <S-Tab>   MyTab(1)
-
-function! MyTab(shift)
-	if pumvisible()
-		return a:shift ? "\<C-P>" : "\<C-N>"
-	elseif virtcol('.') <= indent('.') + 1
-		return a:shift ? "\<C-D>" : "\<C-T>"
-	endif
-	return ""
-endfunction
+imap <expr> <Tab>   pumvisible() ? "\<C-N>" : virtcol('.') <= indent('.') + 1 ? "\<C-T>" : ""
+imap <expr> <S-Tab> pumvisible() ? "\<C-P>" : virtcol('.') <= indent('.') + 1 ? "\<C-D>" : ""
 
 " }}}
 
@@ -304,8 +296,7 @@ let g:vimfiler_readonly_file_icon = ''
 set conceallevel=2
 set concealcursor=n
 
-" Showing trailing whitespace is great, but it shows whenever you append
-" a space
+" Showing trailing whitespace is great, but it shows whenever you append a space
 " The workaround is to disable it in insert mode
 augroup ShowTrailingSpaces
 	autocmd!
@@ -318,7 +309,9 @@ set linebreak
 
 " Show (partial) command in status line
 set showcmd
-set shortmess=atToO
+
+" The undocumented c flag is vital for completion plugins
+set shortmess=tosTacO
 
 " }}}
 
@@ -647,10 +640,12 @@ nnoremap a A
 
 " NerdCommenter
 let g:NERDSpaceDelims = 1
-
 inoremap <C-C> <C-O>:call NERDComment('n', 'toggle')<CR>
 nnoremap <C-C>      :call NERDComment('n', 'toggle')<CR>j
 vnoremap <C-C>      :call NERDComment('v', 'toggle')<CR>gv
+
+" YCM
+let g:ycm_global_ycm_extra_conf = '~/.vim/scripts/ycm.py'
 
 " Subliminal
 xnoremap <silent> <BS>    :SubliminalInsert<CR><BS>
@@ -931,7 +926,6 @@ autocmd BufReadPost,BufEnter,BufNew ~/drawall/java/drawall/** setf java
 let g:java_ignore_javadoc = 1
 hi! link SpecialKey Comment
 hi! link Special Comment
-let g:ycm_global_ycm_extra_conf = '~/.vim/scripts/ycm.py'
 
 " Pylint
 let g:pymode_rope = 0
@@ -954,6 +948,12 @@ nnoremap : :let g:last_cmd_type = ':'<CR>:
 nnoremap / :let g:last_cmd_type = '/'<CR>/
 nnoremap ? :let g:last_cmd_type = '?'<CR>?
 noremap <expr> <C-P> g:last_cmd_type . "\<Up>"
+
+" Auto-escape '/' in search
+cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
+
+let g:delimitMate_expand_space = 1
+" let g:delimitMate_eol_marker = ';'
 
 " }}}
 
