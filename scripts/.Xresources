@@ -15,9 +15,14 @@ xterm*termName: xterm-256color
 xterm*scrollBar:    false
 
 *borderWidth: 0
-*faceName: Input Mono Condensed Medium
 *faceSize: 11
-*scaleHeight: 1.1
+#if WIDTH > 1600
+	*faceName: Input Mono Condensed Medium
+	*scaleHeight: 1.10
+#else
+	*faceName: Input Mono Compressed Medium
+	*scaleHeight: 1.05
+#endif
 *showBlinkAsBold: True
 
 ! xcursor.theme: Vanilla-DMZ-AA
