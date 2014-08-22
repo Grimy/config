@@ -66,7 +66,6 @@ if has('vim_starting')
 	let &undodir                       = s:cache . 'undos'
 	let g:session                      = s:cache . 'session'
 	let g:vimfiler_data_directory      = s:cache . 'vimfiler'
-	let g:vimshell_temporary_directory = s:cache . 'vimshell'
 	let g:unite_data_directory         = s:cache . 'unite'
 	let &runtimepath = s:path
 	" }}}
@@ -82,24 +81,16 @@ if has('vim_starting')
 	Plug 'bling/vim-airline'
 
 	" File management
-	Plug 'Shougo/vimproc'
-	Plug 'Shougo/unite.vim'
-	Plug 'Shougo/unite-ssh'
-
-	Plug 'osyo-manga/unite-quickfix',
-	Plug 'Shougo/unite-help',
-	Plug 'tsukkee/unite-tag',
-	Plug 'thinca/vim-unite-history',
-	Plug 'Shougo/unite-outline',
-	Plug 'Shougo/unite-mru'
-
 	Plug 'Shougo/vimfiler'
-	Plug 'Shougo/vimshell'
-	Plug 'ujihisa/vimshell-ssh'
+	Plug 'Shougo/unite.vim'
+	Plug 'Shougo/unite-mru'
+	Plug 'osyo-manga/unite-quickfix'
+	Plug 'thinca/vim-unite-history'
 
 	" Editing functionnality
 	" Plug 'vim-scripts/UnconditionalPaste'
 	Plug 'tpope/vim-surround'
+	Plug 'junegunn/vim-after-object'
 	Plug 'tpope/vim-unimpaired'
 	Plug 'scrooloose/nerdcommenter'
 	Plug 'junegunn/vim-easy-align'
@@ -114,7 +105,7 @@ if has('vim_starting')
 	Plug 'tomtom/quickfixsigns_vim'
 
 	" Completion
-	" Plug 'Valloric/YouCompleteMe'
+	Plug 'Valloric/YouCompleteMe'
 	Plug 'mmorearty/vim-matchit'
 	Plug 'tpope/vim-endwise'
 
@@ -575,7 +566,10 @@ nnoremap <expr> [c QFSJump('', -1)
 nnoremap <expr> ]c QFSJump('', +1)
 
 nnoremap _u: UndotreeToggle<CR>
+
 vmap <Enter> <Plug>(EasyAlign)
+nmap <silent> _= vap<CR>=
+nmap <silent> _: vap<CR>=
 
 " Map Q and ; to something useful
 Map nx Q gw
@@ -650,16 +644,7 @@ xmap P       <plug>(dragonfly_copy)
 
 " Filetypes
 call vimfiler#set_execute_file('_', 'grim')
-call vimshell#set_execute_file('_', 'grim')
-call vimshell#set_execute_file('bmp,jpg,png,gif', 'xsiv')
 call vimfiler#set_execute_file('bmp,jpg,png,gif', 'gexe xsiv')
-
-" VimShell
-let g:vimshell_prompt_expr =
-			\ 'escape(fnamemodify(getcwd(), ":~").">", "\\[]()?! ")." "'
-let g:vimshell_prompt_pattern = '^\%(\f\|\\.\)\+> '
-let g:vimshell_vimshrc_path = expand('~/.vim/shrc')
-let g:vimshell_split_command = 'tabnew' " 'vsplit'
 
 " VimFiler
 let g:vimfiler_as_default_explorer  = 1
@@ -669,11 +654,9 @@ let g:vimfiler_ignore_pattern       = '^$'
 
 Map n cd :VimFiler -buffer-name=cd -winwidth=49 -split -toggle<CR>
 Map n cD :VimFilerTab -buffer-name=cD ~<CR>
-Map n <Leader><CR> :execute 'VimShellPop' '-buffer-name=sh' t:cwd<CR>
 
 " Unite
-call unite#filters#matcher_default#use(['matcher_fuzzy'])
-let g:unite_kind_cdable_lcd_command = 'Tcd'
+call unite#filters#matcher_default#use(['matcher_glob'])
 let g:unite_enable_start_insert = 1
 let g:unite_source_history_yank_enable = 1
 
@@ -684,34 +667,34 @@ if executable('ag')
 				\ '--line-numbers --nocolor --nogroup --hidden ' .
 				\ '--ignore .hg --ignore .svn --ignore .git'
 	let g:unite_source_grep_recursive_opt = ''
-elseif executable('ack-grep')
-	" Use ack in unite grep source.
-	let g:unite_source_grep_command = 'ack-grep'
-	let g:unite_source_grep_default_opts = '--no-heading --no-color -a -H'
-	let g:unite_source_grep_recursive_opt = ''
 endif
 
-nnoremap gf    :<C-u>Unite file_rec/async<CR>
-nnoremap gr    :<C-U>Unite grep:.<CR>
-nnoremap gl    :<C-U>Unite line<CR>
-nnoremap gk    :<C-U>Unite directory<CR>
-" nnoremap gu    :<C-U>Unite undo<CR>
-nnoremap gj    :<C-U>Unite jump<CR>
-nnoremap gc    :<C-U>Unite change<CR><C-O>3G
-nnoremap <C-R> :<C-u>Unite file_mru<CR><C-O>3G
-nnoremap gp    :<C-u>Unite history/yank<CR><C-O>3G
+Map n ,c    :<C-U>Unite change<CR>
+Map n ,d    :<C-U>Unite directory<CR>
+Map n ,f    :<C-U>Unite file_rec<CR>
+Map n ,j    :<C-U>Unite jump<CR>
+Map n ,l    :<C-U>Unite line<CR>
+Map n ,p    :<C-U>Unite history/yank<CR>
+Map n <C-R> :<C-U>Unite neomru/file<CR>
 
 " xmledit
 let g:xmledit_enable_html = 1
 let g:xml_use_xhtml = 1
 
 " Airline
-set noshowmode    " Airline already displays the mode
-set laststatus=2  " Always show the statusline
-
+set noshowmode
+set laststatus=2
 let g:airline#extensions#tabline#enabled    = 1
-let g:airline_powerline_fonts               = 1
+let g:airline_powerline_fonts               = has('gui_running')
 let g:airline#extensions#whitespace#enabled = 0
+
+" Pylint
+let g:pymode_rope             = 0
+let g:pymode_lint_checker     = "pyflakes,pep8,pylint"
+let g:pymode_lint_ignore      = "W191,E501,C0110,C0111,E223,E302,E126,W0312"
+let g:pymode_syntax_slow_sync = 0
+let g:pymode_folding          = 0
+Map n <Esc> :<C-U>lclose<CR>
 
 " }}}
 
@@ -880,7 +863,7 @@ endfunction
 "g:quickfixsigns_icons Disable signs on those special buffers
 " TODO: patch qfs to operate on a per-buffer basis
 let g:quickfixsigns_blacklist_buffer =
-			\ '\v(vimfiler|vimshell|unite|Command Line|\.txt|^$)'
+			\ '\v(vimfiler|unite|Command Line|\.txt|^$)'
 let g:quickfixsigns_icons = {}
 Map n <Leader>q :QuickfixsignsToggle<CR>
 
@@ -892,7 +875,7 @@ if has('vim_starting')
 	silent! runtime! autoload/tabline.vim
 endif
 
-nnoremap !H :r !howdoi 
+" nnoremap !H :r !howdoi 
 
 augroup Golf
 	autocmd!
@@ -905,21 +888,6 @@ let g:java_ignore_javadoc = 1
 hi! link SpecialKey Comment
 hi! link Special Comment
 
-" Pylint
-let g:pymode_rope = 0
-let g:pymode_doc = 1
-let g:pymode_doc_key = 'K'
-let g:pymode_lint = 1
-let g:pymode_lint_checker = "pyflakes,pep8,pylint"
-let g:pymode_lint_ignore = "W191,E501,C0110,C0111,E223,E302,E126,W0312"
-let g:pymode_lint_write = 1
-let g:pymode_syntax = 1
-let g:pymode_syntax_all = 1
-let g:pymode_syntax_indent_errors = 1
-let g:pymode_syntax_space_errors = 1
-let g:pymode_folding = 0
-Map n <Esc> :<C-U>lclose<CR>
-
 " Ctrl-P repeats last command OR search
 let g:last_cmd_type = ':'
 nnoremap : :let g:last_cmd_type = ':'<CR>:
@@ -929,6 +897,8 @@ noremap <expr> <C-P> g:last_cmd_type . "\<Up>"
 
 " Auto-escape '/' in search
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
+
+call after_object#enable('=', ':', '-', '#', ' ')
 
 " }}}
 
