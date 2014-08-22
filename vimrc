@@ -68,79 +68,66 @@ if has('vim_starting')
 	let g:vimfiler_data_directory      = s:cache . 'vimfiler'
 	let g:vimshell_temporary_directory = s:cache . 'vimshell'
 	let g:unite_data_directory         = s:cache . 'unite'
-	let &runtimepath = s:path . ',' . s:bundle . 'neobundle.vim'
+	let &runtimepath = s:path
 	" }}}
 
-	" NeoBundle {{{
+	" Plug {{{
 
 	" Initialization
-	call neobundle#rc(s:bundle)
-	NeoBundleFetch 'Shougo/neobundle.vim'
-	NeoBundle 'Grimy/vim-default-runtime'
+	call plug#begin(s:bundle)
+	Plug 'Grimy/vim-default-runtime'
 
 	" Theming
-	NeoBundle 'Grimy/vim-rainbow'
-	NeoBundle 'bling/vim-airline'
+	Plug 'Grimy/vim-rainbow'
+	Plug 'bling/vim-airline'
 
 	" File management
-	NeoBundle 'Shougo/vimproc', { 'build' : {
-				\     'windows': 'make -f make_mingw32.mak',
-				\     'cygwin':  'make -f make_cygwin.mak',
-				\     'mac':     'make -f make_mac.mak',
-				\     'unix':    'make -f make_unix.mak',
-				\ }}
+	Plug 'Shougo/vimproc'
+	Plug 'Shougo/unite.vim'
+	Plug 'Shougo/unite-ssh'
 
-	NeoBundle 'Shougo/unite.vim'
-	NeoBundle 'Shougo/unite-ssh'
+	Plug 'osyo-manga/unite-quickfix',
+	Plug 'Shougo/unite-help',
+	Plug 'tsukkee/unite-tag',
+	Plug 'thinca/vim-unite-history',
+	Plug 'Shougo/unite-outline',
+	Plug 'Shougo/unite-mru'
 
-	NeoBundleLazy 'osyo-manga/unite-quickfix',
-				\ { 'unite_sources' : 'quickfix' }
-	NeoBundleLazy 'Shougo/unite-help',
-				\ { 'unite_sources' : 'help' }
-	NeoBundleLazy 'tsukkee/unite-tag',
-				\ { 'unite_sources' : ['tag', 'tag/include', 'tag/file'] }
-	NeoBundleLazy 'thinca/vim-unite-history',
-				\ { 'unite_sources' : ['history/command', 'history/search'] }
-	NeoBundle 'Shougo/unite-outline',
-				\ { 'unite_sources' : 'outline' }
-	NeoBundle 'Shougo/unite-mru'
-
-	NeoBundle 'Shougo/vimfiler'
-	NeoBundle 'Shougo/vimshell'
-	NeoBundle 'ujihisa/vimshell-ssh'
+	Plug 'Shougo/vimfiler'
+	Plug 'Shougo/vimshell'
+	Plug 'ujihisa/vimshell-ssh'
 
 	" Editing functionnality
-	" NeoBundle 'vim-scripts/UnconditionalPaste'
-	NeoBundle 'tpope/vim-surround'
-	NeoBundle 'tpope/vim-unimpaired'
-	NeoBundle 'scrooloose/nerdcommenter'
-	NeoBundle 'godlygeek/tabular'
-	NeoBundle 'Grimy/dragonfly'
-	NeoBundle 'Grimy/subliminal'
-	NeoBundle 'Grimy/indextrous'
-	NeoBundle 'mbbill/undotree'
+	" Plug 'vim-scripts/UnconditionalPaste'
+	Plug 'tpope/vim-surround'
+	Plug 'tpope/vim-unimpaired'
+	Plug 'scrooloose/nerdcommenter'
+	Plug 'junegunn/vim-easy-align'
+	Plug 'Grimy/dragonfly'
+	Plug 'Grimy/subliminal'
+	Plug 'Grimy/indextrous'
+	Plug 'mbbill/undotree'
 
 	" Git power
-	NeoBundle 'tpope/vim-fugitive'
-	NeoBundle 'tomtom/quickfixsigns_vim'
+	Plug 'tpope/vim-fugitive'
+	Plug 'tomtom/tlib_vim'
+	Plug 'tomtom/quickfixsigns_vim'
 
 	" Completion
-	NeoBundle 'tomtom/tlib_vim'
-	NeoBundle 'Valloric/YouCompleteMe'
-	NeoBundle 'mmorearty/vim-matchit'
-	NeoBundle 'tpope/vim-endwise'
-	NeoBundle 'Raimondi/delimitMate'
+	" Plug 'Valloric/YouCompleteMe'
+	Plug 'mmorearty/vim-matchit'
+	Plug 'tpope/vim-endwise'
 
 	" For testing purposes
-	NeoBundle 'vim-scripts/foldsearch'
+	Plug 'vim-scripts/foldsearch'
 
 	" Specific filetypes
-	NeoBundle 'klen/python-mode'
-	NeoBundle 'sukima/xmledit'
-	NeoBundle 'dag/vim-fish'
+	Plug 'klen/python-mode', {'for': 'python'}
+	Plug 'sukima/xmledit', {'for': 'xml'}
+	Plug 'dag/vim-fish', {'for': 'fish'}
 
 	" Check
-	NeoBundleCheck
+	call plug#end()
 	" }}}
 
 endif
@@ -494,7 +481,7 @@ function! HandleQ()
 endfunction
 
 " Common typos
-let s:qmap = { ':': ':q', '!': 'q!' }
+let s:qmap = { ':': ':q', '!': 'q!', '/': 'q/' }
 
 " }}}
 
@@ -571,17 +558,15 @@ nnoremap          !h :<C-U>vert help<Space>
 nnoremap <silent> !H :<C-U>Unite help<CR>
 
 " c selects current line, without the line break at the end
-onoremap <silent> c :<C-U>normal! ^v$<CR>
+onoremap <silent> c :<C-U>normal! ^v$h<CR>
 
-" s to search and replace with Perl
+" s to search and replace
 nnoremap s :%s//g<Left><Left>
 xnoremap s  :s//g<Left><Left>
 nnoremap S :%s/\<<C-R><C-W>\>//g<Left><Left>
 xnoremap S  :s/\<<C-R><C-W>\>//g<Left><Left>
 
-noremap <expr> ,z winline() <= &scrolloff + 1 ? 'zz' : 'zt'
-
-nnoremap <Leader>? $?\?\zs<CR>d/\ze :<CR>lgpd/\v\ze[);]<Bar>$<CR>?\?<CR>p
+noremap <expr> zz winline() <= &scrolloff + 1 ? 'zz' : 'zt'
 
 " Unimpaired-style mappings
 nnoremap <expr> [j repeat("\<C-O>", v:count1)
@@ -589,14 +574,12 @@ nnoremap <expr> ]j repeat("\<C-I>", v:count1)
 nnoremap <expr> [c QFSJump('', -1)
 nnoremap <expr> ]c QFSJump('', +1)
 
-nnoremap _u :UndotreeToggle<CR>
-
-nnoremap <Leader>= :Tabularize /
-nnoremap <Leader>: :\zs/l0r1<Home>Tabularize /
+nnoremap _u: UndotreeToggle<CR>
+vmap <Enter> <Plug>(EasyAlign)
 
 " Map Q and ; to something useful
 Map nx Q gw
-Map o  Q ap
+Map vo Q ap
 Map n ; .wn
 
 " Executes current line
@@ -608,9 +591,6 @@ function! Execute(command) range
 		execute line
 	endfor
 endfunction
-
-" Insert timestamp
-nnoremap !d :1,9s/Last change: \zs.*/\=strftime("%c")/<CR>
 
 " Follow tags with Return
 Map n <recursive> <CR> <C-]>
@@ -626,7 +606,6 @@ Map nx <C-V> v
 " Select the last modified text
 nnoremap gc `[v`]
 
-" Out of two similar commands, the most common should be lowercase
 " Goto definition: global > local
 Map n gd gD
 Map n gD gd
@@ -721,7 +700,6 @@ nnoremap gj    :<C-U>Unite jump<CR>
 nnoremap gc    :<C-U>Unite change<CR><C-O>3G
 nnoremap <C-R> :<C-u>Unite file_mru<CR><C-O>3G
 nnoremap gp    :<C-u>Unite history/yank<CR><C-O>3G
-nnoremap ,n    :<C-U>Unite neobundle/log<CR>
 
 " xmledit
 let g:xmledit_enable_html = 1
@@ -951,9 +929,6 @@ noremap <expr> <C-P> g:last_cmd_type . "\<Up>"
 
 " Auto-escape '/' in search
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
-
-let g:delimitMate_expand_space = 1
-" let g:delimitMate_eol_marker = ';'
 
 " }}}
 

@@ -35,4 +35,4 @@ hg update
 
 make
 
-src/vim -c 'NeoBundleInstall!' -c 'qa'
+src/vim -c 'PlugInstall!' -c 'qa'

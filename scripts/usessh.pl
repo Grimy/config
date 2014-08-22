@@ -9,5 +9,5 @@ for my $dir ('', <bundle/*>) {
 	print;
 	s/http.*(?=(Grimy.*))/git\@github.com:/
 	&& print("Setting $1 to use ssh\n")
-	&& `git remote set-url origin $_`;
+	&& `git remote add ssl $_`;
 }
