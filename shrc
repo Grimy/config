@@ -1,2 +1,0 @@
-export PATH="$PATH:~/Workspace_SDK/InstallationFC5/IGC/BinD"
-export LD_LIBRARY_PATH=~/Workspace_SDK/InstallationFC5/IGC/BinD

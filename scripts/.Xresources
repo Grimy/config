@@ -2,7 +2,7 @@
 xterm*termName: xterm-256color
 
 *loginShell:        true
-*locale:            true
+xterm*locale:       true
 *bellIsUrgent:      true
 
 *metaSendsEscape:   true
@@ -11,8 +11,6 @@ xterm*termName: xterm-256color
 *saveLines:         65535
 *scrollTTYOutput:   true
 *scrollTTYKeypress: true
-! 'xterm' is necessary here. Bug?
-xterm*scrollBar:    false
 
 *borderWidth: 0
 *faceSize: 11

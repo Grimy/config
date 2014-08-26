@@ -102,7 +102,7 @@ if has('vim_starting')
 	" Git power
 	Plug 'tpope/vim-fugitive'
 	Plug 'tomtom/tlib_vim'
-	Plug 'tomtom/quickfixsigns_vim'
+	" Plug 'tomtom/quickfixsigns_vim'
 
 	" Completion
 	Plug 'Valloric/YouCompleteMe'
@@ -113,9 +113,9 @@ if has('vim_starting')
 	Plug 'vim-scripts/foldsearch'
 
 	" Specific filetypes
-	Plug 'klen/python-mode', {'for': 'python'}
-	Plug 'sukima/xmledit', {'for': 'xml'}
-	Plug 'dag/vim-fish', {'for': 'fish'}
+	Plug 'klen/python-mode'
+	Plug 'sukima/xmledit'
+	Plug 'dag/vim-fish'
 
 	" Check
 	call plug#end()
@@ -354,13 +354,13 @@ Map clinov <recursive> § <Bslash>
 Map clinov <recursive> ¨ {
 Map clinov <recursive> £ }
 Map clinv  <recursive> ² [
-Map clinv  <recursive> ³ ]
+Map clinv  <recursive> & ]
 Map clinov <recursive> ° <Bar>
 
 Map nox ²² [[
-Map nox ³³ ][
-Map nox ³² ]]
-Map nox ²³ []
+Map nox && ][
+Map nox &² ]]
+Map nox ²& []
 
 " }}}
 
@@ -643,7 +643,7 @@ xmap L       <plug>(dragonfly_right)
 xmap P       <plug>(dragonfly_copy)
 
 " Filetypes
-call vimfiler#set_execute_file('_', 'grim')
+call vimfiler#set_execute_file('_', 'vim')
 call vimfiler#set_execute_file('bmp,jpg,png,gif', 'gexe xsiv')
 
 " VimFiler
@@ -690,6 +690,7 @@ let g:airline#extensions#whitespace#enabled = 0
 
 " Pylint
 let g:pymode_rope             = 0
+let g:pymode_lint_signs       = 0
 let g:pymode_lint_checker     = "pyflakes,pep8,pylint"
 let g:pymode_lint_ignore      = "W191,E501,C0110,C0111,E223,E302,E126,W0312"
 let g:pymode_syntax_slow_sync = 0
@@ -704,7 +705,7 @@ Map n <Esc> :<C-U>lclose<CR>
 set splitright splitbelow
 set noequalalways
 set winwidth=88
-set previewheight=8
+set previewheight=16
 set cmdwinheight=3
 set winminwidth=6
 
@@ -724,7 +725,7 @@ Map n <C-Tab>   gt
 Map n <C-S-Tab> gT
 
 " Restore <C-W>
-nnoremap <expr> <Leader>w "\<C-W>" . GetChar()
+nnoremap <expr> L "\<C-W>" . GetChar()
 
 " Make sure all buffers in a tab share the same cwd
 augroup TabDir
@@ -832,15 +833,14 @@ nnoremap <silent> cP :call ConditionalPaste(1, 'P')<CR>
 " git power {{{
 
 " Fugitive
-nnoremap <silent> <Leader>gs :Gstatus<CR>
-nnoremap <silent> <Leader>gd <C-W>o:Gdiff<CR><C-W>r
-nnoremap <silent> <Leader>gc :Gcommit<CR>
+nnoremap <silent> <Leader>ga :Gwrite<CR>
 nnoremap <silent> <Leader>gb :Gblame<CR>
-nnoremap <silent> <Leader>gl :Glog<CR>
-nnoremap <silent> <Leader>gr :Gread<CR>
-nnoremap <silent> <Leader>gw :Gwrite<CR>
-nnoremap <silent> <Leader>ge :Gedit<CR>
+nnoremap <silent> <Leader>gc :Gcommit<CR>
+nnoremap <silent> <Leader>gd <C-W>o:Gdiff<CR><C-W>r
 nnoremap          <Leader>gg :Git!<Space>
+nnoremap <silent> <Leader>gl :Glog<CR>
+nnoremap <silent> <Leader>gs :Gstatus<CR>
+nnoremap <silent> <Leader>gw :Gwrite<CR>
 
 " Diffs
 set diffopt=filler,context:5,foldcolumn:1
@@ -875,7 +875,7 @@ if has('vim_starting')
 	silent! runtime! autoload/tabline.vim
 endif
 
-" nnoremap !H :r !howdoi 
+nnoremap H :r !howdoi 
 
 augroup Golf
 	autocmd!
