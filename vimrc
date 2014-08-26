@@ -86,18 +86,18 @@ if has('vim_starting')
 	Plug 'Shougo/unite-mru'
 	Plug 'osyo-manga/unite-quickfix'
 	Plug 'thinca/vim-unite-history'
+	Plug 'mbbill/undotree'
 
 	" Editing functionnality
-	" Plug 'vim-scripts/UnconditionalPaste'
 	Plug 'tpope/vim-surround'
-	Plug 'junegunn/vim-after-object'
 	Plug 'tpope/vim-unimpaired'
 	Plug 'scrooloose/nerdcommenter'
 	Plug 'junegunn/vim-easy-align'
+	Plug 'junegunn/vim-pseudocl'
+	Plug 'junegunn/vim-fnr'
 	Plug 'Grimy/dragonfly'
 	Plug 'Grimy/subliminal'
 	Plug 'Grimy/indextrous'
-	Plug 'mbbill/undotree'
 
 	" Git power
 	Plug 'tpope/vim-fugitive'
@@ -108,6 +108,7 @@ if has('vim_starting')
 	Plug 'Valloric/YouCompleteMe'
 	Plug 'mmorearty/vim-matchit'
 	Plug 'tpope/vim-endwise'
+	Plug 'junegunn/fzf'
 
 	" For testing purposes
 	Plug 'vim-scripts/foldsearch'
@@ -567,10 +568,6 @@ nnoremap <expr> ]c QFSJump('', +1)
 
 nnoremap _u: UndotreeToggle<CR>
 
-vmap <Enter> <Plug>(EasyAlign)
-nmap <silent> _= vap<CR>=
-nmap <silent> _: vap<CR>=
-
 " Map Q and ; to something useful
 Map nx Q gw
 Map vo Q ap
@@ -585,9 +582,6 @@ function! Execute(command) range
 		execute line
 	endfor
 endfunction
-
-" Follow tags with Return
-Map n <recursive> <CR> <C-]>
 
 " Preserve CTRL-A
 let g:surround_no_insert_mappings = 1
@@ -632,15 +626,15 @@ xnoremap <silent> <C-Y>   :SubliminalInsert<CR><C-Y>
 xnoremap <silent> <C-Q>   :SubliminalInsert<CR><C-E>
 
 " Dragonfly
-xmap <Left>  <plug>(dragonfly_left)
-xmap <Down>  <plug>(dragonfly_down)
-xmap <Up>    <plug>(dragonfly_up)
-xmap <Right> <plug>(dragonfly_right)
-xmap H       <plug>(dragonfly_left)
-xmap J       <plug>(dragonfly_down)
-xmap K       <plug>(dragonfly_up)
-xmap L       <plug>(dragonfly_right)
-xmap P       <plug>(dragonfly_copy)
+xmap <Left>  <Plug>(dragonfly_left)
+xmap <Down>  <Plug>(dragonfly_down)
+xmap <Up>    <Plug>(dragonfly_up)
+xmap <Right> <Plug>(dragonfly_right)
+xmap H       <Plug>(dragonfly_left)
+xmap J       <Plug>(dragonfly_down)
+xmap K       <Plug>(dragonfly_up)
+xmap L       <Plug>(dragonfly_right)
+xmap P       <Plug>(dragonfly_copy)
 
 " Filetypes
 call vimfiler#set_execute_file('_', 'vim')
@@ -696,6 +690,17 @@ let g:pymode_lint_ignore      = "W191,E501,C0110,C0111,E223,E302,E126,W0312"
 let g:pymode_syntax_slow_sync = 0
 let g:pymode_folding          = 0
 Map n <Esc> :<C-U>lclose<CR>
+
+" Easy-align
+vmap <CR> <Plug>(EasyAlign)
+nmap <CR> <Plug>(EasyAlign)ap
+
+" FNR
+let g:fnr_flags = 'gw'
+nmap s <Plug>(FNR%)
+nmap S <Plug>(FNR%)<Tab>w
+vmap s <Plug>(FNR)
+vmap S <Plug>(FNR%)
 
 " }}}
 
@@ -897,8 +902,6 @@ noremap <expr> <C-P> g:last_cmd_type . "\<Up>"
 
 " Auto-escape '/' in search
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
-
-call after_object#enable('=', ':', '-', '#', ' ')
 
 " }}}
 

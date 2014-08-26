@@ -1,6 +1,6 @@
 " Clean useless visual clutter
 set noscrollbars
-set gui=tabs
+set gui=none
 set visualbell
 set editor=gvim\ --remote-tab-wait-silent
 set defsearch=google
@@ -55,7 +55,7 @@ nnoremap <C-J>   <PageDown>
 nnoremap <C-K>   <PageUp>
 
 " YouTube videos
-nnoremap <silent> Y :!yt (xsel)<CR>
+nnoremap <silent> Y :!yt (xsel) &<CR>
 
 " Show/hide status bar
 nnoremap <silent> ! :js toggle_bottombar('toggle')<CR>
@@ -81,4 +81,5 @@ EOF
 
 autocmd!
 autocmd PageLoad fimfiction.net/story js content.window.document.getElementById('chapter_container').style.textAlign = 'left'
+autocmd PageLoad fimfiction.net/story js content.window.document.getElementById('chapter_container').style.maxWidth = '51em'
 

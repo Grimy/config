@@ -16,3 +16,4 @@ function fish_user_key_bindings
 	bind \e\[25~ null
 	bind \e\[26~ null
 end
+fzf_key_bindings
