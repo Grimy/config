@@ -816,13 +816,15 @@ set clipboard=unnamed
 lnoremap <C-R> <C-R><C-P>
 
 function! ConditionalPaste(invert, where)
+	let [text, type] = [getreg(), getregtype()]
 	if a:invert
-		call setreg(v:register, getreg(), getregtype() ==# 'v' ? 'V' : 'v')
-		if getregtype() ==# 'v'
-			call setreg(v:register, substitute(getreg(), '\v\n\s+', ' ', 'g'))
+		let type = type ==# 'v' ? 'V' : 'v'
+		if type ==# 'v'
+			let text = substitute(text, '\v(^|\n)\s*', ' ', 'g')
 		endif
+		call setreg(v:register, text, type)
 	endif
-	let sequence = a:where . '`[v`]=`]$'
+	let sequence = a:where . (type ==# 'V' ? '`[v`]=`]$' : '')
 	execute 'normal!' sequence
 	call repeat#set(sequence)
 	let g:repeat_reg = [sequence, v:register]
