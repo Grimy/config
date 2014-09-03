@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Vim
 Comment=Text editor
-Exec=~/.vim/src/src/vim -g --remote-tab-silent %f
+Exec=vim -g --remote-tab-silent %f
 Terminal=false
 Type=Application
 MimeType=text/*

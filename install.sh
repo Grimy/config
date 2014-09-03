@@ -2,19 +2,9 @@
 
 basedir=$(dirname $(realpath $0))
 
-ln -ns "$basedir/scripts/.vimperatorrc" ~/.vimperatorrc
-ln -ns "$basedir/scripts/.Xresources"   ~/.Xresources
-ln -ns "$basedir/scripts/.gitconfig"    ~/.gitconfig
-ln -ns "$basedir/scripts/.vimperatorrc" ~/.vimperatorrc
-ln -ns "$basedir/scripts/grim"          ~/bin/grim
-ln -ns "$basedir/scripts/functions/"    ~/.config/fish/functions
-ln -ns "$basedir/powerline-fonts/"      ~/.local/share/fonts      && fc-cache -r
-
 cd "$basedir"
 mkdir -p bundle cache/swaps cache/backups cache/undos
 hg clone  https://vim.googlecode.com/hg/ src
-git clone https://github.com/Shougo/neobundle.vim bundle/neobundle.vim/
-
 cd src
 hg pull
 hg update
@@ -35,4 +25,11 @@ hg update
 
 make
 
-src/vim -c 'PlugInstall!' -c 'qa'
+ln -nsfv "$basedir/src/src/vim"           ~/bin/
+ln -nsfv "$basedir/scripts/.vimperatorrc" ~/.vimperatorrc
+ln -nsfv "$basedir/scripts/.Xresources"   ~/.Xresources
+ln -nsfv "$basedir/scripts/gvim.desktop"  ~/.local/share/applications
+ln -nsfv "$basedir/scripts/.gitconfig"    ~/.gitconfig
+ln -nsfv "$basedir/scripts/functions/"    ~/.config/fish/functions
+
+src/vim -c 'PlugInstall!'

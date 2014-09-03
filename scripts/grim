@@ -1,2 +1,0 @@
-#!/bin/bash
-~/.vim/src/src/vim -g --remote-tab-silent "$1"

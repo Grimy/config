@@ -1,3 +1,3 @@
 function v
-	gvim $argv
+	vim -g --remote-tab-silent $argv
 end
