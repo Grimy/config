@@ -355,7 +355,7 @@ Map clinov <recursive> § <Bslash>
 Map clinov <recursive> ¨ {
 Map clinov <recursive> £ }
 Map clinv  <recursive> ² [
-Map clinv  <recursive> & ]
+Map nv     <recursive> & ]
 Map clinov <recursive> ° <Bar>
 
 Map nox ²² [[

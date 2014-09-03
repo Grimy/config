@@ -1,5 +1,10 @@
 " Clean useless visual clutter
 set guioptions=bC
+set showtabline=never
+
+" Timeouts
+set scrolltime=0
+set hinttimeout=500
 
 " Sensible defaults
 set editor=vim\ -g\ --remote-tab-wait-silent
@@ -25,6 +30,16 @@ nmap -builtin gf <Nop>
 nmap -builtin e <C-S-E>
 
 " French localization
+cmap -modes hints \& 1
+cmap -modes hints \é 2
+cmap -modes hints \" 3
+cmap -modes hints \' 4
+cmap -modes hints \( 5
+cmap -modes hints \- 6
+cmap -modes hints \è 7
+cmap -modes hints \_ 8
+cmap -modes hints \ç 9
+cmap -modes hints \à 0
 nmap -builtin (j <C-O>
 nmap -builtin )j <C-I>
 nmap -builtin (f [f
@@ -37,8 +52,8 @@ set previouspattern+=\\bprécédent
 " Horizontal scrolling? Why?
 nmap -builtin h H
 nmap -builtin l L
-nmap -builtin H 8h
-nmap -builtin L 8l
+nmap -builtin H 10h
+nmap -builtin L 10l
 
 " Standard shortcuts
 imap -builtin <C-B> <Left>
@@ -51,10 +66,10 @@ cmap -builtin <C-J> <Tab>
 cmap -builtin <C-K> <S-Tab>
 
 " Scroll more
-nmap -builtin j j3.
-nmap -builtin k k3.
-nmap -builtin <Down> j3.
-nmap -builtin <Up> k3.
+nmap -builtin j 8j
+nmap -builtin k 8k
+nmap -builtin <Down> 8j
+nmap -builtin <Up> 8k
 cmap -builtin <C-N> <Down>
 cmap -builtin <C-P> <Up>
 "nmap -builtin <Space>   <PageDown>
