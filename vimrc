@@ -570,7 +570,7 @@ nnoremap _u: UndotreeToggle<CR>
 
 " Map Q and ; to something useful
 Map nx Q gw
-Map vo Q ap
+Map o  Q ap
 Map n ; .wn
 
 " Executes current line
