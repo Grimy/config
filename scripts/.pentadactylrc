@@ -1,0 +1,71 @@
+" Clean useless visual clutter
+set guioptions=bC
+
+" Sensible defaults
+set editor=vim\ -g\ --remote-tab-wait-silent
+set defsearch=google
+
+" Same custom mappings as in Vim
+nmap -builtin <C-S> <C-A>
+nmap -builtin !q <C-W>
+nmap -builtin gy gT
+
+" Go back to the previously selected tab when closing
+nmap -builtin d <C-W>
+
+" Disable annoying mappings
+nmap -builtin <C-Q> <Nop>
+imap -builtin <C-Q> <Nop>
+cmap -builtin <C-Q> <Nop>
+vmap -builtin <C-Q> <Nop>
+nmap -builtin <Insert> <Nop>
+nmap -builtin gf <Nop>
+
+" Panorama is awesome
+nmap -builtin e <C-S-E>
+
+" French localization
+nmap -builtin (j <C-O>
+nmap -builtin )j <C-I>
+nmap -builtin (f [f
+nmap -builtin )f ]f
+nmap -builtin )) ]]
+nmap -builtin (( [[
+set nextpattern+=\\bsuivant
+set previouspattern+=\\bprécédent
+
+" Horizontal scrolling? Why?
+nmap -builtin h H
+nmap -builtin l L
+nmap -builtin H 8h
+nmap -builtin L 8l
+
+" Standard shortcuts
+imap -builtin <C-B> <Left>
+imap -builtin <C-F> <Right>
+cmap -builtin <C-B> <Left>
+cmap -builtin <C-F> <Right>
+
+" Completion
+cmap -builtin <C-J> <Tab>
+cmap -builtin <C-K> <S-Tab>
+
+" Scroll more
+nmap -builtin j j3.
+nmap -builtin k k3.
+nmap -builtin <Down> j3.
+nmap -builtin <Up> k3.
+cmap -builtin <C-N> <Down>
+cmap -builtin <C-P> <Up>
+"nmap -builtin <Space>   <PageDown>
+"nmap -builtin <S-Space> <PageUp>
+nmap -builtin <C-J>     <PageDown>
+nmap -builtin <C-K>     <PageUp>
+
+" YouTube videos
+nmap -builtin <silent> Y :!yt (xsel) &<CR>
+
+" Custom styles
+autocmd!
+autocmd PageLoad fimfiction.net/story js content.window.document.getElementById('chapter_container').style.textAlign = 'left'
+autocmd PageLoad fimfiction.net/story js content.window.document.getElementById('chapter_container').style.maxWidth = '51em'

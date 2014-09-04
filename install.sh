@@ -25,11 +25,11 @@ hg update
 
 make
 
-ln -nsfv "$basedir/src/src/vim"           ~/bin/
-ln -nsfv "$basedir/scripts/.vimperatorrc" ~/.vimperatorrc
-ln -nsfv "$basedir/scripts/.Xresources"   ~/.Xresources
-ln -nsfv "$basedir/scripts/gvim.desktop"  ~/.local/share/applications
-ln -nsfv "$basedir/scripts/.gitconfig"    ~/.gitconfig
-ln -nsfv "$basedir/scripts/functions/"    ~/.config/fish/functions
+ln -nsfv "$basedir/src/src/vim"            ~/bin/
+ln -nsfv "$basedir/scripts/.pentadactylrc" ~/.pentadactylrc
+ln -nsfv "$basedir/scripts/.Xresources"    ~/.Xresources
+ln -nsfv "$basedir/scripts/gvim.desktop"   ~/.local/share/applications
+ln -nsfv "$basedir/scripts/.gitconfig"     ~/.gitconfig
+ln -nsfv "$basedir/scripts/functions/"     ~/.config/fish/functions
 
 src/vim -c 'PlugInstall!'
