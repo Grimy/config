@@ -7,11 +7,13 @@ function funced --description 'Edit function definition'
 	end
 	set -l path ~/.config/fish/functions/$argv.fish
 
-	if functions -q -- $argv
-		functions -- $argv
-	else
-		echo function $argv\n\nend
-	end > $path
+	if [ ! -e $path ]
+		if functions -q -- $argv
+			functions -- $argv
+		else
+			echo function $argv\n\nend
+		end > $path
+	end
 	eval $EDITOR $path
 	and source $path
 	return $status

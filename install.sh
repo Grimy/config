@@ -2,6 +2,9 @@
 
 basedir=$(dirname $(realpath $0))
 
+which hg || exit 'Requires mercurial'
+cpan 'install(Term::ReadKey)'
+
 cd "$basedir"
 mkdir -p bundle cache/swaps cache/backups cache/undos
 hg clone  https://vim.googlecode.com/hg/ src

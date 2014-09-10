@@ -706,6 +706,8 @@ vmap S <Plug>(FNR%)
 
 " Managing multiple windows / tabs {{{
 
+set tabpagemax=5
+
 " Geometry
 set splitright splitbelow
 set noequalalways

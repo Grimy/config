@@ -19,10 +19,8 @@ nmap -builtin gy gT
 nmap -builtin d <C-W>
 
 " Disable annoying mappings
-nmap -builtin <C-Q> <Nop>
-imap -builtin <C-Q> <Nop>
-cmap -builtin <C-Q> <Nop>
-vmap -builtin <C-Q> <Nop>
+map -builtin -modes=normal,visual,input,command <C-Q> <Nop>
+imap -builtin <C-Z> <C-V><C-Z>
 nmap -builtin <Insert> <Nop>
 nmap -builtin gf <Nop>
 
@@ -72,10 +70,8 @@ nmap -builtin <Down> 8j
 nmap -builtin <Up> 8k
 cmap -builtin <C-N> <Down>
 cmap -builtin <C-P> <Up>
-"nmap -builtin <Space>   <PageDown>
-"nmap -builtin <S-Space> <PageUp>
-nmap -builtin <C-J>     <PageDown>
-nmap -builtin <C-K>     <PageUp>
+nmap -builtin <C-J> <PageDown>
+nmap -builtin <C-K> <PageUp>
 
 " YouTube videos
 nmap -builtin <silent> Y :!yt (xsel) &<CR>
