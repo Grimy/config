@@ -21,6 +21,7 @@ nmap -builtin d <C-W>
 " Disable annoying mappings
 map -builtin -modes=normal,visual,input,command <C-Q> <Nop>
 imap -builtin <C-Z> <C-V><C-Z>
+imap -builtin <C-V> <C-V><C-V>
 nmap -builtin <Insert> <Nop>
 nmap -builtin gf <Nop>
 
