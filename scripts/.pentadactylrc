@@ -24,6 +24,7 @@ imap -builtin <C-Z> <C-V><C-Z>
 imap -builtin <C-V> <C-V><C-V>
 nmap -builtin <Insert> <Nop>
 nmap -builtin gf <Nop>
+nmap -builtin gh <Nop>
 
 " Panorama is awesome
 nmap -builtin e <C-S-E>

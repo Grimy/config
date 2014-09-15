@@ -537,15 +537,16 @@ let mapleader = '_'
 
 " Common commands: !
 nnoremap <silent> !: q:
-nnoremap <silent> !e :<C-U>e<CR>
-nnoremap <silent> !E :<C-U>e!<CR>
+nnoremap          !b :<C-U>b <C-D>
+nnoremap          !v :<C-U>vs <C-D>
+nnoremap          !e :<C-U>e <C-D>
+nnoremap          !E :<C-U>e! <C-D>
+nnoremap          !t :<C-U>tab drop <C-R>=feedkeys("\t", 't')<CR><BS>
 nnoremap <silent> !q :<C-U>q<CR>
 nnoremap <silent> !Q :<C-U>q!<CR>
 nnoremap <silent> !w :<C-U>w<CR>
 nnoremap <silent> !W :<C-U>silent w !sudo tee % >/dev/null<CR>
 nnoremap <silent> !m :<C-U>make<CR>
-nnoremap          !t :<C-U>tab drop<Space>
-nnoremap          !T :<C-U>tabedit<Space>
 nnoremap          !h :<C-U>vert help<Space>
 nnoremap <silent> !H :<C-U>Unite help<CR>
 
@@ -686,7 +687,7 @@ let g:airline#extensions#whitespace#enabled = 0
 let g:pymode_rope             = 0
 let g:pymode_lint_signs       = 0
 let g:pymode_lint_checker     = "pyflakes,pep8,pylint"
-let g:pymode_lint_ignore      = "W191,E501,C0110,C0111,E223,E302,E126,W0312"
+let g:pymode_lint_ignore      = "W191,E501,C0110,C0111,E223,E302,E126,W0312,C901"
 let g:pymode_syntax_slow_sync = 0
 let g:pymode_folding          = 0
 Map n <Esc> :<C-U>lclose<CR>
@@ -726,7 +727,9 @@ Map n <Tab>   <C-W>w
 Map n <S-Tab> <C-W>W
 
 " gy is easier to type than gT
-nnoremap gy gT
+nnoremap gt :<C-U>bn<CR>
+nnoremap gy :<C-U>bp<CR>
+
 " Control-Tab is nice and consistent with browsers, but only works in the GUI
 Map n <C-Tab>   gt
 Map n <C-S-Tab> gT
@@ -880,9 +883,10 @@ Map n <Leader>q :QuickfixsignsToggle<CR>
 
 " Experimental {{{
 
-if has('vim_starting')
-	silent! runtime! autoload/tabline.vim
-endif
+" if has('vim_starting')
+	" silent! runtime! autoload/tabline.vim
+" endif
+set showtabline=0
 
 nnoremap H :r !howdoi 
 
