@@ -1,3 +1,3 @@
 function clop
-	feh -z ~/p0
+	feh ~/p0
 end

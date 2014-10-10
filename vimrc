@@ -78,7 +78,7 @@ if has('vim_starting')
 
 	" Theming
 	Plug 'Grimy/vim-rainbow'
-	Plug 'bling/vim-airline'
+	" Plug 'bling/vim-airline'
 
 	" File management
 	Plug 'Shougo/vimfiler'
@@ -676,13 +676,6 @@ Map n <C-R> :<C-U>Unite neomru/file<CR>
 let g:xmledit_enable_html = 1
 let g:xml_use_xhtml = 1
 
-" Airline
-set noshowmode
-set laststatus=2
-let g:airline#extensions#tabline#enabled    = 1
-let g:airline_powerline_fonts               = has('gui_running')
-let g:airline#extensions#whitespace#enabled = 0
-
 " Pylint
 let g:pymode_rope             = 0
 let g:pymode_lint_signs       = 0
@@ -694,7 +687,7 @@ Map n <Esc> :<C-U>lclose<CR>
 
 " Easy-align
 vmap <CR> <Plug>(EasyAlign)
-nmap <CR> <Plug>(EasyAlign)ap
+nmap _<CR> <Plug>(EasyAlign)ap
 
 " FNR
 let g:fnr_flags = 'gw'
@@ -707,7 +700,10 @@ vmap S <Plug>(FNR%)
 
 " Managing multiple windows / tabs {{{
 
-set tabpagemax=5
+" Minimize clutter
+set showtabline=0
+set laststatus=0
+set ruler rulerformat=%42(%m%f%=%-(:b%-4n0x%-4B%5l,%-4v%P%)%)
 
 " Geometry
 set splitright splitbelow
@@ -727,8 +723,7 @@ Map n <Tab>   <C-W>w
 Map n <S-Tab> <C-W>W
 
 " gy is easier to type than gT
-nnoremap gt :<C-U>bn<CR>
-nnoremap gy :<C-U>bp<CR>
+nnoremap gy gT
 
 " Control-Tab is nice and consistent with browsers, but only works in the GUI
 Map n <C-Tab>   gt
@@ -883,11 +878,6 @@ Map n <Leader>q :QuickfixsignsToggle<CR>
 
 " Experimental {{{
 
-" if has('vim_starting')
-	" silent! runtime! autoload/tabline.vim
-" endif
-set showtabline=0
-
 nnoremap H :r !howdoi 
 
 augroup Golf
@@ -896,7 +886,8 @@ augroup Golf
 	autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
 augroup END
 
-autocmd BufReadPost,BufEnter,BufNew ~/drawall/java/drawall/** setf java
+autocmd BufReadPost,BufEnter,BufNew ~/drawall/cc/**   setf java
+autocmd BufReadPost,BufEnter,BufNew ~/drawall/test/** setf java
 let g:java_ignore_javadoc = 1
 hi! link SpecialKey Comment
 hi! link Special Comment

@@ -13,6 +13,7 @@ email = Victor.Adam@derpymail.org
 
 [diff]
 tool = vimdiff
+algorithm = patience
 
 [difftool]
 prompt = false
