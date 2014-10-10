@@ -1,3 +1,9 @@
+[alias]
+g = log --graph --oneline --decorate --shortstat
+stat = show --oneline --stat
+orig = remote show origin
+fuck = reset --hard
+
 [push]
 default = current
 
