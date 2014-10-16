@@ -78,7 +78,6 @@ if has('vim_starting')
 
 	" Theming
 	Plug 'Grimy/vim-rainbow'
-	" Plug 'bling/vim-airline'
 
 	" File management
 	Plug 'Shougo/vimfiler'
@@ -102,7 +101,6 @@ if has('vim_starting')
 	" Git power
 	Plug 'tpope/vim-fugitive'
 	Plug 'tomtom/tlib_vim'
-	" Plug 'tomtom/quickfixsigns_vim'
 
 	" Completion
 	Plug 'Valloric/YouCompleteMe'
@@ -553,21 +551,13 @@ nnoremap <silent> !H :<C-U>Unite help<CR>
 " c selects current line, without the line break at the end
 onoremap <silent> c :<C-U>normal! ^v$h<CR>
 
-" s to search and replace
-nnoremap s :%s//g<Left><Left>
-xnoremap s  :s//g<Left><Left>
-nnoremap S :%s/\<<C-R><C-W>\>//g<Left><Left>
-xnoremap S  :s/\<<C-R><C-W>\>//g<Left><Left>
-
 noremap <expr> zz winline() <= &scrolloff + 1 ? 'zz' : 'zt'
 
 " Unimpaired-style mappings
 nnoremap <expr> [j repeat("\<C-O>", v:count1)
 nnoremap <expr> ]j repeat("\<C-I>", v:count1)
-nnoremap <expr> [c QFSJump('', -1)
-nnoremap <expr> ]c QFSJump('', +1)
 
-nnoremap _u: UndotreeToggle<CR>
+nnoremap _u <C-W>o:UndotreeToggle<CR><C-W>h
 
 " Map Q and ; to something useful
 Map nx Q gw
@@ -575,8 +565,8 @@ Map o  Q ap
 Map n ; .wn
 
 " Executes current line
-Map n <silent> <Leader>e :execute getline('.')<CR>
-Map x <silent> <Leader>e :call Execute(join(getline("'<", "'>"), "\n"))<CR>
+Map n <silent> _e :execute getline('.')<CR>
+Map x <silent> _e :call Execute(join(getline("'<", "'>"), "\n"))<CR>
 
 function! Execute(command) range
 	for line in split(substitute(a:command, '\v\n\s*\', '', 'g'), "\n")
@@ -686,13 +676,13 @@ let g:pymode_folding          = 0
 Map n <Esc> :<C-U>lclose<CR>
 
 " Easy-align
-vmap <CR> <Plug>(EasyAlign)
-nmap _<CR> <Plug>(EasyAlign)ap
+vmap _= <Plug>(EasyAlign)
+nmap _= <Plug>(EasyAlign)ap
 
 " FNR
 let g:fnr_flags = 'gw'
-nmap s <Plug>(FNR%)
-nmap S <Plug>(FNR%)<Tab>w
+nmap s <Plug>(FNR%)<CR><C-W>
+nmap S <Plug>(FNR%)<Tab>w<Tab>
 vmap s <Plug>(FNR)
 vmap S <Plug>(FNR%)
 
@@ -811,10 +801,10 @@ augroup END
 " Emulate xterm behaviour
 Map clinov <S-Insert> <MiddleMouse>
 
-" After a paste, leave the cursor at the end and fix indent
 set clipboard=unnamed
 lnoremap <C-R> <C-R><C-P>
 
+" After a paste, leave the cursor at the end and fix indent
 function! ConditionalPaste(invert, where)
 	let [text, type] = [getreg(), getregtype()]
 	if a:invert
@@ -840,39 +830,17 @@ nnoremap <silent> cP :call ConditionalPaste(1, 'P')<CR>
 " git power {{{
 
 " Fugitive
-nnoremap <silent> <Leader>ga :Gwrite<CR>
-nnoremap <silent> <Leader>gb :Gblame<CR>
-nnoremap <silent> <Leader>gc :Gcommit<CR>
-nnoremap <silent> <Leader>gd <C-W>o:Gdiff<CR><C-W>r
-nnoremap          <Leader>gg :Git!<Space>
-nnoremap <silent> <Leader>gl :Glog<CR>
-nnoremap <silent> <Leader>gs :Gstatus<CR>
-nnoremap <silent> <Leader>gw :Gwrite<CR>
+nnoremap <silent> _ga :Gwrite<CR>
+nnoremap <silent> _gb :Gblame<CR>
+nnoremap <silent> _gc :Gcommit<CR>
+nnoremap <silent> _gd <C-W>o:Gdiff<CR><C-W>r
+nnoremap          _gg :Git!<Space>
+nnoremap <silent> _gl :Glog<CR>
+nnoremap <silent> _gs :Gstatus<CR>
+nnoremap <silent> _gw :Gwrite<CR>
 
 " Diffs
 set diffopt=filler,context:5,foldcolumn:1
-
-" QFS
-" TODO: Manage hunks, jump more than once, ...
-function! QFSJump(filter, direction)
-	let delta = v:count1 * a:direction
-	let lnum = []
-	let pos = (a:direction == -1 ? 0 : -1)
-	for sign in QuickfixsignsListBufferSigns(bufnr(''))
-		call add(lnum, sign['lnum'])
-		if sign['lnum'] < line('.') + max([a:direction, 0])
-			let pos += 1
-		endif
-	endfor
-	return lnum[(pos + delta) % len(lnum)] . 'G'
-endfunction
-
-"g:quickfixsigns_icons Disable signs on those special buffers
-" TODO: patch qfs to operate on a per-buffer basis
-let g:quickfixsigns_blacklist_buffer =
-			\ '\v(vimfiler|unite|Command Line|\.txt|^$)'
-let g:quickfixsigns_icons = {}
-Map n <Leader>q :QuickfixsignsToggle<CR>
 
 " }}}
 

@@ -46,15 +46,6 @@ function fzf_key_bindings
     rm -f $TMPDIR/fzf.result
   end
 
-  function __fzf_alt_c
-    # Fish hangs if the command before pipe redirects (2> /dev/null)
-    __fzf_list_dir | fzf +m > $TMPDIR/fzf.result
-    [ (cat $TMPDIR/fzf.result | wc -l) -gt 0 ]
-    and cd (cat $TMPDIR/fzf.result)
-    commandline -f repaint
-    rm -f $TMPDIR/fzf.result
-  end
-
   function __fzf_tmux_height
     if set -q FZF_TMUX_HEIGHT
       set height $FZF_TMUX_HEIGHT
@@ -71,5 +62,4 @@ function fzf_key_bindings
 
   bind \ct '__fzf_ctrl_t'
   bind \cr '__fzf_ctrl_r'
-  bind \ec '__fzf_alt_c'
 end

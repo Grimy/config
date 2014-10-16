@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-my $base = '/home/grimy/.vim';
+my $base = '~/.vim';
 chdir $base;
 
 for my $dir ('', <bundle/*>) {
