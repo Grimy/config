@@ -2,9 +2,8 @@
 " This work is free software. You can redistribute it and/or modify it under
 " the terms of the Do What The Fuck You Want To Public License, Version 2, as
 " published by Sam Hocevar. See the LICENCE file for more details.
-"}}}
 
-" Utility functions {{{
+" Utility functions {{{1
 
 function! GetChar(...)
 	let char = a:0 ? getchar(a:1) : getchar()
@@ -25,12 +24,26 @@ function! Map(modes, ...)
 endfunction
 command! -nargs=+ Map call Map(<f-args>)
 
-" }}}
+function! KeepPos(command)
+	let save = virtcol('.') - indent('.')
+	execute a:command
+	execute 'normal! ' . (save + indent('.')) . '|'
+endfunction
 
-" Initialization {{{
+" Returns the first virtual column of the current character, rather than the last
+function! s:VirtCol()
+	if col('.') == 1
+		return 1
+	endif
+	normal! h
+	let res = virtcol('.') + 1
+	normal! l
+	return res
+endfunction
+
+" Initialization {{{1
 if has('vim_starting')
-
-	" Environment {{{
+	" Environment {{{2
 
 	let s:is_windows = has('win16') || has('win32') || has('win64')
 
@@ -50,9 +63,7 @@ if has('vim_starting')
 	" Useless setting, but the default value can cause a bug in xterm
 	let &t_RV='  Howdy ' . $USERNAME . '!'
 
-	" }}}
-
-	" Manage paths {{{
+	" Manage paths {{{2
 	let s:sep     = s:is_windows ? '\' : '/'
 	let s:path    = fnamemodify(resolve(expand('<sfile>')), ':p:h') . s:sep
 	let s:cache   = s:path . 'cache'  . s:sep
@@ -69,61 +80,58 @@ if has('vim_starting')
 	let g:unite_data_directory         = s:cache . 'unite'
 	let &runtimepath = s:path
 	" }}}
-
-	" Plug {{{
-
-	" Initialization
-	call plug#begin(s:bundle)
-	Plug 'Grimy/vim-default-runtime'
-
-	" Theming
-	Plug 'Grimy/vim-rainbow'
-
-	" File management
-	Plug 'Shougo/vimfiler'
-	Plug 'Shougo/unite.vim'
-	Plug 'Shougo/unite-mru'
-	Plug 'osyo-manga/unite-quickfix'
-	Plug 'thinca/vim-unite-history'
-	Plug 'mbbill/undotree'
-
-	" Editing functionnality
-	Plug 'tpope/vim-surround'
-	Plug 'tpope/vim-unimpaired'
-	Plug 'scrooloose/nerdcommenter'
-	Plug 'junegunn/vim-easy-align'
-	Plug 'junegunn/vim-pseudocl'
-	Plug 'junegunn/vim-fnr'
-	Plug 'Grimy/dragonfly'
-	Plug 'Grimy/subliminal'
-	Plug 'Grimy/indextrous'
-
-	" Git power
-	Plug 'tpope/vim-fugitive'
-	Plug 'tomtom/tlib_vim'
-
-	" Completion
-	Plug 'Valloric/YouCompleteMe'
-	Plug 'mmorearty/vim-matchit'
-	Plug 'tpope/vim-endwise'
-	Plug 'junegunn/fzf'
-
-	" For testing purposes
-	Plug 'vim-scripts/foldsearch'
-
-	" Specific filetypes
-	Plug 'klen/python-mode'
-	Plug 'sukima/xmledit'
-	Plug 'dag/vim-fish'
-
-	" Check
-	call plug#end()
-	" }}}
-
 endif
-" }}}
 
-" Formatting / encoding {{{
+" Plug {{{1
+
+" Initialization
+call plug#begin(s:bundle)
+Plug 'Grimy/vim-default-runtime'
+
+" Theming
+Plug 'Grimy/vim-rainbow'
+
+" File management
+Plug 'Shougo/vimfiler'
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/unite-mru'
+Plug 'osyo-manga/unite-quickfix'
+Plug 'thinca/vim-unite-history'
+Plug 'mbbill/undotree'
+
+" Editing functionnality
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'scrooloose/nerdcommenter'
+Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/vim-pseudocl'
+Plug 'junegunn/vim-fnr'
+Plug 'Grimy/dragonfly'
+Plug 'Grimy/subliminal'
+Plug 'Grimy/indextrous'
+
+" Git power
+Plug 'tpope/vim-fugitive'
+Plug 'tomtom/tlib_vim'
+
+" Completion
+Plug 'Valloric/YouCompleteMe'
+Plug 'mmorearty/vim-matchit'
+Plug 'tpope/vim-endwise'
+Plug 'junegunn/fzf'
+
+" For testing purposes
+Plug 'vim-scripts/foldsearch'
+
+" Specific filetypes
+Plug 'klen/python-mode'
+Plug 'sukima/xmledit'
+Plug 'dag/vim-fish'
+
+" Check
+call plug#end()
+
+" Formatting / encoding {{{1
 
 " Show search results as you type
 set incsearch
@@ -156,9 +164,7 @@ function! g:SetEncoding(enc)
 	endif
 endfunction
 
-" }}}
-
-" History {{{
+" History {{{1
 
 " Keep lots of history
 set history=100
@@ -182,7 +188,6 @@ augroup END
 
 set sessionoptions=blank,curdir,folds,help,resize,tabpages,winpos
 autocmd VimLeave * execute 'mksession!' g:session
-Map n !s :silent source <C-R>=g:session<CR><CR>
 
 " Jump  to  the  last  position  when reopening file
 augroup RecoverLastPosition
@@ -190,9 +195,7 @@ augroup RecoverLastPosition
 	autocmd BufReadPost * silent! normal! g`"zz
 augroup END
 
-" }}}
-
-" Auto-completion {{{
+" Auto-completion {{{1
 
 " Options for the default completion
 set wildmenu
@@ -210,9 +213,7 @@ Map i <expr> <C-N> pumvisible() ? "\<C-N>" : "\<Down>"
 imap <expr> <Tab>   pumvisible() ? "\<C-N>" : virtcol('.') <= indent('.') + 1 ? "\<C-T>" : ""
 imap <expr> <S-Tab> pumvisible() ? "\<C-P>" : virtcol('.') <= indent('.') + 1 ? "\<C-D>" : ""
 
-" }}}
-
-" GUI options {{{
+" GUI options {{{1
 
 " Windows emulation
 set keymodel=startsel,stopsel
@@ -290,32 +291,16 @@ set showcmd
 " The undocumented c flag is vital for completion plugins
 set shortmess=tosTacO
 
-" }}}
-
-" Folding {{{
+" Folding {{{1
 
 " Fold on braces
-set foldmethod=marker
-set foldminlines=3
-set foldnestmax=3
-set foldlevelstart=0
-set foldcolumn=0
+set foldmethod=marker foldminlines=3 foldnestmax=3 foldlevelstart=0 foldcolumn=0
 
 " Open and close folds smartly
-function! ToggleFold()
-	if &foldopen == 'all'
-		set foldopen& foldopen+=insert,jump foldclose=
-		Map n <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zc' : 'h'
-		Map n <expr> l foldclosed(line('.')) != -1 ? 'zv0' : 'l'
-	else
-		set foldopen=all foldclose=all
-		Map n <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zcj' : 'h'
-	endif
-	set foldclose
-endfunction
-
-Map n cof :call ToggleFold()<CR>zMzx
-silent call ToggleFold()
+set foldopen=insert,jump,block,hor,mark,percent,quickfix,search,tag,undo
+set foldclose=
+Map n <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zc' : 'h'
+Map n <expr> l foldclosed(line('.')) != -1 ? 'zv0' : 'l'
 
 Map n zr zR
 Map n zm zMzx
@@ -326,16 +311,14 @@ Map n ]z jzkzjzjzkzxzb
 function! FoldText()
 	let nbLines = v:foldend - v:foldstart
 	let line = getline(v:foldstart)
-	let line = substitute(line, '^\v\W+|\W+$', '', 'g')
-	let space = 66 - strlen(line)
+	let line = substitute(line, '^\v\W+|\{+\d*$', '', 'g')
+	let space = 72 - strwidth(line . nbLines)
 	let line = space < 0 ? line[0:space-3] . '… ' : line . repeat(' ', space)
-	return line . printf('%6s lines)', '(' . nbLines)
+	return line . printf('(%d lines)', nbLines)
 endfunction
 set foldtext=FoldText()
 
-" }}}
-
-" Un clavier azerty en vaut deux ! {{{
+" Un clavier azerty en vaut deux ! {{{1
 
 set spelllang=en,fr
 
@@ -347,23 +330,19 @@ Map l <recursive> ç _
 Map l <recursive> ù %
 Map l <recursive> ’ '
 
-" ¨ and £ are shifted ^ and $
 Map clinov <recursive> µ #
 Map clinov <recursive> § <Bslash>
 Map clinov <recursive> ¨ {
 Map clinov <recursive> £ }
-Map clinv  <recursive> ² [
-Map nv     <recursive> & ]
 Map clinov <recursive> ° <Bar>
+Map nox    <recursive> ( [
+Map nox    <recursive> ) ]
+Map nox (( [[
+Map nox )) ][
+Map nox )( ]]
+Map nox () []
 
-Map nox ²² [[
-Map nox && ][
-Map nox &² ]]
-Map nox ²& []
-
-" }}}
-
-" Fixes {{{
+" Fixes {{{1
 " For when vim doesn’t Do What I Mean
 
 " Y yanks until EOL, like D and C
@@ -387,6 +366,12 @@ set notimeout ttimeout timeoutlen=1
 " Redo with U
 Map n U <C-R>
 
+" Undo/Redo work in visual-mode
+Map v u :<Esc>ugv
+Map v U :<Esc>Ugv
+Map v gu u
+Map v gU U
+
 " Backspace can cross line borders
 set backspace=indent,eol,start
 
@@ -397,17 +382,6 @@ Map n x     :<C-U>call DeleteOne(+v:count1, 0)<CR>
 Map n X     :<C-U>call DeleteOne(-v:count1, 0)<CR>
 Map n <Del> :<C-U>call DeleteOne(+v:count1, 1)<CR>
 Map n <BS>  :<C-U>call DeleteOne(-v:count1, 1)<CR>
-
-" Returns the first virtual column of the current character, rather than the last
-function! s:VirtCol()
-	if col('.') == 1
-		return 1
-	endif
-	normal! h
-	let res = virtcol('.') + 1
-	normal! l
-	return res
-endfunction
 
 function! DeleteOne(count, wrap)
 	let start = a:count < 0 ? s:VirtCol() + a:count : virtcol('.')
@@ -450,32 +424,10 @@ nnoremap <silent> k gk
 noremap <silent> <Down> gj
 noremap <silent> <Up>   gk
 
-" Allows mapping q<Anything> without introducing a delay when stopping the
-" recording of a macro. Also adjusts cmdheight for the "recording" message
-nnoremap <expr> q HandleQ()
+" Diffs
+set diffopt=filler,context:5,foldcolumn:1
 
-function! HandleQ()
-	if &cmdheight == 1
-		let reg = GetChar()
-		if (reg =~ '\v[0-9a-zA-Z"]')
-			" @@ executes the last recorded macro
-			call Map('n', '@@', '@' . reg)
-			set cmdheight=2
-			return 'q' . reg
-		endif
-		return get(s:qmap, reg, "\<Esc>")
-	else
-		set cmdheight=1
-		return 'q'
-	endif
-endfunction
-
-" Common typos
-let s:qmap = { ':': ':q', '!': 'q!', '/': 'q/' }
-
-" }}}
-
-" UNIX shortcuts {{{
+" UNIX shortcuts {{{1
 
 Map clinov <recursive> <C-H> <Backspace>
 Map clinov <recursive> <C-B> <Left>
@@ -516,37 +468,54 @@ Map n <C-D> :call KeepPos('<')<CR>
 xmap <C-T> VVgv<plug>(dragonfly_right)
 xmap <C-D> VVgv<plug>(dragonfly_left)
 
-function! KeepPos(command)
-	let save = virtcol('.') - indent('.')
-	execute a:command
-	execute 'normal! ' . (save + indent('.')) . '|'
-endfunction
-
 " Increment / decrement
 inoremap <C-S> <C-O><C-A>
 inoremap <nowait> <C-X> <C-O><C-X>
 nnoremap <C-S> <C-A>
 
-" }}}
+" Mappings galore {{{1
 
-" Mappings galore {{{
+" Common commands start with !
+Map n !b :<C-U>b <C-D><C-L>
+Map n !v :<C-U>vs <C-D>
+Map n !e :<C-U>e <C-D>
+Map n !E :<C-U>e! <C-D>
+Map n !t :<C-U>tab drop <C-R>=feedkeys("\t", 't')<CR><BS>
+Map n !q :<C-U>q<CR>
+Map n !Q :<C-U>q!<CR>
+Map n !s :<C-U>silent source <C-R>=g:session<CR><CR>
+Map n !w :<C-U>w<CR>
+Map n !W :<C-U>silent w !sudo tee % >/dev/null<CR>
+Map n !m :<C-U>make<CR>
+Map n !h :<C-U>vert help<Space>
+Map n !H :read !howdoi<Space>
 
-let mapleader = '_'
+" Plugin mappings start with _
+Map n _ga :Gwrite<CR>
+Map n _gb :Gblame<CR>
+Map n _gc :Gcommit<CR>
+Map n _gd <C-W>o:Gdiff<CR><C-W>r
+Map n _gg :Git!<Space>
+Map n _gl :Glog<CR>
+Map n _gs :Gstatus<CR>
+Map n _gw :Gwrite<CR>
 
-" Common commands: !
-nnoremap <silent> !: q:
-nnoremap          !b :<C-U>b <C-D>
-nnoremap          !v :<C-U>vs <C-D>
-nnoremap          !e :<C-U>e <C-D>
-nnoremap          !E :<C-U>e! <C-D>
-nnoremap          !t :<C-U>tab drop <C-R>=feedkeys("\t", 't')<CR><BS>
-nnoremap <silent> !q :<C-U>q<CR>
-nnoremap <silent> !Q :<C-U>q!<CR>
-nnoremap <silent> !w :<C-U>w<CR>
-nnoremap <silent> !W :<C-U>silent w !sudo tee % >/dev/null<CR>
-nnoremap <silent> !m :<C-U>make<CR>
-nnoremap          !h :<C-U>vert help<Space>
-nnoremap <silent> !H :<C-U>Unite help<CR>
+nnoremap _u <C-W>o:UndotreeToggle<CR><C-W>h
+
+vmap _= <Plug>(EasyAlign)
+nmap _= <Plug>(EasyAlign)ap
+
+Map n _c :<C-U>Unite change<CR>
+Map n _d :<C-U>Unite directory<CR>
+Map n _f :<C-U>Unite file_rec<CR>
+Map n _j :<C-U>Unite jump<CR>
+Map n _l :<C-U>Unite line<CR>
+Map n _p :<C-U>Unite history/yank<CR>
+Map n _r :<C-U>Unite neomru/file<CR>
+
+" Single macro
+Map n q qq<Esc>
+Map n <nowait> @ @q
 
 " c selects current line, without the line break at the end
 onoremap <silent> c :<C-U>normal! ^v$h<CR>
@@ -557,22 +526,10 @@ noremap <expr> zz winline() <= &scrolloff + 1 ? 'zz' : 'zt'
 nnoremap <expr> [j repeat("\<C-O>", v:count1)
 nnoremap <expr> ]j repeat("\<C-I>", v:count1)
 
-nnoremap _u <C-W>o:UndotreeToggle<CR><C-W>h
-
 " Map Q and ; to something useful
 Map nx Q gw
 Map o  Q ap
 Map n ; .wn
-
-" Executes current line
-Map n <silent> _e :execute getline('.')<CR>
-Map x <silent> _e :call Execute(join(getline("'<", "'>"), "\n"))<CR>
-
-function! Execute(command) range
-	for line in split(substitute(a:command, '\v\n\s*\', '', 'g'), "\n")
-		execute line
-	endfor
-endfunction
 
 " Preserve CTRL-A
 let g:surround_no_insert_mappings = 1
@@ -590,11 +547,11 @@ Map n gd gD
 Map n gD gd
 
 " Append to: end of line > one character
-nnoremap a A
+Map n a A
 
-" }}}
+" Surely there’s something to do with H, M, Z and ','
 
-" Plugin config {{{
+" Plugin config {{{1
 
 " NerdCommenter
 let g:NERDSpaceDelims = 1
@@ -606,26 +563,22 @@ vnoremap <C-C>      :call NERDComment('v', 'toggle')<CR>gv
 let g:ycm_global_ycm_extra_conf = '~/.vim/scripts/ycm.py'
 
 " Subliminal
-xnoremap <silent> <BS>    :SubliminalInsert<CR><BS>
-xnoremap <silent> <Del>   :SubliminalAppend<CR><Del>
-xnoremap <silent> <C-U>   :SubliminalInsert<CR><C-U>
-xnoremap <silent> <C-W>   :SubliminalInsert<CR><C-W>
-xnoremap <silent> <C-S>   :SubliminalInsert<CR><C-S>
-xnoremap <silent> <C-X>   :SubliminalInsert<CR><C-X>
-xnoremap <silent> <C-Del> :SubliminalAppend<CR><C-Del>
-xnoremap <silent> <C-Y>   :SubliminalInsert<CR><C-Y>
-xnoremap <silent> <C-Q>   :SubliminalInsert<CR><C-E>
+Map x <BS>    :SubliminalInsert<CR><BS>
+Map x <Del>   :SubliminalAppend<CR><Del>
+Map x <C-U>   :SubliminalInsert<CR><C-U>
+Map x <C-W>   :SubliminalInsert<CR><C-W>
+Map x <C-S>   :SubliminalInsert<CR><C-S>
+Map x <C-X>   :SubliminalInsert<CR><C-X>
+Map x <C-Del> :SubliminalAppend<CR><C-Del>
+Map x <C-Y>   :SubliminalInsert<CR><C-Y>
+Map x <C-Q>   :SubliminalInsert<CR><C-E>
 
 " Dragonfly
-xmap <Left>  <Plug>(dragonfly_left)
-xmap <Down>  <Plug>(dragonfly_down)
-xmap <Up>    <Plug>(dragonfly_up)
-xmap <Right> <Plug>(dragonfly_right)
-xmap H       <Plug>(dragonfly_left)
-xmap J       <Plug>(dragonfly_down)
-xmap K       <Plug>(dragonfly_up)
-xmap L       <Plug>(dragonfly_right)
-xmap P       <Plug>(dragonfly_copy)
+xmap H <Plug>(dragonfly_left)
+xmap J <Plug>(dragonfly_down)
+xmap K <Plug>(dragonfly_up)
+xmap L <Plug>(dragonfly_right)
+xmap P <Plug>(dragonfly_copy)
 
 " Filetypes
 call vimfiler#set_execute_file('_', 'vim')
@@ -654,14 +607,6 @@ if executable('ag')
 	let g:unite_source_grep_recursive_opt = ''
 endif
 
-Map n ,c    :<C-U>Unite change<CR>
-Map n ,d    :<C-U>Unite directory<CR>
-Map n ,f    :<C-U>Unite file_rec<CR>
-Map n ,j    :<C-U>Unite jump<CR>
-Map n ,l    :<C-U>Unite line<CR>
-Map n ,p    :<C-U>Unite history/yank<CR>
-Map n <C-R> :<C-U>Unite neomru/file<CR>
-
 " xmledit
 let g:xmledit_enable_html = 1
 let g:xml_use_xhtml = 1
@@ -675,10 +620,6 @@ let g:pymode_syntax_slow_sync = 0
 let g:pymode_folding          = 0
 Map n <Esc> :<C-U>lclose<CR>
 
-" Easy-align
-vmap _= <Plug>(EasyAlign)
-nmap _= <Plug>(EasyAlign)ap
-
 " FNR
 let g:fnr_flags = 'gw'
 nmap s <Plug>(FNR%)<CR><C-W>
@@ -686,9 +627,7 @@ nmap S <Plug>(FNR%)<Tab>w<Tab>
 vmap s <Plug>(FNR)
 vmap S <Plug>(FNR%)
 
-" }}}
-
-" Managing multiple windows / tabs {{{
+" Managing multiple windows / tabs {{{1
 
 " Minimize clutter
 set showtabline=0
@@ -749,17 +688,11 @@ function! Tcd()
 	endif
 endfunction
 
-" }}}
+" Scrolling {{{1
 
-" Scrolling {{{
-
-" Keep a few lines around the cursor
-set scrolljump=4
-set scrolloff=20
-
-" Horizontal scrolling
-set sidescroll=2
-set sidescrolloff=8
+" Keep a few lines/columns around the cursor
+set scrolljump=4 scrolloff=20
+set sidescroll=2 sidescrolloff=8
 
 " Keep cursor column when scrolling
 set nostartofline
@@ -794,9 +727,7 @@ augroup SaveLastInsertColumn
 	autocmd InsertEnter * let g:last_insert_col = virtcol('.')
 augroup END
 
-" }}}
-
-" Pasting {{{
+" Pasting {{{1
 
 " Emulate xterm behaviour
 Map clinov <S-Insert> <MiddleMouse>
@@ -825,28 +756,7 @@ nnoremap <silent> P  :call ConditionalPaste(0, 'P')<CR>
 nnoremap <silent> cp :call ConditionalPaste(1, 'p')<CR>
 nnoremap <silent> cP :call ConditionalPaste(1, 'P')<CR>
 
-" }}}
-
-" git power {{{
-
-" Fugitive
-nnoremap <silent> _ga :Gwrite<CR>
-nnoremap <silent> _gb :Gblame<CR>
-nnoremap <silent> _gc :Gcommit<CR>
-nnoremap <silent> _gd <C-W>o:Gdiff<CR><C-W>r
-nnoremap          _gg :Git!<Space>
-nnoremap <silent> _gl :Glog<CR>
-nnoremap <silent> _gs :Gstatus<CR>
-nnoremap <silent> _gw :Gwrite<CR>
-
-" Diffs
-set diffopt=filler,context:5,foldcolumn:1
-
-" }}}
-
-" Experimental {{{
-
-nnoremap H :r !howdoi 
+" Experimental {{{1
 
 augroup Golf
 	autocmd!
@@ -869,6 +779,3 @@ noremap <expr> <C-P> g:last_cmd_type . "\<Up>"
 
 " Auto-escape '/' in search
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
-
-" }}}
-

@@ -1,5 +1,5 @@
 [alias]
-g = log --graph --oneline --decorate --shortstat
+g = log --graph --oneline --decorate
 stat = show --oneline --stat
 orig = remote show origin
 fuck = reset --hard
