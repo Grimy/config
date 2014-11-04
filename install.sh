@@ -34,5 +34,6 @@ ln -nsfv "$basedir/scripts/.Xresources"    ~/.Xresources
 ln -nsfv "$basedir/scripts/gvim.desktop"   ~/.local/share/applications
 ln -nsfv "$basedir/scripts/.gitconfig"     ~/.gitconfig
 ln -nsfv "$basedir/scripts/functions/"     ~/.config/fish/functions
+ln -nsfv "$basedir/scripts/htop/"          ~/.config/htop
 
 src/vim -c 'PlugInstall!'
