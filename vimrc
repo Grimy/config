@@ -170,21 +170,11 @@ endfunction
 set history=100
 set hidden
 set backup
+set noswapfile
 if has('vim_starting') " time consuming operation
 	set undofile undolevels=65536
 endif
 set autowrite
-
-augroup AutomaticSwapRecoveryAndDelete
-	autocmd!
-	autocmd WinEnter * checktime
-	autocmd SwapExists  * let v:swapchoice = 'r'
-				\ | let b:swapname = v:swapname
-	autocmd BufWinEnter * if exists('b:swapname')
-				\ | call delete(b:swapname)
-				\ | unlet b:swapname
-				\ | endif
-augroup END
 
 set sessionoptions=blank,curdir,folds,help,resize,tabpages,winpos
 autocmd VimLeave * execute 'mksession!' g:session
@@ -476,19 +466,19 @@ nnoremap <C-S> <C-A>
 " Mappings galore {{{1
 
 " Common commands start with !
-Map n !b :<C-U>b <C-D><C-L>
-Map n !v :<C-U>vs <C-D>
-Map n !e :<C-U>e <C-D>
-Map n !E :<C-U>e! <C-D>
+Map n !b :<C-U>b <C-R>=feedkeys("\t\t\t", 't')<CR><BS>
+Map n !v :<C-U>vs <C-R>=feedkeys("\t", 't')<CR><BS>
+Map n !e :<C-U>e <C-R>=feedkeys("\t", 't')<CR><BS>
+Map n !E :<C-U>e! <C-R>=feedkeys("\t", 't')<CR><BS>
 Map n !t :<C-U>tab drop <C-R>=feedkeys("\t", 't')<CR><BS>
+Map n !h :<C-U>vert help<C-R>=feedkeys(" ", 't')<CR><BS>
+Map n !H :<C-U>read !howdoi<C-R>=feedkeys(" ", 't')<CR><BS>
 Map n !q :<C-U>q<CR>
 Map n !Q :<C-U>q!<CR>
 Map n !s :<C-U>silent source <C-R>=g:session<CR><CR>
 Map n !w :<C-U>w<CR>
 Map n !W :<C-U>silent w !sudo tee % >/dev/null<CR>
 Map n !m :<C-U>make<CR>
-Map n !h :<C-U>vert help<Space>
-Map n !H :read !howdoi<Space>
 
 " Plugin mappings start with _
 Map n _ga :Gwrite<CR>
@@ -767,8 +757,6 @@ augroup END
 autocmd BufReadPost,BufEnter,BufNew ~/drawall/cc/**   setf java
 autocmd BufReadPost,BufEnter,BufNew ~/drawall/test/** setf java
 let g:java_ignore_javadoc = 1
-hi! link SpecialKey Comment
-hi! link Special Comment
 
 " Ctrl-P repeats last command OR search
 let g:last_cmd_type = ':'
@@ -779,3 +767,8 @@ noremap <expr> <C-P> g:last_cmd_type . "\<Up>"
 
 " Auto-escape '/' in search
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
+
+" Syntax file debugging
+nnoremap ,, :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'
+			\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
+			\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
