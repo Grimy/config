@@ -11,7 +11,7 @@ function fish_user_key_bindings
 	# Ctrl-Del and Ctrl-Backspace
 	bind \e\[3\;5~ kill-word
 	bind \e\[3^    kill-word
-	# bind \e\[\? backward-kill-word
+	bind \cH       backward-kill-word
 
 	bind \e\[25~ null
 	bind \e\[26~ null

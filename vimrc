@@ -51,7 +51,7 @@ if has('vim_starting')
 	execute 'language' 'message' s:is_windows ? 'en' : 'C'
 
 	" Keycodes not automatically recognized
-	Map clinov <recursive> <C-?> <C-BS>
+	Map clinov <recursive> <C-H> <C-BS>
 	Map clinov <recursive> <C-@> <C-Space>
 	nmap [3;5~ <C-Del>
 
@@ -419,10 +419,10 @@ set diffopt=filler,context:5,foldcolumn:1
 
 " UNIX shortcuts {{{1
 
-Map clinov <recursive> <C-H> <Backspace>
+Map clinov <recursive> <C-?> <Backspace>
 Map clinov <recursive> <C-B> <Left>
 Map clinov <recursive> <C-F> <Right>
-Map clinov <recursive> <C-Backspace> <C-W>
+Map clinov <recursive> <C-BS> <C-W>
 
 " Ctrl-U: delete to beginning
 " Already defined in insert and command modes

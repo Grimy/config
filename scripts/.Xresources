@@ -6,7 +6,7 @@ xterm*locale:       true
 *bellIsUrgent:      true
 
 *metaSendsEscape:   true
-*backarrowKey:      true
+*backarrowKey:      false
 
 *saveLines:         65535
 *scrollTTYOutput:   true

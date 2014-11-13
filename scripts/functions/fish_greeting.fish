@@ -10,8 +10,5 @@ function fish_greeting
 		ssh-agent -a $SSH_AUTH_SOCK >/dev/null
 		ssh-add
 	end
-
-	stty erase 
-
 	echo 'Howdy!'
 end
