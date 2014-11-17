@@ -1,8 +1,7 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -w
+use strict;
 
-my $base = '~/.vim';
-chdir $base;
-
+chomp(my $base = `readlink -f ~/.vim`);
 for my $dir ('', <bundle/*>) {
 	chdir "$base/$dir";
 	`git ls-remote --get-url origin` =~ /Grimy/ || next;
