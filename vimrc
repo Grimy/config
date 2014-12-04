@@ -78,7 +78,7 @@ if has('vim_starting')
 	let g:session                      = s:cache . 'session'
 	let g:vimfiler_data_directory      = s:cache . 'vimfiler'
 	let g:unite_data_directory         = s:cache . 'unite'
-	let &runtimepath = s:path
+	let &runtimepath = s:path . ',' . s:bundle . '*'
 	" }}}
 	" Plug {{{2
 
@@ -133,19 +133,14 @@ endif
 
 " Formatting / encoding {{{1
 
-" Show search results as you type
-set incsearch
+" Sensible defaults
+set incsearch gdefault nojoinspaces
 
 " Patterns are case sensitive iff they contain at least one uppercase
 set ignorecase smartcase
 
-set cindent      " Not actually C-specific
-
-set tabstop=4    " One indenting level = 4 spaces
-set shiftwidth=4 " One tab = 4 spaces
-
-set smarttab     " Backspace at the beginning of a line deletes 4 spaces
-set nojoinspaces " Only one space between sentences
+" Classic four-spaces wide tab indent
+set cindent tabstop=4 shiftwidth=4
 
 " Encoding
 set encoding=utf-8

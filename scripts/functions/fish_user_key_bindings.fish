@@ -13,6 +13,7 @@ function fish_user_key_bindings
 	bind \e\[3^    kill-word
 	bind \cH       backward-kill-word
 
+	bind [Z complete
 	bind \e\[25~ null
 	bind \e\[26~ null
 end
