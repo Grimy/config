@@ -75,8 +75,10 @@ cmap -builtin <C-P> <Up>
 nmap -builtin <C-J> <PageDown>
 nmap -builtin <C-K> <PageUp>
 
-" YouTube videos
+" Special
 nmap -builtin <silent> Y :!yt (xsel) &<CR>
+nmap -builtin zo fdow<CR>
+nmap -builtin zp y:<S-Insert><C-Left><Left><C-U>saveas ~/p0/
 
 " Custom styles
 autocmd!

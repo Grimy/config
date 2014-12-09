@@ -1,8 +1,9 @@
 [alias]
-g = log --graph --oneline --decorate --all
+g = log --graph --oneline --decorate --all --date-order
 stat = show --oneline --stat
 orig = remote show origin
 fuck = reset --hard
+pull = pull --verbose --rebase
 
 [push]
 default = current
@@ -27,3 +28,6 @@ pager = less
 
 [interactive]
 singlekey = true
+
+[branch]
+autosetuprebase = always

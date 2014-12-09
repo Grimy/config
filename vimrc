@@ -80,56 +80,56 @@ if has('vim_starting')
 	let g:unite_data_directory         = s:cache . 'unite'
 	let &runtimepath = s:path
 	" }}}
+	" Plug {{{2
+
+	" Initialization
+	call plug#begin(s:bundle)
+	Plug 'Grimy/vim-default-runtime'
+
+	" Theming
+	Plug 'Grimy/vim-rainbow'
+
+	" File management
+	Plug 'Shougo/vimfiler'
+	Plug 'Shougo/unite.vim'
+	Plug 'Shougo/unite-mru'
+	Plug 'osyo-manga/unite-quickfix'
+	Plug 'thinca/vim-unite-history'
+	Plug 'mbbill/undotree'
+
+	" Editing functionnality
+	Plug 'tpope/vim-surround'
+	Plug 'tpope/vim-unimpaired'
+	Plug 'scrooloose/nerdcommenter'
+	Plug 'junegunn/vim-easy-align'
+	Plug 'junegunn/vim-pseudocl'
+	Plug 'junegunn/vim-fnr'
+	Plug 'Grimy/dragonfly'
+	Plug 'Grimy/subliminal'
+	Plug 'Grimy/indextrous'
+
+	" Git power
+	Plug 'tpope/vim-fugitive'
+	Plug 'tomtom/tlib_vim'
+
+	" Completion
+	Plug 'Valloric/YouCompleteMe'
+	Plug 'mmorearty/vim-matchit'
+	Plug 'tpope/vim-endwise'
+	Plug 'junegunn/fzf'
+
+	" For testing purposes
+	Plug 'vim-scripts/foldsearch'
+
+	" Specific filetypes
+	Plug 'klen/python-mode'
+	Plug 'sukima/xmledit'
+	Plug 'dag/vim-fish'
+
+	" Check
+	call plug#end()
+
 endif
-
-" Plug {{{1
-
-" Initialization
-call plug#begin(s:bundle)
-Plug 'Grimy/vim-default-runtime'
-
-" Theming
-Plug 'Grimy/vim-rainbow'
-
-" File management
-Plug 'Shougo/vimfiler'
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/unite-mru'
-Plug 'osyo-manga/unite-quickfix'
-Plug 'thinca/vim-unite-history'
-Plug 'mbbill/undotree'
-
-" Editing functionnality
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
-Plug 'scrooloose/nerdcommenter'
-Plug 'junegunn/vim-easy-align'
-Plug 'junegunn/vim-pseudocl'
-Plug 'junegunn/vim-fnr'
-Plug 'Grimy/dragonfly'
-Plug 'Grimy/subliminal'
-Plug 'Grimy/indextrous'
-
-" Git power
-Plug 'tpope/vim-fugitive'
-Plug 'tomtom/tlib_vim'
-
-" Completion
-Plug 'Valloric/YouCompleteMe'
-Plug 'mmorearty/vim-matchit'
-Plug 'tpope/vim-endwise'
-Plug 'junegunn/fzf'
-
-" For testing purposes
-Plug 'vim-scripts/foldsearch'
-
-" Specific filetypes
-Plug 'klen/python-mode'
-Plug 'sukima/xmledit'
-Plug 'dag/vim-fish'
-
-" Check
-call plug#end()
 
 " Formatting / encoding {{{1
 
@@ -172,7 +172,7 @@ set hidden
 set backup
 set noswapfile
 if has('vim_starting') " time consuming operation
-	set undofile undolevels=65536
+	set undofile undolevels=4096
 endif
 set autowrite
 
@@ -474,8 +474,10 @@ Map n !t :<C-U>tab drop <C-R>=feedkeys("\t", 't')<CR><BS>
 Map n !h :<C-U>vert help<C-R>=feedkeys(" ", 't')<CR><BS>
 Map n !H :<C-U>read !howdoi<C-R>=feedkeys(" ", 't')<CR><BS>
 Map n !q :<C-U>q<CR>
+Map n !ä :<C-U>q<CR>
 Map n !Q :<C-U>q!<CR>
 Map n !s :<C-U>silent source <C-R>=g:session<CR><CR>
+Map n !« :<C-U>w<CR>
 Map n !w :<C-U>w<CR>
 Map n !W :<C-U>silent w !sudo tee % >/dev/null<CR>
 Map n !m :<C-U>make<CR>
@@ -551,6 +553,7 @@ vnoremap <C-C>      :call NERDComment('v', 'toggle')<CR>gv
 
 " YCM
 let g:ycm_global_ycm_extra_conf = '~/.vim/scripts/ycm.py'
+let g:ycm_always_populate_location_list = 1
 
 " Subliminal
 Map x <BS>    :SubliminalInsert<CR><BS>
@@ -772,3 +775,4 @@ cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 nnoremap ,, :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'
 			\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
 			\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
+
