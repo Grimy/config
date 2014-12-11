@@ -3,6 +3,7 @@
 " the terms of the Do What The Fuck You Want To Public License, Version 2, as
 " published by Sam Hocevar. See the LICENCE file for more details.
 
+set nocompatible
 " Utility functions {{{1
 
 function! GetChar(...)
@@ -387,7 +388,7 @@ Map x x "_d
 Map x X "_D
 
 " Control + BS/Del deletes entire words
-Map n <C-W>        "_db
+Map n <nowait> <C-W>        "_db
 Map n <C-Del>      "_dw
 Map i <C-Del> <C-O>"_dw
 Map c <C-Del> <C-\>esubstitute(getcmdline(),'\v%'.getcmdpos().'c.{-}(><Bar>$)\s*','','')<CR>
