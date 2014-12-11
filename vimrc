@@ -406,10 +406,8 @@ Map n !t :<C-U>tab drop <C-R>=feedkeys("\t", 't')<CR><BS>
 Map n !h :<C-U>vert help<C-R>=feedkeys(" ", 't')<CR><BS>
 Map n !H :<C-U>read !howdoi<C-R>=feedkeys(" ", 't')<CR><BS>
 Map n !q :<C-U>q<CR>
-Map n !ä :<C-U>q<CR>
 Map n !Q :<C-U>q!<CR>
 Map n !s :<C-U>silent source <C-R>=g:session<CR><CR>
-Map n !« :<C-U>w<CR>
 Map n !w :<C-U>w<CR>
 Map n !W :<C-U>silent w !sudo tee % >/dev/null<CR>
 Map n !m :<C-U>make<CR>
