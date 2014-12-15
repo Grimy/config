@@ -419,10 +419,12 @@ Map n _ga :Gwrite<CR>
 Map n _gb :Gblame<CR>
 Map n _gc :Gcommit<CR>
 Map n _gd <C-W>o:Gdiff<CR><C-W>r
-Map n _gg :Git!<Space>
+nnoremap ,g :silent Ggrep<Space>
 Map n _gl :Glog<CR>
 Map n _gs :Gstatus<CR>
 Map n _gw :Gwrite<CR>
+
+autocmd QuickFixCmdPost *grep* cwindow
 
 nnoremap _u <C-W>o:UndotreeToggle<CR><C-W>h
 
