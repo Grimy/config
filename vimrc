@@ -410,7 +410,7 @@ Map n !Q :<C-U>q!<CR>
 Map n !s :<C-U>silent source <C-R>=g:session<CR><CR>
 Map n !w :<C-U>w<CR>
 Map n !W :<C-U>silent w !sudo tee % >/dev/null<CR>
-Map n !m :<C-U>make<CR>
+Map n !m :<C-U>!make<CR>
 
 " Plugin mappings start with _
 Map n ,a :Gcommit --amend<CR>
