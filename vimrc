@@ -415,14 +415,15 @@ Map n !W :<C-U>silent w !sudo tee % >/dev/null<CR>
 Map n !m :<C-U>make<CR>
 
 " Plugin mappings start with _
-Map n _ga :Gwrite<CR>
-Map n _gb :Gblame<CR>
-Map n _gc :Gcommit<CR>
-Map n _gd <C-W>o:Gdiff<CR><C-W>r
+Map n ,a :Gcommit --amend<CR>
+Map n ,b :Gblame<CR>
+Map n ,c :Gcommit<CR>i
+Map n ,d <C-W>o:Gdiff<CR><C-W>r
 nnoremap ,g :silent Ggrep<Space>
-Map n _gl :Glog<CR>
-Map n _gs :Gstatus<CR>
-Map n _gw :Gwrite<CR>
+Map n ,l :silent Glog<CR>
+Map n ,p :Gpush<CR>
+Map n ,s :Gstatus<CR>
+Map n ,w :Gwrite<CR>
 
 autocmd QuickFixCmdPost *grep* cwindow
 

@@ -1,14 +1,9 @@
 function! TreeH()
-	if stridx(getline('.'), '▾') >= 0
-		return 'o'
-	elseif strpart(getline('.'), 0, 1) ==# ' '
-		return 'x'
-	else
-		return 'u'
-	end
+	return stridx(getline('.'), '▾') >= 0 ? 'o' : strpart(getline('.'), 0, 1) ==# ' ' ? 'x' : 'u'
 endfunction
 
-nmap <buffer> l o
+nmap <buffer> l oj
+nmap <buffer> e o
 nmap <buffer> <expr> h TreeH()
 nmap <buffer> r R
 nmap <buffer> <CR> C
