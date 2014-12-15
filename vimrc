@@ -44,8 +44,6 @@ endfunction
 
 " Initialization {{{1
 if has('vim_starting')
-	" Environment {{{2
-
 	let s:is_windows = has('win16') || has('win32') || has('win64')
 
 	" Use English messages.
@@ -64,12 +62,11 @@ if has('vim_starting')
 	" Useless setting, but the default value can cause a bug in xterm
 	let &t_RV='  Howdy ' . $USERNAME . '!'
 
-	" Manage paths {{{2
-	let s:sep     = s:is_windows ? '\' : '/'
-	let s:path    = fnamemodify(resolve(expand('<sfile>')), ':p:h') . s:sep
-	let s:cache   = s:path . 'cache'  . s:sep
-	let s:bundle  = s:path . 'bundle' . s:sep
-	let &helpfile = s:path . 'vimrc'
+	let s:sep        = s:is_windows ? '\' : '/'
+	let s:path       = fnamemodify(resolve(expand('<sfile>')), ':p:h') . s:sep
+	let s:cache      = s:path . 'cache'  . s:sep
+	let &runtimepath = s:path . ',' . s:path . 'bundle' . s:sep . '*'
+	let &helpfile    = s:path . 'vimrc'
 	" For some reason, vim requires &helpfile to be a valid file, but doesn’t use it
 
 	let &viminfo = '!,%,''42,h,s10,n'  . s:cache . 'info'
@@ -77,59 +74,6 @@ if has('vim_starting')
 	let &backupdir                     = s:cache . 'backups'
 	let &undodir                       = s:cache . 'undos'
 	let g:session                      = s:cache . 'session'
-	let g:vimfiler_data_directory      = s:cache . 'vimfiler'
-	let g:unite_data_directory         = s:cache . 'unite'
-	let &runtimepath = s:path . ',' . s:bundle . '*'
-	" }}}
-	" Plug {{{2
-
-	" Initialization
-	call plug#begin(s:bundle)
-	Plug 'Grimy/vim-default-runtime'
-
-	" Theming
-	Plug 'Grimy/vim-rainbow'
-
-	" File management
-	Plug 'Shougo/vimfiler'
-	Plug 'Shougo/unite.vim'
-	Plug 'Shougo/unite-mru'
-	Plug 'osyo-manga/unite-quickfix'
-	Plug 'thinca/vim-unite-history'
-	Plug 'mbbill/undotree'
-
-	" Editing functionnality
-	Plug 'tpope/vim-surround'
-	Plug 'tpope/vim-unimpaired'
-	Plug 'scrooloose/nerdcommenter'
-	Plug 'junegunn/vim-easy-align'
-	Plug 'junegunn/vim-pseudocl'
-	Plug 'junegunn/vim-fnr'
-	Plug 'Grimy/dragonfly'
-	Plug 'Grimy/subliminal'
-	Plug 'Grimy/indextrous'
-
-	" Git power
-	Plug 'tpope/vim-fugitive'
-	Plug 'tomtom/tlib_vim'
-
-	" Completion
-	Plug 'Valloric/YouCompleteMe'
-	Plug 'mmorearty/vim-matchit'
-	Plug 'tpope/vim-endwise'
-	Plug 'junegunn/fzf'
-
-	" For testing purposes
-	Plug 'vim-scripts/foldsearch'
-
-	" Specific filetypes
-	Plug 'klen/python-mode'
-	Plug 'sukima/xmledit'
-	Plug 'dag/vim-fish'
-
-	" Check
-	call plug#end()
-
 endif
 
 " Formatting / encoding {{{1
@@ -248,14 +192,6 @@ set list listchars=tab:»\ ,nbsp:␣,precedes:«,extends:»
 set display=lastline  " don’t replace the last line with @’s
 
 let &showbreak                    = '↩ '
-let g:unite_prompt                = '» '
-let g:unite_marked_icon           = '✓'
-let g:vimfiler_marked_file_icon   = '✓'
-let g:vimfiler_tree_leaf_icon     = '│'
-let g:vimfiler_tree_opened_icon   = '▾'
-let g:vimfiler_tree_closed_icon   = '▸'
-let g:vimfiler_file_icon          = ' '
-let g:vimfiler_readonly_file_icon = ''
 
 set conceallevel=2
 set concealcursor=n
@@ -493,14 +429,6 @@ nnoremap _u <C-W>o:UndotreeToggle<CR><C-W>h
 vmap _= <Plug>(EasyAlign)
 nmap _= <Plug>(EasyAlign)ap
 
-Map n _c :<C-U>Unite change<CR>
-Map n _d :<C-U>Unite directory<CR>
-Map n _f :<C-U>Unite file_rec<CR>
-Map n _j :<C-U>Unite jump<CR>
-Map n _l :<C-U>Unite line<CR>
-Map n _p :<C-U>Unite history/yank<CR>
-Map n _r :<C-U>Unite neomru/file<CR>
-
 " Single macro
 Map n q qq<Esc>
 Map n <nowait> @ @q
@@ -547,6 +475,13 @@ inoremap <C-C> <C-O>:call NERDComment('n', 'toggle')<CR>
 nnoremap <C-C>      :call NERDComment('n', 'toggle')<CR>j
 vnoremap <C-C>      :call NERDComment('v', 'toggle')<CR>gv
 
+" NerdTree
+let g:NERDTreeChDirMode = 2
+let g:NERDTreeQuitOnOpen = 0
+let g:NERDTreeWinSize = 42
+let g:NERDTreeMinimalUI = 1
+nnoremap cd :<C-U>NERDTreeFind<CR>
+
 " YCM
 let g:ycm_global_ycm_extra_conf = '~/.vim/scripts/ycm.py'
 let g:ycm_always_populate_location_list = 1
@@ -568,33 +503,6 @@ xmap J <Plug>(dragonfly_down)
 xmap K <Plug>(dragonfly_up)
 xmap L <Plug>(dragonfly_right)
 xmap P <Plug>(dragonfly_copy)
-
-" Filetypes
-call vimfiler#set_execute_file('_', 'vim')
-call vimfiler#set_execute_file('bmp,jpg,png,gif', 'gexe xsiv')
-
-" VimFiler
-let g:vimfiler_as_default_explorer  = 1
-let g:vimfiler_safe_mode_by_default = 0
-let g:vimfiler_enable_auto_cd       = 1
-let g:vimfiler_ignore_pattern       = '^$'
-
-Map n cd :VimFiler -buffer-name=cd -winwidth=49 -split -toggle<CR>
-Map n cD :VimFilerTab -buffer-name=cD ~<CR>
-
-" Unite
-call unite#filters#matcher_default#use(['matcher_glob'])
-let g:unite_enable_start_insert = 1
-let g:unite_source_history_yank_enable = 1
-
-if executable('ag')
-	" Use ag in unite grep source.
-	let g:unite_source_grep_command = 'ag'
-	let g:unite_source_grep_default_opts =
-				\ '--line-numbers --nocolor --nogroup --hidden ' .
-				\ '--ignore .hg --ignore .svn --ignore .git'
-	let g:unite_source_grep_recursive_opt = ''
-endif
 
 " xmledit
 let g:xmledit_enable_html = 1
@@ -699,12 +607,12 @@ endfunction
 " Mouse scrolls the cursor
 Map nvi <expr> <ScrollWheelDown> Scroll(4, 0)
 Map nvi <expr> <ScrollWheelUp>   Scroll(4, 1)
+Map nv  <expr> <C-J>             Scroll(12, 0)
+Map nv  <expr> <C-K>             Scroll(12, 1)
 Map nv  <expr> <Space>           Scroll(&lines-5, 0)
 Map nv  <expr> <S-Space>         Scroll(&lines-5, 1)
 Map nvi <expr> <PageDown>        Scroll(&lines-5, 0)
 Map nvi <expr> <PageUp>          Scroll(&lines-5, 1)
-Map nv  <expr> <C-J>             Scroll(mode() ==# 'n' ? 20 : 8, 0)
-Map nv  <expr> <C-K>             Scroll(mode() ==# 'n' ? 20 : 8, 1)
 
 Map c <C-J> <Down>
 Map c <C-K> <Up>
