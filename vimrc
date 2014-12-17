@@ -519,7 +519,7 @@ let g:pymode_folding          = 0
 Map n <Esc> :<C-U>lclose<CR>
 
 " FNR
-let g:fnr_flags = 'gw'
+let g:fnr_flags = 'w'
 nmap s <Plug>(FNR%)<CR><C-W>
 nmap S <Plug>(FNR%)<Tab>w<Tab>
 vmap s <Plug>(FNR)
