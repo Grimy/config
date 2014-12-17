@@ -36,3 +36,6 @@ autosetuprebase = always
 pushNonFastForward = false
 statusHints = false
 detachedHead = false
+
+[merge]
+tool = gvimdiff
