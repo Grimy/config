@@ -1,3 +1,0 @@
-#!/usr/bin/sh
-cd ~/.vim/src
-hg log -v -l ${@-32} | perl -ne '/Problem/../^$/ and print'

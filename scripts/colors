@@ -1,18 +1,14 @@
 #!/bin/fish
-if [ $argv = 'sol' ]
+if [ "$argv" = 'sol' ]
 	set palette 073642 dc322f 859900 b58900 268bd2 d33682 2aa198 eee8d5 002b36 cb4b16 586e75 657b83 839496 6c71c4 93a1a1 fdf6e3
+	echo -ne "\e]11;#002b36\007"
 else
 	set palette 000000 ff1230 4fd92e ffc36b 0a98e4 e428a3 09cf7f c1c5d3 515151 ff5311 8de231 ffff9b 90e4ff 620a92 39ffaf ffffff
+	echo -ne "\e]11;#131313\007"
 end
 	
 set i 0
 for color in $palette
-	if [ "$TERM" = "linux" ]
-		printf "\e]P%x$color" $i
-	else
-		echo -ne "\e]4;$i;#$color;\007"
-	end
+	echo -ne "\e]4;$i;#$color;\007"
 	set i (expr $i + 1)
 end
-clear
-rainbow
