@@ -207,9 +207,6 @@ augroup END
 " Don’t break lines in the middle of a word
 set linebreak
 
-" Show (partial) command in status line
-set showcmd
-
 " The undocumented c flag is vital for completion plugins
 set shortmess=tosTacO
 
@@ -397,7 +394,10 @@ nnoremap <C-S> <C-A>
 
 " Mappings galore {{{1
 
-" Common commands start with !
+" c selects current line, without the line break at the end
+onoremap <silent> c :<C-U>normal! ^v$h<CR>
+
+" Common commands with !
 Map n !b :<C-U>b <C-R>=feedkeys("\t\t\t", 't')<CR><BS>
 Map n !v :<C-U>vs <C-R>=feedkeys("\t", 't')<CR><BS>
 Map n !e :<C-U>e <C-R>=feedkeys("\t", 't')<CR><BS>
@@ -407,35 +407,11 @@ Map n !h :<C-U>vert help<C-R>=feedkeys(" ", 't')<CR><BS>
 Map n !H :<C-U>read !howdoi<C-R>=feedkeys(" ", 't')<CR><BS>
 Map n !q :<C-U>q<CR>
 Map n !Q :<C-U>q!<CR>
+Map n !m :<C-U>!make<CR>
 Map n !s :<C-U>silent source <C-R>=g:session<CR><CR>
+Map n !x :<C-U>x<CR>
 Map n !w :<C-U>w<CR>
 Map n !W :<C-U>silent w !sudo tee % >/dev/null<CR>
-Map n !m :<C-U>!make<CR>
-
-" Plugin mappings start with _
-Map n ,a :Gcommit --amend<CR>
-Map n ,b :Gblame<CR>
-Map n ,c :Gcommit<CR>i
-Map n ,d <C-W>o:Gdiff<CR><C-W>r
-nnoremap ,g :silent Ggrep<Space>
-Map n ,l :silent Glog<CR>
-Map n ,p :Gpush<CR>
-Map n ,s :Gstatus<CR>
-Map n ,w :Gwrite<CR>
-
-autocmd QuickFixCmdPost *grep* cwindow
-
-nnoremap _u <C-W>o:UndotreeToggle<CR><C-W>h
-
-vmap _= <Plug>(EasyAlign)
-nmap _= <Plug>(EasyAlign)ap
-
-" Single macro
-Map n q qq<Esc>
-Map n <nowait> @ @q
-
-" c selects current line, without the line break at the end
-onoremap <silent> c :<C-U>normal! ^v$h<CR>
 
 noremap <expr> zz winline() <= &scrolloff + 1 ? 'zz' : 'zt'
 
@@ -470,6 +446,21 @@ Map n a A
 
 " Plugin config {{{1
 
+Map n _u <C-W>o:UndotreeToggle<CR><C-W>h
+
+vmap _= <Plug>(EasyAlign)
+nmap _= <Plug>(EasyAlign)ap
+
+Map n _a :Gcommit --amend<CR>
+Map n _b :Gblame<CR>
+Map n _c :Gcommit<CR>i
+Map n _d <C-W>o:Gdiff<CR><C-W>r
+Map n _g :silent Ggrep<C-R>=feedkeys(" ", 't')<CR><BS>
+Map n _l :silent Glog<CR>
+Map n _p :Gpush<CR>
+Map n _s :Gstatus<CR>
+Map n _w :Gwrite<CR>
+
 " NerdCommenter
 let g:NERDSpaceDelims = 1
 inoremap <C-C> <C-O>:call NERDComment('n', 'toggle')<CR>
@@ -482,6 +473,7 @@ let g:NERDTreeQuitOnOpen = 0
 let g:NERDTreeWinSize = 42
 let g:NERDTreeMinimalUI = 1
 nnoremap cd :<C-U>NERDTreeFind<CR>
+autocmd QuickFixCmdPost *grep* cwindow
 
 " YCM
 let g:ycm_global_ycm_extra_conf = '~/.vim/scripts/ycm.py'
@@ -528,16 +520,14 @@ vmap S <Plug>(FNR%)
 " Managing multiple windows / tabs {{{1
 
 " Minimize clutter
-set showtabline=0
-set laststatus=0
-set ruler rulerformat=%42(%m%f%=%-(:b%-4n0x%-4B%5l,%-4v%P%)%)
+set showtabline=0 laststatus=0 showcmd
+set colorcolumn=80
 
 " Geometry
 set splitright splitbelow
 set noequalalways
 set winwidth=88
 set previewheight=16
-set cmdwinheight=3
 set winminwidth=6
 
 augroup SmartTabClose
