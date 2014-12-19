@@ -74,6 +74,8 @@ if has('vim_starting')
 	let &backupdir                     = s:cache . 'backups'
 	let &undodir                       = s:cache . 'undos'
 	let g:session                      = s:cache . 'session'
+
+	colorscheme rainbow
 endif
 
 " Formatting / encoding {{{1
@@ -172,15 +174,11 @@ if has('gui_running')
 		set lsp=1  guifont=Input\ Mono\ Compressed\ Medium\ 11 " 56 199
 		" $@[]{}()|\/ blah/fox Illegal10Oo :;MH,.!?&=+-
 
-		" Because coding on a white background is an heresy
-		set background=dark
-		colorscheme solarized
 	endif
 else
 	set mouse=nvr  " Disable the mouse in insert mode
 	let &t_SI .= "\<Esc>[6 q"
 	let &t_EI .= "\<Esc>[2 q"
-	colorscheme rainbow
 endif
 
 " Show matching brackets
