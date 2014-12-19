@@ -8,10 +8,8 @@ import subprocess
 def FlagsForFile(filename, **kwargs):
 	do_cache = True
 	flags = ['-Weverything', '-Wno-unused-macros', '-Wno-newline-eof']
-	flags += {
-		'c': ['-xc', '-std=c99'],
-		'cpp': ['-xc++',  '-std=c++11', '-stdlib=libc++']
-	}[filename.rsplit('.', 1)[1]]
+	flags += ['-xc', '-std=c99'] if filename.rsplit('.', 1)[1] == 'c' \
+		else ['-xc++',  '-std=c++11']
 	flags += subprocess.Popen(
 		'grep CFLAGS $(git rev-parse --show-toplevel) | grep CFLAGS Makefile | cut -d= -f2 | head -n1',
 		shell=True,
