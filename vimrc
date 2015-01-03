@@ -519,29 +519,7 @@ Map n <C-S-Tab> gT
 " Restore <C-W>
 nnoremap <expr> L "\<C-W>" . nr2char(getchar())
 
-" Make sure all buffers in a tab share the same cwd
-autocmd BufReadPost,BufNewFile,BufEnter * call SetTcd()
-
-command! -nargs=1 Tcd lcd <args> | call Tcd()
-
-function! SetTcd()
-	if !exists('t:cwd') || !isdirectory(t:cwd)
-		if strlen(&l:bufhidden) || !strlen(expand('%'))
-			return
-		endif
-		let t:cwd = expand('%:p:h')
-	endif
-	execute 'lcd' t:cwd
-endfunction
-
-function! Tcd()
-	let t:cwd = getcwd()
-	if !exists('s:recursing')
-		let s:recursing = 1
-		normal cdcd
-		unlet s:recursing
-	endif
-endfunction
+execute 'cd' expand('%:p:h')
 
 " Scrolling {{{1
 
