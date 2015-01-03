@@ -4,12 +4,9 @@
 " published by Sam Hocevar. See the LICENCE file for more details.
 
 set nocompatible
-" Utility functions {{{1
+augroup VimRC
 
-function! GetChar(...)
-	let char = a:0 ? getchar(a:1) : getchar()
-	return char > 0 ? nr2char(char) : char
-endfunction
+" Utility functions {{{1
 
 function! Map(modes, ...)
 	let i = a:1 ==# '<recursive>'
@@ -94,11 +91,8 @@ set encoding=utf-8
 set fileencodings=utf-8,cp1252
 
 " Handle non-ASCII word charcacters
-augroup SetEncoding
-	autocmd!
-	autocmd BufNewFile,BufRead,BufWrite * execute 'setlocal iskeyword+='
+autocmd BufNewFile,BufRead,BufWrite * execute 'setlocal iskeyword+='
 				\ . (&fenc == 'utf-8' ? '128-167,224-235' : '192-255')
-augroup END
 
 function! g:SetEncoding(enc)
 	if (&fileencoding != a:enc)
@@ -113,33 +107,22 @@ set history=100
 set hidden
 set backup
 set noswapfile
-if has('vim_starting') " time consuming operation
-	set undofile undolevels=4096
-endif
 set autowrite
+set undofile
 
 set sessionoptions=blank,curdir,folds,help,resize,tabpages,winpos
 autocmd VimLeave * execute 'mksession!' g:session
 
 " Jump  to  the  last  position  when reopening file
-augroup RecoverLastPosition
-	autocmd!
-	autocmd BufReadPost * silent! normal! g`"zz
-augroup END
+autocmd BufReadPost * silent! normal! g`"zz
 
 " Auto-completion {{{1
 
-" Options for the default completion
-set wildmenu
-set wildmode=longest:full,full
-set wildoptions=tagfile
+" Command-line mode completion
+set wildmenu wildmode=longest:full,full wildoptions=tagfile
 set showfulltag
 set complete=.
-set completeopt=preview,longest,menuone
-
-" Disables the default completion
-Map i <expr> <C-P> pumvisible() ? "\<C-P>" : "\<Up>"
-Map i <expr> <C-N> pumvisible() ? "\<C-N>" : "\<Down>"
+set completeopt=longest,menuone
 
 " Key bindings
 imap <expr> <Tab>   pumvisible() ? "\<C-N>" : virtcol('.') <= indent('.') + 1 ? "\<C-T>" : ""
@@ -154,7 +137,7 @@ set selectmode=key,mouse
 " Vim feels much more snappy and responsive this way
 set nolazyredraw
 set cursorline
-set synmaxcol=99
+set synmaxcol=101
 
 if has('gui_running')
 	set mouse=ar
@@ -165,18 +148,9 @@ if has('gui_running')
 	set mousetime=200
 	set mouseshape+=v:beam,sd:updown,vd:leftright
 	set guicursor+=a:blinkon0 " disable blinking
-
-	if has('vim_starting')
-		" set lsp=-2 guifont=Inconsolata\ 11 " 55 177
-		" set lsp=-2 guifont=Droid\ Sans\ Mono\ for\ Powerline\ 11 " 55 177
-		" set lsp=-2 guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 11 " 55 177
-		" set lsp=0  guifont=Liberation\ Mono\ for\ Powerline\ 11 " 55 177
-		set lsp=1  guifont=Input\ Mono\ Compressed\ Medium\ 11 " 56 199
-		" $@[]{}()|\/ blah/fox Illegal10Oo :;MH,.!?&=+-
-
-	endif
+	set lsp=1 guifont=Input\ Mono\ Compressed\ Medium\ 11
 else
-	set mouse=nvr  " Disable the mouse in insert mode
+	set mouse=nvr
 	let &t_SI .= "\<Esc>[6 q"
 	let &t_EI .= "\<Esc>[2 q"
 endif
@@ -185,22 +159,17 @@ endif
 set matchpairs+=<:>
 
 " Better replacement characters
-set fillchars=stl:\ ,stlnc:\ ,diff:X
+set fillchars=stl:\ ,stlnc: ,diff:X,vert:│
 set list listchars=tab:»\ ,nbsp:␣,precedes:«,extends:»
-set display=lastline  " don’t replace the last line with @’s
+let &showbreak = '↩ '
+set display=lastline
 
-let &showbreak                    = '↩ '
+" Disable trailing whitespace highlighting in insert mode
+autocmd InsertEnter * set listchars-=trail:␣
+autocmd InsertLeave * set listchars+=trail:␣
 
 set conceallevel=2
 set concealcursor=n
-
-" Showing trailing whitespace is great, but it shows whenever you append a space
-" The workaround is to disable it in insert mode
-augroup ShowTrailingSpaces
-	autocmd!
-	autocmd InsertEnter * set listchars-=trail:␣
-	autocmd InsertLeave * set listchars+=trail:␣
-augroup END
 
 " Don’t break lines in the middle of a word
 set linebreak
@@ -349,6 +318,8 @@ set diffopt=filler,context:5,foldcolumn:1
 Map clinov <recursive> <C-?> <Backspace>
 Map clinov <recursive> <C-B> <Left>
 Map clinov <recursive> <C-F> <Right>
+Map clinov <recursive> <C-P> <Up>
+Map clinov <recursive> <C-N> <Down>
 Map clinov <recursive> <C-BS> <C-W>
 
 " Ctrl-U: delete to beginning
@@ -392,6 +363,9 @@ nnoremap <C-S> <C-A>
 
 " Mappings galore {{{1
 
+" Auto-escape '/' in search
+cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
+
 " c selects current line, without the line break at the end
 onoremap <silent> c :<C-U>normal! ^v$h<CR>
 
@@ -407,15 +381,16 @@ Map n !q :<C-U>q<CR>
 Map n !Q :<C-U>q!<CR>
 Map n !m :<C-U>!make<CR>
 Map n !s :<C-U>silent source <C-R>=g:session<CR><CR>
-Map n !x :<C-U>x<CR>
 Map n !w :<C-U>w<CR>
 Map n !W :<C-U>silent w !sudo tee % >/dev/null<CR>
+Map n !x :<C-U>x<CR>
 
 noremap <expr> zz winline() <= &scrolloff + 1 ? 'zz' : 'zt'
 
 " Unimpaired-style mappings
 nnoremap <expr> [j repeat("\<C-O>", v:count1)
 nnoremap <expr> ]j repeat("\<C-I>", v:count1)
+nnoremap cor :<C-U>call rainbow#toggle()<CR>
 
 " Map Q and ; to something useful
 Map nx Q gw
@@ -477,16 +452,19 @@ autocmd QuickFixCmdPost *grep* cwindow
 let g:ycm_global_ycm_extra_conf = '~/.vim/scripts/ycm.py'
 let g:ycm_always_populate_location_list = 1
 
+" FZF
+nnoremap <C-Z> :<C-U>FZF<CR>
+
 " Subliminal
-Map x <BS>    :SubliminalInsert<CR><BS>
-Map x <Del>   :SubliminalAppend<CR><Del>
-Map x <C-U>   :SubliminalInsert<CR><C-U>
-Map x <C-W>   :SubliminalInsert<CR><C-W>
-Map x <C-S>   :SubliminalInsert<CR><C-S>
-Map x <C-X>   :SubliminalInsert<CR><C-X>
-Map x <C-Del> :SubliminalAppend<CR><C-Del>
-Map x <C-Y>   :SubliminalInsert<CR><C-Y>
-Map x <C-Q>   :SubliminalInsert<CR><C-E>
+xnoremap <BS>    :SubliminalInsert<CR><BS>
+xnoremap <Del>   :SubliminalAppend<CR><Del>
+xnoremap <C-U>   :SubliminalInsert<CR><C-U>
+xnoremap <C-W>   :SubliminalInsert<CR><C-W>
+xnoremap <C-S>   :SubliminalInsert<CR><C-S>
+xnoremap <C-X>   :SubliminalInsert<CR><C-X>
+xnoremap <C-Del> :SubliminalAppend<CR><C-Del>
+xnoremap <C-Y>   :SubliminalInsert<CR><C-Y>
+execute "xnoremap <C-Q>   :SubliminalInsert<CR><C-E>"
 
 " Dragonfly
 xmap H <Plug>(dragonfly_left)
@@ -506,20 +484,17 @@ let g:pymode_lint_checker     = "pyflakes,pep8,pylint"
 let g:pymode_lint_ignore      = "W191,E501,C0110,C0111,E223,E302,E126,W0312,C901"
 let g:pymode_syntax_slow_sync = 0
 let g:pymode_folding          = 0
-Map n <Esc> :<C-U>lclose<CR>
+Map n <Esc> :<C-U>lclose<Bar>pclose<Bar>cclose<CR>
 
 " FNR
-let g:fnr_flags = 'w'
-nmap s <Plug>(FNR%)<CR><C-W>
-nmap S <Plug>(FNR%)<Tab>w<Tab>
-vmap s <Plug>(FNR)
-vmap S <Plug>(FNR%)
+nnoremap s :%s/\<<C-R><C-W>\>/
+xnoremap s :s/\<<C-R><C-W>\>/
 
 " Managing multiple windows / tabs {{{1
 
 " Minimize clutter
 set showtabline=0 laststatus=0 showcmd
-set colorcolumn=80
+set colorcolumn=101
 
 " Geometry
 set splitright splitbelow
@@ -528,10 +503,7 @@ set winwidth=88
 set previewheight=16
 set winminwidth=6
 
-augroup SmartTabClose
-	autocmd!
-	autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
-augroup END
+autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
 
 " Use Tab to switch between windows
 Map n <Tab>   <C-W>w
@@ -545,13 +517,10 @@ Map n <C-Tab>   gt
 Map n <C-S-Tab> gT
 
 " Restore <C-W>
-nnoremap <expr> L "\<C-W>" . GetChar()
+nnoremap <expr> L "\<C-W>" . nr2char(getchar())
 
 " Make sure all buffers in a tab share the same cwd
-augroup TabDir
-	autocmd!
-	autocmd BufReadPost,BufNewFile,BufEnter * call SetTcd()
-augroup END
+autocmd BufReadPost,BufNewFile,BufEnter * call SetTcd()
 
 command! -nargs=1 Tcd lcd <args> | call Tcd()
 
@@ -605,13 +574,10 @@ Map nvi <expr> <PageUp>          Scroll(&lines-5, 1)
 
 Map c <C-J> <Down>
 Map c <C-K> <Up>
+
+autocmd InsertEnter * let g:last_insert_col = virtcol('.')
 Map i <expr> <C-J> "\<Esc>j" . g:last_insert_col . "\<Bar>i"
 Map i <expr> <C-K> "\<Esc>k" . g:last_insert_col . "\<Bar>i"
-
-augroup SaveLastInsertColumn
-	autocmd!
-	autocmd InsertEnter * let g:last_insert_col = virtcol('.')
-augroup END
 
 " Pasting {{{1
 
@@ -644,28 +610,24 @@ nnoremap <silent> cP :call ConditionalPaste(1, 'P')<CR>
 
 " Experimental {{{1
 
-augroup Golf
-	autocmd!
-	autocmd BufWritePost ~/Golf/** !cat %.in 2>/dev/null | perl5.8.8 %
-	autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
-augroup END
-
-autocmd BufReadPost,BufEnter,BufNew ~/drawall/cc/**   setf java
-autocmd BufReadPost,BufEnter,BufNew ~/drawall/test/** setf java
-let g:java_ignore_javadoc = 1
-
-" Ctrl-P repeats last command OR search
-let g:last_cmd_type = ':'
-nnoremap : :let g:last_cmd_type = ':'<CR>:
-nnoremap / :let g:last_cmd_type = '/'<CR>/
-nnoremap ? :let g:last_cmd_type = '?'<CR>?
-noremap <expr> <C-P> g:last_cmd_type . "\<Up>"
-
-" Auto-escape '/' in search
-cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
+autocmd BufWritePost ~/Golf/** !cat %.in 2>/dev/null | perl5.8.8 %
+autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
 
 " Syntax file debugging
 nnoremap ,, :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'
 			\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
 			\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
 
+let g:sytastic_enable_signs = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_aggregate_errors = 1
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_python_checkers = ['frosted', 'pylint']
+
+nnoremap <silent> ZI :<C-U>JavaImportOrganize<CR>
+nnoremap <silent> ZJ :<C-U>!cd ~/src/drawall/bin && java cc.drawall.ui.Main<CR>
+nnoremap <silent> ZH :<C-U>JavaCallHierarchy<CR>
+nnoremap          ZR :<C-U>JavaRename<Space>
+let g:EclimCompletionMethod = 'omnifunc'
+let g:EclimJavaCallHierarchyDefaultAction = 'vert split'
