@@ -385,12 +385,10 @@ Map n !w :<C-U>w<CR>
 Map n !W :<C-U>silent w !sudo tee % >/dev/null<CR>
 Map n !x :<C-U>x<CR>
 
-noremap <expr> zz winline() <= &scrolloff + 1 ? 'zz' : 'zt'
-
 " Unimpaired-style mappings
 nnoremap <expr> [j repeat("\<C-O>", v:count1)
 nnoremap <expr> ]j repeat("\<C-I>", v:count1)
-nnoremap cor :<C-U>call rainbow#toggle()<CR>
+nnoremap cor :<C-U>set invruler<CR>
 
 " Map Q and ; to something useful
 Map nx Q gw
@@ -408,14 +406,10 @@ Map nx <C-V> v
 " Select the last modified text
 nnoremap gc `[v`]
 
-" Goto definition: global > local
-Map n gd gD
-Map n gD gd
-
-" Append to: end of line > one character
+" Always append at the end of the line
 Map n a A
 
-" Surely there’s something to do with H, M, Z and ','
+" Surely there’s something to do with H and M
 
 " Plugin config {{{1
 
@@ -494,7 +488,7 @@ xnoremap s :s/\<<C-R><C-W>\>/
 
 " Minimize clutter
 set showtabline=0 laststatus=0 showcmd
-set colorcolumn=101
+set ruler rulerformat=%31(%m%f%=%-(#%-4B%5l,%-4v%P%)%)
 
 " Geometry
 set splitright splitbelow
