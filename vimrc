@@ -425,6 +425,16 @@ Map n _p :Gpush<CR>
 Map n _s :Gstatus<CR>
 Map n _w :Gwrite<CR>
 
+" Eclim
+nnoremap <silent> ZI :<C-U>JavaImportOrganize<CR>
+nnoremap <silent> ZJ :<C-U>!cd ~/src/drawall/bin && java cc.drawall.ConVector<CR>
+nnoremap <silent> ZH :<C-U>JavaCallHierarchy<CR>
+nnoremap          ZR :<C-U>JavaRename<Space>
+nnoremap <silent> ZP :<C-U>ProjectProblems<CR>
+nnoremap <silent> ZO :<C-U>JavaImpl<CR>
+let g:EclimCompletionMethod = 'omnifunc'
+let g:EclimJavaCallHierarchyDefaultAction = 'vert split'
+
 " NerdCommenter
 let g:NERDSpaceDelims = 1
 let g:NERDCustomDelimiters = {'vim': {'left': '"'}}
@@ -576,6 +586,8 @@ nnoremap <silent> cP :call ConditionalPaste(1, 'P')<CR>
 
 " Experimental {{{1
 
+set suffixes+=.class
+
 " Golf
 autocmd BufWritePost ~/Golf/** !cat %.in 2>/dev/null | perl5.8.8 %
 autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
@@ -584,13 +596,3 @@ autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
 nnoremap ,, :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'
 			\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
 			\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
-
-" Java
-nnoremap <silent> ZI :<C-U>JavaImportOrganize<CR>
-nnoremap <silent> ZJ :<C-U>!cd ~/src/drawall/bin && java cc.drawall.ui.Main<CR>
-nnoremap <silent> ZH :<C-U>JavaCallHierarchy<CR>
-nnoremap          ZR :<C-U>JavaRename<Space>
-nnoremap <silent> ZP :<C-U>ProjectProblems<CR>
-nnoremap <silent> ZO :<C-U>JavaImpl<CR>
-let g:EclimCompletionMethod = 'omnifunc'
-let g:EclimJavaCallHierarchyDefaultAction = 'vert split'

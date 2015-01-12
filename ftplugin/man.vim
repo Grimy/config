@@ -4,7 +4,7 @@ silent %!col -bx
 " Presentation options
 setlocal tabstop=8
 setlocal synmaxcol&
-setlocal nocolorcolumn
+setlocal colorcolumn=
 setlocal nolist
 setlocal nowrap
 setlocal nofoldenable nonumber
