@@ -6,7 +6,6 @@ PLUG += Grimy/vim-default-runtime
 PLUG += Grimy/vim-rainbow
 PLUG += junegunn/fzf
 PLUG += junegunn/vim-easy-align
-PLUG += junegunn/vim-fnr
 PLUG += junegunn/vim-pseudocl
 PLUG += klen/python-mode
 PLUG += mbbill/undotree

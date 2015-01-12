@@ -366,6 +366,12 @@ nnoremap <C-S> <C-A>
 " Auto-escape '/' in search
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 
+" Find and replace
+nnoremap s :s:
+xnoremap s :s:
+nnoremap S :%s:\<<C-R><C-W>\>:
+xnoremap S "vy:%s:\V<C-R>v:
+
 " c selects current line, without the line break at the end
 onoremap <silent> c :<C-U>normal! ^v$h<CR>
 
@@ -480,10 +486,6 @@ let g:pymode_lint_ignore      = "W191,E501,C0110,C0111,E223,E302,E126,W0312,C901
 let g:pymode_syntax_slow_sync = 0
 let g:pymode_folding          = 0
 Map n <Esc> :<C-U>lclose<Bar>pclose<Bar>cclose<Bar>set cmdheight=2 cmdheight=1<CR>
-
-" FNR
-nnoremap s :%s/\<<C-R><C-W>\>/
-xnoremap s :s/\<<C-R><C-W>\>/
 
 " Managing multiple windows / tabs {{{1
 
