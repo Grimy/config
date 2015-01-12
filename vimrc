@@ -5,6 +5,7 @@
 
 set nocompatible
 augroup VimRC
+autocmd!
 
 " Utility functions {{{1
 
@@ -208,25 +209,16 @@ set foldtext=FoldText()
 
 set spelllang=en,fr
 
-set langmap=à@,è`,é~,ç_,ù%
-Map l <recursive> à @
-Map l <recursive> è `
-Map l <recursive> é ~
-Map l <recursive> ç _
-Map l <recursive> ù %
-Map l <recursive> ’ '
+lmap à @
+lmap è `
+lmap é ~
+lmap ç _
+lmap ’ '
 
 Map clinov <recursive> µ #
+Map clinov <recursive> ù %
 Map clinov <recursive> § <Bslash>
-Map clinov <recursive> ¨ {
-Map clinov <recursive> £ }
 Map clinov <recursive> ° <Bar>
-Map nox    <recursive> ( [
-Map nox    <recursive> ) ]
-Map nox (( [[
-Map nox )) ][
-Map nox )( ]]
-Map nox () []
 
 " Fixes {{{1
 " For when vim doesn’t Do What I Mean
@@ -389,7 +381,6 @@ Map n !m :<C-U>!make<CR>
 Map n !s :<C-U>silent source <C-R>=g:session<CR><CR>
 Map n !w :<C-U>w<CR>
 Map n !W :<C-U>silent w !sudo tee % >/dev/null<CR>
-Map n !x :<C-U>x<CR>
 
 " Unimpaired-style mappings
 nnoremap <expr> [j repeat("\<C-O>", v:count1)
