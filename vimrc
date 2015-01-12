@@ -478,7 +478,7 @@ let g:pymode_lint_checker     = "pyflakes,pep8,pylint"
 let g:pymode_lint_ignore      = "W191,E501,C0110,C0111,E223,E302,E126,W0312,C901"
 let g:pymode_syntax_slow_sync = 0
 let g:pymode_folding          = 0
-Map n <Esc> :<C-U>lclose<Bar>pclose<Bar>cclose<CR>
+Map n <Esc> :<C-U>lclose<Bar>pclose<Bar>cclose<Bar>set cmdheight=2 cmdheight=1<CR>
 
 " FNR
 nnoremap s :%s/\<<C-R><C-W>\>/
@@ -601,5 +601,7 @@ nnoremap <silent> ZI :<C-U>JavaImportOrganize<CR>
 nnoremap <silent> ZJ :<C-U>!cd ~/src/drawall/bin && java cc.drawall.ui.Main<CR>
 nnoremap <silent> ZH :<C-U>JavaCallHierarchy<CR>
 nnoremap          ZR :<C-U>JavaRename<Space>
+nnoremap <silent> ZP :<C-U>ProjectProblems<CR>
+nnoremap <silent> ZO :<C-U>JavaImpl<CR>
 let g:EclimCompletionMethod = 'omnifunc'
 let g:EclimJavaCallHierarchyDefaultAction = 'vert split'

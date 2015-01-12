@@ -9,18 +9,7 @@ vim:
 	cd src
 	hg pull
 	hg update
-	./configure \
-		--with-features=huge \
-		--enable-multibyte \
-		--enable-gui=gtk2 \
-		--enable-perlinterp \
-		--enable-pythoninterp \
-		--enable-luainterp --with-lua-prefix=/usr --with-luajit \
-		--enable-gpm \
-		--enable-cscope \
-		--enable-fontset \
-		--enable-fail-if-missing \
-		--enable-rubyinterp
+	./configure --with-features=huge --enable-multibyte --enable-gui=gtk2 --enable-pythoninterp --enable-gpm --enable-cscope --enable-fontset --enable-fail-if-missing --enable-rubyinterp
 	make
 
 .PHONY: vimlog
@@ -30,10 +19,10 @@ vimlog:
 
 .PHONY: symlinks
 symlinks:
-	ln -nsfv "~/.vim/src/src/vim"            ~/bin/
-	ln -nsfv "~/.vim/scripts/.pentadactylrc" ~/.pentadactylrc
-	ln -nsfv "~/.vim/scripts/.Xresources"    ~/.Xresources
-	ln -nsfv "~/.vim/scripts/gvim.desktop"   ~/.local/share/applications
-	ln -nsfv "~/.vim/scripts/.gitconfig"     ~/.gitconfig
-	ln -nsfv "~/.vim/scripts/functions"      ~/.config/fish/functions
-	ln -nsfv "~/.vim/scripts/htop"           ~/.config/htop
+	ln -nsfv "/home/grimy/.vim/src/src/vim"            /home/grimy/bin/
+	ln -nsfv "/home/grimy/.vim/scripts/.pentadactylrc" /home/grimy/.pentadactylrc
+	ln -nsfv "/home/grimy/.vim/scripts/.Xresources"    /home/grimy/.Xresources
+	ln -nsfv "/home/grimy/.vim/scripts/gvim.desktop"   /home/grimy/.local/share/applications
+	ln -nsfv "/home/grimy/.vim/scripts/.gitconfig"     /home/grimy/.gitconfig
+	ln -nsfv "/home/grimy/.vim/scripts/functions"      /home/grimy/.config/fish/functions
+	ln -nsfv "/home/grimy/.vim/scripts/htop"           /home/grimy/.config/htop
