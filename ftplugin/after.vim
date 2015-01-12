@@ -1,7 +1,14 @@
+let b:match_words =
+			\ '\<\%(if\|unless\|case\|while\|until\|for\|do\|class\|module\|def\|begin\)\>=\@!' .
+			\ ':' .
+			\ '\<\%(else\|elsif\|ensure\|when\|rescue\|break\|redo\|next\|retry\)\>' .
+			\ ':' .
+			\ '\<end\>' .
+			\ ',{:},\[:\],(:)'
 
-" Don’t auto-insert comment leaders
-setlocal formatoptions-=r
-setlocal formatoptions-=o
+" See fo-table
+setlocal formatoptions=caroqljn
+" setlocal formatoptions=tcaroqljn
 
-" Remove comment leader when joining lines
-setlocal formatoptions+=j
+setlocal comments-=:// comments+=f://
+setlocal comments-=b:# comments+=bf:#

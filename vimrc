@@ -430,6 +430,7 @@ Map n _w :Gwrite<CR>
 
 " NerdCommenter
 let g:NERDSpaceDelims = 1
+let g:NERDCustomDelimiters = {'vim': {'left': '"'}}
 inoremap <C-C> <C-O>:call NERDComment('n', 'toggle')<CR>
 nnoremap <C-C>      :call NERDComment('n', 'toggle')<CR>j
 vnoremap <C-C>      :call NERDComment('v', 'toggle')<CR>gv
@@ -582,6 +583,7 @@ nnoremap <silent> cP :call ConditionalPaste(1, 'P')<CR>
 
 " Experimental {{{1
 
+" Golf
 autocmd BufWritePost ~/Golf/** !cat %.in 2>/dev/null | perl5.8.8 %
 autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
 
@@ -590,13 +592,7 @@ nnoremap ,, :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> 
 			\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
 			\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
 
-let g:sytastic_enable_signs = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_aggregate_errors = 1
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_python_checkers = ['frosted', 'pylint']
-
+" Java
 nnoremap <silent> ZI :<C-U>JavaImportOrganize<CR>
 nnoremap <silent> ZJ :<C-U>!cd ~/src/drawall/bin && java cc.drawall.ui.Main<CR>
 nnoremap <silent> ZH :<C-U>JavaCallHierarchy<CR>

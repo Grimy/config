@@ -1,1 +1,1 @@
-setlocal et
+setlocal expandtab
