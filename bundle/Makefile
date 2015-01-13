@@ -16,7 +16,6 @@ PLUG += sukima/xmledit
 PLUG += tpope/vim-endwise
 PLUG += tpope/vim-fugitive
 PLUG += tpope/vim-surround
-PLUG += tpope/vim-unimpaired
 PLUG += Valloric/YouCompleteMe
 PLUG += vim-scripts/foldsearch
 

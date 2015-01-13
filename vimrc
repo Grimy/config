@@ -208,12 +208,12 @@ set foldtext=FoldText()
 " Un clavier azerty en vaut deux ! {{{1
 
 set spelllang=en,fr
-
+set langmap=à@,è`,é~,ç_,’`
 lmap à @
 lmap è `
 lmap é ~
 lmap ç _
-lmap ’ '
+lmap ’ `
 
 Map clinov <recursive> µ #
 Map clinov <recursive> ù %
@@ -230,7 +230,6 @@ Map n Y y$
 " The cursor can always go over the EOL
 " Default: only works if the line is empty
 set virtualedit=onemore,block
-Map n cov :set virtualedit=block,<C-R>=&ve=~'all'?'onemore':'all'<CR><CR>
 
 " g< doesn’t seem to work
 Map n g< :set nomore<CR>:messages<CR>:set more
@@ -310,8 +309,8 @@ set diffopt=filler,context:5,foldcolumn:1
 Map clinov <recursive> <C-?> <Backspace>
 Map clinov <recursive> <C-B> <Left>
 Map clinov <recursive> <C-F> <Right>
-Map clinov <recursive> <C-P> <Up>
-Map clinov <recursive> <C-N> <Down>
+Map cliov  <recursive> <C-P> <Up>
+Map cliov  <recursive> <C-N> <Down>
 Map clinov <recursive> <C-BS> <C-W>
 
 " Ctrl-U: delete to beginning
@@ -367,8 +366,11 @@ xnoremap S "vy:%s:\V<C-R>v:
 " c selects current line, without the line break at the end
 onoremap <silent> c :<C-U>normal! ^v$h<CR>
 
-" Common commands with !
-Map n !b :<C-U>b <C-R>=feedkeys("\t\t\t", 't')<CR><BS>
+" q selects a comment
+Map ox q :<C-U>normal! $[*V]*<CR>
+
+" Common commands with “!”
+Map n !b :<C-U>b <C-R>=feedkeys("\t", 't')<CR><BS>
 Map n !v :<C-U>vs <C-R>=feedkeys("\t", 't')<CR><BS>
 Map n !e :<C-U>e <C-R>=feedkeys("\t", 't')<CR><BS>
 Map n !E :<C-U>e! <C-R>=feedkeys("\t", 't')<CR><BS>
@@ -383,14 +385,25 @@ Map n !w :<C-U>w<CR>
 Map n !W :<C-U>silent w !sudo tee % >/dev/null<CR>
 
 " Unimpaired-style mappings
-nnoremap <expr> [j repeat("\<C-O>", v:count1)
-nnoremap <expr> ]j repeat("\<C-I>", v:count1)
+nnoremap cod :<C-U>windo set invdiff<CR>
+nnoremap con :<C-U>set invnumber<CR>
 nnoremap cor :<C-U>set invruler<CR>
+nnoremap cos :<C-U>set invspell<CR>
+nnoremap cov :<C-U>set virtualedit=block,<C-R>=&ve=~'all'?'onemore':'all'<CR><CR>
+nnoremap cow :<C-U>set invwrap<CR>
+" TODO: diff markers, lnext, qnext
+" \v([<=>])\1{6}
+
+nnoremap yo  :<C-U>set paste<CR>o
+nnoremap yp  :<C-U>set paste<CR>a
+nnoremap yO  :<C-U>set paste<CR>O
+nnoremap yP  :<C-U>set paste<CR>i
+autocmd InsertLeave * set nopaste
 
 " Map Q and ; to something useful
 Map nx Q gw
 Map o  Q ap
-Map n ; .wn
+Map n  ; .wn
 
 " Preserve CTRL-A
 let g:surround_no_insert_mappings = 1
@@ -406,7 +419,7 @@ nnoremap gc `[v`]
 " Always append at the end of the line
 Map n a A
 
-" Surely there’s something to do with H and M
+" Surely there’s something to do with H, M, - and +
 
 " Plugin config {{{1
 
@@ -543,8 +556,8 @@ Map nvi <expr> <ScrollWheelDown> Scroll(4, 0)
 Map nvi <expr> <ScrollWheelUp>   Scroll(4, 1)
 Map nv  <expr> <C-J>             Scroll(12, 0)
 Map nv  <expr> <C-K>             Scroll(12, 1)
-Map nv  <expr> <Space>           Scroll(&lines-5, 0)
-Map nv  <expr> <S-Space>         Scroll(&lines-5, 1)
+" Map nv  <expr> <Space>           Scroll(&lines-5, 0)
+" Map nv  <expr> <S-Space>         Scroll(&lines-5, 1)
 Map nvi <expr> <PageDown>        Scroll(&lines-5, 0)
 Map nvi <expr> <PageUp>          Scroll(&lines-5, 1)
 
@@ -587,6 +600,11 @@ nnoremap <silent> cP :call ConditionalPaste(1, 'P')<CR>
 " Experimental {{{1
 
 set suffixes+=.class
+
+nnoremap <C-N> <C-I>
+nnoremap <C-P> :<C-P>
+Map nv   <C-G> ".P
+Map c    <C-G> <C-R>.
 
 " Golf
 autocmd BufWritePost ~/Golf/** !cat %.in 2>/dev/null | perl5.8.8 %
