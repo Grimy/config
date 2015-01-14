@@ -304,6 +304,9 @@ noremap <silent> <Up>   gk
 " Diffs
 set diffopt=filler,context:5,foldcolumn:1
 
+" Automatically open the quickfix window when there are errors
+autocmd QuickFixCmdPost * cwindow
+
 " UNIX shortcuts {{{1
 
 Map clinov <recursive> <C-?> <Backspace>
@@ -379,7 +382,8 @@ Map n !h :<C-U>vert help<C-R>=feedkeys(" ", 't')<CR><BS>
 Map n !H :<C-U>read !howdoi<C-R>=feedkeys(" ", 't')<CR><BS>
 Map n !q :<C-U>q<CR>
 Map n !Q :<C-U>q!<CR>
-Map n !m :<C-U>!make<CR>
+Map n !l :<C-U>silent grep<C-R>=feedkeys(" ", 't')<CR><BS>
+Map n !m :<C-U>make<CR>
 Map n !s :<C-U>silent source <C-R>=g:session<CR><CR>
 Map n !w :<C-U>w<CR>
 Map n !W :<C-U>silent w !sudo tee % >/dev/null<CR>
@@ -391,7 +395,7 @@ nnoremap cor :<C-U>set invruler<CR>
 nnoremap cos :<C-U>set invspell<CR>
 nnoremap cov :<C-U>set virtualedit=block,<C-R>=&ve=~'all'?'onemore':'all'<CR><CR>
 nnoremap cow :<C-U>set invwrap<CR>
-" TODO: diff markers, lnext, qnext
+" TODO : diff markers, lnext, qnext
 " \v([<=>])\1{6}
 
 nnoremap yo  :<C-U>set paste<CR>o
@@ -461,7 +465,6 @@ let g:NERDTreeQuitOnOpen = 0
 let g:NERDTreeWinSize = 42
 let g:NERDTreeMinimalUI = 1
 nnoremap cd :<C-U>NERDTreeFind<CR>
-autocmd QuickFixCmdPost *grep* cwindow
 
 " YCM
 let g:ycm_global_ycm_extra_conf = '~/.vim/scripts/ycm.py'
@@ -505,7 +508,7 @@ Map n <Esc> :<C-U>lclose<Bar>pclose<Bar>cclose<Bar>set cmdheight=2 cmdheight=1<C
 
 " Minimize clutter
 set showtabline=0 laststatus=0 showcmd
-set ruler rulerformat=%31(%m%f%=%-(#%-4B%5l,%-4v%P%)%)
+set ruler rulerformat=%42(%=%m%f\ %-(#%-2B%5l,%-4v%P%)%)
 
 " Geometry
 set splitright splitbelow
@@ -609,6 +612,9 @@ Map c    <C-G> <C-R>.
 " Golf
 autocmd BufWritePost ~/Golf/** !cat %.in 2>/dev/null | perl5.8.8 %
 autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
+
+" ag
+set grepprg=ag
 
 " Syntax file debugging
 nnoremap ,, :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'

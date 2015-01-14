@@ -1,5 +1,3 @@
-" mediawiki.vim (formerly named Wikipedia.vim)
-" 
 " Vim syntax file
 " Language: MediaWiki, http://www.mediawiki.org/
 " Maintainer: This syntax file needs a maintainer in order to ship 
@@ -8,28 +6,9 @@
 " Home: http://en.wikipedia.org/wiki/Wikipedia:Text_editor_support#Vim
 " Last Change: 2011 Sep 19
 " Credits: [[User:Aepd87]], [[User:Danny373]], [[User:Ingo Karkat]], et al.
-" 
-" Published on Wikipedia in 2003-04 and declared authorless.
-" 
-" Based on the HTML syntax file. Probably too closely based, in fact.
-" There may well be name collisions everywhere, but ignorance is bliss,
-" so they say.
-"
-" To do: plug-in support for downloading and uploading to the server.
- 
-if !exists("main_syntax")
-  if version < 600
-    syntax clear
-  elseif exists("b:current_syntax")
-    finish
-  endif
-  let main_syntax = "html"
-endif
  
 syntax case ignore
-if v:version >= 700
-  syntax spell toplevel
-endif
+syntax spell toplevel
  
 " Mark illegal characters
 sy match htmlError "[<>&]"
@@ -281,13 +260,4 @@ HtmlHiLink wikiRef            htmlComment
 HtmlHiLink wikiSource         wikiPre
 HtmlHiLink wikiSyntaxHL       wikiPre
  
- 
-let b:current_syntax = "html"
- 
 delcommand HtmlHiLink
- 
-if main_syntax == "html"
-  unlet main_syntax
-endif
- 
-" vim: set et sts=2 sw=2:
