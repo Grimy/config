@@ -1,4 +1,5 @@
 function fish_greeting
+	set -gx TERM          xterm-256color
 	set -gx PATH          $PATH ~/bin
 	set -gx LANG          en_US.UTF-8
 	set -gx EDITOR        vim

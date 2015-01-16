@@ -58,7 +58,7 @@ if has('vim_starting')
 	endif
 
 	" Useless setting, but the default value can cause a bug in xterm
-	let &t_RV='  Howdy ' . $USERNAME . '!'
+	let &t_RV='  Howdy!'
 
 	let s:sep        = s:is_windows ? '\' : '/'
 	let s:path       = fnamemodify(resolve(expand('<sfile>')), ':p:h') . s:sep
@@ -161,13 +161,13 @@ set matchpairs+=<:>
 
 " Better replacement characters
 set fillchars=stl:\ ,stlnc: ,diff:X,vert:│
-set list listchars=tab:»\ ,nbsp:␣,precedes:«,extends:»
-let &showbreak = '↩ '
+set list listchars=tab:»\ ,nbsp:.,precedes:«,extends:»
+let &showbreak = '… '
 set display=lastline
 
 " Disable trailing whitespace highlighting in insert mode
-autocmd InsertEnter * set listchars-=trail:␣
-autocmd InsertLeave * set listchars+=trail:␣
+autocmd InsertEnter * set listchars-=trail:.
+autocmd InsertLeave * set listchars+=trail:.
 
 set conceallevel=2
 set concealcursor=n
@@ -307,6 +307,9 @@ set diffopt=filler,context:5,foldcolumn:1
 " Automatically open the quickfix window when there are errors
 autocmd QuickFixCmdPost * cwindow
 
+" Automatically reload file that has changed outside of vim
+set autoread
+
 " UNIX shortcuts {{{1
 
 Map clinov <recursive> <C-?> <Backspace>
@@ -374,7 +377,7 @@ Map ox q :<C-U>normal! $[*V]*<CR>
 
 " Common commands with “!”
 Map n !b :<C-U>b <C-R>=feedkeys("\t", 't')<CR><BS>
-Map n !v :<C-U>vs <C-R>=feedkeys("\t", 't')<CR><BS>
+Map n !d :<C-U>!gdb -q -ex 'set confirm off' -ex 'b main' -ex r $(find debug/* -not -name '*.*')<CR>
 Map n !e :<C-U>e <C-R>=feedkeys("\t", 't')<CR><BS>
 Map n !E :<C-U>e! <C-R>=feedkeys("\t", 't')<CR><BS>
 Map n !t :<C-U>tab drop <C-R>=feedkeys("\t", 't')<CR><BS>
@@ -385,6 +388,7 @@ Map n !Q :<C-U>q!<CR>
 Map n !l :<C-U>silent grep<C-R>=feedkeys(" ", 't')<CR><BS>
 Map n !m :<C-U>make<CR>
 Map n !s :<C-U>silent source <C-R>=g:session<CR><CR>
+Map n !v :<C-U>vs <C-R>=feedkeys("\t", 't')<CR><BS>
 Map n !w :<C-U>w<CR>
 Map n !W :<C-U>silent w !sudo tee % >/dev/null<CR>
 
@@ -454,7 +458,7 @@ let g:EclimJavaCallHierarchyDefaultAction = 'vert split'
 
 " NerdCommenter
 let g:NERDSpaceDelims = 1
-let g:NERDCustomDelimiters = {'vim': {'left': '"'}}
+let g:NERDCustomDelimiters = {'vim': {'left': '"'}, 'tup': {'left': '#'}}
 inoremap <C-C> <C-O>:call NERDComment('n', 'toggle')<CR>
 nnoremap <C-C>      :call NERDComment('n', 'toggle')<CR>j
 vnoremap <C-C>      :call NERDComment('v', 'toggle')<CR>gv
@@ -469,9 +473,6 @@ nnoremap cd :<C-U>NERDTreeFind<CR>
 " YCM
 let g:ycm_global_ycm_extra_conf = '~/.vim/scripts/ycm.py'
 let g:ycm_always_populate_location_list = 1
-
-" FZF
-nnoremap <C-Z> :<C-U>FZF<CR>
 
 " Subliminal
 xnoremap <BS>    :SubliminalInsert<CR><BS>
@@ -615,6 +616,9 @@ autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
 
 " ag
 set grepprg=ag
+
+" YCM
+let g:ycm_seed_identifiers_with_syntax = 1
 
 " Syntax file debugging
 nnoremap ,, :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'
