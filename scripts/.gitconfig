@@ -39,3 +39,6 @@ detachedHead = false
 
 [merge]
 tool = gvimdiff
+
+[url "https://"]
+insteadOf = git://
