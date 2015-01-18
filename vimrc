@@ -433,18 +433,18 @@ Map n a A
 
 Map n _u <C-W>o:UndotreeToggle<CR><C-W>h
 
-vmap _= <Plug>(EasyAlign)
-nmap _= <Plug>(EasyAlign)ap
+vmap <Space>= <Plug>(EasyAlign)
+nmap <Space>= <Plug>(EasyAlign)ap
 
-Map n _a :Gcommit --amend<CR>
-Map n _b :Gblame<CR>
-Map n _c :Gcommit<CR>i
-Map n _d <C-W>o:Gdiff<CR><C-W>r
-Map n _g :silent Ggrep<C-R>=feedkeys(" ", 't')<CR><BS>
-Map n _l :silent Glog<CR>
-Map n _p :Gpush<CR>
-Map n _s :Gstatus<CR>
-Map n _w :Gwrite<CR>
+Map n <Space>a :Gcommit --amend<CR>
+Map n <Space>b :Gblame<CR>
+Map n <Space>c :Gcommit<CR>i
+Map n <Space>d <C-W>o:Gdiff<CR><C-W>r
+Map n <Space>g :silent Ggrep<C-R>=feedkeys(" ", 't')<CR><BS>
+Map n <Space>l :silent Glog<CR>
+Map n <Space>p :Gpush<CR>
+Map n <Space>s :Gstatus<CR>
+Map n <Space>w :Gwrite<CR>
 
 " Eclim
 nnoremap <silent> ZI :<C-U>JavaImportOrganize<CR>
