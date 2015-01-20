@@ -47,18 +47,10 @@ if has('vim_starting')
 	" Use English messages.
 	execute 'language' 'message' s:is_windows ? 'en' : 'C'
 
-	" Keycodes not automatically recognized
-	Map clinov <recursive> <C-H> <C-BS>
-	Map clinov <recursive> <C-@> <C-Space>
-	nmap [3;5~ <C-Del>
-
 	" Vim needs a POSIX-Compliant shell. Fish is not.
 	if &shell =~ 'fish'
 		set shell=/bin/sh
 	endif
-
-	" Useless setting, but the default value can cause a bug in xterm
-	let &t_RV='  Howdy!'
 
 	let s:sep        = s:is_windows ? '\' : '/'
 	let s:path       = fnamemodify(resolve(expand('<sfile>')), ':p:h') . s:sep
@@ -108,7 +100,7 @@ set history=100
 set hidden
 set backup
 set noswapfile
-set autowrite
+set autoread autowrite
 set undofile
 
 set sessionoptions=blank,curdir,folds,help,resize,tabpages,winpos
@@ -167,7 +159,7 @@ set display=lastline
 
 " Disable trailing whitespace highlighting in insert mode
 autocmd InsertEnter * set listchars-=trail:.
-autocmd InsertLeave * set listchars+=trail:.
+autocmd InsertLeave * set listchars+=trail:. nopaste
 
 set conceallevel=2
 set concealcursor=n
@@ -238,7 +230,7 @@ Map n g< :set nomore<CR>:messages<CR>:set more
 set whichwrap=[,<,>,]
 
 " Escape sequences and insert mode timeout instantly
-set notimeout ttimeout timeoutlen=1
+set timeoutlen=1
 
 " Redo with U
 Map n U <C-R>
@@ -257,7 +249,7 @@ set backspace=indent,eol,start
 " - Allow Backspace and Del to wrap in normal mode
 Map n x     :<C-U>call DeleteOne(+v:count1, 0)<CR>
 Map n X     :<C-U>call DeleteOne(-v:count1, 0)<CR>
-Map n <Del> :<C-U>call DeleteOne(+v:count1, 1)<CR>
+" Map n <Del> :<C-U>call DeleteOne(+v:count1, 1)<CR>
 Map n <BS>  :<C-U>call DeleteOne(-v:count1, 1)<CR>
 
 function! DeleteOne(count, wrap)
@@ -301,14 +293,18 @@ nnoremap <silent> k gk
 noremap <silent> <Down> gj
 noremap <silent> <Up>   gk
 
+" Keycodes not automatically recognized
+Map clinov <recursive> <C-H> <C-BS>
+Map clinov <recursive> <C-@> <C-Space>
+Map clinov <recursive> <Esc>[3~ <Del>
+Map clinov <recursive> <Esc>[3;5~ <C-Del>
+
 " Diffs
 set diffopt=filler,context:5,foldcolumn:1
 
 " Automatically open the quickfix window when there are errors
+autocmd QuickFixCmdPost * redraw!
 autocmd QuickFixCmdPost * cwindow
-
-" Automatically reload file that has changed outside of vim
-set autoread
 
 " UNIX shortcuts {{{1
 
@@ -360,6 +356,9 @@ nnoremap <C-S> <C-A>
 
 " Mappings galore {{{1
 
+" Esc: fix everything
+Map n <Esc> :<C-U>lclose<Bar>pclose<Bar>cclose<Bar>set cmdheight=2 cmdheight=1<CR>
+
 " Auto-escape '/' in search
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 
@@ -376,21 +375,19 @@ onoremap <silent> c :<C-U>normal! ^v$h<CR>
 Map ox q :<C-U>normal! $[*V]*<CR>
 
 " Common commands with “!”
-Map n !b :<C-U>b <C-R>=feedkeys("\t", 't')<CR><BS>
-Map n !d :<C-U>!gdb -q -ex 'set confirm off' -ex 'b main' -ex r $(find debug/* -not -name '*.*')<CR>
-Map n !e :<C-U>e <C-R>=feedkeys("\t", 't')<CR><BS>
-Map n !E :<C-U>e! <C-R>=feedkeys("\t", 't')<CR><BS>
-Map n !t :<C-U>tab drop <C-R>=feedkeys("\t", 't')<CR><BS>
-Map n !h :<C-U>vert help<C-R>=feedkeys(" ", 't')<CR><BS>
-Map n !H :<C-U>read !howdoi<C-R>=feedkeys(" ", 't')<CR><BS>
-Map n !q :<C-U>q<CR>
-Map n !Q :<C-U>q!<CR>
-Map n !l :<C-U>silent grep<C-R>=feedkeys(" ", 't')<CR><BS>
-Map n !m :<C-U>make<CR>
-Map n !s :<C-U>silent source <C-R>=g:session<CR><CR>
-Map n !v :<C-U>vs <C-R>=feedkeys("\t", 't')<CR><BS>
-Map n !w :<C-U>w<CR>
-Map n !W :<C-U>silent w !sudo tee % >/dev/null<CR>
+let g:bangmap = {
+			\ 'b': "b\t", 'v': "vs\t", 't': "tab drop\t",
+			\ 'e': "e\t", 'E': "e!\t",
+			\ 'h': "vert help ",
+			\ 's': 'silent source ' . g:session . "\n",
+			\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
+			\ 'q': "q\n", 'Q': "q!\n",
+			\ 'l': "silent grep ", 'm': "make\n",
+			\ 'd': "!gdb -q -ex 'set confirm off' -ex 'b main' -ex r $(find debug/* -not -name '*.*')\n",
+			\ }
+
+nnoremap <expr> ! ":\<C-U>" . substitute(g:bangmap[nr2char(getchar())], "\t",
+			\ "\<C-R>=feedkeys(' \t', 't')\<CR>\<BS>", 'g')
 
 " Unimpaired-style mappings
 nnoremap cod :<C-U>windo set invdiff<CR>
@@ -406,7 +403,6 @@ nnoremap yo  :<C-U>set paste<CR>o
 nnoremap yp  :<C-U>set paste<CR>a
 nnoremap yO  :<C-U>set paste<CR>O
 nnoremap yP  :<C-U>set paste<CR>i
-autocmd InsertLeave * set nopaste
 
 " Map Q and ; to something useful
 Map nx Q gw
@@ -433,18 +429,19 @@ Map n a A
 
 Map n _u <C-W>o:UndotreeToggle<CR><C-W>h
 
-vmap <Space>= <Plug>(EasyAlign)
-nmap <Space>= <Plug>(EasyAlign)ap
+nmap <expr> <Space> g:spacemap[nr2char(getchar())]
 
-Map n <Space>a :Gcommit --amend<CR>
-Map n <Space>b :Gblame<CR>
-Map n <Space>c :Gcommit<CR>i
-Map n <Space>d <C-W>o:Gdiff<CR><C-W>r
-Map n <Space>g :silent Ggrep<C-R>=feedkeys(" ", 't')<CR><BS>
-Map n <Space>l :silent Glog<CR>
-Map n <Space>p :Gpush<CR>
-Map n <Space>s :Gstatus<CR>
-Map n <Space>w :Gwrite<CR>
+let g:spacemap = {
+			\ '=': "\<Plug>(EasyAlign)ap",
+			\ 'a': ":Gcommit --amend\r",
+			\ 'b': ":Gblame\r",
+			\ 'c': ":Gcommit\ri",
+			\ 'd': "Lo:Gdiff\r\<C-W>r",
+			\ 'l': ":silent Glog\r",
+			\ 'p': ":Gpush\r",
+			\ 's': ":Gstatus\r",
+			\ 'w': ":Gwrite\r",
+			\ }
 
 " Eclim
 nnoremap <silent> ZI :<C-U>JavaImportOrganize<CR>
@@ -503,7 +500,6 @@ let g:pymode_lint_checker     = "pyflakes,pep8,pylint"
 let g:pymode_lint_ignore      = "W191,E501,C0110,C0111,E223,E302,E126,W0312,C901"
 let g:pymode_syntax_slow_sync = 0
 let g:pymode_folding          = 0
-Map n <Esc> :<C-U>lclose<Bar>pclose<Bar>cclose<Bar>set cmdheight=2 cmdheight=1<CR>
 
 " Managing multiple windows / tabs {{{1
 
@@ -560,8 +556,6 @@ Map nvi <expr> <ScrollWheelDown> Scroll(4, 0)
 Map nvi <expr> <ScrollWheelUp>   Scroll(4, 1)
 Map nv  <expr> <C-J>             Scroll(12, 0)
 Map nv  <expr> <C-K>             Scroll(12, 1)
-" Map nv  <expr> <Space>           Scroll(&lines-5, 0)
-" Map nv  <expr> <S-Space>         Scroll(&lines-5, 1)
 Map nvi <expr> <PageDown>        Scroll(&lines-5, 0)
 Map nvi <expr> <PageUp>          Scroll(&lines-5, 1)
 
