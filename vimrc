@@ -181,11 +181,6 @@ set foldclose=
 Map n <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zc' : 'h'
 Map n <expr> l foldclosed(line('.')) != -1 ? 'zv0' : 'l'
 
-Map n zr zR
-Map n zm zMzx
-Map n [z kzjzkzkzjzxzt
-Map n ]z jzkzjzjzkzxzb
-
 " Replacement text for the fold line
 function! FoldText()
 	let nbLines = v:foldend - v:foldstart
@@ -222,9 +217,6 @@ Map n Y y$
 " The cursor can always go over the EOL
 " Default: only works if the line is empty
 set virtualedit=onemore,block
-
-" g< doesn’t seem to work
-Map n g< :set nomore<CR>:messages<CR>:set more
 
 " Arrow keys can cross line borders (but not h and l)
 set whichwrap=[,<,>,]
@@ -284,7 +276,6 @@ Map x y ygv<Esc>
 
 " Replace relative to the screen (e.g. it takes 4 letters te replace a tab)
 Map n R gR
-Map n gR R
 inoremap <Insert> <C-O>gR
 
 " Vertical movement relative to the screen (matters when 'wrap' is on)
@@ -357,7 +348,7 @@ nnoremap <C-S> <C-A>
 " Mappings galore {{{1
 
 " Esc: fix everything
-Map n <Esc> :<C-U>lclose<Bar>pclose<Bar>cclose<Bar>set cmdheight=2 cmdheight=1<CR>
+Map n <Esc> :<C-U>lcl<Bar>pc<Bar>ccl<Bar>set ch=2 ch=1<Bar>UndotreeHide<CR>
 
 " Auto-escape '/' in search
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
@@ -379,30 +370,23 @@ let g:bangmap = {
 			\ 'b': "b\t", 'v': "vs\t", 't': "tab drop\t",
 			\ 'e': "e\t", 'E': "e!\t",
 			\ 'h': "vert help ",
+			\ 'i': "set inv",
 			\ 's': 'silent source ' . g:session . "\n",
 			\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
 			\ 'q': "q\n", 'Q': "q!\n",
 			\ 'l': "silent grep ", 'm': "make\n",
+			\ 'c': "NERDTreeFind\r",
 			\ 'd': "!gdb -q -ex 'set confirm off' -ex 'b main' -ex r $(find debug/* -not -name '*.*')\n",
 			\ }
 
-nnoremap <expr> ! ":\<C-U>" . substitute(g:bangmap[nr2char(getchar())], "\t",
-			\ "\<C-R>=feedkeys(' \t', 't')\<CR>\<BS>", 'g')
+nnoremap <expr> ! ":\<C-U>" . substitute(get(g:bangmap, nr2char(getchar()),
+			\ "\e"), "\t", "\<C-R>=feedkeys(' \t', 't')\<CR>\<BS>", 'g')
 
 " Unimpaired-style mappings
-nnoremap cod :<C-U>windo set invdiff<CR>
-nnoremap con :<C-U>set invnumber<CR>
-nnoremap cor :<C-U>set invruler<CR>
-nnoremap cos :<C-U>set invspell<CR>
-nnoremap cov :<C-U>set virtualedit=block,<C-R>=&ve=~'all'?'onemore':'all'<CR><CR>
-nnoremap cow :<C-U>set invwrap<CR>
+onoremap p  :<C-U>set paste<CR>o
+
 " TODO : diff markers, lnext, qnext
 " \v([<=>])\1{6}
-
-nnoremap yo  :<C-U>set paste<CR>o
-nnoremap yp  :<C-U>set paste<CR>a
-nnoremap yO  :<C-U>set paste<CR>O
-nnoremap yP  :<C-U>set paste<CR>i
 
 " Map Q and ; to something useful
 Map nx Q gw
@@ -418,7 +402,7 @@ Map nx v <C-V>
 Map nx <C-V> v
 
 " Select the last modified text
-nnoremap gc `[v`]
+onoremap r :<C-U>normal! `[v`]<>
 
 " Always append at the end of the line
 Map n a A
@@ -427,7 +411,6 @@ Map n a A
 
 " Plugin config {{{1
 
-nmap <expr> <Space> get(g:spacemap, nr2char(getchar()), "\e")
 let g:spacemap = {
 			\ '=': "\<Plug>(EasyAlign)ap",
 			\ 'a': ":Gcommit --amend\r",
@@ -438,16 +421,22 @@ let g:spacemap = {
 			\ 'p': ":Gpush\r",
 			\ 's': ":Gstatus\r",
 			\ 'w': ":Gwrite\r",
-			\ 'u': "\<C-W>o:UndotreeToggle\r\<C-W>",
+			\ 'u': ":UndotreeHide\rLo:UndotreeShow|UndotreeFocus\r",
 			\ }
+nmap <expr> <Space> get(g:spacemap, nr2char(getchar()), "\e")
 
 " Eclim
-nnoremap <silent> ZI :<C-U>JavaImportOrganize<CR>
-nnoremap <silent> ZJ :<C-U>!cd ~/src/drawall/bin && java cc.drawall.ConVector<CR>
-nnoremap <silent> ZH :<C-U>JavaCallHierarchy<CR>
-nnoremap          ZR :<C-U>JavaRename<Space>
-nnoremap <silent> ZP :<C-U>ProjectProblems<CR>
-nnoremap <silent> ZO :<C-U>JavaImpl<CR>
+let g:zmap = {
+			\ 'I': "JavaImportOrganize\r",
+			\ 'J': "!cd ~/src/drawall/bin && java cc.drawall.ConVector\r",
+			\ 'H': "JavaCallHierarchy\r",
+			\ 'R': "JavaRename\t",
+			\ 'P': "ProjectProblems\r",
+			\ 'O': "JavaImpl\r",
+			\ }
+nnoremap <expr> Z ":\<C-U>" . substitute(get(g:zmap, nr2char(getchar()),
+			\ "\e"), "\t", "\<C-R>=feedkeys(' \t', 't')\<CR>\<BS>", 'g')
+
 let g:EclimCompletionMethod = 'omnifunc'
 let g:EclimJavaCallHierarchyDefaultAction = 'vert split'
 
@@ -463,7 +452,6 @@ let g:NERDTreeChDirMode = 2
 let g:NERDTreeQuitOnOpen = 0
 let g:NERDTreeWinSize = 42
 let g:NERDTreeMinimalUI = 1
-nnoremap cd :<C-U>NERDTreeFind<CR>
 
 " YCM
 let g:ycm_global_ycm_extra_conf = '~/.vim/scripts/ycm.py'
@@ -486,10 +474,6 @@ xmap J <Plug>(dragonfly_down)
 xmap K <Plug>(dragonfly_up)
 xmap L <Plug>(dragonfly_right)
 xmap P <Plug>(dragonfly_copy)
-
-" xmledit
-let g:xmledit_enable_html = 1
-let g:xml_use_xhtml = 1
 
 " Pylint
 let g:pymode_rope             = 0
@@ -518,12 +502,8 @@ autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | end
 Map n <Tab>   <C-W>w
 Map n <S-Tab> <C-W>W
 
-" gy is easier to type than gT
+" gy is easier to type than gT TODO
 nnoremap gy gT
-
-" Control-Tab is nice and consistent with browsers, but only works in the GUI
-Map n <C-Tab>   gt
-Map n <C-S-Tab> gT
 
 " Restore <C-W>
 nnoremap <expr> L "\<C-W>" . nr2char(getchar())
@@ -538,8 +518,7 @@ set sidescroll=2 sidescrolloff=8
 
 " Keep cursor column when scrolling
 set nostartofline
-Map nov gg gg0
-Map nov G  G$l
+Map nov G G$l
 
 function! Scroll(lines, up)
 	let lines = v:count1 * a:lines
@@ -572,7 +551,7 @@ Map clinov <S-Insert> <MiddleMouse>
 set clipboard=unnamed
 lnoremap <C-R> <C-R><C-P>
 
-" After a paste, leave the cursor at the end and fix indent
+" After a paste, leave the cursor at the end and fix indent TODO
 function! ConditionalPaste(invert, where)
 	let [text, type] = [getreg(), getregtype()]
 	if a:invert
@@ -597,6 +576,16 @@ nnoremap <silent> cP :call ConditionalPaste(1, 'P')<CR>
 
 set suffixes+=.class
 
+function! s:doR()
+	let c = nr2char(getchar())
+	let i = xor(2, stridx(&matchpairs, c))
+	return (or(stridx(&matchpairs, getline('.')[col('.')-1]), i) % 2 ?
+				\ 'r' : maparg('%') . 'r' . &matchpairs[i] . '``r') . c
+endfunction
+
+nnoremap <expr> r <SID>doR()
+nnoremap <expr> t ":echo '" . <SID>doR() . "'\r"
+
 nnoremap <C-N> <C-I>
 nnoremap <C-P> :<C-P>
 Map nv   <C-G> ".P
@@ -612,7 +601,10 @@ set grepprg=ag
 " YCM
 let g:ycm_seed_identifiers_with_syntax = 1
 
+autocmd FileType xml  set omnifunc=xmlcomplete#CompleteTags noci
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags noci
+
 " Syntax file debugging
-nnoremap ,, :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'
+nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'
 			\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
 			\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>

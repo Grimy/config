@@ -10,15 +10,10 @@ PLUG += junegunn/vim-easy-align
 PLUG += junegunn/vim-pseudocl
 PLUG += klen/python-mode
 PLUG += mbbill/undotree
-PLUG += mmorearty/vim-matchit
 PLUG += scrooloose/nerdcommenter
 PLUG += scrooloose/nerdtree
-PLUG += sukima/xmledit
-PLUG += tpope/vim-endwise
 PLUG += tpope/vim-fugitive
-PLUG += tpope/vim-surround
 PLUG += Valloric/YouCompleteMe
-PLUG += vim-scripts/foldsearch
 
 MAKEFLAGS += --no-builtin-rules --no-builtin-vars --quiet --always-make --jobs
 
@@ -37,4 +32,4 @@ $(filter-out $(notdir $(PLUG)), $(wildcard *)):
 .PHONY: ycmd
 ycmd:
 	cd YouCompleteMe && git submodule update --init --recursive
-	YouCompleteMe/third_party/ycmd/build.sh --clang-completer --system-libclang
+	YouCompleteMe/third_party/ycmd/build.py --clang-completer --system-libclang
