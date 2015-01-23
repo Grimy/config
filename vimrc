@@ -427,10 +427,7 @@ Map n a A
 
 " Plugin config {{{1
 
-Map n _u <C-W>o:UndotreeToggle<CR><C-W>h
-
-nmap <expr> <Space> g:spacemap[nr2char(getchar())]
-
+nmap <expr> <Space> get(g:spacemap, nr2char(getchar()), "\e")
 let g:spacemap = {
 			\ '=': "\<Plug>(EasyAlign)ap",
 			\ 'a': ":Gcommit --amend\r",
@@ -441,6 +438,7 @@ let g:spacemap = {
 			\ 'p': ":Gpush\r",
 			\ 's': ":Gstatus\r",
 			\ 'w': ":Gwrite\r",
+			\ 'u': "\<C-W>o:UndotreeToggle\r\<C-W>",
 			\ }
 
 " Eclim

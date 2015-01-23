@@ -1,47 +1,48 @@
 [alias]
-g = log --graph --oneline --decorate --all --date-order
-stat = show --oneline --stat
-orig = remote show origin
-fuck = reset --hard
-pull = pull --verbose --rebase
+	g = log --graph --all --date-order --date=short --pretty=format:'%C(yellow)%h %C(bold blue)%aN, %ad%Cgreen%d%Creset %<(80,trunc)%s'
+	stat = show --oneline --stat
+	orig = remote show origin
+	fuck = reset --hard
+	pull = pull --verbose --rebase
 
 [push]
-default = current
+	default = current
 
 [user]
-name = Victor Adam
-email = Victor.Adam@derpymail.org
+	name = Victor Adam
+	email = Victor.Adam@derpymail.org
 
 [diff]
-tool = vimdiff
-algorithm = patience
+	tool = vimdiff
+	algorithm = patience
 
 [difftool]
-prompt = false
+	prompt = false
 
 [difftool "vimdiff"]
-cmd = vim -d $REMOTE $LOCAL
+	cmd = vim -d $REMOTE $LOCAL
 
 [core]
-editor = vim
-pager = less
+	editor = vim
+	pager = less
 
 [interactive]
-singlekey = true
+	singlekey = true
 
 [branch]
-autosetuprebase = always
+	autosetuprebase = always
 
 [advice]
-pushNonFastForward = false
-statusHints = false
-detachedHead = false
+	pushNonFastForward = false
+	statusHints = false
+	detachedHead = false
 
 [merge]
-tool = gvimdiff
-
-#[url "https://"]
-#insteadOf = git://
+	tool = vimdiff
+	ff = false
 
 [rerere]
-enabled = 1
+	enabled = 1
+
+#[url "https://"]
+#	insteadOf = git://
