@@ -15,6 +15,7 @@
 [diff]
 	tool = vimdiff
 	algorithm = patience
+	renames = true
 
 [difftool]
 	prompt = false

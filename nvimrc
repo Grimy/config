@@ -195,15 +195,16 @@ set foldtext=FoldText()
 " Un clavier azerty en vaut deux ! {{{1
 
 set spelllang=en,fr
-set langmap=à@,è`,é~,ç_,’`
+set iminsert=1
+set langmap=à@,è`,é~,ç_,’`,ù%
 lmap à @
 lmap è `
 lmap é ~
 lmap ç _
+lmap ù %
 lmap ’ `
 
 Map clinov <recursive> µ #
-Map clinov <recursive> ù %
 Map clinov <recursive> § <Bslash>
 Map clinov <recursive> ° <Bar>
 
@@ -311,7 +312,7 @@ Map clinov <recursive> <C-BS> <C-W>
 nnoremap <C-U> d^
 onoremap <C-U>  ^
 onoremap <C-U>  ^
-" inoremap <C-U> <C-O>d^
+inoremap <C-U> <C-O>d^
 
 " Ctrl-A / Ctrl-E always move to start / end of line, like shells and emacs
 " Default: can only be done in command mode with Ctrl-B / Ctrl-E

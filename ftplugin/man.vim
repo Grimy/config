@@ -1,3 +1,5 @@
+nnoremap <buffer> <CR> K
+
 " Remove the ^H characters
 silent %!col -bx
 

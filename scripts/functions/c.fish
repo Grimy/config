@@ -9,7 +9,7 @@ function c
 	while read -p 'echo "C> "' C
 		if sed "\$i$C;" tmp.c | gcc $CFLAGS -
 			printf "br %d\nr\np %s" (wc -l <tmp.c) $C |\
-				gdb -q ./a.out 2>&1 | sed '/quit/Q; s/(gdb) $1 = //; s/(gdb) A syntax error.*/OK/; 1,8d'
+				gdb -q ./a.out 2>&1 | sed '/quit/Q; s/(gdb) $1 = //; s/(gdb) A syntax error.*/OK/; 1,6d'
 			sed -i "\$i$C;" tmp.c
 		end
 	end
