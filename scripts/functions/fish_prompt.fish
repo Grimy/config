@@ -1,4 +1,8 @@
 function fish_prompt
-	set -l color (perl -e 'print $< ? green : red')
-	echo -ns (date '+%H:%M ') (set_color $color) (prompt_pwd) (set_color normal) '> '
+	echo -ns (date '+%H:%M ') (if [ (id -u) -eq 0 ]
+		set_color red
+		hostname
+	else
+		set_color green
+	end) (prompt_pwd) (set_color normal) '> '
 end
