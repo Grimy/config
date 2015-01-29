@@ -290,6 +290,10 @@ Map clinov <recursive> <C-H> <C-BS>
 Map clinov <recursive> <C-@> <C-Space>
 Map clinov <recursive> <Esc>[3~ <Del>
 Map clinov <recursive> <Esc>[3;5~ <C-Del>
+Map clinov <recursive> <Esc>[1;5A <C-Up>
+Map clinov <recursive> <Esc>[1;5B <C-Down>
+Map clinov <recursive> <Esc>[1;5C <C-Right>
+Map clinov <recursive> <Esc>[1;5D <C-Left>
 
 " Diffs
 set diffopt=filler,context:5,foldcolumn:1
@@ -443,7 +447,7 @@ let g:EclimJavaCallHierarchyDefaultAction = 'vert split'
 
 " NerdCommenter
 let g:NERDSpaceDelims = 1
-let g:NERDCustomDelimiters = {'vim': {'left': '"'}, 'tup': {'left': '#'}}
+let g:NERDCustomDelimiters = {'vim': {'left': '"'}, 'tup': {'left': '#'}, 'make': {'left': '#'}}
 inoremap <C-C> <C-O>:call NERDComment('n', 'toggle')<CR>
 nnoremap <C-C>      :call NERDComment('n', 'toggle')<CR>j
 vnoremap <C-C>      :call NERDComment('v', 'toggle')<CR>gv

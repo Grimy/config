@@ -17,7 +17,7 @@ syn match Comment '//.*'
 syn region Character matchgroup=Normal start="'"  end="'" contains=SpecialChar,ErrorChar oneline
 syn region String    matchgroup=Normal start='"'  end='"' contains=SpecialChar,ErrorChar oneline
 syn match ErrorChar /\\./
-syn match SpecialChar /\v('|\\u+\x{4})/
+syn match SpecialChar /\v\\('|u+\x{4})/
 
-setlocal textwidth=100
+setlocal textwidth=96
 setlocal formatlistpat=@
