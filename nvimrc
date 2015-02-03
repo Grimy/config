@@ -56,7 +56,7 @@ if has('vim_starting')
 	let s:path       = fnamemodify(resolve(expand('<sfile>')), ':p:h') . s:sep
 	let s:cache      = s:path . 'cache'  . s:sep
 	let &runtimepath = s:path . ',' . s:path . 'bundle' . s:sep . '*'
-	let &helpfile    = s:path . 'vimrc'
+	let &helpfile    = s:path . 'nvimrc'
 	" For some reason, vim requires &helpfile to be a valid file, but doesn’t use it
 
 	let &viminfo = '!,%,''42,h,s10,n'  . s:cache . 'info'
@@ -195,7 +195,6 @@ set foldtext=FoldText()
 " Un clavier azerty en vaut deux ! {{{1
 
 set spelllang=en,fr
-set iminsert=1
 set langmap=à@,è`,é~,ç_,’`,ù%
 lmap à @
 lmap è `
