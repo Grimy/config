@@ -3,7 +3,7 @@ syntax match Include /^\s*.gitignore\s*$/
 syntax keyword Conditional ifeq ifneq ifdef ifndef else endif
 syntax match Keyword '|>'
 
-syntax match Comment /^\s*#.*/
+syntax match Comment /^\s*\zs#.*/
 let &l:commentstring='# %s'
 
 syntax match LineContinuation /\\$/

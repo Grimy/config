@@ -378,7 +378,6 @@ let g:bangmap = {
 			\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
 			\ 'q': "q\n", 'Q': "q!\n",
 			\ 'l': "silent grep ", 'm': "make\n",
-			\ 'c': "NERDTreeFind\r",
 			\ 'd': "!gdb -q -ex 'set confirm off' -ex 'b main' -ex r $(find debug/* -not -name '*.*')\n",
 			\ }
 
@@ -443,22 +442,11 @@ nnoremap <expr> Z ":\<C-U>" . substitute(get(g:zmap, nr2char(getchar()),
 let g:EclimCompletionMethod = 'omnifunc'
 let g:EclimJavaCallHierarchyDefaultAction = 'vert split'
 
-" NerdCommenter
-let g:NERDSpaceDelims = 1
-let g:NERDCustomDelimiters = {'vim': {'left': '"'}, 'tup': {'left': '#'}, 'make': {'left': '#'}}
-inoremap <C-C> <C-O>:call NERDComment('n', 'toggle')<CR>
-nnoremap <C-C>      :call NERDComment('n', 'toggle')<CR>j
-vnoremap <C-C>      :call NERDComment('v', 'toggle')<CR>gv
-
-" NerdTree
-let g:NERDTreeChDirMode = 2
-let g:NERDTreeQuitOnOpen = 0
-let g:NERDTreeWinSize = 42
-let g:NERDTreeMinimalUI = 1
-
 " YCM
-let g:ycm_global_ycm_extra_conf = '~/.vim/scripts/ycm.py'
+let g:ycm_global_ycm_extra_conf = '~/.nvim/scripts/ycm.py'
 let g:ycm_always_populate_location_list = 1
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:loaded_youcompleteme = 1
 
 " Subliminal
 xnoremap <BS>    :SubliminalInsert<CR><BS>
@@ -602,14 +590,16 @@ autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
 " ag
 set grepprg=ag
 
-" YCM
-let g:ycm_seed_identifiers_with_syntax = 1
-let g:loaded_youcompleteme = 1
-
 let g:pymode = 0
 
 autocmd FileType xml  set omnifunc=xmlcomplete#CompleteTags noci
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags noci
+
+function! EnableYCM()
+	unlet g:loaded_youcompleteme
+	verbose runtime plugin/youcompleteme.vim
+	call youcompleteme#Enable()
+endfunction
 
 " Syntax file debugging
 nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'

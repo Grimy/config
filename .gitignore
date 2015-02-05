@@ -1,4 +1,7 @@
 cache
 bundle
 src
+doc
+indent
+autoload
 *.pyc
