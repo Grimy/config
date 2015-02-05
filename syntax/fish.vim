@@ -3,6 +3,8 @@ syntax keyword Repeat while for in
 syntax keyword Label case begin function return
 
 syntax match Comment /#.*/
+let &l:commentstring='#\ %s'
+
 syntax match Special /\\$/
 syntax match Identifier /\$[[:alnum:]_]\+/
 syntax region String start=/'/ skip=/\\'/ end=/'/

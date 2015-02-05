@@ -4,6 +4,7 @@ syntax keyword Conditional ifeq ifneq ifdef ifndef else endif
 syntax match Keyword '|>'
 
 syntax match Comment /^\s*#.*/
+let &l:commentstring='# %s'
 
 syntax match LineContinuation /\\$/
 syntax region Rule matchgroup=Repeat start=/\v^\s*:\s*(foreach>)?/ end=/\n/

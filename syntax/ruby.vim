@@ -8,6 +8,7 @@ syn keyword Repeat for in do while until
 syn keyword Structure module class def alias
 
 syn match Comment /#.*/
+let &l:commentstring='# %s'
 
 syn region String matchgroup=Normal start="'" end="'" contains=SingleEscape
 syn region String matchgroup=Normal start='"' end='"' contains=SpecialChar,ErrorChar,Interpolation

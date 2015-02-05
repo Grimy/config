@@ -1,4 +1,3 @@
-PLUG += dag/vim-fish
 PLUG += ervandew/eclim
 PLUG += Grimy/dragonfly
 PLUG += Grimy/indextrous
@@ -10,8 +9,6 @@ PLUG += junegunn/vim-easy-align
 PLUG += junegunn/vim-pseudocl
 PLUG += klen/python-mode
 PLUG += mbbill/undotree
-PLUG += scrooloose/nerdcommenter
-PLUG += scrooloose/nerdtree
 PLUG += tpope/vim-fugitive
 PLUG += Valloric/YouCompleteMe
 

@@ -44,6 +44,7 @@ sy keyword htmlArg contained colspan id class name style title
 sy match htmlSpecialChar "&#\=[0-9A-Za-z]\{1,8};"
  
 " Comments
+let &l:commentstring='<!-- %s -->'
 sy region htmlComment                start=+<!+                end=+>+     contains=htmlCommentPart,htmlCommentError
 sy match  htmlCommentError contained "[^><!]"
 sy region htmlCommentPart  contained start=+--+                end=+--\s*+ contains=@htmlPreProc

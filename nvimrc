@@ -314,7 +314,6 @@ Map clinov <recursive> <C-BS> <C-W>
 " Already defined in insert and command modes
 nnoremap <C-U> d^
 onoremap <C-U>  ^
-onoremap <C-U>  ^
 inoremap <C-U> <C-O>d^
 
 " Ctrl-A / Ctrl-E always move to start / end of line, like shells and emacs
@@ -579,12 +578,13 @@ nnoremap <silent> cP :call ConditionalPaste(1, 'P')<CR>
 " Experimental {{{1
 
 set suffixes+=.class
+set copyindent
 
 function! s:doR()
 	let c = nr2char(getchar())
 	let i = xor(2, stridx(&matchpairs, c))
 	return (or(stridx(&matchpairs, getline('.')[col('.')-1]), i) % 2 ?
-				\ 'r' : maparg('%') . 'r' . &matchpairs[i] . '``r') . c
+				\ 'r' : '%r' . &matchpairs[i] . '``r') . c
 endfunction
 
 nnoremap <expr> r <SID>doR()
@@ -604,6 +604,9 @@ set grepprg=ag
 
 " YCM
 let g:ycm_seed_identifiers_with_syntax = 1
+let g:loaded_youcompleteme = 1
+
+let g:pymode = 0
 
 autocmd FileType xml  set omnifunc=xmlcomplete#CompleteTags noci
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags noci
