@@ -1,6 +1,6 @@
 function! s:surroundings() abort
-	return split(get(b:, 'commentary_format', substitute(substitute(
-				\ &commentstring, '\S\zs%s',' %s','') ,'%s\ze\S', '%s ', '')), '%s', 1)
+	return split(substitute(substitute(&commentstring, '\S\zs%s',' %s',''),
+				\ '%s\ze\S', '%s ', ''), '%s', 1)
 endfunction
 
 function! s:go(type,...) abort

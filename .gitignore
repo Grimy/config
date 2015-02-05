@@ -5,3 +5,4 @@ doc
 indent
 autoload
 *.pyc
+.netrwhist

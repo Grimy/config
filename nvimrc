@@ -365,9 +365,6 @@ xnoremap S "vy:%s:\V<C-R>v:
 " c selects current line, without the line break at the end
 onoremap <silent> c :<C-U>normal! ^v$h<CR>
 
-" q selects a comment
-Map ox q :<C-U>normal! $[*V]*<CR>
-
 " Common commands with “!”
 let g:bangmap = {
 			\ 'b': "b\t", 'v': "vs\t", 't': "tab drop\t",
@@ -392,7 +389,6 @@ onoremap p  :<C-U>set paste<CR>o
 
 " Map Q and ; to something useful
 Map nx Q gw
-Map o  Q ap
 Map n  ; .wn
 
 " Preserve CTRL-A
