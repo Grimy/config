@@ -1,6 +1,7 @@
 cache
 bundle
 src
+compiler
 doc
 indent
 autoload

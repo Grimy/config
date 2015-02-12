@@ -20,4 +20,5 @@ symlinks:
 	ln -nsfv "$(DIR)/src/runtime/indent"     "$(DIR)/indent"
 	ln -nsfv "$(DIR)/src/runtime/doc"        "$(DIR)/doc"
 	ln -nsfv "$(DIR)/src/runtime/autoload"   "$(DIR)/autoload"
+	ln -nsfv "$(DIR)/src/runtime/compiler"   "$(DIR)/compiler"
 
