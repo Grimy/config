@@ -11,3 +11,6 @@ let b:match_skip = 's:comment\|string\|character'
 " See fo-table
 setlocal formatoptions=acroqljn
 setlocal comments=sr:/**,mb:*,ex:*/,sr:/*,mb:*,ex:*/
+
+" Annoying mappings
+silent! vunmap <buffer> K
