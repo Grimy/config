@@ -1,4 +1,3 @@
-syn match Comment /#.*/
 let &l:commentstring='# %s'
 
 syn match Keyword /On branch \zs.*/ contained containedin=Comment

@@ -19,11 +19,12 @@ augroup filetypedetect
 	autocmd!
 	autocmd CmdwinEnter * setf vim
 	autocmd VimEnter,BufEnter,BufRead * if isdirectory(expand("<afile>")) | setf dir | endif
-	autocmd BufNewFile,BufRead * call s:setft(substitute(expand("<afile>"), '\v.*[./]|\~', '', 'g'))
-	autocmd BufNewFile,BufRead,BufWritePost * call s:detect_shebang()
-	autocmd BufNewFile,BufRead,StdinReadPost * if getline(1) =~ '\v^(.+\(..?\)).*\1$' | setf man | endif
 	autocmd BufNewFile,BufRead ~/.config/fish/fish_{read_,}history setf yaml
 	autocmd BufNewFile,BufRead ~/.config/fish/fishd.* setlocal readonly
+	autocmd BufNewFile,BufRead,StdinReadPost * if getline(1) =~ '\V\^<?xml ' | setf xml | endif
+	autocmd BufNewFile,BufRead,StdinReadPost * if getline(1) =~ '\v^(.+\(..?\)).*\1$' | setf man | endif
+	autocmd BufNewFile,BufRead,BufWritePost * call s:detect_shebang()
+	autocmd BufNewFile,BufRead * call s:setft(substitute(expand("<afile>"), '\v.*[./]|\~', '', 'g'))
 augroup END
 
 function! s:filetype(name)

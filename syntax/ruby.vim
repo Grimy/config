@@ -7,7 +7,6 @@ syn keyword PreProc BEGIN END __ENCODING__ __END__ __FILE__ __LINE__
 syn keyword Repeat for in do while until
 syn keyword Structure module class def alias
 
-syn match Comment /#.*/
 let &l:commentstring='# %s'
 
 syn region String matchgroup=Normal start="'" end="'" contains=SingleEscape

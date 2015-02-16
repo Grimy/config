@@ -8,4 +8,4 @@ syntax match PreProc /\v\&.{-};/
 
 setlocal synmaxcol=300
 setlocal iskeyword+=:
-setlocal commentstring=<!--\ %s\ -->
+let &l:commentstring='<!-- %s -->'

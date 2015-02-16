@@ -2,8 +2,7 @@ syntax keyword Conditional if else end switch and or
 syntax keyword Repeat while for in
 syntax keyword Label case begin function return
 
-syntax match Comment /#.*/
-let &l:commentstring='#\ %s'
+let &l:commentstring='# %s'
 
 syntax match Special /\\$/
 syntax match Identifier /\$[[:alnum:]_]\+/

@@ -2,10 +2,9 @@ syn keyword Conditional if else elseif endif
 syn keyword Repeat for endfor while endwhile
 syn keyword Label function endfunction return
 
-syntax match Comment /^\s*".*/
 let &l:commentstring='" %s'
 
-syn region String matchgroup=Normal start="'" skip="''" end="'" contains=SingleEscape oneline
+syn region String matchgroup=Normal start=/'/ end=/'/ contains=SingleEscape oneline
 syn region String matchgroup=Normal start='^\@!"' end='"' contains=SpecialChar,ErrorChar oneline
 syn region String matchgroup=Normal start='/' end='/' contains=SpecialChar oneline
 
