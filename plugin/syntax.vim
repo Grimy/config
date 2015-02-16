@@ -45,7 +45,9 @@ function! s:detect_shebang()
 endfunction
 
 function! s:setft(type)
-	execute 'setf' get(g:ftmap, a:type, a:type)
+	if a:type !=# ''
+		execute 'setf' get(g:ftmap, a:type, a:type)
+	endif
 endfunction
 
 augroup UpdateFileType

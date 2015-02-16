@@ -389,6 +389,7 @@ onoremap p  :<C-U>set paste<CR>o
 
 " Map Q and ; to something useful
 Map nx Q gw
+Map o  Q ap
 Map n  ; .wn
 
 " Preserve CTRL-A
