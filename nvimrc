@@ -367,8 +367,8 @@ onoremap <silent> c :<C-U>normal! ^v$h<CR>
 
 " Common commands with “!”
 let g:bangmap = {
-			\ 'b': "b\t", 'v': "vs\t", 't': "tab drop\t",
-			\ 'e': "e\t", 'E': "e!\t",
+			\ 'b': "b ", 'v': "vs ", 't': "tab drop ",
+			\ 'e': "e ", 'E': "e! ",
 			\ 'h': "vert help ",
 			\ 'i': "set inv",
 			\ 's': 'silent source ' . g:session . "\n",
@@ -377,9 +377,7 @@ let g:bangmap = {
 			\ 'l': "silent grep ", 'm': "make\n",
 			\ 'd': "!gdb -q -ex 'set confirm off' -ex 'b main' -ex r $(find debug/* -not -name '*.*')\n",
 			\ }
-
-nnoremap <expr> ! ":\<C-U>" . substitute(get(g:bangmap, nr2char(getchar()),
-			\ "\e"), "\t", "\<C-R>=feedkeys(' \t', 't')\<CR>\<BS>", 'g')
+nnoremap <expr> ! ":\<C-U>" . get(g:bangmap, nr2char(getchar()), "\e")
 
 " Unimpaired-style mappings
 onoremap p  :<C-U>set paste<CR>o
@@ -429,12 +427,11 @@ let g:zmap = {
 			\ 'I': "JavaImportOrganize\r",
 			\ 'J': "!cd ~/src/drawall/bin && java cc.drawall.ConVector\r",
 			\ 'H': "JavaCallHierarchy\r",
-			\ 'R': "JavaRename\t",
+			\ 'R': "JavaRename ",
 			\ 'P': "ProjectProblems\r",
 			\ 'O': "JavaImpl\r",
 			\ }
-nnoremap <expr> Z ":\<C-U>" . substitute(get(g:zmap, nr2char(getchar()),
-			\ "\e"), "\t", "\<C-R>=feedkeys(' \t', 't')\<CR>\<BS>", 'g')
+nnoremap <expr> Z ":\<C-U>" . get(g:zmap, nr2char(getchar()), "\e") 
 
 let g:EclimCompletionMethod = 'omnifunc'
 let g:EclimJavaCallHierarchyDefaultAction = 'vert split'
@@ -564,6 +561,7 @@ nnoremap <silent> cP :call ConditionalPaste(1, 'P')<CR>
 
 set suffixes+=.class
 set copyindent
+set commentstring=#\ %s
 
 function! s:doR()
 	let c = nr2char(getchar())
@@ -597,6 +595,8 @@ function! EnableYCM()
 	verbose runtime plugin/youcompleteme.vim
 	call youcompleteme#Enable()
 endfunction
+
+autocmd BufEnter,FocusGained * checktime
 
 " Syntax file debugging
 nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'

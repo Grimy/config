@@ -21,3 +21,5 @@ syn match SpecialChar /\v\\('|u+\x{4})/
 
 setlocal textwidth=96
 setlocal formatlistpat=@
+
+inoreabbrev <silent> <buffer> syso System.out.println();<Left><Left>

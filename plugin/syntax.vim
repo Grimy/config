@@ -12,6 +12,7 @@ let g:ftmap = {
 			\ 'nvimrc': 'vim',
 			\ 'Makefile': 'make', 'Tupfile': 'tup',
 			\ 'COMMIT_EDITMSG': 'gitcommit',
+			\ 'svg': 'xml',
 			\ }
 
 " Emulate default behaviour

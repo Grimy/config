@@ -11,7 +11,7 @@ function! s:abbr(lhs, rhs)
 	return a:lhs . ' ' . a:lhs . '<End><CR>' . a:rhs . '<Up><End>'
 endfunction
 
-command! -nargs=+ Abbr execute 'inoreabbrev' s:abbr(<f-args>)
+command! -nargs=+ Abbr execute 'inoreabbrev <buffer>' s:abbr(<f-args>)
 Abbr if endif
 Abbr function endfunction
 Abbr for endfor
