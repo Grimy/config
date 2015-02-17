@@ -8,9 +8,6 @@ syn keyword Repeat for in while
 syn keyword StorageClass global
 syn keyword Structure class def lambda
 
-syn match Comment /#.*/
-let &l:commentstring='# %s'
-
 syn region String matchgroup=Normal start="'" end="'" contains=SingleEscape
 syn region String matchgroup=Normal start='"' end='"' contains=SpecialChar,ErrorChar,Interpolation
 syn region String matchgroup=Normal start='/' skip='\\.' end='/' contains=SpecialChar oneline

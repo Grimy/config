@@ -1,5 +1,3 @@
-let &l:commentstring='# %s'
-
 syn match Keyword /On branch \zs.*/ contained containedin=Comment
 syn match Keyword /Your branch is \zs.*\zewith/ contained containedin=Comment
 syn match Keyword /^# Changes \zsnot staged/ contained containedin=Comment
