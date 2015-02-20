@@ -3,10 +3,6 @@
 " the terms of the Do What The Fuck You Want To Public License, Version 2, as
 " published by Sam Hocevar. See the LICENCE file for more details.
 
-set nocompatible
-augroup VimRC
-autocmd!
-
 " Utility functions {{{1
 
 function! Map(modes, ...)
@@ -41,6 +37,10 @@ function! s:VirtCol()
 endfunction
 
 " Initialization {{{1
+
+augroup VimRC
+autocmd!
+
 if has('vim_starting')
 	let s:is_windows = has('win16') || has('win32') || has('win64')
 
@@ -77,10 +77,9 @@ set incsearch gdefault nojoinspaces
 set ignorecase smartcase
 
 " Classic four-spaces wide tab indent
-set cindent shiftround tabstop=4 shiftwidth=0
+set autoindent shiftround tabstop=4 shiftwidth=0
 
 " Encoding
-set encoding=utf-8
 set fileencodings=utf-8,cp1252
 
 " Handle non-ASCII word charcacters
@@ -131,6 +130,7 @@ set selectmode=key,mouse
 set nolazyredraw
 set cursorline
 set synmaxcol=101
+set mouse=nvr
 
 if has('gui_running')
 	set mouse=ar
@@ -142,10 +142,6 @@ if has('gui_running')
 	set mouseshape+=v:beam,sd:updown,vd:leftright
 	set guicursor+=a:blinkon0 " disable blinking
 	set lsp=1 guifont=Input\ Mono\ Compressed\ Medium\ 11
-else
-	set mouse=nvr
-	let &t_SI .= "\<Esc>[6 q"
-	let &t_EI .= "\<Esc>[2 q"
 endif
 
 " Show matching brackets
@@ -586,6 +582,7 @@ autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
 set grepprg=ag
 
 let g:pymode = 0
+let g:EclimPythonValidate = 1
 
 autocmd FileType xml  set omnifunc=xmlcomplete#CompleteTags noci
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags noci

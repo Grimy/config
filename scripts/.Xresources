@@ -3,6 +3,7 @@ xterm*termName: xterm-256color
 
 *loginShell:        true
 xterm*locale:       true
+*cursorOffTime:     0
 *bellIsUrgent:      true
 
 *metaSendsEscape:   true
