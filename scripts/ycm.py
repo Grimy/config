@@ -11,7 +11,7 @@ def FlagsForFile(filename, **kwargs):
 	flags += ['-xc', '-std=c99'] if filename.rsplit('.', 1)[1] == 'c' \
 		else ['-xc++',  '-std=c++11']
 	flags += subprocess.Popen(
-		'grep CFLAGS $(git rev-parse --show-toplevel) | grep CFLAGS Makefile | cut -d= -f2 | head -n1',
+		'grep CFLAGS $(git rev-parse --show-toplevel)/Makefile | cut -d= -f2- | head -n1',
 		shell=True,
 		stdout=subprocess.PIPE).communicate()[0].split()
 	return locals()
