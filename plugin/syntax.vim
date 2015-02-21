@@ -5,7 +5,6 @@ let s:ftmap = {
 			\ 'Tupfile': 'tup',
 			\ 'Xresources': 'xdefaults',
 			\ 'asm': 'masm', 'inc': 'masm',
-			\ 'fish_history': 'yaml', 'fish_read_history': 'yaml',
 			\ 'h': 'c', 'cpp': 'c',
 			\ 'js': 'javascript', 'node': 'javascript',
 			\ 'md': 'markdown', 'mkd': 'markdown',
@@ -14,6 +13,7 @@ let s:ftmap = {
 			\ 'py': 'python', 'python2': 'python', 'python3': 'python',
 			\ 's': 'gas', 'S': 'gas',
 			\ 'wiki': 'mediawiki',
+			\ 'yml': 'yaml', 'fish_history': 'yaml', 'fish_read_history': 'yaml',
 			\ }
 
 function! s:filetype(name)
