@@ -17,7 +17,6 @@ symlinks:
 	ln -nsfv "$(DIR)/scripts/functions"      "$(DIR)/../.config/fish/functions"
 	ln -nsfv "$(DIR)/scripts/htop"           "$(DIR)/../.config/htop"
 	ln -nsfv "$(DIR)/scripts/gvim.desktop"   "$(DIR)/../.local/share/applications"
-	ln -nsfv "$(DIR)/src/runtime/indent"     "$(DIR)/indent"
 	ln -nsfv "$(DIR)/src/runtime/doc"        "$(DIR)/doc"
 	ln -nsfv "$(DIR)/src/runtime/autoload"   "$(DIR)/autoload"
 	ln -nsfv "$(DIR)/src/runtime/compiler"   "$(DIR)/compiler"

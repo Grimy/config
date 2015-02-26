@@ -1,7 +1,7 @@
 syn keyword Conditional if else switch assert
 syn keyword Repeat for do while
 syn keyword Label case default break continue return
-syn keyword StorageClass public protected private static
+syn keyword StorageClass public protected private abstract static
 syn keyword Structure enum interface class package import implements extends
 syn keyword Exception try catch finally throw throws
 syn keyword Type final transient volatile synchronized strictfp native

@@ -10,6 +10,7 @@ hi! link ErrorChar Error
 " See fo-table
 setlocal formatoptions=acroqljn
 setlocal comments=sr:/**,mb:*,ex:*/,sr:/*,mb:*,ex:*/
+setlocal smartindent
 
 " Annoying mappings
 silent! vunmap <buffer> K

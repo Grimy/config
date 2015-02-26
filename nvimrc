@@ -77,7 +77,7 @@ set incsearch gdefault nojoinspaces
 set ignorecase smartcase
 
 " Classic four-spaces wide tab indent
-set autoindent shiftround tabstop=4 shiftwidth=0
+set shiftround tabstop=4 shiftwidth=0
 
 " Encoding
 set fileencodings=utf-8,cp1252
