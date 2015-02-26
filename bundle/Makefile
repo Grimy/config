@@ -26,5 +26,6 @@ $(filter-out $(notdir $(PLUG)), $(wildcard *)):
 
 .PHONY: ycmd
 ycmd:
-	cd YouCompleteMe && git submodule update --init --recursive
+	- rm YouCompleteMe/third_party/ycmd/third_party/sh/sh.pyc
+	cd YouCompleteMe && git pull && git submodule update --init --recursive
 	YouCompleteMe/third_party/ycmd/build.py --clang-completer --system-libclang

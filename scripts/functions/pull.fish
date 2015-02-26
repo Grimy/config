@@ -1,3 +1,3 @@
 function pull
-	git pull --prune $argv
+	git pull -u origin $argv
 end
