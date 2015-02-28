@@ -66,6 +66,7 @@ if has('vim_starting')
 	let g:session                      = s:cache . 'session'
 
 	colorscheme rainbow
+	set commentstring=#\ %s
 endif
 
 " Formatting / encoding {{{1
@@ -557,7 +558,6 @@ nnoremap <silent> cP :call ConditionalPaste(1, 'P')<CR>
 
 set suffixes+=.class
 set copyindent
-set commentstring=#\ %s
 
 function! s:doR()
 	let c = nr2char(getchar())
@@ -594,6 +594,17 @@ function! EnableYCM()
 endfunction
 
 autocmd BufEnter,FocusGained * checktime
+
+function! ShowOnGithub(line1, line2)
+	let u = system("git config --get remote.origin.url | sed s+git@github.com:++")
+	let u = split(u)[0]
+	silent exec "!firefox https://github.com/".u."/blob/master/".@%.'\#L'.a:line1.'-'.a:line2
+	redraw!
+endfunction
+command! -range -nargs=0 ShowOnGithub call ShowOnGithub(<line1>, <line2>)
+
+nnoremap M :ShowOnGithub<CR>
+xnoremap M :ShowOnGithub<CR>
 
 " Syntax file debugging
 nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'
