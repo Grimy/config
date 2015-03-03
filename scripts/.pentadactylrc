@@ -18,6 +18,9 @@ nmap -builtin gy gT
 " Go back to the previously selected tab when closing
 nmap -builtin d <C-W>
 
+" Marks
+nmap -builtin A '
+
 " Disable annoying mappings
 map -builtin -modes=normal,visual,input,command <C-Q> <Nop>
 imap -builtin <C-Z> <C-V><C-Z>
