@@ -9,7 +9,9 @@ syn keyword StorageClass global
 syn keyword Structure class def lambda
 
 syn region String matchgroup=Normal start="'" end="'" contains=SingleEscape
-syn region String matchgroup=Normal start='"' end='"' contains=SpecialChar,ErrorChar,Interpolation
+syn region String matchgroup=Normal start='"' end='"' contains=SpecialChar,ErrorChar
+syn region String matchgroup=Normal start="'''" end="'''" contains=SingleEscape
+syn region String matchgroup=Normal start='"""' end='"""' contains=SpecialChar,ErrorChar
 syn region String matchgroup=Normal start='/' skip='\\.' end='/' contains=SpecialChar oneline
 
 syn match SingleEscape /\\[\\']/ contained
