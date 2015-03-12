@@ -12,3 +12,9 @@ syn match SingleEscape /''/ contained
 hi! link SingleEscape SpecialChar
 syn match ErrorChar /\\./ contained
 syn match SpecialChar /\v\\(e|\/|[xX]\x{1,2}|[uU]\x{1,4}|\<\k{-}\>)/ contained
+
+function! BonusIndent(prev, cur) abort
+	return (a:prev =~# '\v^\s*%(else|if|for|while|function)|[{\[(,]$')
+		\ - (a:cur =~# '\v^\s*%(else|end|[)\]}]$)')
+		\ + (a:cur =~# '^\s*\\') - (a:prev =~# '^\s*\\')
+endfunction

@@ -11,6 +11,7 @@ let s:ftmap = {
 			\ 'nvimrc': 'vim',
 			\ 'pl': 'perl',
 			\ 'py': 'python', 'python2': 'python', 'python3': 'python',
+			\ 'rb': 'ruby', 'rake': 'ruby',
 			\ 's': 'gas', 'S': 'gas',
 			\ 'wiki': 'mediawiki',
 			\ 'yml': 'yaml', 'fish_history': 'yaml', 'fish_read_history': 'yaml',
