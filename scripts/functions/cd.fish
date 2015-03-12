@@ -18,6 +18,10 @@ function cd --description 'Change directory'
 		return $status
 	end
 
+	if test -f $argv[1]
+		set argv (dirname $argv[1])
+	end
+
 	builtin cd $argv[1]
 	set -l cd_status $status
 
