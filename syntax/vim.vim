@@ -2,7 +2,10 @@ syn keyword Conditional if else elseif endif
 syn keyword Repeat for endfor while endwhile
 syn keyword Label function endfunction return
 
-let &l:commentstring='" %s'
+let &l:commentstring = '" %s'
+let b:indent_start = '\v^[\t }]*<%(else|elseif|if|for|while|function)>'
+let b:indent_end   = '\v^[\t }]*<%(else|endif|endfor|endwhile|endfunction)>'
+let b:indent_cont  = '^\s*\'
 
 syn region String matchgroup=Normal start=/'/ end=/'/ contains=SingleEscape oneline
 syn region String matchgroup=Normal start='^\@!"' end='"' contains=SpecialChar,ErrorChar oneline
@@ -12,10 +15,3 @@ syn match SingleEscape /''/ contained
 hi! link SingleEscape SpecialChar
 syn match ErrorChar /\\./ contained
 syn match SpecialChar /\v\\(e|\/|[xX]\x{1,2}|[uU]\x{1,4}|\<\k{-}\>)/ contained
-
-function! BonusIndent(prev, cur) abort
-	let continuation = '^\s*\'
-	return (a:prev =~# '\v^\s*%(else|if|for|while|function)|[{\[(,]$')
-		\ - (a:cur =~# '\v^\s*%(else|end|[)\]}]$)')
-		\ + (a:cur =~# continuation) - (a:prev =~# continuation)
-endfunction

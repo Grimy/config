@@ -9,4 +9,7 @@ syntax region PreProc start='<!' end='>'
 
 setlocal synmaxcol=0
 setlocal iskeyword+=:,-
-let &l:commentstring='<!-- %s -->'
+let &l:commentstring = '<!-- %s -->'
+let b:indent_start = '^\s*<\k'
+let b:indent_end = '^\s*</\|/>$'
+let b:indent_cont = '/>$'

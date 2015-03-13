@@ -13,7 +13,11 @@ syn keyword Error goto
 
 syn match PreProc /@\w*/
 syn region Comment start='\V/*' end='\V*/'
-let &l:commentstring='// %s'
+let &l:commentstring = '// %s'
+
+let b:indent_cont  = '\v^\s*%([\-+*%&|^~!?:<=>,]|//@!)'
+let b:indent_start = '\v^[\t }]*<%(else|catch|finally|case|default|if|for|do|while|try|switch)>|\{$'
+let b:indent_end   = '\v^[\t }]*<%(else|catch|finally|case|default)>|^\s*\}'
 
 syn region Character matchgroup=Normal start="'"  end="'" contains=SpecialChar,ErrorChar oneline
 syn region String    matchgroup=Normal start='"'  end='"' contains=SpecialChar,ErrorChar oneline
@@ -23,12 +27,6 @@ syn match SpecialChar /\v\\('|u+\x{4})/
 setlocal textwidth=96
 setlocal formatlistpat=@
 setlocal number
+set suffixes+=.class
 
 inoreabbrev <silent> <buffer> syso System.out.println();<Left><Left>
-
-function! BonusIndent(prev, cur) abort
-	let continuation = '\v^\s*[\-+/%&|^~!?:<=>,]\*@!'
-	return (a:prev =~# '{\s*$') - (a:cur =~# '\v^\s*[}]')
-		\ + (a:cur =~# continuation) - (a:prev =~# continuation)
-		\ + 0.25 * ((a:prev =~# '\v^\s*/\*') - (a:prev =~# '\v\*/$'))
-endfunction

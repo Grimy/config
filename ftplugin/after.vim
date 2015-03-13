@@ -20,11 +20,37 @@ silent! vunmap <buffer> K
 " Indenting!
 set indentexpr=Indent()
 set indentkeys=0),0},0],o,O,=end,=else,=elsif,=when,=ensure,=rescue,=begin,=end
-let &indentkeys .= ',0\,0+,0-,0*,0/,0%,0&,0|,0&,0~,0<!>,0?,0:,0<<>,0=,0<>>,0,'
+let &indentkeys .= ',0\,0+,0-,0*,0%,0&,0|,0&,0~,0<!>,0?,0:,0<<>,0=,0<>>,0,'
+
+let b:indent_start  = get(b:, 'indent_start', '{\s*$')
+let b:indent_end    = get(b:, 'indent_end', '^\s*}')
+let b:indent_cont   = get(b:, 'indent_cont', '\v$.')
+let b:indent_conted = get(b:, 'indent_conted', '\v[(,]$')
+
 function! Indent() abort
 	let line = line('.') - 1
-	while empty(getline(line)) && line > 1
+	while empty(getline(line)) && line > 0
 		let line -= 1
 	endwhile
-	return indent(line) + float2nr(&ts * BonusIndent(getline(line), getline('.')))
+	if line == 0
+		return 0
+	endif
+	let indent = indent(line)
+	let prev = getline(line)
+	let cur = getline('.')
+	if (&commentstring == '// %s')
+		if cur =~# '\v^\s*/\*'
+			let indent -= &ts
+		endif
+		if prev =~# '\v^\s*/\*'
+			let indent += 1 + (prev =~# '\v^\s*/\*\*')
+		endif
+		if prev =~# '\v\*/$'
+			let indent += &ts
+			let indent -= indent % &ts
+		endif
+	endif
+	return indent + &ts * ((prev =~ b:indent_start) - (cur =~ b:indent_end)
+		\ + (cur =~# b:indent_cont || prev =~# b:indent_conted)
+		\ - (prev =~# b:indent_cont || getline(line - 1) =~# b:indent_conted))
 endfunction

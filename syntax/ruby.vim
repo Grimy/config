@@ -18,7 +18,6 @@ syn match ErrorChar /\\./
 syn match SpecialChar /\v\\([aesv]|c.|[MC]-.|M-\\C-.|x\x{1,2}|u\x{4})/ contained
 syn region Interpolation matchgroup=SpecialChar start='#{' end='}'
 
-function! BonusIndent(prev, cur) abort
-	return (a:prev =~# '\v^\s*%(else|elsif|when|rescue|ensure|begin|case|if|for|while|def|class)|<do>|[{\[(,]$')
-		\ - (a:cur =~# '\v^\s*%(else|elsif|when|rescue|ensure|end|[)\]}])>')
-endfunction
+let b:indent_start = '\v^[\t }]*<%(else|elsif|when|rescue|ensure|begin|case|if|for|do|while|def|class)>|\{$'
+let b:indent_end   = '\v^[\t }]*<%(else|elsif|when|rescue|ensure|end)>|^\s*\}'
+let b:indent_start .= '|\|$|<do$'

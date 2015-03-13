@@ -1,4 +1,4 @@
-" Copyright © 2014 Grimy <Victor.Adam@derpymail.org> {{{
+" Copyright © 2014 Grimy <Victor.Adam@derpymail.org> {{{1
 " This work is free software. You can redistribute it and/or modify it under
 " the terms of the Do What The Fuck You Want To Public License, Version 2, as
 " published by Sam Hocevar. See the LICENCE file for more details.
@@ -13,8 +13,8 @@ function! Map(modes, ...)
 
 	for mode in split(a:modes, '.\zs')
 		execute mode  . (recursive ? 'map' : 'noremap')
-					\ (mode =~ '\v[cli]') ? '' : '<silent>'
-					\ lhs rhs
+			\ (mode =~ '\v[cli]') ? '' : '<silent>'
+			\ lhs rhs
 	endfor
 endfunction
 command! -nargs=+ Map call Map(<f-args>)
@@ -78,14 +78,14 @@ set incsearch gdefault nojoinspaces
 set ignorecase smartcase
 
 " Classic four-spaces wide tab indent
-set shiftround tabstop=4 shiftwidth=0
+set shiftround copyindent tabstop=4 shiftwidth=0
 
 " Encoding
 set fileencodings=utf-8,cp1252
 
 " Handle non-ASCII word charcacters
 autocmd BufNewFile,BufRead,BufWrite * execute 'setlocal iskeyword+='
-				\ . (&fenc == 'utf-8' ? '128-167,224-235' : '192-255')
+	\ . (&fenc == 'utf-8' ? '128-167,224-235' : '192-255')
 
 function! g:SetEncoding(enc)
 	if (&fileencoding != a:enc)
@@ -108,6 +108,9 @@ autocmd VimLeave * execute 'mksession!' g:session
 
 " Jump  to  the  last  position  when reopening file
 autocmd BufReadPost * silent! normal! g`"zz
+
+" Auto-update the file when it changed on the filesystem
+autocmd BufEnter,FocusGained * checktime
 
 " Auto-completion {{{1
 
@@ -364,16 +367,16 @@ onoremap <silent> c :<C-U>normal! ^v$h<CR>
 
 " Common commands with “!”
 let g:bangmap = {
-			\ 'b': "b ", 'v': "vs ", 't': "tab drop ",
-			\ 'e': "e ", 'E': "e! ",
-			\ 'h': "vert help ",
-			\ 'i': "set inv",
-			\ 's': 'silent source ' . g:session . "\n",
-			\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
-			\ 'q': "q\n", 'Q': "q!\n",
-			\ 'l': "silent grep ", 'm': "make\n",
-			\ 'd': "!gdb -q -ex 'set confirm off' -ex 'b main' -ex r $(find debug/* -not -name '*.*')\n",
-			\ }
+	\ 'b': "b ", 'v': "vs ", 't': "tab drop ",
+	\ 'e': "e ", 'E': "e! ",
+	\ 'h': "vert help ",
+	\ 'i': "set inv",
+	\ 's': 'silent source ' . g:session . "\n",
+	\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
+	\ 'q': "q\n", 'Q': "q!\n",
+	\ 'l': "silent grep ", 'm': "make\n",
+	\ 'd': "!gdb -q -ex 'set confirm off' -ex 'b main' -ex r $(find debug/* -not -name '*.*')\n",
+	\ }
 nnoremap <expr> ! ":\<C-U>" . get(g:bangmap, nr2char(getchar()), "\e")
 
 " Unimpaired-style mappings
@@ -401,33 +404,38 @@ onoremap r :<C-U>normal! `[v`]<>
 " Always append at the end of the line
 Map n a A
 
+" Syntax file debugging
+nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'
+	\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
+	\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
+
 " Surely there’s something to do with H, M, - and +
 
 " Plugin config {{{1
 
 let g:spacemap = {
-			\ '=': "\<Plug>(EasyAlign)ap",
-			\ 'a': ":Gcommit --amend\r",
-			\ 'b': ":Gblame\r",
-			\ 'c': ":Gcommit\ri",
-			\ 'd': "Lo:Gdiff\r\<C-W>r",
-			\ 'l': ":silent Glog\r",
-			\ 'p': ":Gpush\r",
-			\ 's': ":Gstatus\r",
-			\ 'w': ":Gwrite\r",
-			\ 'u': ":UndotreeHide\rLo:UndotreeShow|UndotreeFocus\r",
-			\ }
+	\ '=': "\<Plug>(EasyAlign)ap",
+	\ 'a': ":Gcommit --amend\r",
+	\ 'b': ":Gblame\r",
+	\ 'c': ":Gcommit\ri",
+	\ 'd': "Lo:Gdiff\r\<C-W>r",
+	\ 'l': ":silent Glog\r",
+	\ 'p': ":Gpush\r",
+	\ 's': ":Gstatus\r",
+	\ 'w': ":Gwrite\r",
+	\ 'u': ":UndotreeHide\rLo:UndotreeShow|UndotreeFocus\r",
+	\ }
 nmap <expr> <Space> get(g:spacemap, nr2char(getchar()), "\e")
 
 " Eclim
 let g:zmap = {
-			\ 'I': "JavaImportOrganize\r",
-			\ 'J': "!cd ~/src/drawall/bin && java cc.drawall.ConVector\r",
-			\ 'H': "JavaCallHierarchy\r",
-			\ 'R': "JavaRename ",
-			\ 'P': "ProjectProblems\r",
-			\ 'O': "JavaImpl\r",
-			\ }
+	\ 'I': "JavaImportOrganize\r",
+	\ 'J': "!cd ~/src/drawall/bin && java cc.drawall.ConVector\r",
+	\ 'H': "JavaCallHierarchy\r",
+	\ 'R': "JavaRename ",
+	\ 'P': "ProjectProblems\r",
+	\ 'O': "JavaImpl\r",
+	\ }
 nnoremap <expr> Z ":\<C-U>" . get(g:zmap, nr2char(getchar()), "\e") 
 
 let g:EclimCompletionMethod = 'omnifunc'
@@ -556,14 +564,11 @@ nnoremap <silent> cP :call ConditionalPaste(1, 'P')<CR>
 
 " Experimental {{{1
 
-set suffixes+=.class
-set copyindent
-
 function! s:doR()
 	let c = nr2char(getchar())
 	let i = xor(2, stridx(&matchpairs, c))
 	return (or(stridx(&matchpairs, getline('.')[col('.')-1]), i) % 2 ?
-				\ 'r' : '%r' . &matchpairs[i] . '``r') . c
+		\ 'r' : '%r' . &matchpairs[i] . '``r') . c
 endfunction
 
 nnoremap <expr> r <SID>doR()
@@ -584,16 +589,11 @@ set grepprg=ag
 let g:pymode = 0
 let g:EclimPythonValidate = 1
 
-autocmd FileType xml  set omnifunc=xmlcomplete#CompleteTags noci
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags noci
-
 function! EnableYCM()
 	unlet g:loaded_youcompleteme
 	verbose runtime plugin/youcompleteme.vim
 	call youcompleteme#Enable()
 endfunction
-
-autocmd BufEnter,FocusGained * checktime
 
 function! ShowOnGithub(line1, line2)
 	let u = system("git config --get remote.origin.url | sed s+git@github.com:++")
@@ -605,8 +605,3 @@ command! -range -nargs=0 ShowOnGithub call ShowOnGithub(<line1>, <line2>)
 
 nnoremap M :ShowOnGithub<CR>
 xnoremap M :ShowOnGithub<CR>
-
-" Syntax file debugging
-nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'
-			\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
-			\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
