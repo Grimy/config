@@ -1,4 +1,3 @@
 function l
-	ls -lAgh $argv
-	git status -sb 2>/dev/null
+	git status -sb 2>/dev/null; or ll
 end
