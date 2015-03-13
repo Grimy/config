@@ -14,7 +14,8 @@ syn match ErrorChar /\\./ contained
 syn match SpecialChar /\v\\(e|\/|[xX]\x{1,2}|[uU]\x{1,4}|\<\k{-}\>)/ contained
 
 function! BonusIndent(prev, cur) abort
+	let continuation = '^\s*\'
 	return (a:prev =~# '\v^\s*%(else|if|for|while|function)|[{\[(,]$')
 		\ - (a:cur =~# '\v^\s*%(else|end|[)\]}]$)')
-		\ + (a:cur =~# '^\s*\\') - (a:prev =~# '^\s*\\')
+		\ + (a:cur =~# continuation) - (a:prev =~# continuation)
 endfunction

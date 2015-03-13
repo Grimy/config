@@ -20,5 +20,5 @@ syn region Interpolation matchgroup=SpecialChar start='#{' end='}'
 
 function! BonusIndent(prev, cur) abort
 	return (a:prev =~# '\v^\s*%(else|elsif|when|rescue|ensure|begin|case|if|for|while|def|class)|<do>|[{\[(,]$')
-		\ - (a:cur =~# '\v^\s*%(else|elsif|when|rescue|ensure|end|[)\]}]$)>')
+		\ - (a:cur =~# '\v^\s*%(else|elsif|when|rescue|ensure|end|[)\]}])>')
 endfunction

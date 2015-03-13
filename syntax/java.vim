@@ -2,7 +2,8 @@ syn keyword Conditional if else switch assert
 syn keyword Repeat for do while
 syn keyword Label case default break continue return
 syn keyword StorageClass public protected private abstract static
-syn keyword Structure enum interface class package import implements extends
+syn keyword Structure enum interface class package implements extends
+syn keyword PreProc import
 syn keyword Exception try catch finally throw throws
 syn keyword Type final transient volatile synchronized strictfp native
 syn keyword Type void boolean char short int long float double
@@ -24,3 +25,10 @@ setlocal formatlistpat=@
 setlocal number
 
 inoreabbrev <silent> <buffer> syso System.out.println();<Left><Left>
+
+function! BonusIndent(prev, cur) abort
+	let continuation = '\v^\s*[\-+/%&|^~!?:<=>,]\*@!'
+	return (a:prev =~# '{\s*$') - (a:cur =~# '\v^\s*[}]')
+		\ + (a:cur =~# continuation) - (a:prev =~# continuation)
+		\ + 0.25 * ((a:prev =~# '\v^\s*/\*') - (a:prev =~# '\v\*/$'))
+endfunction

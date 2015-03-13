@@ -20,6 +20,9 @@ nmap -builtin d <C-W>
 
 " Marks
 nmap -builtin A '
+nmap -builtin AY :b ▶<CR>
+nmap -builtin AT :b tweetdeck<CR>
+nmap -builtin AM :b mail<CR>
 
 " Disable annoying mappings
 map -builtin -modes=normal,visual,input,command <C-Q> <Nop>

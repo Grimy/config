@@ -107,6 +107,7 @@ highlight! link VertSplit Normal
 exe "highlight! Visual"         s:fmt_rev  s:fg_soft   s:bg_none
 exe "highlight! WarningMsg"     s:fmt_bold s:fg_red    s:bg_none
 exe "highlight! StatusLine"     s:fmt_revb s:fg_base   s:bg_bright
+exe "highlight! StatusLineNC"   s:fmt_none s:fg_base   s:bg_bright s:fmt_revb
 exe "highlight! WildMenu"       s:fmt_none s:fg_yellow s:bg_bright
 highlight! link SignColumn LineNr
 highlight! link SpecialKey Comment
@@ -118,14 +119,8 @@ highlight! link helpHyperTextJump helpHyperTextEntry
 " Obsolete
 exe "highlight! PmenuSbar"      s:fmt_revb
 exe "highlight! FoldColumn"     s:fmt_none s:fg_base   s:bg_bright
-exe "highlight! StatusLineNC"   s:fmt_none s:fg_base   s:bg_bright s:fmt_revb
 exe "highlight! TabLine"        s:fmt_line s:fg_base   s:bg_bright
 exe "highlight! TabLineFill"    s:fmt_line s:fg_base   s:bg_bright
 exe "highlight! TabLineSel"     s:fmt_revb s:fg_soft   s:bg_bright
 exe "highlight! ModeMsg"        s:fmt_none s:fg_blue   s:bg_none
 exe "highlight! PmenuThumb"     s:fmt_none s:fg_base   s:bg_bright s:fmt_revb
-
-" Language-specific {{{1
-
-highlight! link fishIdentifier PreProc
-
