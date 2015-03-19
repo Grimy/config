@@ -1,3 +1,3 @@
 function fetch
-	git fetch --prune $argv
+	git fetch --all --prune $argv
 end

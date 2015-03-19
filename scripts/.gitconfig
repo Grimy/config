@@ -1,9 +1,3 @@
-[alias]
-	g = log --graph --all --date-order --date=short --pretty=format:'%C(yellow)%h %C(bold blue)%aN, %ad%Cgreen%d%Creset %<(80,trunc)%s'
-	stat = show --oneline --stat
-	orig = remote show origin
-	fuck = reset --hard
-
 [push]
 	default = current
 
