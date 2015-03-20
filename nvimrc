@@ -152,7 +152,7 @@ endif
 set matchpairs+=<:>
 
 " Better replacement characters
-set fillchars=stl:\ ,stlnc: ,diff:X,vert:│
+set fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
 set list listchars=tab:»\ ,nbsp:.,precedes:«,extends:»
 let &showbreak = '… '
 set display=lastline
@@ -295,7 +295,7 @@ Map clinov <recursive> <Esc>[1;5C <C-Right>
 Map clinov <recursive> <Esc>[1;5D <C-Left>
 
 " Diffs
-set diffopt=filler,context:5,foldcolumn:1
+set diffopt=filler,context:5,foldcolumn:0
 
 " Automatically open the quickfix window when there are errors
 autocmd QuickFixCmdPost * redraw!
@@ -491,9 +491,6 @@ autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | end
 " Use Tab to switch between windows
 Map n <Tab>   <C-W>w
 Map n <S-Tab> <C-W>W
-
-" gy is easier to type than gT TODO
-nnoremap gy gT
 
 " Restore <C-W>
 nnoremap <expr> L "\<C-W>" . nr2char(getchar())

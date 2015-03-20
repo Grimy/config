@@ -1,6 +1,6 @@
-syn keyword Conditional if else elseif endif
-syn keyword Repeat for endfor while endwhile
-syn keyword Label function endfunction return
+syn keyword Flow if else elseif endif
+syn keyword Flow for endfor while endwhile
+syn keyword Flow function endfunction return
 
 let &l:commentstring = '" %s'
 let b:indent_start = '\v^[\t }]*<%(else|elseif|if|for|while|function)>'
@@ -15,3 +15,5 @@ syn match SingleEscape /''/ contained
 hi! link SingleEscape SpecialChar
 syn match ErrorChar /\\./ contained
 syn match SpecialChar /\v\\(e|\/|[xX]\x{1,2}|[uU]\x{1,4}|\<\k{-}\>)/ contained
+
+autocmd BufWritePost <buffer> source %

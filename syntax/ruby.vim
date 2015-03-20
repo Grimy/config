@@ -1,11 +1,10 @@
-syn keyword Boolean true false and or not
-syn keyword Conditional if then unless else elsif end
-syn keyword Exception begin rescue ensure
+syn keyword Flow if then unless else elsif end for in do while until
+syn keyword Flow begin rescue ensure
+syn keyword Flow next redo retry break case when return and or
 syn keyword Keyword defined? nil self super undef
-syn keyword Label next redo retry break case when return
+syn keyword Keyword module class def alias
+syn keyword Keyword true false not
 syn keyword PreProc require BEGIN END __ENCODING__ __END__ __FILE__ __LINE__
-syn keyword Repeat for in do while until
-syn keyword Structure module class def alias
 
 syn region String matchgroup=Normal start="'" end="'" contains=SingleEscape
 syn region String matchgroup=Normal start='"' end='"' contains=SpecialChar,ErrorChar,Interpolation
@@ -16,7 +15,7 @@ syn match SingleEscape /\\[\\']/ contained
 hi! link SingleEscape SpecialChar
 syn match ErrorChar /\\./
 syn match SpecialChar /\v\\([aesv]|c.|[MC]-.|M-\\C-.|x\x{1,2}|u\x{4})/ contained
-syn region Interpolation matchgroup=SpecialChar start='#{' end='}'
+syn region Interpolation matchgroup=SpecialChar start='#{' end='}' contains=TOP
 
 let b:indent_start = '\v^[\t }]*<%(else|elsif|when|rescue|ensure|begin|case|if|for|do|while|def|class)>|\{$'
 let b:indent_end   = '\v^[\t }]*<%(else|elsif|when|rescue|ensure|end)>|^\s*\}'

@@ -1,7 +1,7 @@
-syntax keyword Include include include_rules run preload
-syntax match Include /^\s*.gitignore\s*$/
-syntax keyword Conditional ifeq ifneq ifdef ifndef else endif
-syntax match Keyword '|>'
+syntax keyword PreProc include include_rules run preload
+syntax match PreProc /^\s*.gitignore\s*$/
+syntax keyword Flow ifeq ifneq ifdef ifndef else endif
+syntax match Flow '|>'
 
 syntax match LineContinuation /\\$/
 syntax region Rule matchgroup=Repeat start=/\v^\s*:\s*(foreach>)?/ end=/\n/

@@ -1,15 +1,13 @@
-syn keyword Conditional if else switch assert
-syn keyword Repeat for do while
-syn keyword Label case default break continue return
-syn keyword StorageClass public protected private abstract static
-syn keyword Structure enum interface class package implements extends
+syn keyword Error goto
+syn keyword Flow if else switch for do while
+syn keyword Flow case default break continue return
+syn keyword Flow try catch finally throw throws assert
+syn keyword Keyword public protected private abstract static
+syn keyword Keyword enum interface class package implements extends
+syn keyword Keyword true false null new this super instanceof
 syn keyword PreProc import
-syn keyword Exception try catch finally throw throws
 syn keyword Type final transient volatile synchronized strictfp native
 syn keyword Type void boolean char short int long float double
-syn keyword Boolean true false
-syn keyword Keyword null new this super instanceof
-syn keyword Error goto
 
 syn match PreProc /@\w*/
 syn region Comment start='\V/*' end='\V*/'

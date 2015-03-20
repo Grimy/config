@@ -1,4 +1,5 @@
 " Common syntax
+syntax sync minlines=42
 syn keyword Todo TODO contained containedin=Comment
 
 let s:seps = split(&commentstring, '\s*%s\s*')
@@ -6,7 +7,6 @@ let s:seps[0] = (len(s:seps[0]) == 1 ? '\^\s\*' : '') . s:seps[0]
 execute 'syn region Comment start=_\V' . s:seps[0] . '_ end=_\V' . get(s:seps, 1, '\$') . '_'
 
 syn match SpecialChar /\v\\([bfnrt\\"]|\o{1,3})/ contained
-hi! link ErrorChar Error
 
 " See fo-table
 setlocal formatoptions=croqljn
