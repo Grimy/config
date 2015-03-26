@@ -13,5 +13,36 @@ function fish_greeting
 		ssh-agent -a $SSH_AUTH_SOCK >/dev/null
 		ssh-add
 	end
+
+	alias :q 'exit'
+	alias add 'git add'
+	alias amend 'git commit -v --amend --no-edit'
+	alias branch 'git branch -f'
+	alias cherry 'git cherry-pick'
+	alias clone 'git clone'
+	alias clop 'feh ~/p0'
+	alias commit 'git commit -v'
+	alias cp '/bin/cp -i'
+	alias cpan 'sudo perl -MCPAN -e'
+	alias diff 'git diff --patience'
+	alias f 'find . -name'
+	alias fetch 'git fetch --all --prune'
+	alias fzf '/usr/bin/ruby ~/.nvim/bundle/fzf/fzf'
+	alias gs 'rlwrap gs'
+	alias l 'git status -sb 2>/dev/null; or ll'
+	alias ll 'ls -lAGh'
+	alias mv '/bin/mv -i'
+	alias pull 'git pull -u origin'
+	alias push 'git push'
+	alias rebase 'git rebase'
+	alias remote 'git remote -v'
+	alias show 'git show --word-diff=color'
+	alias stash 'git stash'
+	alias stats 'git show --oneline --stat'
+	alias tab 'gvim --remote-tab-silent'
+	alias tag 'git tag'
+	alias v 'vim'
+	alias yay 'ponysay -f Fluttershy yay'
+
 	echo -s "Howdy $USER, welcome to " (hostname) '!'
 end
