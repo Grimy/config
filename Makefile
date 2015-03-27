@@ -1,3 +1,6 @@
+# sudo yum -y install autoconf automake cmake gcc gcc-c++ libtool pkgconfig
+# sudo pacman -S base-devel cmake unzip
+
 MAKEFLAGS += --no-builtin-rules --no-builtin-vars --quiet
 DIR = $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 

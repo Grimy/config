@@ -32,6 +32,7 @@ function fish_greeting
 	alias l 'git status -sb 2>/dev/null; or ll'
 	alias ll 'ls -lAGh'
 	alias mv '/bin/mv -i'
+	alias nvim 'vim'
 	alias pull 'git pull -u origin'
 	alias push 'git push'
 	alias rebase 'git rebase'

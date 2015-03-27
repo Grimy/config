@@ -368,13 +368,14 @@ onoremap <silent> c :<C-U>normal! ^v$h<CR>
 " Common commands with “!”
 let g:bangmap = {
 	\ 'b': "b ", 'v': "vs ", 't': "tab drop ",
+	\ 'T': "tab drop term://fish\<CR>",
 	\ 'e': "e ", 'E': "e! ",
 	\ 'h': "vert help ",
 	\ 'i': "set inv",
 	\ 's': 'silent source ' . g:session . "\n",
 	\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
 	\ 'q': "q\n", 'Q': "q!\n",
-	\ 'l': "silent grep ", 'm': "make\n",
+	\ 'l': "silent grep ''\<Left>", 'm': "make\n",
 	\ 'd': "!gdb -q -ex 'set confirm off' -ex 'b main' -ex r $(find debug/* -not -name '*.*')\n",
 	\ }
 nnoremap <expr> ! ":\<C-U>" . get(g:bangmap, nr2char(getchar()), "\e")
@@ -602,3 +603,6 @@ command! -range -nargs=0 ShowOnGithub call ShowOnGithub(<line1>, <line2>)
 
 nnoremap M :ShowOnGithub<CR>
 xnoremap M :ShowOnGithub<CR>
+nnoremap M :vs term://vim<CR>i
+
+tnoremap <Esc> <C-\><C-N>`.
