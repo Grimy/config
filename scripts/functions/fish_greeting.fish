@@ -1,4 +1,6 @@
 function fish_greeting
+	set -gx fish_new_pager 0
+
 	set -gx TERM          xterm-256color
 	set -gx PATH          ~/bin $PATH
 	set -gx LANG          en_US.UTF-8
@@ -37,11 +39,10 @@ function fish_greeting
 	alias push 'git push'
 	alias rebase 'git rebase'
 	alias remote 'git remote -v'
-	alias show 'git show --word-diff=color'
 	alias stash 'git stash'
 	alias stats 'git show --oneline --stat'
 	alias tab 'gvim --remote-tab-silent'
-	alias tag 'git tag'
+	alias tag 'git tag -f'
 	alias v 'vim'
 	alias yay 'ponysay -f Fluttershy yay'
 

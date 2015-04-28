@@ -168,7 +168,7 @@ set concealcursor=n
 set linebreak
 
 " The undocumented c flag is vital for completion plugins
-set shortmess=tosTacO
+set shortmess=aoOstTc
 
 " Folding {{{1
 
@@ -478,7 +478,7 @@ let g:pymode_folding          = 0
 
 " Minimize clutter
 set showtabline=0 laststatus=0 showcmd
-set ruler rulerformat=%42(%=%m%f\ %-(#%-2B%5l,%-4v%P%)%)
+set ruler rulerformat=%42(%=%1*%m%f\ %-(#%-2B%5l,%-4v%P%)%)
 
 " Geometry
 set splitright splitbelow
@@ -606,3 +606,4 @@ xnoremap M :ShowOnGithub<CR>
 nnoremap M :vs term://vim<CR>i
 
 tnoremap <Esc> <C-\><C-N>`.
+nnoremap <CR> :<C-U>try<Bar>lnext<Bar>catch<Bar>lfirst<Bar>endtry<CR>

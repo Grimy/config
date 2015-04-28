@@ -14,6 +14,6 @@ syn region String matchgroup=Normal start='/' end='/' contains=SpecialChar oneli
 syn match SingleEscape /''/ contained
 hi! link SingleEscape SpecialChar
 syn match ErrorChar /\\./ contained
-syn match SpecialChar /\v\\(e|\/|[xX]\x{1,2}|[uU]\x{1,4}|\<\k{-}\>)/ contained
+syn match SpecialChar /\v\\(e|\/|[xX]\x{1,2}|[uU]\x{1,4}|\<[CS]?\k{-}\>)/ contained
 
 autocmd BufWritePost <buffer> source %

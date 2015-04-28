@@ -10,16 +10,12 @@ let b:indent_conted = '\v[\[({\\,]$'
 let b:indent_start  = '\v:$'
 let b:indent_end    = '\v^[\t }]*<%(elif|else|except|finally)>|^\s*\}'
 
-syn region String matchgroup=Normal start="'" end="'" contains=SingleEscape
-syn region String matchgroup=Normal start='"' end='"' contains=SpecialChar,ErrorChar
-syn region String matchgroup=Normal start="'''" end="'''" contains=SingleEscape
-syn region String matchgroup=Normal start='"""' end='"""' contains=SpecialChar,ErrorChar
+syn region String matchgroup=Normal start=/\v\z((['"])%(\1\1)?)/ end=/\v\z1/ contains=SpecialChar,ErrorChar
 syn region String matchgroup=Normal start='/' skip='\\.' end='/' contains=SpecialChar oneline
 
-syn match SingleEscape /\\[\\']/ contained
 hi! link SingleEscape SpecialChar
 syn match ErrorChar /\\./
-syn match SpecialChar /\v\\([aesv]|c.|[MC]-.|M-\\C-.|x\x{1,2}|u\x{4})/ contained
+syn match SpecialChar /\v\\([aesv']|c.|[MC]-.|M-\\C-.|x\x{1,2}|u\x{4})/ contained
 
 setlocal synmaxcol=242
 syntax sync minlines=42

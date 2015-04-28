@@ -47,11 +47,12 @@ highlight! link YcmWarningSign    Todo
 highlight! link helpHyperTextJump helpHyperTextEntry
 
 " UI colors
-exe "highlight! ColorColumn"  s:fmt_none s:fg_none   s:bg_bright
-exe "highlight! LineNr"       s:fmt_none s:fg_soft   s:bg_bright
-exe "highlight! StatusLine"   s:fmt_none s:fg_green  s:bg_bright
-exe "highlight! Visual"       s:fmt_rev  s:fg_soft   s:bg_bright
-exe "highlight! WildMenu"     s:fmt_rev  s:fg_green  s:bg_bright
+exe "highlight! EndOfBuffer"  s:fmt_none 'ctermfg=bg' s:bg_base
+exe "highlight! ColorColumn"  s:fmt_none s:fg_none    s:bg_bright
+exe "highlight! LineNr"       s:fmt_none s:fg_soft    s:bg_bright
+exe "highlight! StatusLine"   s:fmt_none s:fg_green   s:bg_bright
+exe "highlight! Visual"       s:fmt_rev  s:fg_soft    s:bg_bright
+exe "highlight! WildMenu"     s:fmt_rev  s:fg_green   s:bg_bright
 highlight! link CursorColumn  ColorColumn
 highlight! link CursorLine    ColorColumn
 highlight! link CursorLineNr  StatusLine
@@ -65,6 +66,7 @@ highlight! link Pmenu         StatusLine
 highlight! link PmenuSel      WildMenu
 highlight! link Question      StatusLine
 highlight! link Search        WildMenu
+highlight! link User1         Keyword
 highlight! link SignColumn    LineNr
 highlight! link SpecialKey    Comment
 highlight! link SpellBad      Error
