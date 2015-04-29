@@ -607,3 +607,4 @@ nnoremap M :vs term://vim<CR>i
 
 tnoremap <Esc> <C-\><C-N>`.
 nnoremap <CR> :<C-U>try<Bar>lnext<Bar>catch<Bar>lfirst<Bar>endtry<CR>
+echo 42
