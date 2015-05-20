@@ -36,9 +36,9 @@ highlight! link SpecialChar PreProc
 highlight! link Type        Keyword
 
 " Specific
-exe "highlight! DiffAdd"          s:fmt_none s:fg_green  s:bg_bright
+exe "highlight! DiffAdd"          s:fmt_none s:fg_green  s:bg_base
 highlight! link DiffChange        Normal
-exe "highlight! DiffDelete"       s:fmt_none s:fg_red    s:bg_bright
+exe "highlight! DiffDelete"       s:fmt_none s:fg_red    s:bg_base
 exe "highlight! DiffText"         s:fmt_none s:fg_yellow s:bg_bright
 highlight! link Directory         String
 highlight! link YcmErrorSection   Error

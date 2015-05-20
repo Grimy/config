@@ -86,6 +86,8 @@ nmap -builtin <silent> Y :!yt (xsel) &<CR>
 nmap -builtin zo fdow<CR>
 nmap -builtin zp y:<S-Insert><C-Left><Left><C-U>saveas ~/p0/
 
+imap -builtin <F2> <Esc>y:!xsel | gpg2 --faked-system-time=2123456789 --digest sha512 --detach-sign -a | sed -n 9p | xargs xdotool type --delay 1 &<CR><CR>gi
+
 " Custom styles
 autocmd!
 autocmd PageLoad fimfiction.net/story js content.window.document.getElementById('chapter_container').style.textAlign = 'left'
