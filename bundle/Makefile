@@ -1,3 +1,4 @@
+PLUG += benekastah/neomake
 PLUG += ervandew/eclim
 PLUG += Grimy/dragonfly
 PLUG += Grimy/indextrous
@@ -5,10 +6,7 @@ PLUG += Grimy/subliminal
 PLUG += junegunn/fzf
 PLUG += junegunn/vim-easy-align
 PLUG += junegunn/vim-pseudocl
-PLUG += klen/python-mode
 PLUG += mbbill/undotree
-PLUG += tpope/vim-fugitive
-PLUG += Valloric/YouCompleteMe
 
 MAKEFLAGS += --no-builtin-rules --no-builtin-vars --quiet --always-make --jobs
 

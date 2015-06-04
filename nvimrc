@@ -117,12 +117,12 @@ autocmd BufEnter,FocusGained * checktime
 " Command-line mode completion
 set wildmenu wildmode=longest:full,full wildoptions=tagfile
 set showfulltag
-set complete=.
-set completeopt=longest,menuone
+set complete=.,t,i
+set completeopt=menu
 
 " Key bindings
-imap <expr> <Tab>   pumvisible() ? "\<C-N>" : virtcol('.') <= indent('.') + 1 ? "\<C-T>" : ""
-imap <expr> <S-Tab> pumvisible() ? "\<C-P>" : virtcol('.') <= indent('.') + 1 ? "\<C-D>" : ""
+inoremap <expr> <Tab>   virtcol('.') > indent('.') + 1 ? "\<C-N>" : "\<C-T>"
+inoremap <expr> <S-Tab> virtcol('.') > indent('.') + 1 ? "\<C-P>" : "\<C-D>"
 
 " GUI options {{{1
 
@@ -135,18 +135,6 @@ set nolazyredraw
 set cursorline
 set synmaxcol=101
 set mouse=nvr
-
-if has('gui_running')
-	set mouse=ar
-	set guioptions=Mc
-	set guiheadroom=0
-	set nomousefocus
-	set mousemodel=popup
-	set mousetime=200
-	set mouseshape+=v:beam,sd:updown,vd:leftright
-	set guicursor+=a:blinkon0 " disable blinking
-	set lsp=1 guifont=Input\ Mono\ Compressed\ Medium\ 11
-endif
 
 " Show matching brackets
 set matchpairs+=<:>
@@ -161,8 +149,7 @@ set display=lastline
 autocmd InsertEnter * set listchars-=trail:.
 autocmd InsertLeave * set listchars+=trail:. nopaste
 
-set conceallevel=2
-set concealcursor=n
+set conceallevel=2 concealcursor=n
 
 " Don’t break lines in the middle of a word
 set linebreak
@@ -370,6 +357,7 @@ let g:bangmap = {
 	\ 'b': "b ", 'v': "vs ", 't': "tab drop ",
 	\ 'T': "tab drop term://fish\<CR>",
 	\ 'e': "e ", 'E': "e! ",
+	\ 'f': "FZF\<CR>",
 	\ 'h': "vert help ",
 	\ 'i': "set inv",
 	\ 's': 'silent source ' . g:session . "\n",
@@ -381,7 +369,7 @@ let g:bangmap = {
 nnoremap <expr> ! ":\<C-U>" . get(g:bangmap, nr2char(getchar()), "\e")
 
 " Unimpaired-style mappings
-onoremap p  :<C-U>set paste<CR>o
+onoremap p :<C-U>set paste<CR>o
 
 " TODO : diff markers, lnext, qnext
 " \v([<=>])\1{6}
@@ -416,14 +404,6 @@ nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> 
 
 let g:spacemap = {
 	\ '=': "\<Plug>(EasyAlign)ap",
-	\ 'a': ":Gcommit --amend\r",
-	\ 'b': ":Gblame\r",
-	\ 'c': ":Gcommit\ri",
-	\ 'd': "Lo:Gdiff\r\<C-W>r",
-	\ 'l': ":silent Glog\r",
-	\ 'p': ":Gpush\r",
-	\ 's': ":Gstatus\r",
-	\ 'w': ":Gwrite\r",
 	\ 'u': ":UndotreeHide\rLo:UndotreeShow|UndotreeFocus\r",
 	\ }
 nmap <expr> <Space> get(g:spacemap, nr2char(getchar()), "\e")
@@ -465,14 +445,6 @@ xmap J <Plug>(dragonfly_down)
 xmap K <Plug>(dragonfly_up)
 xmap L <Plug>(dragonfly_right)
 xmap P <Plug>(dragonfly_copy)
-
-" Pylint
-let g:pymode_rope             = 0
-let g:pymode_lint_signs       = 0
-let g:pymode_lint_checker     = "pyflakes,pep8,pylint"
-let g:pymode_lint_ignore      = "W191,E501,C0110,C0111,E223,E302,E126,W0312,C901"
-let g:pymode_syntax_slow_sync = 0
-let g:pymode_folding          = 0
 
 " Managing multiple windows / tabs {{{1
 
@@ -539,27 +511,6 @@ Map clinov <S-Insert> <MiddleMouse>
 set clipboard=unnamed
 lnoremap <C-R> <C-R><C-P>
 
-" After a paste, leave the cursor at the end and fix indent TODO
-function! ConditionalPaste(invert, where)
-	let [text, type] = [getreg(), getregtype()]
-	if a:invert
-		let type = type ==# 'v' ? 'V' : 'v'
-		if type ==# 'v'
-			let text = substitute(text, '\v(^|\n)\s*', ' ', 'g')
-		endif
-		call setreg(v:register, text, type)
-	endif
-	let sequence = a:where . (type ==# 'V' ? '`[v`]=`]$' : '')
-	execute 'normal!' sequence
-	call repeat#set(sequence)
-	let g:repeat_reg = [sequence, v:register]
-endfunction
-
-nnoremap <silent> p  :call ConditionalPaste(0, 'p')<CR>
-nnoremap <silent> P  :call ConditionalPaste(0, 'P')<CR>
-nnoremap <silent> cp :call ConditionalPaste(1, 'p')<CR>
-nnoremap <silent> cP :call ConditionalPaste(1, 'P')<CR>
-
 " Experimental {{{1
 
 function! s:doR()
@@ -584,14 +535,7 @@ autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
 " ag
 set grepprg=ag
 
-let g:pymode = 0
 let g:EclimPythonValidate = 1
-
-function! EnableYCM()
-	unlet g:loaded_youcompleteme
-	verbose runtime plugin/youcompleteme.vim
-	call youcompleteme#Enable()
-endfunction
 
 function! ShowOnGithub(line1, line2)
 	let u = system("git config --get remote.origin.url | sed s+git@github.com:++")
@@ -606,4 +550,8 @@ xnoremap M :ShowOnGithub<CR>
 nnoremap M :vs term://vim<CR>i
 
 tnoremap <Esc> <C-\><C-N>`.
-nnoremap <CR> :<C-U>try<Bar>lnext<Bar>catch<Bar>lfirst<Bar>endtry<CR>
+nnoremap <CR> :<C-U>try<Bar>lnext<Bar>catch<Bar>silent! lfirst<Bar>endtry<CR>
+
+let g:neomake_error_sign = {'text': '>>', 'texthl': 'Error'}
+let g:neomake_warning_sign = {'text': '>>', 'texthl': 'TODO'}
+autocmd BufWritePost * Neomake

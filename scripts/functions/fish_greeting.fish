@@ -8,13 +8,8 @@ function fish_greeting
 	set -gx PAGER         'vim -'
 	set -gx GCC_COLORS    'error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 	set -gx NVIM_TUI_ENABLE_CURSOR_SHAPE 1
+	set -gx RUST_BACKTRACE 1
 	set -gx FZF_DEFAULT_COMMAND 'ag -l -g ""'
-	set -gx SSH_AUTH_SOCK /tmp/ssh-agent
-	set -gx SSH_AGENT_PID (pidof ssh-agent)
-	if [ -z $SSH_AGENT_PID ]
-		ssh-agent -a $SSH_AUTH_SOCK >/dev/null
-		ssh-add
-	end
 
 	alias :q 'exit'
 	alias add 'git add'
@@ -30,6 +25,7 @@ function fish_greeting
 	alias f 'find . -name'
 	alias fetch 'git fetch --all --prune'
 	alias fzf '/usr/bin/ruby ~/.nvim/bundle/fzf/fzf'
+	alias gpg 'rlwrap gpg2 --expert'
 	alias gs 'rlwrap gs'
 	alias l 'git status -sb 2>/dev/null; or ll'
 	alias ll 'ls -lAGh'
