@@ -17,7 +17,7 @@ $(PLUG):
 	[ -d $(notdir $@) ] || git clone https://github.com/$@
 
 $(notdir $(PLUG)):
-	- cd $@ && git pull && vim +'helptags doc/' +q >/dev/null 2>&1
+	- cd $@ && (git pull || echo $@) && vim +'helptags doc/' +q >/dev/null 2>&1
 
 $(filter-out $(notdir $(PLUG)), $(wildcard *)):
 	echo 'RM $@' && rm -rf $@

@@ -56,4 +56,5 @@ endfunction
 xnoremap <silent> <C-C> :<C-U>call <SID>go(line("'<"),line("'>"))<CR>
 onoremap <silent> <C-C> lj
 nnoremap <silent> <C-C> :<C-U>set opfunc=<SID>go<CR>g@
+inoremap <silent> <C-C> <C-O>:<C-U>call <SID>go(line("."),line("."))<CR><Down>
 onoremap <silent> q :<C-U>call <SID>textobject(0)<CR>

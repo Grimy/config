@@ -1,3 +1,6 @@
+" Handle non-ASCII word charcacters
+execute 'setlocal iskeyword+=' . (&fenc == 'utf-8' ? '128-167,224-235' : '192-255')
+
 " Common syntax
 syntax sync minlines=42
 syn keyword Todo TODO contained containedin=Comment

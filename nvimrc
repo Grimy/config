@@ -25,7 +25,7 @@ function! KeepPos(command)
 	execute 'normal! ' . (save + indent('.')) . '|'
 endfunction
 
-" Returns the first virtual column of the current character, rather than the last
+" Returns the first virtual column of the current character
 function! s:VirtCol()
 	if col('.') == 1
 		return 1
@@ -41,38 +41,33 @@ endfunction
 augroup VimRC
 autocmd!
 
-if has('vim_starting')
-	let s:is_windows = has('win16') || has('win32') || has('win64')
+let s:is_windows = has('win16') || has('win32') || has('win64')
+let s:sep        = s:is_windows ? '\' : '/'
+let s:path       = fnamemodify(resolve(expand('<sfile>')), ':p:h') . s:sep
+let s:cache      = s:path . 'cache'  . s:sep
+let &runtimepath = s:path . ',' . s:path . 'bundle' . s:sep . '*'
+let &helpfile    = s:path . 'nvimrc'
 
-	" Use English messages.
-	execute 'language' 'message' s:is_windows ? 'en' : 'C'
+" Use English messages.
+execute 'language' 'message' s:is_windows ? 'en' : 'C'
 
-	" Vim needs a POSIX-Compliant shell. Fish is not.
-	if &shell =~ 'fish'
-		set shell=/bin/sh
-	endif
-
-	let s:sep        = s:is_windows ? '\' : '/'
-	let s:path       = fnamemodify(resolve(expand('<sfile>')), ':p:h') . s:sep
-	let s:cache      = s:path . 'cache'  . s:sep
-	let &runtimepath = s:path . ',' . s:path . 'bundle' . s:sep . '*'
-	let &helpfile    = s:path . 'nvimrc'
-	" For some reason, vim requires &helpfile to be a valid file, but doesn’t use it
-
-	let &viminfo = '!,%,''42,h,s10,n'  . s:cache . 'info'
-	let &directory                     = s:cache . 'swaps'
-	let &backupdir                     = s:cache . 'backups'
-	let &undodir                       = s:cache . 'undos'
-	let g:session                      = s:cache . 'session'
-
-	colorscheme rainbow
-	set commentstring=#\ %s
+" Vim needs a POSIX-Compliant shell. Fish is not.
+if &shell =~ 'fish'
+	set shell=/bin/sh
 endif
 
-" Formatting / encoding {{{1
+set commentstring=#\ %s
 
-" Sensible defaults
-set incsearch gdefault nojoinspaces
+" Basic options {{{1
+
+set incsearch gdefault nojoinspaces grepprg=ag
+
+" Keep a few lines/columns around the cursor
+set scrolljump=4 scrolloff=20 sidescroll=2 sidescrolloff=8
+
+" Keep cursor column when scrolling
+set nostartofline
+Map nov G G$l
 
 " Patterns are case sensitive iff they contain at least one uppercase
 set ignorecase smartcase
@@ -83,48 +78,29 @@ set shiftround copyindent tabstop=4 shiftwidth=0
 " Encoding
 set fileencodings=utf-8,cp1252
 
-" Handle non-ASCII word charcacters
-autocmd BufNewFile,BufRead,BufWrite * execute 'setlocal iskeyword+='
-	\ . (&fenc == 'utf-8' ? '128-167,224-235' : '192-255')
-
-function! g:SetEncoding(enc)
-	if (&fileencoding != a:enc)
-		execute 'edit! ++enc=' . a:enc
-	endif
-endfunction
-
-" History {{{1
-
-" Keep lots of history
-set history=100
-set hidden
-set backup
-set noswapfile
-set autoread autowrite
-set undofile
-
-set sessionoptions=blank,curdir,folds,help,resize,tabpages,winpos
+" Keep lots of history in the "cache" dir
+set hidden backup noswapfile undofile autowrite
 autocmd VimLeave * execute 'mksession!' g:session
+let &viminfo = '!,%,''42,h,s10,n' . s:cache . 'info'
+let &backupdir                    = s:cache . 'backups'
+let &directory                    = s:cache . 'swaps'
+let &undodir                      = s:cache . 'undos'
+let g:session                     = s:cache . 'session'
 
 " Jump  to  the  last  position  when reopening file
 autocmd BufReadPost * silent! normal! g`"zz
 
 " Auto-update the file when it changed on the filesystem
+set autoread
 autocmd BufEnter,FocusGained * checktime
 
-" Auto-completion {{{1
-
-" Command-line mode completion
-set wildmenu wildmode=longest:full,full wildoptions=tagfile
-set showfulltag
-set complete=.,t,i
-set completeopt=menu
-
-" Key bindings
-inoremap <expr> <Tab>   virtcol('.') > indent('.') + 1 ? "\<C-N>" : "\<C-T>"
-inoremap <expr> <S-Tab> virtcol('.') > indent('.') + 1 ? "\<C-P>" : "\<C-D>"
+" Completion
+set wildmode=longest,full showfulltag
+set complete=.,t,i completeopt=menu
 
 " GUI options {{{1
+
+colorscheme rainbow
 
 " Windows emulation
 set keymodel=startsel,stopsel
@@ -173,7 +149,7 @@ function! FoldText()
 	let nbLines = v:foldend - v:foldstart
 	let line = getline(v:foldstart)
 	let line = substitute(line, '^\v\W+|\{+\d*$', '', 'g')
-	let space = 72 - strwidth(line . nbLines)
+	let space = 64 - strwidth(line . nbLines)
 	let line = space < 0 ? line[0:space-3] . '… ' : line . repeat(' ', space)
 	return line . printf('(%d lines)', nbLines)
 endfunction
@@ -182,7 +158,7 @@ set foldtext=FoldText()
 " Un clavier azerty en vaut deux ! {{{1
 
 set spelllang=en,fr
-set langmap=à@,è`,é~,ç_,’`,ù%
+set langnoremap langmap=à@,è`,é~,ç_,’`,ù%
 lmap à @
 lmap è `
 lmap é ~
@@ -190,15 +166,14 @@ lmap ç _
 lmap ù %
 lmap ’ `
 
+" TODO map these at the Xmodmap level
 Map clinov <recursive> µ #
 Map clinov <recursive> § <Bslash>
 Map clinov <recursive> ° <Bar>
 
-" Fixes {{{1
-" For when vim doesn’t Do What I Mean
+" DWIM harder {{{1
 
 " Y yanks until EOL, like D and C
-" Default: Y means yy
 Map n Y y$
 
 " The cursor can always go over the EOL
@@ -214,21 +189,12 @@ set timeoutlen=1
 " Redo with U
 Map n U <C-R>
 
-" Undo/Redo work in visual-mode
-Map v u :<Esc>ugv
-Map v U :<Esc>Ugv
-Map v gu u
-Map v gU U
-
-" Backspace can cross line borders
-set backspace=indent,eol,start
-
 " - Don’t overwrite registers with single characters
 " - Don’t clutter undo history when deleting 0 characters
 " - Allow Backspace and Del to wrap in normal mode
 Map n x     :<C-U>call DeleteOne(+v:count1, 0)<CR>
 Map n X     :<C-U>call DeleteOne(-v:count1, 0)<CR>
-" Map n <Del> :<C-U>call DeleteOne(+v:count1, 1)<CR>
+Map n <Del> :<C-U>call DeleteOne(+v:count1, 1)<CR>
 Map n <BS>  :<C-U>call DeleteOne(-v:count1, 1)<CR>
 
 function! DeleteOne(count, wrap)
@@ -258,6 +224,9 @@ Map c <C-Del> <C-\>esubstitute(getcmdline(),'\v%'.getcmdpos().'c.{-}(><Bar>$)\s*
 " Don’t remove indentation when moving
 set cpoptions+=I
 
+" Auto-escape '/' in search
+cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
+
 " Don’t move the cursor when yanking in v-mode
 Map x y ygv<Esc>
 
@@ -271,16 +240,6 @@ nnoremap <silent> k gk
 noremap <silent> <Down> gj
 noremap <silent> <Up>   gk
 
-" Keycodes not automatically recognized
-Map clinov <recursive> <C-H> <C-BS>
-Map clinov <recursive> <C-@> <C-Space>
-Map clinov <recursive> <Esc>[3~ <Del>
-Map clinov <recursive> <Esc>[3;5~ <C-Del>
-Map clinov <recursive> <Esc>[1;5A <C-Up>
-Map clinov <recursive> <Esc>[1;5B <C-Down>
-Map clinov <recursive> <Esc>[1;5C <C-Right>
-Map clinov <recursive> <Esc>[1;5D <C-Left>
-
 " Diffs
 set diffopt=filler,context:5,foldcolumn:0
 
@@ -290,9 +249,10 @@ autocmd QuickFixCmdPost * cwindow
 
 " UNIX shortcuts {{{1
 
-Map clinov <recursive> <C-?> <Backspace>
-Map clinov <recursive> <C-B> <Left>
-Map clinov <recursive> <C-F> <Right>
+Map clinov <recursive> <C-H> <C-BS>
+Map clinov <recursive> <C-?> <BS>
+Map cliov  <recursive> <C-B> <Left>
+Map cliov  <recursive> <C-F> <Right>
 Map cliov  <recursive> <C-P> <Up>
 Map cliov  <recursive> <C-N> <Down>
 Map clinov <recursive> <C-BS> <C-W>
@@ -301,53 +261,42 @@ Map clinov <recursive> <C-BS> <C-W>
 " Already defined in insert and command modes
 nnoremap <C-U> d^
 onoremap <C-U>  ^
-inoremap <C-U> <C-O>d^
 
 " Ctrl-A / Ctrl-E always move to start / end of line, like shells and emacs
-" Default: can only be done in command mode with Ctrl-B / Ctrl-E
-" Overrides: i_CTRL-A (redo last insert) -- use Ctrl-G instead
-" Overrides: c_CTRL-A (list all matches) -- no replacement
-" Overrides:   CTRL-A (increment number) -- use Ctrl-S instead
-" Overrides: i_CTRL-E (copy from below)  -- use Ctrl-Q instead
-" Overrides:   CTRL-E (scroll one down)  -- see scrolling
-Map clinov <recursive> <C-A> <Home>
-Map clinov <recursive> <C-E> <End>
+Map cliov <recursive> <C-A> <Home>
+Map cliov <recursive> <C-E> <End>
 Map i <Home> <C-O>^
 
 " Ctrl-Q / Ctrl-Y always copy the character above / below the cursor
-" Default: can only be done in insert mode with Ctrl-E / Ctrl-Y
-" Overrides: i_CTRL-Q (insert verbatim)  -- use Ctrl-V
-" Overrides:   CTRL-Y (scroll one up)    -- see scrolling
 nnoremap <C-Q> i<C-E><Esc>l
 nnoremap <C-Y> i<C-Y><Esc>l
 inoremap <C-Q> <C-E>
 
 " Ctrl-T / Ctrl-D always add / remove indent
-" Default: only works in insert mode; << and >> behave differently
-" Overrides: CTRL-T (pop tag) CTRL-D (scroll half-page down)
 Map n <C-T> :call KeepPos('>')<CR>
 Map n <C-D> :call KeepPos('<')<CR>
 xmap <C-T> VVgv<plug>(dragonfly_right)
 xmap <C-D> VVgv<plug>(dragonfly_left)
-
-" Increment / decrement
-inoremap <C-S> <C-O><C-A>
-inoremap <nowait> <C-X> <C-O><C-X>
-nnoremap <C-S> <C-A>
 
 " Mappings galore {{{1
 
 " Esc: fix everything
 Map n <Esc> :<C-U>lcl<Bar>pc<Bar>ccl<Bar>set ch=2 ch=1<Bar>UndotreeHide<CR>
 
-" Auto-escape '/' in search
-cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
+" Super Tab!
+inoremap <expr> <Tab>   virtcol('.') > indent('.') + 1 ? "\<C-N>" : "\<C-T>"
+inoremap <expr> <S-Tab> virtcol('.') > indent('.') + 1 ? "\<C-P>" : "\<C-D>"
 
 " Find and replace
 nnoremap s :s:
 xnoremap s :s:
 nnoremap S :%s:\<<C-R><C-W>\>:
 xnoremap S "vy:%s:\V<C-R>v:
+
+" Pasting
+Map clinov <S-Insert> <MiddleMouse>
+set clipboard=unnamed
+lnoremap <C-R> <C-R><C-P>
 
 " c selects current line, without the line break at the end
 onoremap <silent> c :<C-U>normal! ^v$h<CR>
@@ -360,7 +309,7 @@ let g:bangmap = {
 	\ 'f': "FZF\<CR>",
 	\ 'h': "vert help ",
 	\ 'i': "set inv",
-	\ 's': 'silent source ' . g:session . "\n",
+	\ 's': 'silent! source ' . g:session . "\n",
 	\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
 	\ 'q': "q\n", 'Q': "q!\n",
 	\ 'l': "silent grep ''\<Left>", 'm': "make\n",
@@ -371,7 +320,12 @@ nnoremap <expr> ! ":\<C-U>" . get(g:bangmap, nr2char(getchar()), "\e")
 " Unimpaired-style mappings
 onoremap p :<C-U>set paste<CR>o
 
-" TODO : diff markers, lnext, qnext
+" Various
+Map nv   <C-G> ".P
+Map c    <C-G> <C-R>.
+nnoremap <C-N> <C-I>
+nnoremap <C-P> :<C-P>
+" TODO : diff markers
 " \v([<=>])\1{6}
 
 " Map Q and ; to something useful
@@ -398,10 +352,26 @@ nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> 
 	\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
 	\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
 
+" Scrolling
+Map nv <C-J> 12<C-D>
+Map nv <C-K> 12<C-U>
+Map c <C-J> <Down>
+Map c <C-K> <Up>
+
+autocmd InsertEnter * let g:last_insert_col = virtcol('.')
+Map i <expr> <C-J> "\<Esc>j" . g:last_insert_col . "\<Bar>i"
+Map i <expr> <C-K> "\<Esc>k" . g:last_insert_col . "\<Bar>i"
+
 " Surely there’s something to do with H, M, - and +
 
 " Plugin config {{{1
 
+" NeoMake
+let g:neomake_error_sign = {'text': '>>', 'texthl': 'Error'}
+let g:neomake_warning_sign = {'text': '>>', 'texthl': 'TODO'}
+autocmd BufWritePost * Neomake
+
+" EasyAlign, Undotree
 let g:spacemap = {
 	\ '=': "\<Plug>(EasyAlign)ap",
 	\ 'u': ":UndotreeHide\rLo:UndotreeShow|UndotreeFocus\r",
@@ -419,14 +389,9 @@ let g:zmap = {
 	\ }
 nnoremap <expr> Z ":\<C-U>" . get(g:zmap, nr2char(getchar()), "\e") 
 
+let g:EclimPythonValidate = 1
 let g:EclimCompletionMethod = 'omnifunc'
 let g:EclimJavaCallHierarchyDefaultAction = 'vert split'
-
-" YCM
-let g:ycm_global_ycm_extra_conf = '~/.nvim/scripts/ycm.py'
-let g:ycm_always_populate_location_list = 1
-let g:ycm_seed_identifiers_with_syntax = 1
-let g:loaded_youcompleteme = 1
 
 " Subliminal
 xnoremap <BS>    :SubliminalInsert<CR><BS>
@@ -454,12 +419,8 @@ set ruler rulerformat=%42(%=%1*%m%f\ %-(#%-2B%5l,%-4v%P%)%)
 
 " Geometry
 set splitright splitbelow
-set noequalalways
-set winwidth=88
+set noequalalways winwidth=88 winminwidth=6
 set previewheight=16
-set winminwidth=6
-
-autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
 
 " Use Tab to switch between windows
 Map n <Tab>   <C-W>w
@@ -468,50 +429,9 @@ Map n <S-Tab> <C-W>W
 " Restore <C-W>
 nnoremap <expr> L "\<C-W>" . nr2char(getchar())
 
-execute 'cd' expand('%:p:h')
-
-" Scrolling {{{1
-
-" Keep a few lines/columns around the cursor
-set scrolljump=4 scrolloff=20
-set sidescroll=2 sidescrolloff=8
-
-" Keep cursor column when scrolling
-set nostartofline
-Map nov G G$l
-
-function! Scroll(lines, up)
-	let lines = v:count1 * a:lines
-	if mode() =~ "[iR]"
-		return repeat("\<C-X>" . (a:up ? "\<C-Y>" : "\<C-E>"), lines)
-	endif
-	return v:count1 * a:lines . (a:up ? "\<C-U>" : "\<C-D>")
-endfunction
-
-" Mouse scrolls the cursor
-Map nvi <expr> <ScrollWheelDown> Scroll(4, 0)
-Map nvi <expr> <ScrollWheelUp>   Scroll(4, 1)
-Map nv  <expr> <C-J>             Scroll(12, 0)
-Map nv  <expr> <C-K>             Scroll(12, 1)
-Map nvi <expr> <PageDown>        Scroll(&lines-5, 0)
-Map nvi <expr> <PageUp>          Scroll(&lines-5, 1)
-
-Map c <C-J> <Down>
-Map c <C-K> <Up>
-
-autocmd InsertEnter * let g:last_insert_col = virtcol('.')
-Map i <expr> <C-J> "\<Esc>j" . g:last_insert_col . "\<Bar>i"
-Map i <expr> <C-K> "\<Esc>k" . g:last_insert_col . "\<Bar>i"
-
-" Pasting {{{1
-
-" Emulate xterm behaviour
-Map clinov <S-Insert> <MiddleMouse>
-
-set clipboard=unnamed
-lnoremap <C-R> <C-R><C-P>
-
 " Experimental {{{1
+
+execute 'cd' expand('%:p:h')
 
 function! s:doR()
 	let c = nr2char(getchar())
@@ -520,38 +440,13 @@ function! s:doR()
 		\ 'r' : '%r' . &matchpairs[i] . '``r') . c
 endfunction
 
-nnoremap <expr> r <SID>doR()
-nnoremap <expr> t ":echo '" . <SID>doR() . "'\r"
-
-nnoremap <C-N> <C-I>
-nnoremap <C-P> :<C-P>
-Map nv   <C-G> ".P
-Map c    <C-G> <C-R>.
+nnoremap - "_ddk
+onoremap s ib
 
 " Golf
 autocmd BufWritePost ~/Golf/** !cat %.in 2>/dev/null | perl5.8.8 %
 autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
 
-" ag
-set grepprg=ag
-
-let g:EclimPythonValidate = 1
-
-function! ShowOnGithub(line1, line2)
-	let u = system("git config --get remote.origin.url | sed s+git@github.com:++")
-	let u = split(u)[0]
-	silent exec "!firefox https://github.com/".u."/blob/master/".@%.'\#L'.a:line1.'-'.a:line2
-	redraw!
-endfunction
-command! -range -nargs=0 ShowOnGithub call ShowOnGithub(<line1>, <line2>)
-
-nnoremap M :ShowOnGithub<CR>
-xnoremap M :ShowOnGithub<CR>
-nnoremap M :vs term://vim<CR>i
-
-tnoremap <Esc> <C-\><C-N>`.
 nnoremap <CR> :<C-U>try<Bar>lnext<Bar>catch<Bar>silent! lfirst<Bar>endtry<CR>
 
-let g:neomake_error_sign = {'text': '>>', 'texthl': 'Error'}
-let g:neomake_warning_sign = {'text': '>>', 'texthl': 'TODO'}
-autocmd BufWritePost * Neomake
+nnoremap <C-Z> :tab drop term://fish<CR>
