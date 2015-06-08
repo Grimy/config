@@ -56,7 +56,17 @@ if &shell =~ 'fish'
 	set shell=/bin/sh
 endif
 
-set commentstring=#\ %s
+" Keycodes not automatically recognized when over ssh
+Map clinov <recursive> <C-H> <C-BS>
+Map clinov <recursive> <C-@> <C-Space>
+Map clinov <recursive> <Esc>[3~ <Del>
+Map clinov <recursive> <Esc>[3;5~ <C-Del>
+Map clinov <recursive> <Esc>[1;5A <C-Up>
+Map clinov <recursive> <Esc>[1;5B <C-Down>
+Map clinov <recursive> <Esc>[1;5C <C-Right>
+Map clinov <recursive> <Esc>[1;5D <C-Left>
+
+execute 'cd' expand('%:p:h')
 
 " Basic options {{{1
 
@@ -158,7 +168,8 @@ set foldtext=FoldText()
 " Un clavier azerty en vaut deux ! {{{1
 
 set spelllang=en,fr
-set langnoremap langmap=à@,è`,é~,ç_,’`,ù%
+silent! set langnoremap
+set langmap=à@,è`,é~,ç_,’`,ù%
 lmap à @
 lmap è `
 lmap é ~
@@ -431,7 +442,7 @@ nnoremap <expr> L "\<C-W>" . nr2char(getchar())
 
 " Experimental {{{1
 
-execute 'cd' expand('%:p:h')
+set commentstring=#\ %s
 
 function! s:doR()
 	let c = nr2char(getchar())
