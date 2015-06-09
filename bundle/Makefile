@@ -21,9 +21,3 @@ $(notdir $(PLUG)):
 
 $(filter-out $(notdir $(PLUG)), $(wildcard *)):
 	echo 'RM $@' && rm -rf $@
-
-.PHONY: ycmd
-ycmd:
-	- rm YouCompleteMe/third_party/ycmd/third_party/sh/sh.pyc
-	cd YouCompleteMe && git pull && git submodule update --init --recursive
-	YouCompleteMe/third_party/ycmd/build.py --clang-completer --system-libclang
