@@ -25,7 +25,7 @@ function! s:filetype(name)
 		execute 'runtime syntax/'   . a:name . '.vim'
 		execute 'runtime indent/'   . a:name . '.vim'
 		execute 'runtime ftplugin/' . a:name . '.vim'
-		execute 'runtime ftplugin/after.vim'
+		execute 'runtime syntax/after.vim'
 	augroup END
 endfunction
 

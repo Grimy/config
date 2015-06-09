@@ -17,9 +17,6 @@ setlocal nrformats-=octal
 setlocal comments=sr:/**,mb:*,ex:*/,sr:/*,mb:*,ex:*/
 setlocal autoindent
 
-" Annoying mappings
-silent! vunmap <buffer> K
-
 " Indenting!
 set indentexpr=Indent()
 set indentkeys=0),0},0],o,O,=end,=else,=elsif,=when,=ensure,=rescue,=begin,=end

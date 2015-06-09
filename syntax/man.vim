@@ -1,4 +1,22 @@
-runtime syntax/ctrlh.vim
+nnoremap <buffer> <CR> K
+
+" Remove the ^H characters
+silent %!col -bx
+
+" Presentation options
+setlocal tabstop=8
+setlocal synmaxcol&
+setlocal colorcolumn=
+setlocal nolist nowrap nofoldenable nonumber
+
+" The screen moves in sync with the cursor
+autocmd BufEnter <buffer> set scrolloff=999 scrolljump=1
+autocmd BufLeave <buffer> set scrolloff=20  scrolljump=4
+normal! M0
+
+" Don’t save
+setlocal buftype=nofile bufhidden=hide noswapfile nomodifiable
+
 syn case ignore
 
 " Reference to other man pages

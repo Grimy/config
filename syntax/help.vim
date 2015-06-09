@@ -1,3 +1,11 @@
+" Follow tags with Return
+Map n <buffer> K <C-]>
+Map n <buffer> <CR> <C-]>
+setlocal iskeyword+=:,#
+autocmd BufEnter <buffer> set scrolloff=999 scrolljump=1
+autocmd BufLeave <buffer> set scrolloff=20  scrolljump=4
+
+" TODO: refactor
 syn region helpExample  matchgroup=helpIgnore start=" >$" start="^>$" end="^[^ \t]"me=e-1 end="^<" concealends
 syn keyword helpNote    note Note NOTE note: Note: NOTE: Notes Notes:
 syn match helpHeadline          "^[-A-Z .][-A-Z0-9 .()]*[ \t]\+\*"me=e-1
