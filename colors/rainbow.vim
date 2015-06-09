@@ -22,6 +22,7 @@ let s:fmt_bold   = 'cterm=NONE,bold'
 let s:fmt_rev    = 'cterm=NONE,reverse ctermbg=NONE'
 
 " Syntax highlighting
+exe "highlight! Character"  s:fmt_none s:fg_blue
 exe "highlight! Comment"    s:fmt_none s:fg_soft
 exe "highlight! Error"      s:fmt_bold s:fg_red
 exe "highlight! Keyword"    s:fmt_none s:fg_yellow

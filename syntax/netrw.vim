@@ -1,6 +1,8 @@
 nmap <buffer> h -
 nmap <buffer> l <CR>
 
+TODO: refactor
+
 " Directory List Syntax Highlighting: {{{1
 syn cluster NetrwGroup          contains=netrwHide,netrwSortBy,netrwSortSeq,netrwQuickHelp,netrwVersion,netrwCopyTgt
 syn cluster NetrwTreeGroup      contains=netrwDir,netrwSymLink,netrwExe

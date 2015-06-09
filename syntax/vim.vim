@@ -3,9 +3,7 @@ setlocal number
 nnoremap <buffer> K :vert help <C-R><C-W><CR>
 
 " Reload vim files after saving them
-if expand('%:p:h:t') !~ '\v^(ftplugin|syntax|indent)$'
-	autocmd BufWritePost <buffer> source %
-endif
+autocmd BufWritePost <buffer> source % | setf vim
 
 function! s:abbr(lhs, rhs)
 	return a:lhs . ' ' . a:lhs . '<End><CR>' . a:rhs . '<Up><End>'
@@ -33,5 +31,3 @@ syn match SingleEscape /''/ contained
 hi! link SingleEscape SpecialChar
 syn match ErrorChar /\\./ contained
 syn match SpecialChar /\v\\(e|\/|[xX]\x{1,2}|[uU]\x{1,4}|\<%([CMS]-)?\k{-}\>)/ contained
-
-autocmd BufWritePost <buffer> source %
