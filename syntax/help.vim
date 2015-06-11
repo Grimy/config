@@ -69,7 +69,7 @@ syn match helpLeadBlank         "^\s\+" contained
 syn match helpURL               `\v<[a-z]+://[^' <>"]+`
 
 hi def link helpIgnore          Ignore
-hi def link helpHyperTextJump   Identifier
+hi def link helpHyperTextJump   String
 hi def link helpBar             Ignore
 hi def link helpBacktick        Ignore
 hi def link helpStar            Ignore

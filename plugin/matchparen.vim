@@ -1,64 +1,42 @@
-augroup matchparen
-	autocmd!
-	autocmd CursorMoved,TextChanged * call s:Highlight_Matching_Pair()
-	autocmd InsertEnter * 3match none
-augroup END
-
-function! s:Highlight_Matching_Pair()
-	" Remove any previous match.
-	if exists('w:paren_hl_on') && w:paren_hl_on
-		3match none
-		let w:paren_hl_on = 0
-	endif
-
-	" Avoid that we remove the popup menu.
-	" Return when there are no colors (looks like the cursor jumps).
-	if pumvisible() || (&t_Co < 8 && !has("gui_running"))
-		return
-	endif
-
+function! s:match_pair()
 	" Get the character under the cursor and check if it's in 'matchpairs'.
-	let c_lnum = line('.')
-	let c_col = col('.')
+	let c = getline(line('.'))[col('.') - 1]
+	let i = stridx(&matchpairs, c)
 
-	let c = getline(c_lnum)[c_col - 1]
-	let plist = split(&matchpairs, '.\zs[:,]')
-	let i = index(plist, c)
-	if i < 0
-			" not found, nothing to do
-			return
+	if and(i, 1) || c ==# ''
+		" c isn’t in 'matchpairs': abort
+		return [0, 0]
 	endif
 
 	" Figure out the arguments for searchpairpos().
-	if i % 2 == 0
-		let s_flags = 'nW'
-		let c2 = plist[i + 1]
-	else
-		let s_flags = 'nbW'
-		let c2 = c
-		let c = plist[i - 1]
-	endif
-	if c == '['
-		let c = '\['
-		let c2 = '\]'
-	endif
+	let s_flags = and(i, 2) ? 'bnW' : 'nW'
+	let c = '\M' . &matchpairs[and(i, 253)]
+	let c2 = '\M' . &matchpairs[or(i, 2)]
+	let cx = &matchpairs[xor(i, 2)]
 
 	" When not in a string or comment ignore matches inside them.
-	" We match "escape" for special items, such as lispEscapeSpecial.
-	let s_skip ='synIDattr(synID(line("."), col("."), 0), "name") ' .
-	\ '=~? "string\\|character\\|singlequote\\|escape\\|comment"'
+	let s_skip ='synIDattr(synID(line("."), col("."), 0), "name") =~? "\\vstring|character|comment"'
 	execute 'if' s_skip '| let s_skip = 0 | endif'
 
 	" Limit the search to lines visible in the window.
-	let stoplinebottom = line('w$')
-	let stoplinetop = line('w0')
-	let stopline = i % 2 == 0 ? stoplinebottom : stoplinetop
-	let [m_lnum, m_col] = searchpairpos(c, '', c2, s_flags, s_skip, stopline)
-
-	" If a match is found setup match highlighting.
-	if m_lnum > 0 && m_lnum >= stoplinetop && m_lnum <= stoplinebottom 
-		exe '3match MatchParen /\(\%' . c_lnum . 'l\%' . (c_col) .
-		\ 'c\)\|\(\%' . m_lnum . 'l\%' . m_col . 'c\)/'
-		let w:paren_hl_on = 1
-	endif
+	let stopline = and(i, 2) ? line('w0') : line('w$')
+	return searchpairpos(c, '', c2, s_flags, s_skip, stopline)
 endfunction
+
+function! s:do_r()
+	let c = nr2char(getchar())
+	let i = xor(stridx(&matchpairs, c), 2)
+	if and(i, 1) == 0
+		call setline(w:lnum, substitute(getline(w:lnum), '\v%' . w:col . 'c.', &matchpairs[i], ''))
+	endif
+	execute 'normal! r' . c
+endfunction
+
+augroup MatchParen
+	autocmd!
+	autocmd CursorMoved,TextChanged * let [w:lnum, w:col] = s:match_pair()
+	autocmd CursorMoved,TextChanged * exe '3match MatchParen /\v%(%' . w:lnum . 'l%' . w:col . 'c)/'
+	autocmd InsertEnter * 3match none
+augroup END
+
+nnoremap r :<C-U>call <SID>do_r()<CR>

@@ -255,8 +255,7 @@ noremap <silent> <Up>   gk
 set diffopt=filler,context:5,foldcolumn:0
 
 " Automatically open the quickfix window when there are errors
-autocmd QuickFixCmdPost * redraw!
-autocmd QuickFixCmdPost * cwindow
+autocmd QuickFixCmdPost * redraw! | cwindow
 
 " UNIX shortcuts {{{1
 
@@ -443,13 +442,6 @@ nnoremap <expr> L "\<C-W>" . nr2char(getchar())
 " Experimental {{{1
 
 set commentstring=#\ %s
-
-function! s:doR()
-	let c = nr2char(getchar())
-	let i = xor(2, stridx(&matchpairs, c))
-	return (or(stridx(&matchpairs, getline('.')[col('.')-1]), i) % 2 ?
-		\ 'r' : '%r' . &matchpairs[i] . '``r') . c
-endfunction
 
 nnoremap - "_ddk
 onoremap s ib

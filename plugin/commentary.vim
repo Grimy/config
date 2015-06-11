@@ -2,12 +2,13 @@ function! s:go(...) abort
 	let lnum1 = a:0 > 1 ? a:1 : line("'[")
 	let lnum2 = a:0 > 1 ? a:2 : line("']")
 	let [l, r] = split(&commentstring, '\s*%s\s*', 1)
-	let pattern = '\v^(\s*)' . l . '\s*(.{-})\s*' . r
+	let pattern = '\v^%((\s*)' . l . '\s*(.{-})\s*' . r . '\s*\n)'
 	let uncomment = 2
 	for lnum in range(lnum1, lnum2)
 		let line = matchstr(getline(lnum), '\S.*\s\@<!')
 		if line !=# '' && line !~# pattern
 			let uncomment = 0
+			break
 		endif
 	endfor
 	for lnum in range(lnum1, lnum2)
@@ -22,28 +23,16 @@ function! s:go(...) abort
 	endfor
 endfunction
 
-function! s:textobject(inner) abort
+function! s:textobject() abort
 	let [l, r] = split(&commentstring, '\s*%s\s*', 1)
-	let lnums = [line('.')+1, line('.')-2]
-	for [index, dir, bound, line] in [[0, -1, 1, ''], [1, 1, line('$'), '']]
-		while lnums[index] != bound && line ==# '' || !(stridx(line, l) || line[strlen(line)-strlen(r) : -1] != r)
-			let lnums[index] += dir
-			let line = matchstr(getline(lnums[index]+dir), '\S.*\s\@<!')
-		endwhile
-	endfor
-	while (a:inner || lnums[1] != line('$')) && empty(getline(lnums[0]))
-		let lnums[0] += 1
-	endwhile
-	while a:inner && empty(getline(lnums[1]))
-		let lnums[1] -= 1
-	endwhile
-	if lnums[0] <= lnums[1]
-		execute 'normal!' lnums[0].'GV'.lnums[1].'G'
-	endif
+	let pattern = '\v^%((\s*)' . l . '\s*(.{-})\s*' . r . '\s*\n)'
+	if search(pattern . pattern . '@!', 'We') == 0 | return | endif
+	normal! V
+	call search(pattern . '@<!', 'Wb')
 endfunction
 
 xnoremap <silent> <C-C> :<C-U>call <SID>go(line("'<"), line("'>"))<CR>
 onoremap <silent> <C-C> lj
 nnoremap <silent> <C-C> :<C-U>set opfunc=<SID>go<CR>g@
 inoremap <silent> <C-C> <C-O>:<C-U>call <SID>go(line("."), line("."))<CR><Down>
-onoremap <silent> q :<C-U>call <SID>textobject(0)<CR>
+onoremap <silent> q :<C-U>call <SID>textobject()<CR>

@@ -50,9 +50,5 @@ augroup filetypedetect
 	autocmd BufNewFile,BufRead,StdinReadPost * if getline(1) =~ '\v^(.+\(..?\)).*\1$' | setf man | endif
 	autocmd BufNewFile,BufRead,BufWritePost * call s:detect_shebang()
 	autocmd BufNewFile,BufRead * call s:setft(substitute(expand("<afile>"), '\v.*[./]|\~', '', 'g'))
-augroup END
-
-augroup UpdateFileType
-	autocmd!
 	autocmd FileType * call s:filetype(expand('<amatch>'))
 augroup END

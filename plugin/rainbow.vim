@@ -1,8 +1,4 @@
-if has('gui_running')
-	let s:colors = map(['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'], "'guifg=' . v:val")
-else
-	let s:colors = map(['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'], "'ctermfg=' . v:val")
-endif
+let s:colors = map(['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'], "'ctermfg=' . v:val")
 let s:parentheses = ['start=/(/ end=/)/', 'start=/\[/ end=/\]/', 'start=/{/ end=/}/']
 let s:maxlvl = len(s:colors)
 

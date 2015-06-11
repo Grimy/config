@@ -10,12 +10,10 @@ function! s:abbr(lhs, rhs)
 endfunction
 
 command! -nargs=+ Abbr execute 'inoreabbrev <buffer>' s:abbr(<f-args>)
-Abbr if endif
 Abbr function endfunction
-Abbr for endfor
 
-syn keyword Flow if else elseif endif
-syn keyword Flow for endfor while endwhile
+syn keyword Flow if else elseif endif try catch endtry
+syn keyword Flow for in endfor while endwhile break continue
 syn keyword Flow function endfunction return
 
 let &l:commentstring = '" %s'
