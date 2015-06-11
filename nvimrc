@@ -453,3 +453,6 @@ autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
 nnoremap <CR> :<C-U>try<Bar>lnext<Bar>catch<Bar>silent! lfirst<Bar>endtry<CR>
 
 nnoremap <C-Z> :tab drop term://fish<CR>
+
+" Spell-file auto-download
+autocmd SpellFileMissing * call spellfile#LoadFile(expand('<amatch>'))

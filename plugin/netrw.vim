@@ -12,10 +12,10 @@ augroup Network
  endtry
 augroup END
 
-com! -count=1 -nargs=*	Nread		call netrw#NetrwSavePosn()<bar>call netrw#NetRead(<count>,<f-args>)<bar>call netrw#NetrwRestorePosn()
-com! -range=% -nargs=*	Nwrite		call netrw#NetrwSavePosn()<bar><line1>,<line2>call netrw#NetWrite(<f-args>)<bar>call netrw#NetrwRestorePosn()
+com! -count=1 -nargs=*	Nread		call netrw#SavePosn()<bar>call netrw#NetRead(<count>,<f-args>)<bar>call netrw#RestorePosn()
+com! -range=% -nargs=*	Nwrite		call netrw#SavePosn()<bar><line1>,<line2>call netrw#NetWrite(<f-args>)<bar>call netrw#RestorePosn()
 com! -nargs=*		NetUserPass	call NetUserPass(<f-args>)
-com! -nargs=*	        Nsource		call netrw#NetrwSavePosn()<bar>call netrw#NetSource(<f-args>)<bar>call netrw#NetrwRestorePosn()
+com! -nargs=*	        Nsource		call netrw#SavePosn()<bar>call netrw#NetSource(<f-args>)<bar>call netrw#RestorePosn()
 
 com! -nargs=* -bar -bang -count=0 -complete=dir	Explore		call netrw#Explore(<count>,0,0+<bang>0,<q-args>)
 com! -nargs=* -bar -bang -count=0 -complete=dir	Sexplore	call netrw#Explore(<count>,1,0+<bang>0,<q-args>)
@@ -25,15 +25,15 @@ com! -nargs=* -bar       -count=0 -complete=dir	Texplore	call netrw#Explore(<cou
 com! -nargs=* -bar -bang			Nexplore	call netrw#Explore(-1,0,0,<q-args>)
 com! -nargs=* -bar -bang			Pexplore	call netrw#Explore(-2,0,0,<q-args>)
 
-com! -nargs=0	NetrwSettings	call netrwSettings#NetrwSettings()
-com! -bang	NetrwClean	call netrw#NetrwClean(<bang>0)
+com! -nargs=0	NetrwSettings	call netrwSettings#Settings()
+com! -bang	NetrwClean	call netrw#Clean(<bang>0)
 
 " Maps:
 if !exists("g:netrw_nogx") && maparg('gx','n') == ""
  if !hasmapto('<Plug>NetrwBrowseX')
   nmap <unique> gx <Plug>NetrwBrowseX
  endif
- nno <silent> <Plug>NetrwBrowseX :call netrw#NetrwBrowseX(expand("<cWORD>"),0)<cr>
+ nno <silent> <Plug>NetrwBrowseX :call netrw#BrowseX(expand("<cWORD>"),0)<cr>
 endif
 
 " ---------------------------------------------------------------------

@@ -1,9 +1,10 @@
-cache
+autoload
 bundle
-src
+cache
 compiler
 doc
 indent
-autoload
+spell
+src
 *.pyc
 .netrwhist
