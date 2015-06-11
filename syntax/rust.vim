@@ -1,5 +1,6 @@
 syn region Comment start='\V/*' end='\V*/'
 let &l:commentstring = '// %s'
+setlocal number
 
 " Syntax definitions {{{1
 syn keyword Error alignof become do offsetof priv pure sizeof typeof unsized

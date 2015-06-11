@@ -42,7 +42,6 @@ function fish_greeting
 	alias tab 'gvim --remote-tab-silent'
 	alias tag 'git tag -f'
 	alias v 'vim'
-	alias wtf 'git commit -am (curl -s http://whatthecommit.com | perl -p0e \'($_)=m{<p>(.+?)</p>}s\')'
 	alias yay 'ponysay -f Fluttershy yay'
 
 	echo -s "Howdy $USER, welcome to " (hostname) '!'
