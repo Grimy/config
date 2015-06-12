@@ -71,8 +71,6 @@ Map <Esc>[1;5B <C-Down>
 Map <Esc>[1;5C <C-Right>
 Map <Esc>[1;5D <C-Left>
 
-execute 'cd' expand('%:p:h')
-
 " Options {{{1
 
 set grepprg=ag

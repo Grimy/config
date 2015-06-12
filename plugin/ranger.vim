@@ -8,7 +8,7 @@ endfunction
 
 augroup Ranger
 	autocmd!
-	autocmd BufEnter,BufNewFile * call s:ranger(expand("<afile>"))
+	autocmd BufEnter,BufNewFile * call s:ranger(expand('<afile>'))
 augroup END
 finish
 """
