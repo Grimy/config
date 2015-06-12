@@ -41,7 +41,6 @@ function fish_greeting
 	alias stats 'git show --oneline --stat'
 	alias tab 'gvim --remote-tab-silent'
 	alias tag 'git tag -f'
-	alias v 'vim'
 	alias yay 'ponysay -f Fluttershy yay'
 
 	echo -s "Howdy $USER, welcome to " (hostname) '!'
