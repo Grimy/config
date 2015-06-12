@@ -196,7 +196,7 @@ onoremap <C-U>  ^
 " Ctrl-A / Ctrl-E always move to start / end of line, like shells and emacs
 Map <C-A> <Home>
 Map <C-E> <End>
-inoremap <Home> <C-O>^
+nunmap <C-A>
 
 " Ctrl-Q / Ctrl-Y always copy the character above / below the cursor
 nnoremap <C-Q> i<C-E><Esc>l
@@ -361,3 +361,5 @@ nnoremap <C-Z> :tab drop term://fish<CR>
 autocmd SpellFileMissing * call spellfile#LoadFile(expand('<amatch>'))
 
 tnoremap <Esc> <C-\><C-N>`.
+
+let g:dirvish_hijack_netrw = 1
