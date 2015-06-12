@@ -14,11 +14,11 @@ Abbr function endfunction
 
 syn keyword Flow if else elseif endif try catch endtry
 syn keyword Flow for in endfor while endwhile break continue
-syn keyword Flow function endfunction return
+syn keyword Flow function endfunction return finish
 
 let &l:commentstring = '" %s'
 let b:indent_start = '\v^[\t }]*<%(else|elseif|if|for|while|function)>'
-let b:indent_end   = '\v^[\t }]*<%(else|endif|endfor|endwhile|endfunction)>'
+let b:indent_end   = '\v^[\t }]*<%(else|end%(if|for|while|function))>'
 let b:indent_cont  = '^\s*\'
 
 syn region String matchgroup=Normal start=/'/ end=/'/ contains=SingleEscape oneline

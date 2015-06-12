@@ -1,7 +1,6 @@
 function v
-	if [ -n "$argv" ]
-		vim $argv
-	else
-		ranger
+	if [ -z "$argv" ]
+		set argv .
 	end
+	vim $argv
 end

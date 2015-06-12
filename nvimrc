@@ -361,3 +361,5 @@ nnoremap <C-Z> :tab drop term://fish<CR>
 
 " Spell-file auto-download
 autocmd SpellFileMissing * call spellfile#LoadFile(expand('<amatch>'))
+
+tnoremap <Esc> <C-\><C-N>`.
