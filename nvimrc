@@ -235,17 +235,17 @@ onoremap <silent> c :<C-U>normal! ^v$h<CR>
 
 " Common commands with “!”
 let g:bangmap = {
-	\ 'b': "b ", 'v': "vs ", 't': "tab drop ",
-	\ 'T': "tab drop term://fish\<CR>",
-	\ 'e': "e ", 'E': "e! ",
-	\ 'h': "vert help ",
-	\ 'i': "set inv",
-	\ 's': 'silent! source ' . g:session . "\n",
-	\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
-	\ 'q': "q\n", 'Q': "q!\n",
-	\ 'l': "silent grep ''\<Left>", 'm': "make\n",
-	\ 'd': "!gdb -q -ex 'set confirm off' -ex 'b main' -ex r $(find debug/* -not -name '*.*')\n",
-	\ }
+\ 'b': "b ", 'v': "vs ", 't': "tab drop ",
+\ 'T': "tab drop term://fish\<CR>",
+\ 'e': "e ", 'E': "e! ",
+\ 'h': "vert help ",
+\ 'i': "set inv",
+\ 's': 'silent! source ' . g:session . "\n",
+\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
+\ 'q': "q\n", 'Q': "q!\n",
+\ 'l': "silent grep ''\<Left>", 'm': "make\n",
+\ 'd': "!gdb -q -ex 'set confirm off' -ex 'b main' -ex r $(find debug/* -not -name '*.*')\n",
+\ }
 nnoremap <expr> ! ":\<C-U>" . get(g:bangmap, nr2char(getchar()), "\e")
 
 " Unimpaired-style mappings
@@ -259,8 +259,6 @@ nnoremap <silent> ; .wn
 cnoremap <silent>    <C-G> <C-R>.
 nnoremap <C-N> <C-I>
 nnoremap <C-P> :<C-P>
-" TODO : diff markers
-" \v([<=>])\1{6}
 
 " Preserve CTRL-A
 let g:surround_no_insert_mappings = 1
@@ -278,8 +276,8 @@ nnoremap <silent> a A
 
 " Syntax file debugging
 nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'
-	\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
-	\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
+\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
+\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
 
 " Scrolling
 noremap <silent> <C-J> 12<C-D>
@@ -352,10 +350,14 @@ onoremap s ib
 autocmd BufWritePost ~/Golf/** !cat %.in 2>/dev/null | perl5.8.8 %
 autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
 
-nnoremap <CR> :<C-U>try<Bar>lnext<Bar>catch<Bar>silent! lfirst<Bar>endtry<CR>
+nnoremap <CR> :<C-U>try<Bar>lnext<Bar>catch<Bar>silent! lfirst<Bar>endtry<CR>zx
+silent! lvimgrep '\v([<=>])\1{6}' %
 
 nnoremap <C-Z> :tab drop term://fish<CR>
 nnoremap <C-F> :tab edit term://ranger<CR>
 
 autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
 
+tnoremap <Esc> <C-\><C-N>`.
+nnoremap p ]p
+nnoremap P ]P
