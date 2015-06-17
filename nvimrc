@@ -45,6 +45,7 @@ endfunction
 
 augroup VimRC
 autocmd!
+set all&
 
 let s:is_windows = has('win16') || has('win32') || has('win64')
 let s:sep        = s:is_windows ? '\' : '/'
@@ -73,9 +74,9 @@ Map <Esc>[1;5D <C-Left>
 
 " Options {{{1
 
-set grepprg=ag
-set nojoinspaces
+set grepprg=ag clipboard=unnamed
 set diffopt=filler,context:5,foldcolumn:0
+set nojoinspaces
 set virtualedit=onemore,block
 set whichwrap=[,<,>,]
 set timeoutlen=1
@@ -94,7 +95,7 @@ set synmaxcol=101
 set matchpairs+=<:>
 set fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
 set list listchars=tab:»\ ,nbsp:.,precedes:«,extends:»
-set linebreak showbreak=…\ display=lastline
+set linebreak showbreak=…\  display=lastline
 set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
 set showcmd ruler rulerformat=%42(%=%1*%m%f\ %-(#%-2B%5l,%-4v%P%)%)
 set splitright splitbelow
@@ -221,14 +222,12 @@ nnoremap <Tab>   <C-W>w
 nnoremap <S-Tab> <C-W>W
 
 " Find and replace
-nnoremap s :s:
-xnoremap s :s:
-nnoremap S :%s:\<<C-R><C-W>\>:
-xnoremap S "vy:%s:\V<C-R>v:
+noremap s :s:
+nnoremap S :<C-U>%s~~
+xnoremap S :s~~
 
 " Pasting
 Map <S-Insert> <MiddleMouse>
-set clipboard=unnamed
 lnoremap <C-R> <C-R><C-P>
 
 " c selects current line, without the line break at the end
@@ -356,10 +355,7 @@ autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
 nnoremap <CR> :<C-U>try<Bar>lnext<Bar>catch<Bar>silent! lfirst<Bar>endtry<CR>
 
 nnoremap <C-Z> :tab drop term://fish<CR>
+nnoremap <C-F> :tab edit term://ranger<CR>
 
-" Spell-file auto-download
-autocmd SpellFileMissing * call spellfile#LoadFile(expand('<amatch>'))
+autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
 
-tnoremap <Esc> <C-\><C-N>`.
-
-let g:dirvish_hijack_netrw = 1

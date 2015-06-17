@@ -9,7 +9,7 @@ vim:
 	mkdir -p cache/swaps cache/backups cache/undos
 	-git clone https://github.com/neovim/neovim src
 	cd src; git pull; make
-	vim +'helptags doc/' +q >/dev/null 2>&1
+	vim +'helptags runtime/doc/' +q >/dev/null 2>&1
 
 .PHONY: symlinks
 symlinks:

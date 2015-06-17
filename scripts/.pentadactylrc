@@ -91,4 +91,3 @@ imap -builtin <F2> <Esc>y:!xsel | gpg2 --faked-system-time=2123456789 --digest s
 " Custom styles
 autocmd!
 autocmd PageLoad fimfiction.net/story js content.window.document.getElementById('chapter_container').style.textAlign = 'left'
-autocmd PageLoad fimfiction.net/story js content.window.document.getElementById('chapter_container').style.maxWidth = '51em'
