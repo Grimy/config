@@ -32,7 +32,7 @@ function! s:textobject() abort
 endfunction
 
 xnoremap <silent> <C-C> :<C-U>call <SID>go("'<", "'>")<CR>
-onoremap <silent> <C-C> ap
+onoremap <silent> <C-C> lj
 nnoremap <silent> <C-C> :<C-U>set opfunc=<SID>go<CR>g@
 inoremap <silent> <C-C> <C-O>:<C-U>call <SID>go(".", ".")<CR><Down>
 onoremap <silent> q :<C-U>call <SID>textobject()<CR>

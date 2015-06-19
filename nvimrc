@@ -83,7 +83,7 @@ set timeoutlen=1
 set scrolljump=4 scrolloff=20 sidescroll=2 sidescrolloff=8
 set nostartofline | noremap G G$l
 set ignorecase smartcase incsearch gdefault
-set shiftround copyindent tabstop=4 shiftwidth=0
+set shiftround copyindent smarttab tabstop=4 shiftwidth=0
 set fileencodings=utf-8,cp1252
 set wildmode=longest,full showfulltag
 set complete=.,t,i completeopt=menu
