@@ -236,7 +236,7 @@ onoremap <silent> c :<C-U>normal! ^v$h<CR>
 " Common commands with “!”
 let g:bangmap = {
 \ 'b': "b ", 'v': "vs ", 't': "tab drop ",
-\ 'T': "tab drop term://fish\<CR>",
+\ 'T': "tab drop term://fish\r",
 \ 'e': "e ", 'E': "e! ",
 \ 'h': "vert help ",
 \ 'i': "set inv",
@@ -301,7 +301,8 @@ autocmd BufWritePost * Neomake
 " EasyAlign, FZF, Undotree
 let g:spacemap = {
 	\ '=': "\<Plug>(EasyAlign)ap",
-	\ 'f': ":FZF\<CR>",
+	\ 'f': ":FZF\r",
+	\ 'g': ':silent! lvimgrep /\v([<=>])\1{6}/ %' . "\r",
 	\ 'u': ":UndotreeHide\rLo:UndotreeShow|UndotreeFocus\r",
 	\ }
 nmap <expr> <Space> get(g:spacemap, nr2char(getchar()), "\e")
@@ -351,7 +352,6 @@ autocmd BufWritePost ~/Golf/** !cat %.in 2>/dev/null | perl5.8.8 %
 autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
 
 nnoremap <CR> :<C-U>try<Bar>lnext<Bar>catch<Bar>silent! lfirst<Bar>endtry<CR>zx
-silent! lvimgrep '\v([<=>])\1{6}' %
 
 nnoremap <C-Z> :tab drop term://fish<CR>
 nnoremap <C-F> :tab edit term://ranger<CR>

@@ -1,8 +1,0 @@
-[Desktop Entry]
-Name=Vim
-Comment=Text editor
-Exec=vim -g --remote-tab-silent %f
-Terminal=false
-Type=Application
-MimeType=text/*
-Name[en_US]=vim
