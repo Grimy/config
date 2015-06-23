@@ -2,7 +2,7 @@ function fish_greeting
 	set -gx fish_new_pager 0
 
 	set -gx TERM          xterm-256color
-	set -gx PATH          ~/bin $PATH
+	set -gx PATH          ~/bin ~/.nvim/scripts $PATH
 	set -gx LANG          en_US.UTF-8
 	set -gx EDITOR        vim
 	set -gx PAGER         'vim -'

@@ -82,8 +82,8 @@ set whichwrap=[,<,>,]
 set timeoutlen=1
 set scrolljump=4 scrolloff=20 sidescroll=2 sidescrolloff=8
 set nostartofline | noremap G G$l
-set ignorecase smartcase incsearch gdefault
-set shiftround copyindent smarttab tabstop=4 shiftwidth=0
+set ignorecase smartcase gdefault
+set shiftround copyindent tabstop=4 shiftwidth=0
 set fileencodings=utf-8,cp1252
 set wildmode=longest,full showfulltag
 set complete=.,t,i completeopt=menu
@@ -95,12 +95,11 @@ set synmaxcol=101
 set matchpairs+=<:>
 set fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
 set list listchars=tab:»\ ,nbsp:.,precedes:«,extends:»
-set linebreak showbreak=…\  display=lastline
+set linebreak showbreak=…\  
 set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
 set showcmd ruler rulerformat=%42(%=%1*%m%f\ %-(#%-2B%5l,%-4v%P%)%)
 set splitright splitbelow
 set noequalalways winwidth=88 winminwidth=6 previewheight=16
-set autoread | autocmd BufEnter,FocusGained * checktime
 set hidden backup noswapfile undofile autowrite
 autocmd VimLeave * execute 'mksession!' g:session
 let &viminfo = '!,%,''42,h,s10,n' . s:cache . 'info'
@@ -112,6 +111,7 @@ let g:session                     = s:cache . 'session'
 " Disable trailing whitespace highlighting in insert mode
 autocmd InsertEnter * set listchars-=trail:.
 autocmd InsertLeave * set listchars+=trail:. nopaste
+autocmd BufEnter,FocusGained * checktime
 
 set foldmethod=marker foldminlines=3 foldnestmax=3 foldlevelstart=0 foldcolumn=0
 set foldopen=insert,jump,block,hor,mark,percent,quickfix,search,tag,undo
@@ -120,7 +120,6 @@ nnoremap <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zc' : 'h'
 nnoremap <expr> l foldclosed(line('.')) != -1 ? 'zv0' : 'l'
 
 set spelllang=en,fr
-silent! set langnoremap
 set langmap=à@,è`,é~,ç_,’`,ù%
 
 " TODO map these at the Xmodmap level

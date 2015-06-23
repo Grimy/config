@@ -9,7 +9,7 @@ my @colors = ("", "\x1b[0;33m", "\x1b[1;31m", "\x1b[0;31m"),
 my $SEP = "\x1b[0m |";
 
 $|--;
-print " usr | sys |     top-cpu     | mem |     top-mem     | read | writ |  hdd  |\n";
+print " usr | sys |     top-cpu     | mem |     top-mem     | read | writ | hdd |\n";
 
 sub lines(_) {
 	my ($file) = @_;
@@ -24,12 +24,15 @@ sub percent {
 	printf "$colors[$percent / 30]%3d%%$SEP", $percent;
 }
 
-sub top {
-	printf "%16.16s |", max @_;
+sub bytes {
+	s;\d\K(\d{3})+\b;qw(k M G T P)[$&=~y///c/3-1];e for @_;
+	printf "%5s |", @_;
 }
 
-sub bytes {
-	printf "% 5d |", @_;
+sub top {
+	my ($score, $name) = split ' ', max(@_), 2;
+	printf " %-10s", $name;
+	bytes $score;
 }
 
 sub cpu {
@@ -61,7 +64,7 @@ sub top_mem {
 	my @mem;
 	for (map lines, </proc/*/stat>) {
 		@_ = split;
-		$mem[$_[0]] = $_[23] . " " . substr $_[1], 1, -1;
+		$mem[$_[0]] = 4096 * $_[23] . ' ' . substr $_[1], 1, -1;
 	}
 	top @mem;
 }
@@ -74,7 +77,9 @@ sub io {
 	@old = @new;
 }
 
-sub top_io {
+sub disk {
+	my ($total, $used, $free) = `df -B1 /var` =~ /\b\d+\b/g;
+	percent($used, $total);
 }
 
 for (;;) {
@@ -84,6 +89,6 @@ for (;;) {
 	mem();
 	top_mem();
 	io();
-	top_io();
+	disk();
 	sleep 1;
 }
