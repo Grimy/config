@@ -22,3 +22,15 @@ syn keyword Keyword warn format formline reset scalar prototype lock tied untie
 syn keyword PreProc BEGIN CHECK INIT END UNITCHECK
 
 setlocal iskeyword+=$,@,%,&
+syn region String matchgroup=Normal start="'" end="'" contains=SingleEscape
+syn region String matchgroup=Normal start='"' end='"' contains=SpecialChar,ErrorChar,Interpolation
+syn region String matchgroup=Normal start='`' end='`' contains=SpecialChar,ErrorChar,Interpolation
+syn region String matchgroup=Normal start='/' skip='\\.' end='/' contains=SpecialChar oneline
+
+syn match SingleEscape /\\[\\']/ contained
+hi! link SingleEscape SpecialChar
+syn match ErrorChar /\\./
+syn match SpecialChar /\v\\([aesv]|c.|[MC]-.|M-\\C-.|x\x{1,2}|u\x{4})/ contained
+syn region Interpolation matchgroup=SpecialChar start=/\v\k+\[' end=']' contains=TOP
+syn region Interpolation matchgroup=SpecialChar start=/\v\k+\{' end='}' contains=TOP
+syn region Interpolation matchgroup=SpecialChar start=/\v\k+' end=''
