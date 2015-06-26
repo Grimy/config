@@ -9,7 +9,7 @@ syn keyword Keyword abs atan cos exp hex int log oct rand sin sqrt srand
 syn keyword Keyword splice unshift shift push pop join reverse grep map sort unpack
 syn keyword Keyword delete each exists keys values
 syn keyword Keyword syscall dbmopen dbmclose
-syn keyword Keyword binmode close eof fileno getc lstat printf line pipe say select stat tell
+syn keyword Keyword binmode close eof fileno getc lstat print printf line pipe say select stat tell
 syn keyword Keyword fcntl flock ioctl open read seek sys write truncate
 syn keyword Keyword chmod chown glob link readlink rename symlink umask unlink utime
 syn keyword Keyword mkdir chdir rmdir seekdir readdir telldir opendir closedir rewinddir chroot
@@ -20,3 +20,5 @@ syn keyword Keyword accept bind connect listen recv send setsockopt shutdown soc
 syn keyword Keyword localtime time
 syn keyword Keyword warn format formline reset scalar prototype lock tied untie
 syn keyword PreProc BEGIN CHECK INIT END UNITCHECK
+
+setlocal iskeyword+=$,@,%,&

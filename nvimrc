@@ -111,7 +111,7 @@ let g:session                     = s:cache . 'session'
 " Disable trailing whitespace highlighting in insert mode
 autocmd InsertEnter * set listchars-=trail:.
 autocmd InsertLeave * set listchars+=trail:. nopaste
-autocmd BufEnter,FocusGained * checktime
+autocmd BufEnter,FocusGained,CursorMoved * checktime
 
 set foldmethod=marker foldminlines=3 foldnestmax=3 foldlevelstart=0 foldcolumn=0
 set foldopen=insert,jump,block,hor,mark,percent,quickfix,search,tag,undo

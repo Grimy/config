@@ -5,11 +5,11 @@ use feature qw(state);
 use List::Util qw(first sum max);
 
 my %files = ();
-my @colors = ("", "\x1b[0;33m", "\x1b[1;31m", "\x1b[0;31m"),
-my $SEP = "\x1b[0m |";
-
+my @colors = ("", "\e[0;33m", "\e[1;31m", "\e[0;31m"),
+my ($line, $name, $time) = @ARGV;
 $|--;
-print " usr | sys |     top-cpu     | mem |     top-mem     | read | writ | hdd |\n";
+
+print "\e[H    | usr | sys |     top-cpu     | mem |     top-mem     | read | writ | hdd |";
 
 sub lines(_) {
 	my ($file) = @_;
@@ -21,26 +21,26 @@ sub lines(_) {
 sub percent {
 	my ($part, $total) = @_;
 	my $percent = $total && $part / $total * 100;
-	printf "$colors[$percent / 30]%3d%%$SEP", $percent;
+	sprintf "$colors[$percent / 30]%3d%%", $percent;
 }
 
 sub bytes {
 	s;\d\K(\d{3})+\b;qw(k M G T P)[$&=~y///c/3-1];e for @_;
-	printf "%5s |", @_;
+	sprintf "%5s", @_;
 }
 
 sub top {
 	my ($score, $name) = split ' ', max(@_), 2;
-	printf " %-10s", $name;
-	bytes $score;
+	sprintf " %-10.10s%s", $name, bytes $score;
 }
 
 sub cpu {
 	state @old, state @new;
-	@new = split for first {/^cpu /} lines '/proc/stat';
+	@new = split for first {/^cpu /} lines "/proc/stat";
 	@new = ($new[1] + $new[2], $new[3] + $new[5] + $new[6] + $new[7], sum(@new));
-	percent($new[$_] - $old[$_], $new[2] - $old[2]) for 0..1;
+	my @result = map percent($new[$_] - $old[$_], $new[2] - $old[2]), 0..1;
 	@old = @new;
+	@result;
 }
 
 sub top_cpu {
@@ -56,8 +56,8 @@ sub top_cpu {
 }
 
 sub mem {
-	my ($total, $free, $buffers, $cached) = grep s/\w+://, lines '/proc/meminfo';
-	percent($total - $free - $buffers - $cached, $total)
+	my ($total, $free, $buffers, $cached) = grep s/\w+://, lines "/proc/meminfo";
+	percent($total - $free - $buffers - $cached, $total);
 }
 
 sub top_mem {
@@ -71,24 +71,18 @@ sub top_mem {
 
 sub io {
 	state @old;
-	my @new = split ' ', lines '/sys/block/sda/stat';
-	bytes $new[3] - $old[3];
-	bytes $new[7] - $old[7];
+	my @new = split ' ', lines "/sys/block/sda/stat";
+	my @result = (bytes($new[3] - $old[3]), bytes($new[7] - $old[7]));
 	@old = @new;
+	@result;
 }
 
 sub disk {
 	my ($total, $used, $free) = `df -B1 /var` =~ /\b\d+\b/g;
-	percent($used, $total);
+	percent($total - $free, $total);
 }
 
 for (;;) {
-	print "\r";
-	cpu();
-	top_cpu();
-	mem();
-	top_mem();
-	io();
-	disk();
-	sleep 1;
+	printf "\e[%d;0H\e[K%s", $line, join "\e[0m |", $name, cpu(), top_cpu(), mem(), top_mem(), io(), disk(), '';
+	sleep $time;
 }

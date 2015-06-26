@@ -18,10 +18,6 @@ function cd --description 'Change directory'
 		return $status
 	end
 
-	if test -f $argv[1]
-		set argv (dirname $argv[1])
-	end
-
 	builtin cd $argv[1]
 	set -l cd_status $status
 
@@ -29,7 +25,7 @@ function cd --description 'Change directory'
 		set -g dirprev $dirprev $previous
 		set -e dirnext
 		set -g __fish_cd_direction prev
-		l
+		ll
 	end
 
 	return $cd_status
