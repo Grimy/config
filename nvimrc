@@ -346,10 +346,6 @@ set commentstring=#\ %s
 nnoremap - "_ddk
 onoremap s ib
 
-" Golf
-autocmd BufWritePost ~/Golf/** !cat %.in 2>/dev/null | perl5.8.8 %
-autocmd BufReadPost,BufEnter ~/Golf/** setlocal bin noeol filetype=perl
-
 nnoremap <CR> :<C-U>try<Bar>lnext<Bar>catch<Bar>silent! lfirst<Bar>endtry<CR>zx
 
 nnoremap <C-Z> :tab drop term://fish<CR>

@@ -31,6 +31,6 @@ syn match SingleEscape /\\[\\']/ contained
 hi! link SingleEscape SpecialChar
 syn match ErrorChar /\\./
 syn match SpecialChar /\v\\([aesv]|c.|[MC]-.|M-\\C-.|x\x{1,2}|u\x{4})/ contained
-syn region Interpolation matchgroup=SpecialChar start=/\v\k+\[' end=']' contains=TOP
-syn region Interpolation matchgroup=SpecialChar start=/\v\k+\{' end='}' contains=TOP
-syn region Interpolation matchgroup=SpecialChar start=/\v\k+' end=''
+syn region Interpolation matchgroup=SpecialChar start=/\v\k+\[/ end=']' contains=TOP
+syn region Interpolation matchgroup=SpecialChar start=/\v\k+\{/ end='}' contains=TOP
+syn region Interpolation matchgroup=SpecialChar start=/\v\k+/ end='\b'

@@ -46,6 +46,7 @@ augroup filetypedetect
 	autocmd!
 	autocmd CmdwinEnter * setf vim
 	autocmd BufEnter,BufNewFile term://* setf term
+	autocmd BufNewFile,BufRead,StdinReadPost * let &l:expandtab = getline(search('^\s', 'wn'))[0] == ' '
 	autocmd BufNewFile,BufRead,StdinReadPost * if getline(1) =~ '\v^(.+\(..?\)).*\1$' | setf man | endif
 	autocmd BufNewFile,BufRead,BufWritePost * call s:detect_shebang()
 	autocmd BufNewFile,BufRead * call s:setft(substitute(expand("<afile>"), '\v.*[./]|\~', '', 'g'))

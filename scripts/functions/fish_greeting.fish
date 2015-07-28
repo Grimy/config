@@ -1,6 +1,5 @@
 function fish_greeting
 	set -gx fish_new_pager 0
-
 	set -gx TERM          xterm-256color
 	set -gx PATH          ~/bin ~/.nvim/scripts $PATH 2>/dev/null
 	set -gx LANG          en_US.UTF-8
@@ -29,8 +28,7 @@ function fish_greeting
 	alias fzf '/usr/bin/ruby ~/.nvim/bundle/fzf/fzf'
 	alias gpg 'rlwrap gpg2 --expert'
 	alias gs 'rlwrap gs'
-	alias l 'git status -sb 2>/dev/null; or ll'
-	alias ll 'ls -lAGh'
+	alias l 'll'
 	alias mv '/bin/mv -i'
 	alias nvim 'vim'
 	alias pull 'git pull -u origin'
