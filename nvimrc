@@ -100,7 +100,8 @@ set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
 set showcmd ruler rulerformat=%42(%=%1*%m%f\ %-(#%-2B%5l,%-4v%P%)%)
 set splitright splitbelow
 set noequalalways winwidth=88 winminwidth=6 previewheight=16
-set hidden backup noswapfile undofile autowrite
+set hidden backup noswapfile undofile autowrite history=50
+set autoread | autocmd BufEnter,FocusGained * checktime
 autocmd VimLeave * execute 'mksession!' g:session
 let &viminfo = '!,%,''42,h,s10,n' . s:cache . 'info'
 let &backupdir                    = s:cache . 'backups'

@@ -1,3 +1,3 @@
 function dow
-	 watch -dn1 'ls -sh ~/Downloads/*.part'
+	 watch -n1 -d 'ls -sh ~/Downloads/*.part'
 end
