@@ -3,7 +3,7 @@ setlocal number
 nnoremap <buffer> K :vert help <C-R><C-W><CR>
 
 " Reload vim files after saving them
-autocmd BufWritePost <buffer> source % | setf vim
+autocmd BufWritePost <buffer> source %
 
 function! s:abbr(lhs, rhs)
 	return a:lhs . ' ' . a:lhs . '<End><CR>' . a:rhs . '<Up><End>'

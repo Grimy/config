@@ -19,7 +19,7 @@ setlocal autoindent
 
 " Indenting!
 set indentexpr=Indent()
-set indentkeys=0),0},0],o,O,=end,=else,=elsif,=when,=ensure,=rescue,=begin,=end
+set indentkeys=0),0},0],o,O,=end,=else,=elsif,=when,=ensure,=rescue,=begin,=endif,=endfor,=enwhile,=endfunction
 let &indentkeys .= ',0\,0+,0-,0*,0%,0&,0|,0&,0~,0<!>,0?,0:,0<<>,0=,0<>>,0,'
 
 let b:indent_start  = get(b:, 'indent_start', '{\s*$')

@@ -3,20 +3,58 @@
 " the terms of the Do What The Fuck You Want To Public License, Version 2, as
 " published by Sam Hocevar. See the LICENCE file for more details.
 
-" Utility functions {{{1
+augroup VimRC
+autocmd!
+
+let $VIM = $HOME . '/.nvim'
+
+" Use English messages
+language message en_US
 
 command! -nargs=+ Map map <args>|map! <args>
 
-" Returns the first virtual column of the current character
-function! s:VirtCol() abort
-	if col('.') == 1
-		return 1
-	endif
-	normal! h
-	let res = virtcol('.') + 1
-	normal! l
-	return res
-endfunction
+" Options {{{1
+
+set all&
+set shell=/bin/sh
+set helpfile=$VIM/nvimrc
+set runtimepath=$VIM,$VIM/bundle/*
+set grepprg=ag clipboard=unnamed
+set diffopt=filler,context:5,foldcolumn:0
+set nojoinspaces
+set virtualedit=onemore,block | noremap $ $l
+set nostartofline | noremap G G$l
+set whichwrap=[,<,>,]
+set timeoutlen=1
+set scrolljump=4 scrolloff=20 sidescroll=2 sidescrolloff=8
+set ignorecase smartcase gdefault
+set shiftround copyindent tabstop=4 shiftwidth=0
+set fileencodings=utf-8,cp1252
+set wildmode=longest,full showfulltag
+set complete=.,t,i completeopt=menu
+set keymodel=startsel mouse=nvr
+set conceallevel=2 concealcursor=n
+set cursorline
+set synmaxcol=101
+set commentstring=#\ %s
+set matchpairs+=<:>
+set fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
+set list listchars=tab:»\ ,nbsp:.,precedes:«,extends:»
+set linebreak showbreak=…\  
+set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
+set showcmd ruler rulerformat=%42(%=%1*%m%f\ %-(#%-2B%5l,%-4v%P%)%)
+set splitright splitbelow
+set noequalalways winwidth=88 winminwidth=6 previewheight=16
+set hidden backup noswapfile undofile autowrite history=50
+set viminfo=!,%,'42,h,s10,n$VIM/cache/info
+set backupdir=$VIM/cache/backups
+set directory=$VIM/cache/swaps
+set undodir=$VIM/cache/undos
+set foldmethod=marker foldminlines=3 foldnestmax=3 foldlevelstart=0 foldcolumn=0
+set foldopen=insert,jump,block,hor,mark,percent,quickfix,search,tag,undo
+set foldclose= foldtext=FoldText()
+autocmd InsertEnter * set listchars-=trail:.
+autocmd InsertLeave * set listchars+=trail:.
 
 function! FoldText() abort
 	let nbLines = v:foldend - v:foldstart
@@ -27,96 +65,6 @@ function! FoldText() abort
 	return line . printf('(%d lines)', nbLines)
 endfunction
 
-function! DeleteOne(count, wrap) abort
-	let start = a:count < 0 ? s:VirtCol() + a:count : virtcol('.')
-	let end   = a:count < 0 ? s:VirtCol() : virtcol('.') + a:count
-	let start = max([start, 1])
-	let end   = min([end, virtcol('$')])
-	if (start != end)
-		execute 'normal! ' . start . '|"_d' . end . '|'
-	endif
-	if a:wrap && end - start < abs(a:count)
-		execute 'normal!' a:count < 0 ? 'kgJ' : 'J'
-		call DeleteOne(a:count - abs(a:count) / a:count* (1 + end - start), 1)
-	endif
-endfunction
-
-" Initialization {{{1
-
-augroup VimRC
-autocmd!
-set all&
-
-let s:is_windows = has('win16') || has('win32') || has('win64')
-let s:sep        = s:is_windows ? '\' : '/'
-let s:path       = fnamemodify(resolve(expand('<sfile>')), ':p:h') . s:sep
-let s:cache      = s:path . 'cache'  . s:sep
-let &runtimepath = s:path . ',' . s:path . 'bundle' . s:sep . '*'
-let &helpfile    = s:path . 'nvimrc'
-
-" Use English messages.
-execute 'language' 'message' s:is_windows ? 'en' : 'C'
-
-" Vim needs a POSIX-Compliant shell. Fish is not.
-if &shell =~ 'fish'
-	set shell=/bin/sh
-endif
-
-" Keycodes not automatically recognized when over ssh
-Map <C-H> <C-BS>
-Map <C-@> <C-Space>
-Map <Esc>[3~ <Del>
-Map <Esc>[3;5~ <C-Del>
-Map <Esc>[1;5A <C-Up>
-Map <Esc>[1;5B <C-Down>
-Map <Esc>[1;5C <C-Right>
-Map <Esc>[1;5D <C-Left>
-
-" Options {{{1
-
-set grepprg=ag clipboard=unnamed
-set diffopt=filler,context:5,foldcolumn:0
-set nojoinspaces
-set virtualedit=onemore,block
-set whichwrap=[,<,>,]
-set timeoutlen=1
-set scrolljump=4 scrolloff=20 sidescroll=2 sidescrolloff=8
-set nostartofline | noremap G G$l
-set ignorecase smartcase gdefault
-set shiftround copyindent tabstop=4 shiftwidth=0
-set fileencodings=utf-8,cp1252
-set wildmode=longest,full showfulltag
-set complete=.,t,i completeopt=menu
-set keymodel=startsel mouse=nvr
-set conceallevel=2 concealcursor=n
-set nolazyredraw
-set cursorline
-set synmaxcol=101
-set matchpairs+=<:>
-set fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
-set list listchars=tab:»\ ,nbsp:.,precedes:«,extends:»
-set linebreak showbreak=…\  
-set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
-set showcmd ruler rulerformat=%42(%=%1*%m%f\ %-(#%-2B%5l,%-4v%P%)%)
-set splitright splitbelow
-set noequalalways winwidth=88 winminwidth=6 previewheight=16
-set hidden backup noswapfile undofile autowrite history=50
-set autoread | autocmd BufEnter,FocusGained * checktime
-autocmd VimLeave * execute 'mksession!' g:session
-let &viminfo = '!,%,''42,h,s10,n' . s:cache . 'info'
-let &backupdir                    = s:cache . 'backups'
-let &directory                    = s:cache . 'swaps'
-let &undodir                      = s:cache . 'undos'
-let g:session                     = s:cache . 'session'
-
-" Disable trailing whitespace highlighting in insert mode
-autocmd InsertEnter * set listchars-=trail:.
-autocmd InsertLeave * set listchars+=trail:. nopaste
-autocmd BufEnter,FocusGained,CursorMoved * checktime
-
-set foldmethod=marker foldminlines=3 foldnestmax=3 foldlevelstart=0 foldcolumn=0
-set foldopen=insert,jump,block,hor,mark,percent,quickfix,search,tag,undo
-set foldclose= foldtext=FoldText()
 nnoremap <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zc' : 'h'
 nnoremap <expr> l foldclosed(line('.')) != -1 ? 'zv0' : 'l'
 
@@ -130,6 +78,9 @@ Map ° <Bar>
 
 " DWIM harder {{{1
 
+" Automatically check if the file changed on disk
+autocmd BufEnter,FocusGained,CursorMoved * checktime
+
 " Jump  to  the  last  position  when reopening file
 autocmd BufReadPost * silent! normal! g`"zz
 
@@ -139,21 +90,18 @@ nnoremap <silent> Y y$
 " Redo with U
 nnoremap <silent> U <C-R>
 
-" - Don’t overwrite registers with single characters
-" - Don’t clutter undo history when deleting 0 characters
-" - Allow Backspace and Del to wrap in normal mode
-nnoremap <silent> x     :<C-U>call DeleteOne(+v:count1, 0)<CR>
-nnoremap <silent> X     :<C-U>call DeleteOne(-v:count1, 0)<CR>
-nnoremap <silent> <Del> :<C-U>call DeleteOne(+v:count1, 1)<CR>
-nnoremap <silent> <BS>  :<C-U>call DeleteOne(-v:count1, 1)<CR>
+" Auto-reindent when pasting
+nnoremap p pv']=']
+nnoremap P Pv']=']
 
-" x/X in v-mode doesn’t yank (d/D still does)
-xnoremap <silent> x "_d
-xnoremap <silent> X "_D
+" Don’t overwrite registers with single characters
+noremap <silent> x "_d<Right>
+noremap <silent> X "_d<Left>
+noremap <silent> <BS> "_d<Left>
 
 " Control + BS/Del deletes entire words
-nnoremap <silent> <nowait> <C-W>        "_db
-nnoremap <silent> <C-Del>      "_dw
+nnoremap <silent> <nowait> <C-W> "_db
+nnoremap <silent> <C-Del> "_dw
 inoremap <silent> <C-Del> <C-O>"_dw
 cnoremap <C-Del> <C-\>esubstitute(getcmdline(),'\v%'.getcmdpos().'c.{-}(><Bar>$)\s*','','')<CR>
 
@@ -176,6 +124,12 @@ noremap <silent> <Up>   gk
 " Automatically open the quickfix window when there are errors
 autocmd QuickFixCmdPost * redraw! | cwindow
 
+" Autoquit when the last buffer is useless
+autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
+
+" Make t_<Esc> consistent with other modes
+tnoremap <Esc> <C-\><C-N>`.
+
 " UNIX shortcuts {{{1
 
 Map <C-H> <C-BS>
@@ -190,9 +144,8 @@ Map <C-BS> <C-W>
 nnoremap <expr> L "\<C-W>" . nr2char(getchar())
 
 " Ctrl-U: delete to beginning
-" Already defined in insert and command modes
 nnoremap <C-U> d^
-onoremap <C-U>  ^
+onoremap <C-U> ^
 
 " Ctrl-A / Ctrl-E always move to start / end of line, like shells and emacs
 Map <C-A> <Home>
@@ -210,10 +163,23 @@ nnoremap <silent> <C-D> a<C-D><Esc>
 xmap <C-T> VVgv<plug>(dragonfly_right)
 xmap <C-D> VVgv<plug>(dragonfly_left)
 
+" Keycodes not automatically recognized when over ssh
+Map <C-H> <C-BS>
+Map <C-@> <C-Space>
+Map <Esc>[3~ <Del>
+Map <Esc>[3;5~ <C-Del>
+Map <Esc>[1;5A <C-Up>
+Map <Esc>[1;5B <C-Down>
+Map <Esc>[1;5C <C-Right>
+Map <Esc>[1;5D <C-Left>
+
 " Mappings galore {{{1
 
 " Esc: fix everything
 nnoremap <silent> <Esc> :<C-U>lcl<Bar>pc<Bar>ccl<Bar>set ch=2 ch=1<Bar>UndotreeHide<CR>
+
+" Return: goto next error/search result
+nnoremap <CR> :<C-U>try<Bar>lnext<Bar>catch<Bar>silent! lfirst<Bar>endtry<CR>zx
 
 " Super Tab!
 inoremap <expr> <Tab>   virtcol('.') > indent('.') + 1 ? "\<C-N>" : "\<C-T>"
@@ -226,37 +192,31 @@ noremap s :s:
 nnoremap S :<C-U>%s~~
 xnoremap S :s~~
 
-" Pasting
-Map <S-Insert> <MiddleMouse>
-lnoremap <C-R> <C-R><C-P>
-
 " c selects current line, without the line break at the end
 onoremap <silent> c :<C-U>normal! ^v$h<CR>
 
 " Common commands with “!”
 let g:bangmap = {
-\ 'b': "b ", 'v': "vs ", 't': "tab drop ",
-\ 'T': "tab drop term://fish\r",
-\ 'e': "e ", 'E': "e! ",
-\ 'h': "vert help ",
-\ 'i': "set inv",
-\ 's': 'silent! source ' . g:session . "\n",
-\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
-\ 'q': "q\n", 'Q': "q!\n",
-\ 'l': "silent grep ''\<Left>", 'm': "make\n",
-\ 'd': "!gdb -q -ex 'set confirm off' -ex 'b main' -ex r $(find debug/* -not -name '*.*')\n",
-\ }
+	\ 'b': "b ", 'v': "vs ", 't': "tab drop ",
+	\ 'T': "tab drop term://fish\r",
+	\ 'e': "e ", 'E': "e! ",
+	\ 'h': "vert help ",
+	\ 'i': "set inv",
+	\ 's': 'silent! source ' . $VIM . "/cache/session\n",
+	\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
+	\ 'q': "q\n", 'Q': "q!\n",
+	\ 'l': "silent grep ''\<Left>", 'm': "make\n",
+	\ 'd': "!gdb -q -ex 'set confirm off' -ex 'b main' -ex r $(find debug/* -not -name '*.*')\n",
+	\ }
 nnoremap <expr> ! ":\<C-U>" . get(g:bangmap, nr2char(getchar()), "\e")
-
-" Unimpaired-style mappings
-onoremap p :<C-U>set paste<CR>o
+autocmd VimLeave * execute 'mksession!' $VIM.'/cache/session'
 
 " Various
 noremap <C-G> ".P
 noremap Q gw
 onoremap Q ap
 nnoremap <silent> ; .wn
-cnoremap <silent>    <C-G> <C-R>.
+cnoremap <silent> <C-G> <C-R>.
 nnoremap <C-N> <C-I>
 nnoremap <C-P> :<C-P>
 
@@ -276,8 +236,8 @@ nnoremap <silent> a A
 
 " Syntax file debugging
 nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'
-\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
-\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
+	\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
+	\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
 
 " Scrolling
 noremap <silent> <C-J> 12<C-D>
@@ -342,18 +302,21 @@ xmap P <Plug>(dragonfly_copy)
 
 " Experimental {{{1
 
-set commentstring=#\ %s
-
 nnoremap - "_ddk
+onoremap p ap
 onoremap s ib
-
-nnoremap <CR> :<C-U>try<Bar>lnext<Bar>catch<Bar>silent! lfirst<Bar>endtry<CR>zx
+onoremap < i<
+onoremap > i>
+onoremap ( i(
+onoremap ) i)
+onoremap <nowait> [ i[
+onoremap <nowait> ] i]
+onoremap { i{
+onoremap } i}
 
 nnoremap <C-Z> :tab drop term://fish<CR>
 nnoremap <C-F> :tab edit term://ranger<CR>
 
-autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
-
-tnoremap <Esc> <C-\><C-N>`.
-nnoremap p ]p
-nnoremap P ]P
+if expand('%') == 'nvimrc'
+	setf vim
+endif
