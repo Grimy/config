@@ -1,7 +1,7 @@
 function fish_prompt
-	echo -ns (date '+%H:%M ') (set_color green) (if [ (id -u) -eq 0 ]
-		set_color red
-		hostname
-		echo -n ' '
-	end) (prompt_pwd) (set_color normal) '> '
+	echo -ns \
+		(set s $status; if [ $s -ne 0 ]; set_color red; echo "$s): "; end) \
+		(set_color normal; date '+%H:%M ') \
+		(if [ (id -u) -eq 0 ]; set_color red; hostname; echo ' '; end) \
+		(set_color green; prompt_pwd; set_color normal; echo '> ')
 end

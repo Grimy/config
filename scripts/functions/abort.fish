@@ -1,6 +1,6 @@
 function abort
 	merge --abort 2>/dev/null
-	rebase --abort 2>/dev/null
-	cherry --abort 2>/dev/null
-	bisect reset >/dev/null
+	or rebase --abort 2>/dev/null
+	or cherry --abort 2>/dev/null
+	or echo Nothing to abort
 end
