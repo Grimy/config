@@ -23,6 +23,7 @@ function fish_greeting
 	alias cp '/bin/cp -i'
 	alias cpan 'sudo perl -MCPAN -e'
 	alias diff 'git diff --patience'
+	alias dnf 'sudo dnf'
 	alias f 'find . -name'
 	alias fzf '/usr/bin/ruby ~/.nvim/bundle/fzf/fzf'
 	alias gpg 'rlwrap gpg2 --expert'

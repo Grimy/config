@@ -26,14 +26,14 @@ set virtualedit=onemore,block | noremap $ $l
 set nostartofline | noremap G G$l
 set whichwrap=[,<,>,]
 set timeoutlen=1
-set scrolljump=4 scrolloff=20 sidescroll=2 sidescrolloff=8
+set scrolljump=4 scrolloff=20 sidescroll=2
 set ignorecase smartcase gdefault
 set shiftround copyindent tabstop=4 shiftwidth=0
-set fileencodings=utf-8,cp1252
+set fileencodings=ucs-bom,,latin1
 set wildmode=longest,full showfulltag
 set complete=.,t,i completeopt=menu
 set keymodel=startsel mouse=nvr
-set conceallevel=2 concealcursor=n
+set conceallevel=2 concealcursor=nc
 set cursorline
 set synmaxcol=101
 set commentstring=#\ %s
@@ -317,6 +317,9 @@ onoremap } i}
 nnoremap <C-Z> :tab drop term://fish<CR>
 nnoremap <C-F> :tab edit term://ranger<CR>
 
-if expand('%') == 'nvimrc'
+if expand('%:t') == 'nvimrc'
 	setf vim
 endif
+
+let g:python_host_skip_check=1
+let g:loaded_python3_provider=1

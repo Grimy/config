@@ -10,7 +10,7 @@ let s:ftmap = {
 			\ 'md': 'markdown', 'mkd': 'markdown',
 			\ 'nvimrc': 'vim',
 			\ 'pl': 'perl',
-			\ 'py': 'python', 'python2': 'python', 'python3': 'python',
+			\ 'py': 'python',
 			\ 'rb': 'ruby', 'rake': 'ruby',
 			\ 'rs': 'rust',
 			\ 's': 'gas', 'S': 'gas',
@@ -30,7 +30,7 @@ function! s:filetype(name)
 endfunction
 
 function! s:detect_shebang()
-	let groups = matchlist(getline(1), '\v^%(#!\f+/|\<\?)(\f+)\s*(\f*)')
+	let groups = matchlist(getline(1), '\v^%(#!%(\f+/)?|\<\?)(\a+)\s*(\f*)')
 	if len(groups)
 		call s:setft(groups[1] ==# 'env' ? groups[2] : groups[1])
 	endif

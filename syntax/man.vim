@@ -1,8 +1,5 @@
 nnoremap <buffer> <CR> K
 
-" Remove the ^H characters
-silent %!col -bx
-
 " Presentation options
 setlocal tabstop=8
 setlocal synmaxcol&
@@ -17,25 +14,18 @@ normal! M0
 " Don’t save
 setlocal buftype=nofile bufhidden=hide noswapfile nomodifiable
 
-syn case ignore
-
-" Reference to other man pages
-syn match String /\f\+([1-9][a-z]\=)/
-
 " Title
-syn match Todo /^\f\+([0-9]\+[a-z]\=).*/
+syn match Todo /\v%^.*|.*%$/
 
-" Section heading
-syn match Todo /^[a-z][a-z ]*[a-z]$/
-
-" Subsection heading
-syn match Todo /^\s\{3\}[a-z][a-z ]*[a-z]$/
+" Escape sequences
+syn region String matchgroup=Normal start=/\v\e\[.{-}m/ end=/\v\e\[.{-}m/ concealends
+syn region Todo matchgroup=Normal start=/\v^%(   )?\zs\e\[.{-}m/ end=/\v\e\[.{-}m/ concealends
 
 " Options
-syn match Keyword /\v\W\zs--?(\k|-)+/ containedin=ALL
+syn match Keyword /\vm@<=-%([^-]|[a-z-]+)/ contained containedin=String
 
-if getline(1) =~ '^[a-zA-Z_]\+([23])'
+if getline(1) =~ '([23])$'
 	syntax include @C <sfile>:p:h/c.vim
 	syn match FuncDefinition display /\<\h\w*\>\s*(/me=e-1 contained
-	syn region manSynopsis start=/^SYNOPSIS/hs=s+8 end=/^\u\+\s*$/me=e-12 keepend contains=Todo,@C,FuncDefinition
+	syn region manSynopsis start=/SYNOPSIS\zs/ end=/\v\e@=/ keepend contains=Todo,@C,FuncDefinition
 endif

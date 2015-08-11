@@ -6,6 +6,7 @@
 
 [user]
 	name = Victor Adam
+	email = victor.adam@cofelyineo-gdfsuez.com
 
 [diff]
 	tool = vimdiff
@@ -36,6 +37,7 @@
 
 [rerere]
 	enabled = 1
+
 [filter "lfs"]
 	clean = git lfs clean %f
 	smudge = git lfs smudge %f

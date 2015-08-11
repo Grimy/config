@@ -10,6 +10,7 @@ xterm*locale:       true
 *backarrowKey:      false
 
 *saveLines:         65535
+xterm*scrollBar:    false
 *scrollTTYOutput:   true
 *scrollTTYKeypress: true
 
