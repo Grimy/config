@@ -23,7 +23,7 @@ let b:indent_cont  = '^\s*\'
 
 syn region String matchgroup=Normal start=/'/ end=/'/ contains=SingleEscape oneline
 syn region String matchgroup=Normal start='^\@!"' end='"' contains=SpecialChar,ErrorChar oneline
-syn region String matchgroup=Normal start='/' end='/' contains=SpecialChar oneline
+syn region String matchgroup=Normal start='/\S@=' end='/' contains=SpecialChar oneline
 
 syn match SingleEscape /''/ contained
 hi! link SingleEscape SpecialChar

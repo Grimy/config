@@ -91,8 +91,8 @@ nnoremap <silent> Y y$
 nnoremap <silent> U <C-R>
 
 " Auto-reindent when pasting
-nnoremap p pv']=']
-nnoremap P Pv']=']
+nnoremap p pv`]=`]
+nnoremap P Pv`]=`]
 
 " Don’t overwrite registers with single characters
 noremap <silent> x "_d<Right>
