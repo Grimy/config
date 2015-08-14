@@ -1,3 +1,6 @@
+" Smart indent detection
+let &l:expandtab = getline(search('^%(\t|  )', 'wn'))[0] == ' '
+
 " Handle non-ASCII word charcacters
 execute 'setlocal iskeyword+=' . (&fenc == 'utf-8' ? '128-167,224-235' : '192-255')
 

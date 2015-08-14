@@ -8,14 +8,11 @@ autocmd!
 
 let $VIM = $HOME . '/.nvim'
 
-" Use English messages
-language message en_US
-
 command! -nargs=+ Map map <args>|map! <args>
 
 " Options {{{1
 
-set all&
+set all& nomodified
 set shell=/bin/sh
 set helpfile=$VIM/nvimrc
 set runtimepath=$VIM,$VIM/bundle/*

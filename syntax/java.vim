@@ -28,3 +28,4 @@ setlocal number
 set suffixes+=.class
 
 inoreabbrev <silent> <buffer> syso System.out.println();<Left><Left>
+inoremap . .<C-X><C-O><C-P>
