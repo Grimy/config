@@ -18,6 +18,6 @@ let b:indent_end   = '\v^[\t }]*<%(else|catch|finally|case|default)>|^\s*\}'
 syn region Character matchgroup=Normal start="'" end="'" contains=SpecialChar,ErrorChar oneline
 syn region String    matchgroup=Normal start='"' end='"' contains=SpecialChar,ErrorChar oneline
 syn match ErrorChar /\\./
-syn match SpecialChar /\v\\([av'?]|x\x{1,2}|u\x{4})/ contained
+syn match SpecialChar /\v\\([aev'?]|x\x{1,2}|u\x{4})/ contained
 
 setlocal textwidth=80

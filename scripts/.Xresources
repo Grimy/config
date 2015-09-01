@@ -15,14 +15,17 @@ xterm*scrollBar:    false
 *scrollTTYKeypress: true
 
 *borderWidth: 0
-*faceSize: 11
-#if WIDTH > 1600
-	*faceName: Input Mono Condensed Medium
-	*scaleHeight: 1.10
-#else
-	*faceName: Input Mono Compressed Medium
-	*scaleHeight: 1.05
-#endif
+*faceName: Hack:style=Bold
+*faceSize: 12
+*scaleHeight: 1.1
+
+Xft.antialias: 1
+Xft.autohint:  0
+Xft.hinting:   1
+Xft.hintstyle: hintslight
+Xft.rgba:      rgb
+Xft.lcdfilter: lcdlight
+
 *showBlinkAsBold: True
 
 ! xcursor.theme: Vanilla-DMZ-AA
