@@ -32,7 +32,6 @@ function fish_greeting
 	alias mv '/bin/mv -i'
 	alias nvim 'vim'
 	alias push 'git push'
-	alias rebase 'git rebase'
 	alias reflog 'git reflog'
 	alias remote 'git remote -v'
 	alias show 'git show --word-diff=color'
@@ -40,6 +39,7 @@ function fish_greeting
 	alias stats 'git show --oneline --stat'
 	alias tab 'gvim --remote-tab-silent'
 	alias tag 'git tag -f'
+	alias x 'atool -x'
 	alias yay 'ponysay -f Fluttershy yay'
 
 	echo -s "Howdy $USER, welcome to " (hostname) '!'

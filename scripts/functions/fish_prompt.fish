@@ -1,8 +1,19 @@
 function fish_prompt
-	echo -ns \
-		(set s $status; if [ $s -ne 0 ]; set_color red; echo "$s): "; end) \
-		(set_color normal; date '+%H:%M ') \
-		(if [ (id -u) -eq 0 ]; set_color red; hostname; echo ' '; end) \
-		(set_color green; prompt_pwd; set_color normal; echo '> ')
-		# (set_color normal; echo -ne "\e[s\e[1;208f"; date '+%H:%M '; echo -ne "\e[u")
+	# Colored status indicator
+	set s $status
+	[ $s -ne 0 ]; and echo -ns (set_color red) "$s): "
+
+	# Mail
+	mail -e 2>&-; and echo -ns (set_color yellow) 'You’ve got mail! '
+
+	# Current time
+	echo -ns (set_color normal) (date '+%H:%M ')
+
+	# Root indicator
+	[ (id -u) -eq 0 ]; and echo -ns (set_color red) (hostname) ' '
+
+	# Current directory
+	echo -ns (set_color green) (prompt_pwd) (set_color normal) '> '
+
+	# (set_color normal; echo -ne "\e[s\e[1;208f"; date '+%H:%M '; echo -ne "\e[u")
 end
