@@ -30,25 +30,32 @@ function! s:filetype(name)
 endfunction
 
 function! s:detect_shebang()
-	let groups = matchlist(getline(1), '\v^%(#!%(\f+/)?|\<\?)(\a+)\s*(\f*)')
-	if len(groups)
-		call s:setft(groups[1] ==# 'env' ? groups[2] : groups[1])
+	let line = getline(1)
+	if line =~ '\v^(.+\(..?\)).*\1$'
+		let &filetype = 'man'
+	else
+		call s:setft(matchstr(line, '\v^%(#!%(\f+/)?|\<\?)%(env\s*)?\zs\f+'))
 	endif
 endfunction
 
 function! s:setft(type)
 	if a:type !=# ''
-		execute 'setf' get(s:ftmap, a:type, a:type)
+		let &filetype = get(s:ftmap, a:type, a:type)
 	endif
 endfunction
 
 augroup filetypedetect
 	autocmd!
+
+	" Filetype detection
 	autocmd CmdwinEnter * setf vim
-	autocmd BufEnter,BufNewFile term://* setf term
-	autocmd BufNewFile,BufRead,StdinReadPost * let &l:expandtab = getline(search('^\s', 'wn'))[0] == ' '
-	autocmd BufNewFile,BufRead,StdinReadPost * if getline(1) =~ '\v^(.+\(..?\)).*\1$' | setf man | endif
+	autocmd TermOpen * setf term
 	autocmd BufNewFile,BufRead * call s:setft(substitute(expand("<afile>"), '\v.*[./]|\~', '', 'g'))
-	autocmd BufNewFile,BufRead,BufWritePost * call s:detect_shebang()
+	autocmd BufRead,StdinReadPost,BufWritePost * call s:detect_shebang()
+
+	" Indent-style detection
+	autocmd BufRead,StdinReadPost * let &l:expandtab = getline(search('^\s', 'wn'))[0] == ' '
+
+	" Execute filetype plugins
 	autocmd FileType * call s:filetype(expand('<amatch>'))
 augroup END

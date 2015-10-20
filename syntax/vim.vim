@@ -14,7 +14,7 @@ Abbr function endfunction
 
 syn keyword Flow if else elseif endif try catch finally endtry
 syn keyword Flow for in endfor while endwhile break continue
-syn keyword Flow function endfunction return finish
+syn keyword Flow function endfunction return finish augroup
 
 let &l:commentstring = '" %s'
 let b:indent_start = '\v^[\t }]*<%(else|elseif|if|for|while|function)>'
