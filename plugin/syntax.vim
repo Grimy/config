@@ -5,7 +5,7 @@ let s:ftmap = {
 			\ 'Tupfile': 'tup',
 			\ 'Xresources': 'xdefaults',
 			\ 'asm': 'masm', 'inc': 'masm',
-			\ 'h': 'c', 'cpp': 'c',
+			\ 'h': 'c', 'cpp': 'c', 'ino': 'c',
 			\ 'js': 'javascript', 'node': 'javascript',
 			\ 'md': 'markdown', 'mkd': 'markdown',
 			\ 'nvimrc': 'vim',

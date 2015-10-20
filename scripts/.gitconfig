@@ -6,7 +6,6 @@
 
 [user]
 	name = Victor Adam
-	email = victor.adam@cofelyineo-gdfsuez.com
 
 [diff]
 	tool = vimdiff

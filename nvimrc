@@ -195,6 +195,7 @@ onoremap <silent> c :<C-U>normal! ^v$h<CR>
 " Common commands with “!”
 let g:bangmap = {
 	\ 'b': "b ", 'v': "vs ", 't': "tab drop ",
+	\ 'c': "cd %:h\n",
 	\ 'T': "tab drop term://fish\r",
 	\ 'e': "e ", 'E': "e! ",
 	\ 'h': "vert help ",
@@ -313,6 +314,7 @@ onoremap } i}
 
 nnoremap <C-Z> :tab drop term://fish<CR>
 nnoremap <C-F> :tab edit term://ranger<CR>
+tnoremap <C-^> <C-\><C-N><C-^>
 
 if expand('%:t') == 'nvimrc'
 	setf vim
