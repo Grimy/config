@@ -43,7 +43,7 @@ set showcmd ruler rulerformat=%42(%=%1*%m%f\ %-(#%-2B%5l,%-4v%P%)%)
 set splitright splitbelow
 set noequalalways winwidth=88 winminwidth=6 previewheight=16
 set hidden backup noswapfile undofile autowrite history=50
-set viminfo=!,%,'42,h,s10,n$VIM/cache/info
+set viminfo=!,%,'42,h,s10,n$VIM/cache/shada
 set backupdir=$VIM/cache/backups
 set directory=$VIM/cache/swaps
 set undodir=$VIM/cache/undos
