@@ -1,3 +1,3 @@
 function show
-	git show --word-diff=color $argv
+	git show $argv
 end

@@ -1,0 +1,2 @@
+nvim filter=lfs diff=lfs merge=lfs -text
+nvim-32 filter=lfs diff=lfs merge=lfs -text

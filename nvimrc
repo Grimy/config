@@ -321,5 +321,8 @@ if expand('%:t') == 'nvimrc'
 	setf vim
 endif
 
+" Temp workaround: this should be the default
+set keywordprg=:Man
+
 let g:python_host_skip_check=1
 let g:loaded_python3_provider=1

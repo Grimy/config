@@ -1,11 +1,13 @@
 nnoremap <buffer> <CR> K
 
+silent %!col -bx
 command! -nargs=1 Man %!man -Pcat <args>
 
 " Presentation options
 setlocal tabstop=8
 setlocal synmaxcol&
 setlocal colorcolumn=
+setlocal iskeyword+=.
 setlocal nolist nowrap nofoldenable nonumber
 
 " The screen moves in sync with the cursor

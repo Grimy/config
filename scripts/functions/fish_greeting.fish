@@ -4,7 +4,6 @@ function fish_greeting
 	set -gx PATH          ~/bin ~/.nvim/scripts $PATH 2>/dev/null
 	set -gx LANG          en_US.UTF-8
 	set -gx EDITOR        vim
-	set -gx MANPAGER      'vim -'
 	set -gx GCC_COLORS    'error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 	set -gx NVIM_TUI_ENABLE_CURSOR_SHAPE 1
 	set -gx RUST_BACKTRACE 1
@@ -39,7 +38,6 @@ function fish_greeting
 	alias stats 'git show --oneline --stat'
 	alias tab 'gvim --remote-tab-silent'
 	alias tag 'git tag -f'
-	alias x 'atool -x'
 	alias yay 'ponysay -f Fluttershy yay'
 
 	echo -s "Howdy $USER, welcome to " (hostname) '!'
