@@ -8,8 +8,6 @@ my %files = ();
 my @colors = ("", "\e[0;33m", "\e[1;31m", "\e[0;31m"),
 $|--;
 
-print " usr | sys |     top-cpu     | mem |     top-mem     | read | writ | hdd | mail";
-
 sub lines(_) {
 	my ($file) = @_;
 	open my $fh, '<', $file or die "$file: $!";
@@ -30,6 +28,11 @@ sub bytes {
 sub top {
 	my ($score, $name) = split ' ', max(@_), 2;
 	sprintf " %-10.10s%s", $name, bytes $score;
+}
+
+sub time {
+	my ($sec, $min, $hour) = localtime(time);
+	" $hour:$min";
 }
 
 sub cpu {
@@ -81,7 +84,7 @@ sub disk {
 }
 
 sub mail {
-	"$colors[1] You’ve got mail!" x !system('mail -e')
+	system('mail -e 2>/dev/null') ? "  " : "$colors[2] !"
 }
 
-print join "\e[0m |", cpu(), top_cpu(), mem(), top_mem(), io(), disk(), mail();
+print join "\e[0m │", @ARGV, &time, &cpu, &top_cpu, &mem, &top_mem, &io, &disk, &mail, '';

@@ -256,14 +256,17 @@ let g:neomake_error_sign = {'text': '!!', 'texthl': 'Error'}
 let g:neomake_warning_sign = {'text': '??', 'texthl': 'TODO'}
 autocmd BufWritePost * Neomake
 
-" EasyAlign, FZF, Undotree
+" EasyAlign, Undotree
 let g:spacemap = {
 	\ '=': "\<Plug>(EasyAlign)ap",
-	\ 'f': ":FZF\r",
 	\ 'g': ':silent! lvimgrep /\v([<=>])\1{6}/ %' . "\r",
 	\ 'u': ":UndotreeHide\rLo:UndotreeShow|UndotreeFocus\r",
 	\ }
 nmap <expr> <Space> get(g:spacemap, nr2char(getchar()), "\e")
+
+" FZF
+nnoremap <C-F> :FZF<CR>
+autocmd TermOpen */fzf* tnoremap <buffer> <Esc> <C-U><C-D>
 
 " Eclim
 let g:zmap = {
@@ -285,7 +288,7 @@ xnoremap <BS>    :SubliminalInsert<CR><BS>
 xnoremap <Del>   :SubliminalAppend<CR><Del>
 xnoremap <C-U>   :SubliminalInsert<CR><C-U>
 xnoremap <C-W>   :SubliminalInsert<CR><C-W>
-xnoremap <C-S>   :SubliminalInsert<CR><C-S>
+xnoremap <C-A>   :SubliminalInsert<CR><C-A>
 xnoremap <C-X>   :SubliminalInsert<CR><C-X>
 xnoremap <C-Del> :SubliminalAppend<CR><C-Del>
 xnoremap <C-Y>   :SubliminalInsert<CR><C-Y>
@@ -313,7 +316,7 @@ onoremap { i{
 onoremap } i}
 
 nnoremap <C-Z> :tab drop term://fish<CR>
-nnoremap <C-F> :tab edit term://ranger<CR>
+nnoremap <C-B> :tab edit term://ranger<CR>
 tnoremap <C-^> <C-\><C-N><C-^>
 
 " Unfortunately, set all& resets filetype and fileencoding

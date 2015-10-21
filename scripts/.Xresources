@@ -15,56 +15,51 @@ xterm*scrollBar:    false
 *scrollTTYKeypress: true
 
 *borderWidth: 0
-*faceName: Hack:style=Bold
-*faceSize: 12
-*scaleHeight: 1.1
+*faceSize: 11
+
+! *faceName: Hack:style=Bold
 
 Xft.antialias: 1
-Xft.autohint:  0
+Xft.autohint:  1
 Xft.hinting:   1
 Xft.hintstyle: hintslight
 Xft.rgba:      rgb
-Xft.lcdfilter: lcdlight
 
+#if WIDTH > 1600
+	*faceName: Input Mono Condensed Medium
+	*scaleHeight: 1.10
+#else
+	*faceName: Input Mono Compressed Medium
+	*scaleHeight: 1.05
+#endif
 *showBlinkAsBold: True
 
-! xcursor.theme: Vanilla-DMZ-AA
+! 6      7      8      9      10     11     12     13     14     15
+! 073642 002b36 586e75 cb4b16 719e07 b58900 268bd2 6c71c4 dc322f 839496
 
-! Vinyl Scratch
-*foreground: rgb:fe/fd/e7
-*color15: rgb:fe/fd/e7
-
-! Sublime text
-*background: rgb:13/13/13
-*color0: rgb:51/51/51
-
-! King Sombra
-*color8:  rgb:51/51/51
-
-! Now color corrected!
-*color12: rgb:90/e4/ff
+xterm*foreground: rgb:fe/fd/e7
+xterm*background: rgb:19/19/1c
+! Commments
+*color0:  rgb:58/6e/75
 *color1:  rgb:ff/12/30
-*color9:  rgb:ff/53/11
-*color11: rgb:ff/ff/9b
+! Menus
 *color2:  rgb:4f/d9/2e
+! Keywords
+*color3:  rgb:ff/ba/42
 *color4:  rgb:0a/98/e4
-*color13: rgb:62/0a/92
 *color5:  rgb:e4/28/a3
-
-! Applejack
-*color3:  rgb:ff/c3/6b
-
-! Lyra!
-*color14: rgb:39/ff/af
 *color6:  rgb:09/cf/7f
-
-! Octavia
 *color7:  rgb:ba/b8/af
-
-! Frederic (eyes)
+! Cursorline
+*color8:  rgb:29/29/29
+! Error
+*color9:  rgb:ff/12/30
 *color10: rgb:8d/e2/31
-
-! Diff
-*color17: rgb: 15/15/23
-*color22: rgb: 15/23/15
-*color52: rgb: 23/15/15
+! Todo
+*color11: rgb:ff/53/11
+! String
+*color12: rgb:69/ab/ff
+! PreProc
+*color13: rgb:6c/41/c4
+*color14: rgb:39/ff/af
+*color15: rgb:fe/fd/e7

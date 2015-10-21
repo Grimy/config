@@ -1,4 +1,6 @@
 * Improve colorscheme
-* Reconsider FZF
-* Make an alias for vim -d $file{,.rpmnew}
 * Better syntax for sh
+* Autoshow autocomplete
+* Adapt dstat to show load-avg
+* Mettre en place l’envoi automatique de mails pour les pwd trop simples (lc, jfp, ja et wj)
+* EDF : /etc/httpd/conf.d/ssl.conf investiguer ca/localhost.{cert,key}

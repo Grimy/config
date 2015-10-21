@@ -1,2 +1,2 @@
 let &l:commentstring = '! %s'
-autocmd BufWritePost <buffer> !xrdb merge %
+autocmd BufWritePost <buffer> !xrdb %
