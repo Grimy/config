@@ -30,12 +30,7 @@ function! s:filetype(name)
 endfunction
 
 function! s:detect_shebang()
-	let line = getline(1)
-	if line =~ '\v^(.+\(..?\)).*\1$'
-		let &filetype = 'man'
-	else
-		call s:setft(matchstr(line, '\v^%(#!%(\f+/)?|\<\?)%(env\s*)?\zs\f+'))
-	endif
+	call s:setft(matchstr(getline(1), '\v^%(#!%(\f+/)?|\<\?)%(env\s*)?\zs\f+'))
 endfunction
 
 function! s:setft(type)

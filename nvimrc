@@ -319,8 +319,7 @@ tnoremap <C-^> <C-\><C-N><C-^>
 " Unfortunately, set all& resets filetype and fileencoding
 autocmd BufWritePost nvimrc setlocal filetype=vim fileencoding=utf-8
 
-" Temp workaround: this should be the default
-set keywordprg=:Man
-
 let g:python_host_skip_check=1
 let g:loaded_python3_provider=1
+
+command! -nargs=1 Man exe 'b' . bufnr("man <args>", 1) | setf man | %!man <args> | col -bx
