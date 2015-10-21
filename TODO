@@ -1,0 +1,6 @@
+* Merge palettes
+* Reconsider FZF
+* Make an alias for vim -d $file{,.rpmnew}
+* Try man on hep and clear temporaries
+* Better syntax for sh
+
