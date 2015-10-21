@@ -316,9 +316,8 @@ nnoremap <C-Z> :tab drop term://fish<CR>
 nnoremap <C-F> :tab edit term://ranger<CR>
 tnoremap <C-^> <C-\><C-N><C-^>
 
-if expand('%:t') == 'nvimrc'
-	setf vim
-endif
+" Unfortunately, set all& resets filetype and fileencoding
+autocmd BufWritePost nvimrc setlocal filetype=vim fileencoding=utf-8
 
 " Temp workaround: this should be the default
 set keywordprg=:Man

@@ -1,7 +1,7 @@
 nnoremap <buffer> <CR> K
 
 silent %!col -bx
-command! -nargs=1 Man %!man -Pcat <args>
+command! -nargs=1 Man let $COLUMNS = &columns | %!man -Pcat <args>
 
 " Presentation options
 setlocal tabstop=8

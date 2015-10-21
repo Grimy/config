@@ -12,5 +12,5 @@ palette() {
 
 [ "$(uname -p)" == i686 ] && arch=-32
 palette 073642 002b36 586e75 cb4b16 719e07 b58900 268bd2 6c71c4 dc322f 839496
-~/.nvim/scripts/nvim$arch "$@"
+nvim$arch "$@"
 palette 09cf7f c1c5d3 515151 ff5311 8de231 ffff9b 90e4ff 620a92 39ffaf ffffff
