@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/perl -l
 
 use strict;
 use feature qw(state);
@@ -6,16 +6,14 @@ use List::Util qw(first sum max);
 
 my %files = ();
 my @colors = ("", "\e[0;33m", "\e[1;31m", "\e[0;31m"),
-my ($line, $name, $time) = @ARGV;
 $|--;
 
-print "\e[H    | usr | sys |     top-cpu     | mem |     top-mem     | read | writ | hdd |";
+print " usr | sys |     top-cpu     | mem |     top-mem     | read | writ | hdd | mail";
 
 sub lines(_) {
 	my ($file) = @_;
-	my $fh = \$files{$file};
-	$$fh ? seek $$fh, 0, 0 : open $$fh, '<', $file or die "$file: $!";
-	return readline $$fh;
+	open my $fh, '<', $file or die "$file: $!";
+	return readline $fh;
 }
 
 sub percent {
@@ -82,7 +80,8 @@ sub disk {
 	percent($total - $free, $total);
 }
 
-for (;;) {
-	printf "\e[%d;0H\e[K%s", $line, join "\e[0m |", $name, cpu(), top_cpu(), mem(), top_mem(), io(), disk(), '';
-	sleep $time;
+sub mail {
+	"$colors[1] You’ve got mail!" x !system('mail -e')
 }
+
+print join "\e[0m |", cpu(), top_cpu(), mem(), top_mem(), io(), disk(), mail();
