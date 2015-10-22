@@ -4,6 +4,7 @@ nnoremap <buffer> K :vert help <C-R><C-W><CR>
 
 " Reload vim files after saving them
 autocmd BufWritePost <buffer> source %
+autocmd BufWritePost <buffer> setlocal filetype=vim fileencoding=utf-8
 
 function! s:abbr(lhs, rhs)
 	return a:lhs . ' ' . a:lhs . '<End><CR>' . a:rhs . '<Up><End>'

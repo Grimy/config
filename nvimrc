@@ -28,7 +28,7 @@ set ignorecase smartcase gdefault
 set shiftround copyindent tabstop=4 shiftwidth=0
 set fileencodings=ucs-bom,utf-8,latin1
 set wildmode=longest,full showfulltag
-set complete=.,t,i completeopt=menu
+set complete=.,t,i completeopt=noselect,menu pumheight=8
 set keymodel=startsel mouse=nvr
 set conceallevel=2 concealcursor=nc
 set cursorline
@@ -317,8 +317,14 @@ nnoremap <C-Z> :tab drop term://fish<CR>
 nnoremap <C-B> :tab edit term://ranger<CR>
 tnoremap <C-^> <C-\><C-N><C-^>
 
-" Unfortunately, set all& resets filetype and fileencoding
-autocmd BufWritePost nvimrc setlocal filetype=vim fileencoding=utf-8
+" autocmd CursorMovedI * call feedkeys("\<C-N>", "n")
+function! s:autocompl() abort
+	if getline('.')[col('.') - 2] =~# '\k'
+		call feedkeys("\<C-N>", 'n')
+	endif
+endfunction
+
+autocmd TextChangedI * call s:autocompl()
 
 let g:python_host_skip_check=1
 let g:loaded_python3_provider=1
