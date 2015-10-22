@@ -3,7 +3,6 @@ let s:ftmap = {
 			\ 'COMMIT_EDITMSG': 'gitcommit',
 			\ 'Makefile': 'make',
 			\ 'Tupfile': 'tup',
-			\ 'Xresources': 'xdefaults',
 			\ 'asm': 'masm', 'inc': 'masm',
 			\ 'h': 'c', 'cpp': 'c', 'ino': 'c',
 			\ 'js': 'javascript', 'node': 'javascript',

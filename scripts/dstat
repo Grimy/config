@@ -35,25 +35,20 @@ sub time {
 	" $hour:$min";
 }
 
-sub cpu {
-	state @old, state @new;
-	@new = split for first {/^cpu /} lines "/proc/stat";
-	@new = ($new[1] + $new[2], $new[3] + $new[5] + $new[6] + $new[7], sum(@new));
-	my @result = map percent($new[$_] - $old[$_], $new[2] - $old[2]), 0..1;
-	@old = @new;
-	@result;
+sub lavg {
+	my ($avg1, $avg5, $avg15) = split ' ', lines "/proc/loadavg";
+	my $nproc = `nproc`;
+	percent($avg1, $nproc), percent($avg15, $nproc);
 }
 
 sub top_cpu {
-	state @old;
-	my @new;
+	my @cpu;
 	for (map lines, </proc/*/stat>) {
 		@_ = split;
 		my $cpu = $_[13] + $_[14];
-		$new[$_[0]] = ($cpu - $old[$_[0]]) . " " . substr $_[1], 1, -1;
-		$old[$_[0]] = $cpu;
+		$cpu[$_[0]] = $cpu . " " . substr $_[1], 1, -1;
 	}
-	top @new;
+	top @cpu;
 }
 
 sub mem {
@@ -71,11 +66,7 @@ sub top_mem {
 }
 
 sub io {
-	state @old;
-	my @new = split ' ', lines "/sys/block/sda/stat";
-	my @result = (bytes($new[3] - $old[3]), bytes($new[7] - $old[7]));
-	@old = @new;
-	@result;
+	bytes map /procs_blocked \K\d+/g, lines "/proc/stat";
 }
 
 sub disk {
@@ -87,4 +78,4 @@ sub mail {
 	system('mail -e 2>/dev/null') ? "  " : "$colors[2] !"
 }
 
-print join "\e[0m │", @ARGV, &time, &cpu, &top_cpu, &mem, &top_mem, &io, &disk, &mail, '';
+print join "\e[0m │", @ARGV, &time, &lavg, &top_cpu, &mem, &top_mem, &io, &disk, &mail, '';

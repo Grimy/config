@@ -16,13 +16,14 @@ Hi       NONE Normal DiffChange
 Hi       0    Comment Special SpecialKey NonText EndOfBuffer
 HiBright 0    LineNr SignColumn VertSplit
 HiRev    0    Visual
-Hi       2    DiffAdd
-HiBright 2    StatusLine CursorLineNr Folded Pmenu Question MoreMsg StatusLineNC
-HiRev    2    WildMenu PmenuSel Search IncSearch MatchParen
-Hi       3    Keyword Type Flow User1
-Hi       9    DiffDelete
-HiBold   9    Error ErrorChar ErrorMsg SpellBad SpellCap SpellLocal SpellRare
-HiBold   11   Todo Title WarningMsg
-HiBright 11   DiffText
+Hi       1    DiffDelete
+Hi       1    Error ErrorChar ErrorMsg SpellBad SpellCap SpellLocal SpellRare
+HiBold   9    Todo Title WarningMsg
+HiBright 9    DiffText
+Hi       10   DiffAdd
+HiBright 10   StatusLine CursorLineNr Folded Pmenu Question MoreMsg StatusLineNC
+HiRev    10   WildMenu PmenuSel Search IncSearch MatchParen
+Hi       11   Keyword Type
+HiBold   11   Flow User1
 Hi       12   String Character Directory
 Hi       13   PreProc SpecialChar

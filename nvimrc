@@ -129,13 +129,12 @@ tnoremap <Esc> <C-\><C-N>`.
 
 " UNIX shortcuts {{{1
 
-Map <C-H> <C-BS>
-Map <C-?> <BS>
 Map <C-B> <Left>
 Map <C-F> <Right>
 Map <C-P> <Up>
 Map <C-N> <Down>
 Map <C-BS> <C-W>
+Map <M-BS> <C-W>
 
 " Use L as an alternative to the remapped <C-W>
 nnoremap <expr> L "\<C-W>" . nr2char(getchar())
@@ -161,9 +160,8 @@ xmap <C-T> VVgv<plug>(dragonfly_right)
 xmap <C-D> VVgv<plug>(dragonfly_left)
 
 " Keycodes not automatically recognized when over ssh
-Map <C-H> <C-BS>
-Map <C-@> <C-Space>
-Map <Esc>[3~ <Del>
+Map <C-@>      <C-Space>
+Map <Esc>[3~   <Del>
 Map <Esc>[3;5~ <C-Del>
 Map <Esc>[1;5A <C-Up>
 Map <Esc>[1;5B <C-Down>

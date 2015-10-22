@@ -1,13 +1,12 @@
 function fish_prompt
 	# Colored status indicator
-	set s $status
-	[ $s -ne 0 ]; and echo -ns (set_color red) "$s): "
+	or echo -ens "\e[31m($status) "
 
 	# Mail
-	mail -e 2>&-; and echo -ns (set_color yellow) 'You’ve got mail! '
+	mail -e 2>&-; and echo -ens '\e[33mYou’ve got mail! '
 
 	# Current time
-	echo -ns (set_color normal) (date '+%H:%M ') (set_color green)
+	echo -ens '\e[m' (date '+%H:%M ') '\e[32m'
 
 	# Root indicator
 	[ (id -u) -eq 0 ]; and echo -ns (set_color red) (hostname) ' '

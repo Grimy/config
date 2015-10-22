@@ -19,7 +19,7 @@
 	cmd = vim -d $REMOTE $LOCAL
 
 [core]
-	editor = vim
+	editor = nvim
 	pager = less
 
 [interactive]
@@ -31,7 +31,6 @@
 	detachedHead = false
 
 [merge]
-	tool = vimdiff
 	ff = false
 
 [rerere]
