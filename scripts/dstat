@@ -31,7 +31,7 @@ sub top {
 }
 
 sub time {
-	my ($sec, $min, $hour) = localtime(time);
+	my ($sec, $min, $hour) = map sprintf("%02d", $_), localtime(time);
 	" $hour:$min";
 }
 
@@ -66,7 +66,7 @@ sub top_mem {
 }
 
 sub io {
-	bytes map /procs_blocked \K\d+/g, lines "/proc/stat";
+	sprintf "% 4d", map /procs_blocked \K\d+/g, lines "/proc/stat";
 }
 
 sub disk {
@@ -78,4 +78,4 @@ sub mail {
 	system('mail -e 2>/dev/null') ? "  " : "$colors[2] !"
 }
 
-print join "\e[0m │", @ARGV, &time, &lavg, &top_cpu, &mem, &top_mem, &io, &disk, &mail, '';
+print "│\e[32m@ARGV\e[m│", map "$_\e[m │", &time, &lavg, &top_cpu, &mem, &top_mem, &io, &disk, &mail;

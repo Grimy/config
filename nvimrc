@@ -7,51 +7,12 @@ augroup VimRC
 autocmd!
 
 let $VIM = $HOME . '/.nvim'
+let $CACHE = $VIM . '/shada'
 
-command! -nargs=+ Map map <args>|map! <args>
+let g:python_host_skip_check=1
+let g:loaded_python3_provider=1
 
-" Options {{{1
-
-set all& nomodified
-set shell=/bin/sh
-set helpfile=$VIM/nvimrc
-set runtimepath=$VIM,$VIM/bundle/*
-set grepprg=ag clipboard=unnamed
-set diffopt=filler,context:5,foldcolumn:0
-set nojoinspaces
-set virtualedit=onemore,block | noremap $ $l
-set nostartofline | noremap G G$l
-set whichwrap=[,<,>,]
-set timeoutlen=1
-set scrolljump=4 scrolloff=20 sidescroll=2
-set ignorecase smartcase gdefault
-set shiftround copyindent tabstop=4 shiftwidth=0
-set fileencodings=ucs-bom,utf-8,latin1
-set wildmode=longest,full showfulltag
-set complete=.,t,i completeopt=noselect,menuone pumheight=8
-set keymodel=startsel mouse=nvr
-set conceallevel=2 concealcursor=nc
-set cursorline
-set synmaxcol=101
-set commentstring=#\ %s
-set matchpairs+=<:>
-set fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
-set list listchars=tab:»\ ,nbsp:.,precedes:«,extends:»
-set linebreak showbreak=…\  
-set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
-set showcmd ruler rulerformat=%42(%=%1*%m%f\ %-(#%-2B%5l,%-4v%P%)%)
-set splitright splitbelow
-set noequalalways winwidth=88 winminwidth=6 previewheight=16
-set hidden backup noswapfile undofile autowrite history=50
-set shada=!,%,'42,h,s10
-set backupdir=$VIM/shada/backups
-set directory=$VIM/shada/swaps
-set undodir=$VIM/shada/undos
-set foldmethod=marker foldminlines=3 foldnestmax=3 foldlevelstart=0 foldcolumn=0
-set foldopen=insert,jump,block,hor,mark,percent,quickfix,search,tag,undo
-set foldclose= foldtext=FoldText()
-autocmd InsertEnter * set listchars-=trail:.
-autocmd InsertLeave * set listchars+=trail:.
+command! -nargs=1 Man exe 'b' . bufnr("man <args>", 1) | setf man | %!man <args> | col -bx
 
 function! FoldText() abort
 	let nbLines = v:foldend - v:foldstart
@@ -62,13 +23,48 @@ function! FoldText() abort
 	return line . printf('(%d lines)', nbLines)
 endfunction
 
+" Options {{{1
+
+set all& nomodified
+set shell=/bin/sh
+set helpfile=$VIM/nvimrc runtimepath=$VIM,$VIM/bundle/*
+set backupdir=$VIM/shada/backups directory=$VIM/shada/swaps undodir=$VIM/shada/undos
+set timeoutlen=1 grepprg=ag clipboard=unnamed
+set diffopt=filler,context:5,foldcolumn:0
+set virtualedit=onemore,block | noremap $ $l
+set nostartofline | noremap G G$l
+set whichwrap=[,<,>,] matchpairs+=<:>
+set scrolljump=4 scrolloff=20 sidescroll=2
+set ignorecase smartcase gdefault
+set shiftround copyindent tabstop=4 shiftwidth=0
+set fileencodings=ucs-bom,utf-8,latin1
+set wildmode=longest,full showfulltag
+set complete=.,t,i completeopt=noselect,menuone pumheight=8
+set keymodel=startsel mouse=nvr
+set conceallevel=2 concealcursor=nc
+set synmaxcol=101
+set commentstring=#\ %s
+set fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
+set cursorline list listchars=tab:»\ ,nbsp:·,precedes:«,extends:»
+set nojoinspaces linebreak showbreak=…\ 
+set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
+set showcmd ruler rulerformat=%42(%=%1*%m%f\ %-(#%-2B%5l,%-4v%P%)%)
+set splitright splitbelow noequalalways winwidth=88 winminwidth=6 previewheight=16
+set hidden backup noswapfile undofile autowrite history=50 shada=!,%,'42,h,s10
+set foldmethod=marker foldminlines=3 foldnestmax=3 foldlevelstart=0 foldcolumn=0
+set foldopen=insert,jump,block,hor,mark,percent,quickfix,search,tag,undo
+set foldclose= foldtext=FoldText()
+set spelllang=en,fr langmap=à@,è`,é~,ç_,’`,ù%
+
+" DWIM harder {{{1
+
+" Fold open/close
 nnoremap <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zc' : 'h'
 nnoremap <expr> l foldclosed(line('.')) != -1 ? 'zv0' : 'l'
 
-set spelllang=en,fr
-set langmap=à@,è`,é~,ç_,’`,ù%
-
-" DWIM harder {{{1
+" Do not highlight spaces when typing
+autocmd InsertEnter * set listchars-=trail:.
+autocmd InsertLeave * set listchars+=trail:.
 
 " Automatically check if the file changed on disk
 autocmd BufEnter,FocusGained,CursorMoved * checktime
@@ -121,47 +117,49 @@ autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | end
 
 " Make t_<Esc> consistent with other modes
 tnoremap <Esc> <C-\><C-N>`.
+tnoremap <C-^> <C-\><C-N><C-^>
 
-" UNIX shortcuts {{{1
+" Ctrl-mappings {{{1
 
-Map <C-B> <Left>
-Map <C-F> <Right>
-Map <C-P> <Up>
-Map <C-N> <Down>
-Map <C-BS> <C-W>
-Map <M-BS> <C-W>
-
-" Use L as an alternative to the remapped <C-W>
-nnoremap <expr> L "\<C-W>" . nr2char(getchar())
-
-" Ctrl-U: delete to beginning
+" UNIX shortcuts
 nnoremap <C-U> d^
-onoremap <C-U> ^
+nnoremap <M-BS> <C-W>
+noremap! <M-BS> <C-W>
+noremap! <C-B> <Left>
+noremap! <C-F> <Right>
+noremap! <C-P> <Up>
+noremap! <C-N> <Down>
+noremap! <C-A> <Home>
+noremap! <C-E> <End>
 
-" Ctrl-A / Ctrl-E always move to start / end of line, like shells and emacs
-Map <C-A> <Home>
-Map <C-E> <End>
-nunmap <C-A>
-
-" Ctrl-Q / Ctrl-Y always copy the character above / below the cursor
+" Ctrl-Q / Ctrl-Y: copy the character above / below the cursor
 nnoremap <C-Q> i<C-E><Esc>l
 nnoremap <C-Y> i<C-Y><Esc>l
 inoremap <C-Q> <C-E>
 
-" Ctrl-T / Ctrl-D always add / remove indent
+" Ctrl-T / Ctrl-D: add / remove indent
 nnoremap <silent> <C-T> a<C-T><Esc>
 nnoremap <silent> <C-D> a<C-D><Esc>
-xmap <C-T> VVgv<plug>(dragonfly_right)
-xmap <C-D> VVgv<plug>(dragonfly_left)
+xmap <C-T> VVgv>gv
+xmap <C-D> VVgv<gv
 
-" Keycodes not automatically recognized when over ssh
-Map <C-@>      <C-Space>
-Map <Esc>[3~   <Del>
-Map <Esc>[3;5~ <C-Del>
-Map <Esc>[1;5A <C-Up>
-Map <Esc>[1;5B <C-Down>
-Map <Esc>[1;5C <C-Right>
-Map <Esc>[1;5D <C-Left>
+" Ctrl-G: do last insertion aGain
+inoremap <nowait> <C-G> <C-A>
+nnoremap <C-G> ".P
+cnoremap <silent> <C-G> <C-R>.
+
+" Scrolling
+autocmd InsertEnter * let g:last_insert_col = virtcol('.')
+inoremap <silent> <expr> <C-J> "\<Esc>j" . g:last_insert_col . "\<Bar>i"
+inoremap <silent> <expr> <C-K> "\<Esc>k" . g:last_insert_col . "\<Bar>i"
+noremap <silent> <C-J> 12<C-D>
+noremap <silent> <C-K> 12<C-U>
+cnoremap <silent> <C-J> <Down>
+cnoremap <silent> <C-K> <Up>
+
+" Various
+nnoremap <C-N> <C-I>
+nnoremap <C-P> :<C-P>
 
 " Mappings galore {{{1
 
@@ -177,13 +175,17 @@ inoremap <expr> <S-Tab> virtcol('.') > indent('.') + 1 ? "\<C-P>" : "\<C-D>"
 nnoremap <Tab>   <C-W>w
 nnoremap <S-Tab> <C-W>W
 
-" Find and replace
-noremap s :s:
-nnoremap S :<C-U>%s~~
-xnoremap S :s~~
+" Use L as an alternative to the remapped <C-W>
+nnoremap <expr> L "\<C-W>" . nr2char(getchar())
 
-" c selects current line, without the line break at the end
+" Find and replace
+nnoremap s :s~~<Left>
+nnoremap S :<C-U>%s~~
+
+" Custom operators
 onoremap <silent> c :<C-U>normal! ^v$h<CR>
+onoremap <C-U> ^
+onoremap Q ap
 
 " Common commands with “!”
 let g:bangmap = {
@@ -193,36 +195,18 @@ let g:bangmap = {
 	\ 'e': "e ", 'E': "e! ",
 	\ 'h': "vert help ",
 	\ 'i': "set inv",
-	\ 's': 'silent! source ' . $VIM . "/shada/session\n",
+	\ 's': "source % | setlocal filetype=vim fileencoding=utf-8 nohlsearch\n",
+	\ 'S': 'silent! source ' . $VIM . "/shada/session\n",
 	\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
 	\ 'q': "q\n", 'Q': "q!\n",
 	\ 'l': "silent grep ''\<Left>", 'm': "make\n",
-	\ 'd': "!gdb -q -ex 'set confirm off' -ex 'b main' -ex r $(find debug/* -not -name '*.*')\n",
 	\ }
 nnoremap <expr> ! ":\<C-U>" . get(g:bangmap, nr2char(getchar()), "\e")
 autocmd VimLeave * execute 'mksession!' $VIM.'/shada/session'
 
-" Various
-noremap <C-G> ".P
-noremap Q gw
-onoremap Q ap
-nnoremap <silent> ; .wn
-cnoremap <silent> <C-G> <C-R>.
-nnoremap <C-N> <C-I>
-nnoremap <C-P> :<C-P>
-
-" Preserve CTRL-A
-let g:surround_no_insert_mappings = 1
-inoremap <nowait> <C-G> <C-A>
-
-" Swap charwise and blockwise visual modes
+" Huffman-coding
 noremap <silent> v <C-V>
 noremap <silent> <C-V> v
-
-" Select the last modified text
-onoremap r :<C-U>normal! `[v`]<>
-
-" Always append at the end of the line
 nnoremap <silent> a A
 
 " Syntax file debugging
@@ -230,17 +214,9 @@ nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> 
 	\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
 	\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
 
-" Scrolling
-noremap <silent> <C-J> 12<C-D>
-noremap <silent> <C-K> 12<C-U>
-cnoremap <silent> <C-J> <Down>
-cnoremap <silent> <C-K> <Up>
-
-autocmd InsertEnter * let g:last_insert_col = virtcol('.')
-inoremap <silent> <expr> <C-J> "\<Esc>j" . g:last_insert_col . "\<Bar>i"
-inoremap <silent> <expr> <C-K> "\<Esc>k" . g:last_insert_col . "\<Bar>i"
-
-" Surely there’s something to do with H, M, - and +
+" Remap otherwise useless keys (TODO H, M, - and +)
+noremap Q gw
+nnoremap <silent> ; .wn
 
 " Plugin config {{{1
 
@@ -296,7 +272,7 @@ xmap P <Plug>(dragonfly_copy)
 
 " Experimental {{{1
 
-nnoremap - "_ddk
+onoremap r :<C-U>normal! `[v`]<>
 onoremap p ap
 onoremap s ib
 onoremap < i<
@@ -308,22 +284,12 @@ onoremap <nowait> ] i]
 onoremap { i{
 onoremap } i}
 
-nnoremap <C-Z> :tab drop term://fish<CR>
-nnoremap <C-B> :tab edit term://ranger<CR>
-tnoremap <C-^> <C-\><C-N><C-^>
+nnoremap <C-Up> {
+nnoremap <C-Down> }
 
-" autocmd CursorMovedI * call feedkeys("\<C-N>", "n")
 function! s:autocompl() abort
 	if getline('.')[col('.') - 2] =~# '\k'
 		call feedkeys("\<C-N>", 'n')
 	endif
 endfunction
-
-autocmd TextChangedI * call s:autocompl()
-
-autocmd BufWritePost nvimrc setlocal filetype=vim fileencoding=utf-8
-
-let g:python_host_skip_check=1
-let g:loaded_python3_provider=1
-
-command! -nargs=1 Man exe 'b' . bufnr("man <args>", 1) | setf man | %!man <args> | col -bx
+" autocmd TextChangedI * call s:autocompl()
