@@ -28,7 +28,7 @@ set ignorecase smartcase gdefault
 set shiftround copyindent tabstop=4 shiftwidth=0
 set fileencodings=ucs-bom,utf-8,latin1
 set wildmode=longest,full showfulltag
-set complete=.,t,i completeopt=noselect,menu pumheight=8
+set complete=.,t,i completeopt=noselect,menuone pumheight=8
 set keymodel=startsel mouse=nvr
 set conceallevel=2 concealcursor=nc
 set cursorline
@@ -43,10 +43,10 @@ set showcmd ruler rulerformat=%42(%=%1*%m%f\ %-(#%-2B%5l,%-4v%P%)%)
 set splitright splitbelow
 set noequalalways winwidth=88 winminwidth=6 previewheight=16
 set hidden backup noswapfile undofile autowrite history=50
-set viminfo=!,%,'42,h,s10,n$VIM/cache/shada
-set backupdir=$VIM/cache/backups
-set directory=$VIM/cache/swaps
-set undodir=$VIM/cache/undos
+set shada=!,%,'42,h,s10
+set backupdir=$VIM/shada/backups
+set directory=$VIM/shada/swaps
+set undodir=$VIM/shada/undos
 set foldmethod=marker foldminlines=3 foldnestmax=3 foldlevelstart=0 foldcolumn=0
 set foldopen=insert,jump,block,hor,mark,percent,quickfix,search,tag,undo
 set foldclose= foldtext=FoldText()
@@ -67,11 +67,6 @@ nnoremap <expr> l foldclosed(line('.')) != -1 ? 'zv0' : 'l'
 
 set spelllang=en,fr
 set langmap=à@,è`,é~,ç_,’`,ù%
-
-" TODO map these at the Xmodmap level
-Map µ #
-Map § <Bslash>
-Map ° <Bar>
 
 " DWIM harder {{{1
 
@@ -198,14 +193,14 @@ let g:bangmap = {
 	\ 'e': "e ", 'E': "e! ",
 	\ 'h': "vert help ",
 	\ 'i': "set inv",
-	\ 's': 'silent! source ' . $VIM . "/cache/session\n",
+	\ 's': 'silent! source ' . $VIM . "/shada/session\n",
 	\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
 	\ 'q': "q\n", 'Q': "q!\n",
 	\ 'l': "silent grep ''\<Left>", 'm': "make\n",
 	\ 'd': "!gdb -q -ex 'set confirm off' -ex 'b main' -ex r $(find debug/* -not -name '*.*')\n",
 	\ }
 nnoremap <expr> ! ":\<C-U>" . get(g:bangmap, nr2char(getchar()), "\e")
-autocmd VimLeave * execute 'mksession!' $VIM.'/cache/session'
+autocmd VimLeave * execute 'mksession!' $VIM.'/shada/session'
 
 " Various
 noremap <C-G> ".P
@@ -325,6 +320,8 @@ function! s:autocompl() abort
 endfunction
 
 autocmd TextChangedI * call s:autocompl()
+
+autocmd BufWritePost nvimrc setlocal filetype=vim fileencoding=utf-8
 
 let g:python_host_skip_check=1
 let g:loaded_python3_provider=1

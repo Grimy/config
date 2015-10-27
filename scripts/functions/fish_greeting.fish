@@ -1,7 +1,7 @@
 function fish_greeting
 	set -gx fish_new_pager 0
 	set -gx TERM          xterm-256color
-	set -gx PATH          ~/bin ~/.nvim/scripts $PATH 2>/dev/null
+	set -gx PATH          ~/bin ~/.nvim/scripts /bin /usr/local/bin 2>/dev/null
 	set -gx LANG          en_US.UTF-8
 	set -gx EDITOR        vim
 	set -gx GCC_COLORS    'error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'

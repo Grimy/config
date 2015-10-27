@@ -1,6 +1,6 @@
 autoload
 bundle
-cache
+shada
 compiler
 doc
 indent

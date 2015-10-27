@@ -41,15 +41,18 @@ xterm*scrollBar:  false
 *borderWidth:     0
 
 XTerm.VT100.translations: #override \
-Ctrl<Key>BackSpace: string("\033\010")
+	Ctrl<Key>BackSpace:   string("\033\010")\n\
+	Shift<Key>exclam:     string(0x5c)\n\
+	Shift<Key>parenright: string("|")\n\
+	Shift<Key>asterisk:   string("#")
 
 ! Font
 *faceName:     Hack
 *faceSize:     11
 Xft.antialias: 1
 Xft.autohint:  1
-Xft.hinting:   1
-Xft.hintstyle: hintslight
+Xft.hinting:   0
+Xft.hintstyle: hintfull
 Xft.rgba:      rgb
 
 #if WIDTH > 1600
@@ -58,6 +61,6 @@ Xft.rgba:      rgb
 	*scaleHeight: 1.00
 #endif
 
-xterm*foreground: #fefde7
-xterm*background: #18181a
+*foreground: #fefde7
+*background: #18181a
 

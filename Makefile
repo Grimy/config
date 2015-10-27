@@ -6,7 +6,7 @@ DIR = $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 
 .PHONY: nvim
 nvim:
-	mkdir -p cache/swaps cache/backups cache/undos
+	mkdir -p shada/swaps shada/backups shada/undos
 	-git clone https://github.com/neovim/neovim src
 	cd src; git pull; make
 	nvim +'helptags doc' +q >/dev/null 2>&1

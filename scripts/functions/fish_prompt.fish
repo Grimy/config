@@ -6,13 +6,13 @@ function fish_prompt
 	mail -e 2>&-; and echo -ens '\e[33mYou’ve got mail! '
 
 	# Current time
-	echo -ens '\e[m' (date '+%H:%M ') '\e[32m'
+	echo -ens '\e[m' (date '+%H:%M ') '\e[92m'
 
 	# Root indicator
-	[ (id -u) -eq 0 ]; and echo -ns (set_color red) (hostname) ' '
+	[ (id -u) -eq 0 ]; and echo -ens '\e[31m' (hostname) ' '
 
 	# Current directory
-	echo -ns (prompt_pwd) (set_color normal) '> '
+	echo -ens (prompt_pwd) '\e[m> '
 
 	# (set_color normal; echo -ne "\e[s\e[1;208f"; date '+%H:%M '; echo -ne "\e[u")
 end
