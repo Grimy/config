@@ -179,7 +179,7 @@ nnoremap <S-Tab> <C-W>W
 nnoremap <expr> L "\<C-W>" . nr2char(getchar())
 
 " Find and replace
-nnoremap s :s~~<Left>
+noremap s :s~~<Left>
 nnoremap S :<C-U>%s~~
 
 " Custom operators

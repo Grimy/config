@@ -57,3 +57,8 @@ function! Indent() abort
 		\ + (cur =~# b:indent_cont || prev =~# b:indent_conted)
 		\ - (prev =~# b:indent_cont || getline(line - 1) =~# b:indent_conted))
 endfunction
+
+set conceallevel=1 concealcursor+=i
+syntax match Operator '<=' conceal cchar=≤
+syntax match Operator '>=' conceal cchar=≥
+syntax match Operator '::' conceal cchar=∷

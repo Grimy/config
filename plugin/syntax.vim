@@ -1,21 +1,22 @@
 " Map extensions / executable names to filetypes
 let s:ftmap = {
-			\ 'COMMIT_EDITMSG': 'gitcommit',
-			\ 'Makefile': 'make',
-			\ 'Tupfile': 'tup',
-			\ 'asm': 'masm', 'inc': 'masm',
-			\ 'h': 'c', 'cpp': 'c', 'ino': 'c',
-			\ 'js': 'javascript', 'node': 'javascript',
-			\ 'md': 'markdown', 'mkd': 'markdown',
-			\ 'nvimrc': 'vim',
-			\ 'pl': 'perl',
-			\ 'py': 'python', 'python2.6': 'python',
-			\ 'rb': 'ruby', 'rake': 'ruby',
-			\ 'rs': 'rust',
-			\ 's': 'gas', 'S': 'gas',
-			\ 'wiki': 'mediawiki',
-			\ 'yml': 'yaml', 'fish_history': 'yaml', 'fish_read_history': 'yaml',
-			\ }
+	\ 'bash': 'sh',
+	\ 'COMMIT_EDITMSG': 'gitcommit',
+	\ 'Makefile': 'make',
+	\ 'Tupfile': 'tup',
+	\ 'asm': 'masm', 'inc': 'masm',
+	\ 'h': 'c', 'cpp': 'c', 'ino': 'c',
+	\ 'js': 'javascript', 'node': 'javascript',
+	\ 'md': 'markdown', 'mkd': 'markdown',
+	\ 'nvimrc': 'vim',
+	\ 'pl': 'perl',
+	\ 'py': 'python', 'python2.6': 'python',
+	\ 'rb': 'ruby', 'rake': 'ruby',
+	\ 'rs': 'rust',
+	\ 's': 'gas', 'S': 'gas',
+	\ 'wiki': 'mediawiki',
+	\ 'yml': 'yaml', 'fish_history': 'yaml', 'fish_read_history': 'yaml',
+	\ }
 
 function! s:filetype(name)
 	syntax clear
