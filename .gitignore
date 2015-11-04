@@ -9,6 +9,7 @@ nvim/bundle/*
 !nvim/ctrl
 !nvim/init.vim
 !nvim/Makefile
-!nvim/syntax
 !nvim/plugin
+!nvim/syntax
 !pentadactyl/init
+!zsh/.zshrc

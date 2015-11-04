@@ -1,0 +1,4 @@
+#!/bin/sh
+
+perf_events='-etask-clock -epage-faults -ecycles -einstructions -ebranch -ebranch-misses'
+perf stat -d $perf_events "$@"

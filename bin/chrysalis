@@ -1,0 +1,9 @@
+#!/bin/sh
+
+while read -p '[32mChrysalis[m> ' command; do
+	for forge in hep edf rte snj ems; do
+		echo -e "\n\e[32m==========> $forge <==========\e[m\n"
+		ssh -n "$forge" $command
+		echo
+	done
+done

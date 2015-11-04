@@ -1,0 +1,3 @@
+#!/bin/sh
+
+git merge --no-ff "$@" && git branch -d "$@"
