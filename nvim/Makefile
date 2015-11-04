@@ -6,19 +6,13 @@ DIR = $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 
 .PHONY: nvim
 nvim:
-	mkdir -p shada/swaps shada/backups shada/undos
+	mkdir -p ~/.local/share/nvim/{undo,backup}
 	-git clone https://github.com/neovim/neovim src
 	cd src; git pull; make
 	nvim +'helptags doc' +q >/dev/null 2>&1
 
 .PHONY: symlinks
 symlinks:
-	ln -nsfv "$(DIR)/scripts/vim"            "$(DIR)/../bin"
-	ln -nsfv "$(DIR)/scripts/.pentadactylrc" "$(DIR)/../.pentadactylrc"
-	ln -nsfv "$(DIR)/scripts/.gitconfig"     "$(DIR)/../.gitconfig"
-	ln -nsfv "$(DIR)/scripts/functions"      "$(DIR)/../.config/fish/functions"
-	ln -nsfv "$(DIR)/scripts/htop"           "$(DIR)/../.config/htop"
-	ln -nsfv "$(DIR)/scripts/gvim.desktop"   "$(DIR)/../.local/share/applications"
 	ln -nsfv "$(DIR)/src/runtime/doc"        "$(DIR)/doc"
 	ln -nsfv "$(DIR)/src/runtime/autoload"   "$(DIR)/autoload"
 	ln -nsfv "$(DIR)/src/runtime/compiler"   "$(DIR)/compiler"

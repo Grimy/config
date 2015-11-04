@@ -6,8 +6,7 @@
 augroup VimRC
 autocmd!
 
-let $VIM = $HOME . '/.nvim'
-let $CACHE = $VIM . '/shada'
+let $VIM = $HOME . '/.config/nvim'
 
 let g:python_host_skip_check=1
 let g:loaded_python3_provider=1
@@ -27,8 +26,7 @@ endfunction
 
 set all& nomodified
 set shell=/bin/sh
-set helpfile=$VIM/nvimrc runtimepath=$VIM,$VIM/bundle/*
-set backupdir=$VIM/shada/backups directory=$VIM/shada/swaps undodir=$VIM/shada/undos
+set helpfile=$VIM/init.vim runtimepath=$VIM,$VIM/bundle/*
 set timeoutlen=1 grepprg=ag clipboard=unnamed
 set diffopt=filler,context:5,foldcolumn:0
 set virtualedit=onemore,block | noremap $ $l
@@ -45,7 +43,7 @@ set conceallevel=2 concealcursor=nc
 set synmaxcol=101
 set commentstring=#\ %s
 set fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
-set cursorline list listchars=tab:»\ ,nbsp:·,precedes:«,extends:»
+set cursorline list listchars=tab:»\ ,eol:\ ,nbsp:·,precedes:«,extends:»
 set nojoinspaces linebreak showbreak=…\ 
 set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
 set showcmd ruler rulerformat=%42(%=%1*%m%f\ %-(#%-2B%5l,%-4v%P%)%)

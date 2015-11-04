@@ -1,13 +1,17 @@
 function fish_greeting
 	set -gx fish_new_pager 0
 	set -gx TERM          xterm-256color
-	set -gx PATH          ~/bin ~/.nvim/scripts {,/usr}/*bin /usr/local/bin
 	set -gx LANG          en_US.UTF-8
 	set -gx EDITOR        vim
 	set -gx GCC_COLORS    'error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 	set -gx NVIM_TUI_ENABLE_CURSOR_SHAPE 1
 	set -gx RUST_BACKTRACE 1
 	set -gx FZF_DEFAULT_COMMAND 'ag -l -g ""'
+
+	set -gx XDG_CONFIG_HOME ~/.config
+	set -gx PATH ~/bin $XDG_CONFIG_HOME/bin {,/usr}/*bin /usr/local/bin
+	set -gx PENTADACTYL_RUNTIME "$XDG_CONFIG_HOME/pentadactyl"
+	set -gx PENTADACTYL_INIT ":source $PENTADACTYL_RUNTIME/init"
 
 	alias :q 'exit'
 	alias add 'git add'
@@ -37,8 +41,8 @@ function fish_greeting
 	alias stats 'git show --oneline --stat'
 	alias tab 'gvim --remote-tab-silent'
 	alias tag 'git tag -f'
-	alias v "nvim"
-	alias vim "nvim"
+	alias v "nvim -O"
+	alias vim "nvim -O"
 	alias yay 'ponysay -f Fluttershy yay'
 
 	echo -s "Howdy $USER, welcome to " (hostname) '!'
