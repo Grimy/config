@@ -13,3 +13,5 @@ nvim/bundle/*
 !nvim/syntax
 !pentadactyl/init
 !zsh/.zshrc
+!zsh/autosuggestions
+!zsh/highlighting

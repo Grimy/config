@@ -11,7 +11,7 @@ let $VIM = $HOME . '/.config/nvim'
 let g:python_host_skip_check=1
 let g:loaded_python3_provider=1
 
-command! -nargs=1 Man exe 'b' . bufnr("man <args>", 1) | setf man | %!man <args> | col -bx
+command! -nargs=1 Man exe 'b' . bufnr("man <args>", 1) | setf man | %!/bin/man <args> | col -bx
 
 function! FoldText() abort
 	let nbLines = v:foldend - v:foldstart

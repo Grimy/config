@@ -1,7 +1,7 @@
 * Better syntax for sh
-* Update .xinitrc to do husl | xrdb
+* Unify .xinitrcs
+* Migrate to git submodules
 
 * Mettre en place l’envoi automatique de mails pour les pwd trop simples (lc, jfp, ja et wj)
 * EDF : /etc/httpd/conf.d/ssl.conf investiguer ca/localhost.{cert,key}
 * Change to dwm
-* Unify .xinitrcs
