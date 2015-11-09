@@ -4,8 +4,6 @@
 !git/config
 !htop/htoprc
 !nvim/bundle
-nvim/bundle/*
-!nvim/bundle/Makefile
 !nvim/ctrl
 !nvim/init.vim
 !nvim/Makefile

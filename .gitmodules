@@ -4,3 +4,30 @@
 [submodule "zsh/highlighting"]
 	path = zsh/highlighting
 	url = https://github.com/jimmijj/zsh-syntax-highlighting
+[submodule "nvim/bundle/neomake"]
+	path = nvim/bundle/neomake
+	url = https://github.com/benekastah/neomake
+[submodule "nvim/bundle/eclim"]
+	path = nvim/bundle/eclim
+	url = https://github.com/ervandew/eclim
+[submodule "nvim/bundle/dragonfly"]
+	path = nvim/bundle/dragonfly
+	url = https://github.com/Grimy/dragonfly
+[submodule "nvim/bundle/indextrous"]
+	path = nvim/bundle/indextrous
+	url = https://github.com/Grimy/indextrous
+[submodule "nvim/bundle/subliminal"]
+	path = nvim/bundle/subliminal
+	url = https://github.com/Grimy/subliminal
+[submodule "nvim/bundle/fzf"]
+	path = nvim/bundle/fzf
+	url = https://github.com/junegunn/fzf
+[submodule "nvim/bundle/vim-easy-align"]
+	path = nvim/bundle/vim-easy-align
+	url = https://github.com/junegunn/vim-easy-align
+[submodule "nvim/bundle/vim-pseudocl"]
+	path = nvim/bundle/vim-pseudocl
+	url = https://github.com/junegunn/vim-pseudocl
+[submodule "nvim/bundle/undotree"]
+	path = nvim/bundle/undotree
+	url = https://github.com/mbbill/undotree
