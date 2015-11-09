@@ -4,7 +4,7 @@ use strict;
 use Convert::Color::HUSL;
 
 my @colors = (
-	[foreground =>   0,   0, 89],
+	[foreground =>   0,   0, 95],
 	[background => 270,   3,  9],
 	[color0     =>   0,   0, 16],   # Black   Cursorline
 	[color1     =>  11, 100, 59],   # Red     Error

@@ -4,12 +4,13 @@ setopt noclobber
 setopt hist_ignore_all_dups hist_reduce_blanks
 setopt interactivecomments
 setopt prompt_subst prompt_percent
-autoload -U select-word-style
-select-word-style normal
-WORDCHARS=.-~_
+autoload compinit && compinit
+zstyle ':completion:*' menu select
+
+LISTMAX=0
+WORDCHARS=.+-~_
 HISTSIZE=65535
 SAVEHIST="$HISTSIZE"
-HISTFILE="$XDG_CONFIG_HOME/zsh/history"
 MAIL='$(mail -e 2>/dev/null && printf "\e[33mYou’ve got mail! ")'
 PROMPT="%(???%F{red}(%?%) )$MAIL%f%T %(##%F{red}%m:#%F{green})%~%f%% "
 
@@ -17,29 +18,43 @@ PROMPT="%(???%F{red}(%?%) )$MAIL%f%T %(##%F{red}%m:#%F{green})%~%f%% "
 bindkey -e
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
-bindkey '^[[H' beginning-of-line
 bindkey '^[[F' end-of-line
+bindkey '^[[H' beginning-of-line
 bindkey '^[[1;5A' insert-last-word
 bindkey '^[[1;5B' POPD
 bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
 bindkey '^[[3~'   delete-char
 bindkey '^[[3;5~' delete-word
+
 POPD() { popd; zle reset-prompt; }
 zle -N POPD
+# backward-word-or-popd
+
 
 # Environment
 export TERM=xterm-256color
 export LANG=en_US.UTF-8
 export EDITOR=nvim
-export XDG_CONFIG_HOME=~/.config
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 export RUST_BACKTRACE=1
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 export PATH="$HOME/bin:$XDG_CONFIG_HOME/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin"
-export PENTADACTYL_RUNTIME="$XDG_CONFIG_HOME/pentadactyl"
+
+export XDG_CACHE_HOME="$HOME/.cache"
+export MYSQL_HISTFILE="$XDG_CACHE_HOME/mysql"
+export CARGO_HOME="$XDG_CACHE_HOME/cargo"
+export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
+export GIMP2_DIRECTORY="$XDG_CONFIG_HOME/gimp"
+export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
+export LESSHISTFILE=-
+export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
 export PENTADACTYL_INIT=":source $PENTADACTYL_RUNTIME/init"
+export PENTADACTYL_RUNTIME="$XDG_CONFIG_HOME/pentadactyl"
+#export XAUTHORITY="$XDG_RUNTIME_DIR"/X11/xauthority
+#export XINITRC="$XDG_CONFIG_HOME/xinitrc"
+export __GL_SHADER_DISK_CACHE_PATH="$XDG_CACHE_HOME/nv"
 
 # Plugin config
 source "$XDG_CONFIG_HOME/zsh/highlighting/zsh-syntax-highlighting.zsh"
@@ -54,6 +69,7 @@ alias add='git add'
 alias amend='git commit -v --amend --no-edit'
 alias bisect='git bisect'
 alias branch='git branch -f'
+alias conf='cd ~/.config'
 alias cherry='git cherry-pick'
 alias clean='git clean -dfX'
 alias clone='git clone --recursive'
@@ -69,8 +85,9 @@ alias fzf='/usr/bin/ruby ~/.nvim/bundle/fzf/fzf'
 alias gpg='rlwrap gpg2 --expert'
 alias gs='rlwrap gs'
 alias gsql='ssh gerrit gerrit gsql'
-alias l='ls -GAhl'
-alias ll='ls -GAhl'
+alias k='k -A'
+alias l='ls -GAhl --color=auto'
+alias ll='ls -GAhl --color=auto'
 alias mv='/bin/mv -i'
 alias push='git push'
 alias pushf='git push --force-with-lease'

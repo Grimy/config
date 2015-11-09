@@ -3,7 +3,7 @@ let &l:expandtab = getline(search('^%(\t|  )', 'wn'))[0] == ' '
 
 " Handle non-ASCII word charcacters
 execute 'setlocal iskeyword+=' . (&fenc == 'utf-8' ? '128-167,224-235' : '192-255')
-setlocal iskeyword=@,48-57
+setlocal iskeyword=@,48-57,_
 
 " Common syntax
 syn sync minlines=200
