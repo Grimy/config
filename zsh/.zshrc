@@ -1,13 +1,19 @@
-setopt autopushd pushdsilent pushdtohome
-setopt hist_ignore_dups
+# Basic configuration and options
+setopt chase_links autocd autopushd pushdsilent pushdtohome
+setopt noclobber
+setopt hist_ignore_all_dups hist_reduce_blanks
+setopt interactivecomments
 setopt prompt_subst prompt_percent
+autoload -U select-word-style
+select-word-style normal
+WORDCHARS=.-~_
+HISTSIZE=65535
+SAVEHIST="$HISTSIZE"
+HISTFILE="$XDG_CONFIG_HOME/zsh/history"
+MAIL='$(mail -e 2>/dev/null && printf "\e[33mYou’ve got mail! ")'
+PROMPT="%(???%F{red}(%?%) )$MAIL%f%T %(##%F{red}%m:#%F{green})%~%f%% "
 
-POPD() {
-	popd
-	zle reset-prompt
-}
-zle -N POPD
-
+# Keybindings
 bindkey -e
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
@@ -19,7 +25,10 @@ bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
 bindkey '^[[3~'   delete-char
 bindkey '^[[3;5~' delete-word
+POPD() { popd; zle reset-prompt; }
+zle -N POPD
 
+# Environment
 export TERM=xterm-256color
 export LANG=en_US.UTF-8
 export EDITOR=nvim
@@ -32,25 +41,22 @@ export PATH="$HOME/bin:$XDG_CONFIG_HOME/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/l
 export PENTADACTYL_RUNTIME="$XDG_CONFIG_HOME/pentadactyl"
 export PENTADACTYL_INIT=":source $PENTADACTYL_RUNTIME/init"
 
-HISTSIZE=65535
-SAVEHIST=$HISTSIZE
-HISTFILE="$XDG_CONFIG_HOME/zsh/history"
-MAIL='$(mail -e 2>/dev/null && printf "\e[33mYou’ve got mail! ")'
-PROMPT="%(???%F{red}(%?%) )$MAIL%f%T %(##%F{red}%m:#%F{green})%~%f%% "
-
+# Plugin config
 source "$XDG_CONFIG_HOME/zsh/highlighting/zsh-syntax-highlighting.zsh"
 source "$XDG_CONFIG_HOME/zsh/autosuggestions/autosuggestions.zsh"
 AUTOSUGGESTION_ACCEPT_RIGHT_ARROW=1
 zle-line-init() { zle autosuggest-start }
 zle -N zle-line-init
 
+# Aliases
 alias :q='exit'
 alias add='git add'
 alias amend='git commit -v --amend --no-edit'
 alias bisect='git bisect'
 alias branch='git branch -f'
 alias cherry='git cherry-pick'
-alias clone='git clone'
+alias clean='git clean -dfX'
+alias clone='git clone --recursive'
 alias clop='feh ~/p0'
 alias commit='git commit -v'
 alias cp='/bin/cp -i'
@@ -67,9 +73,10 @@ alias l='ls -GAhl'
 alias ll='ls -GAhl'
 alias mv='/bin/mv -i'
 alias push='git push'
+alias pushf='git push --force-with-lease'
 alias reflog='git reflog'
 alias remote='git remote -v'
-alias s='git status -sb'
+alias s='git status'
 alias show='git show'
 alias stash='git stash'
 alias stats='git show --oneline --stat'

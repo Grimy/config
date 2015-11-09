@@ -30,6 +30,10 @@
 	statusHints = false
 	detachedHead = false
 
+[status]
+	short = true
+	branch = true
+
 [merge]
 	ff = false
 

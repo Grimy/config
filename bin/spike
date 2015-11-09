@@ -1,3 +1,5 @@
 #!/bin/sh
 
-nvim $(which "$@")
+set -euo pipefail
+file=$(which "$@")
+nvim "$file"
