@@ -40,7 +40,7 @@ set wildmode=longest,full showfulltag
 set complete=.,t,i completeopt=noselect,menuone pumheight=8
 set keymodel=startsel mouse=nvr
 set conceallevel=2 concealcursor=nc
-set synmaxcol=101
+set synmaxcol=256
 set commentstring=#\ %s
 set fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
 set cursorline list listchars=tab:»\ ,eol:\ ,nbsp:·,precedes:«,extends:»
@@ -180,6 +180,10 @@ nnoremap <expr> L "\<C-W>" . nr2char(getchar())
 noremap s :s~~<Left>
 nnoremap S :<C-U>%s~~
 
+" Remap otherwise useless keys (TODO H, M, - and +)
+noremap Q gw
+nnoremap <silent> ; .wn
+
 " Custom operators
 onoremap <silent> c :<C-U>normal! ^v$h<CR>
 onoremap <C-U> ^
@@ -211,10 +215,6 @@ nnoremap <silent> a A
 nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'
 	\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
 	\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
-
-" Remap otherwise useless keys (TODO H, M, - and +)
-noremap Q gw
-nnoremap <silent> ; .wn
 
 " Plugin config {{{1
 
@@ -275,15 +275,9 @@ onoremap p ap
 onoremap s ib
 onoremap < i<
 onoremap > i>
-onoremap ( i(
-onoremap ) i)
-onoremap <nowait> [ i[
-onoremap <nowait> ] i]
-onoremap { i{
-onoremap } i}
 
-nnoremap <C-Up> {
 nnoremap <C-Down> }
+nnoremap <C-Up> {
 
 function! s:autocompl() abort
 	if getline('.')[col('.') - 2] =~# '\k'

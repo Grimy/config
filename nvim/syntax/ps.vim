@@ -1,2 +1,3 @@
-let &l:commentstring = '% %s'
+Comments %
+
 syntax keyword PreProc stack

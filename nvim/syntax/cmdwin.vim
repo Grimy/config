@@ -1,5 +1,3 @@
-setlocal nonumber
-
 nnoremap <buffer> <silent> q     :<C-u>quit<CR>
 nnoremap <buffer> <silent> <Esc> :<C-u>quit<CR>
 nnoremap <buffer> <silent> <Tab> :<C-u>quit<CR>

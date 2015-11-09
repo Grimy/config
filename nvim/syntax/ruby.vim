@@ -1,3 +1,4 @@
+Flow begin|case|if|for|do|while|def|class else|elsif|when|rescue|ensure end
 syn keyword Flow if then unless else elsif end for in do while until
 syn keyword Flow begin rescue ensure
 syn keyword Flow next redo retry break case when return and or
@@ -13,10 +14,7 @@ syn region String matchgroup=Normal start='/' skip='\\.' end='/' contains=Specia
 
 syn match SingleEscape /\\[\\']/ contained
 hi! link SingleEscape SpecialChar
-syn match ErrorChar /\\./
 syn match SpecialChar /\v\\([aesv]|c.|[MC]-.|M-\\C-.|x\x{1,2}|u\x{4})/ contained
 syn region Interpolation matchgroup=SpecialChar start='#{' end='}' contains=TOP
 
-let b:indent_start = '\v^[\t }]*<%(else|elsif|when|rescue|ensure|begin|case|if|for|do|while|def|class)>|\{$'
-let b:indent_end   = '\v^[\t }]*<%(else|elsif|when|rescue|ensure|end)>|^\s*\}'
-let b:indent_start .= '|\|$|<do$'
+let b:indent_start .= '|\|$'

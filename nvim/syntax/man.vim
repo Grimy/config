@@ -3,7 +3,6 @@ let $COLUMNS = &columns
 
 " Presentation options
 setlocal tabstop=8
-setlocal synmaxcol&
 setlocal colorcolumn=
 setlocal iskeyword+=.
 setlocal nolist nowrap nofoldenable nonumber

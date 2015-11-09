@@ -1,3 +1,3 @@
-syn match PreProc /\v^\s*!\w+/
+Comments ;
 
-let &l:commentstring = '; %s'
+syn match PreProc /\v^\s*!\w+/

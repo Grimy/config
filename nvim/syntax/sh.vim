@@ -1,16 +1,12 @@
-syntax match Keyword /\v%(^|[;({|]|\&\d@!)\s*\zs\w+>\=@!/
-" syntax keyword Flow if else end switch and or while for in
-" syntax keyword Flow case begin function return
+Flow case|if|for|while|until else|elif esac|fi|done
+syntax match Keyword /\v%(^|[;({|`]|\&\d@!)\s*\zs\w+>\=@!/
+syntax keyword Flow then in do
 
-let b:indent_start  = '\v^[\t }]*<%(switch|if|else|for|while|function)>'
-let b:indent_end    = '\v^[\t }]*<%(else|end)>'
-let b:indent_conted = '\v[\[({\\,]$'
-
-syntax match Preproc /\v\$%([[:alnum:]]+|[@*#-$_?!])/
-syntax match SpecialChar /\v\\[abefnrtv *?~%#(){}\[\]<>&;"']|\\[xX][0-9a-f]{1,2}|\\o[0-7]{1,2}|\\u[0-9a-f]{1,4}|\\U[0-9a-f]{1,8}|\\c[a-z]/
-syntax region String matchgroup=Normal start=/'/ end=/'/ contains=SingleQuoteEscape
-syntax region String matchgroup=Normal start=/"/ end=/"/ contains=DoubleQuoteEscape,PreProc
-syntax match DoubleQuoteEscape /\\"/
-syntax match SingleQuoteEscape /\\'/
+syntax match Error '+='
+syntax match Preproc /\v\$%([_[:alnum:]]+|[-@*#$?!])/
+syntax match String /\v\\./
+syntax region String matchgroup=Normal start="'" end="'"
+syntax region String matchgroup=Normal start='"' end='"' contains=DoubleQuoteEscape,PreProc
+syntax region String matchgroup=Normal start=/\v\<\<\z(\k+)/ end=/\v^\z1$/ contains=PreProc
+syntax match DoubleQuoteEscape /\\[$`"\\]/
 hi link DoubleQuoteEscape SpecialChar
-hi link SingleQuoteEscape SpecialChar

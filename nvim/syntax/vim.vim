@@ -1,5 +1,7 @@
+Flow if|for|while|function else|elseif endif|endfor|endwhile|endfunction
+Comments "
+
 setlocal iskeyword+=:,#
-setlocal number
 nnoremap <buffer> K :vert help <C-R><C-W><CR>
 
 function! s:abbr(lhs, rhs)
@@ -9,20 +11,12 @@ endfunction
 command! -nargs=+ Abbr execute 'inoreabbrev <buffer>' s:abbr(<f-args>)
 Abbr function endfunction
 
-syn keyword Flow if else elseif endif try catch finally endtry
-syn keyword Flow for in endfor while endwhile break continue
-syn keyword Flow function endfunction return finish augroup
-
-let &l:commentstring = '" %s'
-let b:indent_start = '\v^[\t }]*<%(else|elseif|if|for|while|function)>'
-let b:indent_end   = '\v^[\t }]*<%(else|end%(if|for|while|function))>'
-let b:indent_cont  = '^\s*\'
+syn match PreProc /\v\<%([fq]-args|args|bang|line[12]|count|reg|lt)\>/
 
 syn region String matchgroup=Normal start=/'/ end=/'/ contains=SingleEscape oneline
 syn region String matchgroup=Normal start='^\@!"' end='"' contains=SpecialChar,ErrorChar oneline
-syn region String matchgroup=Normal start='/\S@=' end='/' contains=SpecialChar oneline
+syn region String matchgroup=Normal start=/\v\/%(\\v)@=/ end='/' contains=SpecialChar oneline
 
 syn match SingleEscape /''/ contained
 hi! link SingleEscape SpecialChar
-syn match ErrorChar /\\./ contained
 syn match SpecialChar /\v\\(e|\/|[xX]\x{1,2}|[uU]\x{1,4}|\<%([CMS]-)?%(\k{-}|.)\>)/ contained
