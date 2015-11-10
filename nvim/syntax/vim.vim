@@ -1,15 +1,10 @@
-Flow if|for|while|function else|elseif endif|endfor|endwhile|endfunction
+Flow augroup%(\sEND)@!|if|for|while|function else|elseif augroup\sEND|endif|endfor|endwhile|endfunction
 Comments "
 
 setlocal iskeyword+=:,#
 nnoremap <buffer> K :vert help <C-R><C-W><CR>
 
-function! s:abbr(lhs, rhs)
-	return a:lhs . ' ' . a:lhs . '<End><CR>' . a:rhs . '<Up><End>'
-endfunction
-
-command! -nargs=+ Abbr execute 'inoreabbrev <buffer>' s:abbr(<f-args>)
-Abbr function endfunction
+inoreabbrev <buffer> function function!() abort<End><CR>endfunction<Left><Left><Up>
 
 syn match PreProc /\v\<%([fq]-args|args|bang|line[12]|count|reg|lt)\>/
 

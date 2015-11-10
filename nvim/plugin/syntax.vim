@@ -1,6 +1,6 @@
 " Map extensions / executable names to filetypes
 let s:ftmap = {
-	\ 'bash': 'sh', 'zshrc': 'sh',
+	\ 'bash': 'sh', 'zshrc': 'sh', 'zshenv': 'sh',
 	\ 'COMMIT_EDITMSG': 'gitcommit',
 	\ 'Makefile': 'make',
 	\ 'Tupfile': 'tup',
@@ -22,7 +22,7 @@ function! s:filetype(name)
 	syntax clear
 	augroup FileTypePlugin
 		autocmd!
-		execute 'runtime syntax/after.vim'
+		execute 'runtime syntax/common.vim'
 		execute 'runtime syntax/'   . a:name . '.vim'
 		execute 'runtime indent/'   . a:name . '.vim'
 		execute 'runtime ftplugin/' . a:name . '.vim'
