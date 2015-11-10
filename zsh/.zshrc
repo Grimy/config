@@ -6,7 +6,6 @@ setopt hist_ignore_all_dups hist_reduce_blanks
 setopt interactivecomments
 setopt prompt_subst prompt_percent
 autoload compinit && compinit
-setopt menu_complete
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
@@ -14,6 +13,7 @@ LISTMAX=0
 WORDCHARS=.+-~_
 HISTSIZE=65535
 SAVEHIST="$HISTSIZE"
+HISTFILE="$ZDOTDIR/history"
 MAIL='$(mail -e 2>/dev/null && printf "\e[33mYou’ve got mail! ")'
 PROMPT="%(???%F{red}(%?%) )$MAIL%f%T %(##%F{red}%m:#%F{green})%~%f%% "
 
@@ -48,12 +48,14 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export MYSQL_HISTFILE="$XDG_CACHE_HOME/mysql"
 export CARGO_HOME="$XDG_CACHE_HOME/cargo"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
-export GIMP2_DIRECTORY="$XDG_CONFIG_HOME/gimp"
+export GIMP2_DIRECTORY="$XDG_CONFIG_HOME/Gimp"
 export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
 export LESSHISTFILE=-
 export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
-export PENTADACTYL_INIT=":source $PENTADACTYL_RUNTIME/init"
+export PENTADACTYL_INIT=":source $XDG_CONFIG_HOME/pentadactyl/init"
 export PENTADACTYL_RUNTIME="$XDG_CONFIG_HOME/pentadactyl"
+export PYLINTHOME="$XDG_CONFIG_HOME/pylint"
+export PYLINTRC="$PYLINTHOME/pylintrc"
 #export XAUTHORITY="$XDG_RUNTIME_DIR"/X11/xauthority
 #export XINITRC="$XDG_CONFIG_HOME/xinitrc"
 export __GL_SHADER_DISK_CACHE_PATH="$XDG_CACHE_HOME/nv"
@@ -87,6 +89,7 @@ alias fzf='/usr/bin/ruby ~/.nvim/bundle/fzf/fzf'
 alias gpg='rlwrap gpg2 --expert'
 alias gs='rlwrap gs'
 alias gsql='ssh gerrit gerrit gsql'
+alias hcf='sudo shutdown -h 0'
 alias k='k -A'
 alias l='ls -GAhl --color=auto'
 alias ll='ls -GAhl --color=auto'

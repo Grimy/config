@@ -41,7 +41,7 @@
 	enabled = 1
 
 [credential]
-	helper = cache
+	helper = cache --timeout=18000 --socket="$XDG_RUNTIME_DIR/git-credential.socket"
 
 [lfs]
 	batch = false
