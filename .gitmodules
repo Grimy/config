@@ -3,13 +3,10 @@
 	url = https://github.com/tarruda/zsh-autosuggestions
 [submodule "zsh/highlighting"]
 	path = zsh/highlighting
-	url = https://github.com/jimmijj/zsh-syntax-highlighting
+	url = https://github.com/zsh-users/zsh-syntax-highlighting
 [submodule "nvim/bundle/neomake"]
 	path = nvim/bundle/neomake
 	url = https://github.com/benekastah/neomake
-[submodule "nvim/bundle/eclim"]
-	path = nvim/bundle/eclim
-	url = https://github.com/ervandew/eclim
 [submodule "nvim/bundle/dragonfly"]
 	path = nvim/bundle/dragonfly
 	url = https://github.com/Grimy/dragonfly

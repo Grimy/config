@@ -1,3 +1,2 @@
 #!/bin/sh
-
 /bin/man -w "$@" >/dev/null && nvim +"Man $*"

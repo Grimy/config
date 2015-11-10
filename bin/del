@@ -1,3 +1,2 @@
 #!/bin/sh
-
 git branch -D "$@" || git tag -d "$@"

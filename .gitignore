@@ -1,6 +1,7 @@
 */*
 Trolltech.conf
 !bin/*
+!feh/themes
 !git/config
 !htop/htoprc
 !nvim/Makefile

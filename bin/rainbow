@@ -1,4 +1,4 @@
-#!/usr/bin/fish
+#!/bin/sh
 
 echo -ne '\033[;30m 0'
 echo -ne '\033[;31m 0'

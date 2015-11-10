@@ -1,3 +1,2 @@
 #!/bin/sh
-
 fetch "${@-origin}" && git merge --ff-only "${@-origin}/$(cb)"

@@ -1,3 +1,2 @@
 #!/bin/bash
-
 [ $# -ne 0 ] && git checkout "$@" || pr -tmw120 <(git tag) <(git branch -a)

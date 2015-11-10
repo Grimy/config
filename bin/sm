@@ -1,7 +1,0 @@
-#!/bin/sh
-
-cd /mnt >/dev/null
-mkdir -p "$@"
-sudo umount "$@"
-sshfs -oworkaround=rename "root@$@:/" "$@"
-cd "$@"

@@ -1,3 +1,2 @@
 #!/bin/sh
-
-[ $# -gt 1 ] && git checkout "$@" || git reset --hard "$@"
+[ -f "$2" ] && git checkout "$@" || git reset --hard "$@"

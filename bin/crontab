@@ -1,3 +1,0 @@
-#!/bin/sh
-
-nvim /var/spool/cron/$USER

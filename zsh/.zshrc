@@ -15,11 +15,12 @@ HISTSIZE=65535
 SAVEHIST="$HISTSIZE"
 HISTFILE="$ZDOTDIR/history"
 MAIL='$(mail -e 2>/dev/null && printf "\e[33mYou’ve got mail! ")'
-PROMPT="%(???%F{red}(%?%) )$MAIL%f%T %(##%F{red}%m:#%F{green})%~%f%% "
+PROMPT="%(???%F{red}(%?%) )$MAIL%f%T %(##%F{red}%m:#%F{green})%~%f> "
 
 # Keybindings
 bindkey -e
 bindkey '^I' complete-word
+bindkey '^U' vi-kill-line
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
 bindkey '^[[F' end-of-line
@@ -62,10 +63,6 @@ export __GL_SHADER_DISK_CACHE_PATH="$XDG_CACHE_HOME/nv"
 
 # Plugin config
 source "$XDG_CONFIG_HOME/zsh/highlighting/zsh-syntax-highlighting.zsh"
-source "$XDG_CONFIG_HOME/zsh/autosuggestions/autosuggestions.zsh"
-AUTOSUGGESTION_ACCEPT_RIGHT_ARROW=1
-zle-line-init() { zle autosuggest-start }
-zle -N zle-line-init
 
 # Aliases
 alias :q='exit'
@@ -73,17 +70,19 @@ alias add='git add'
 alias amend='git commit -v --amend --no-edit'
 alias bisect='git bisect'
 alias branch='git branch -f'
-alias conf='cd ~/.config'
 alias cherry='git cherry-pick'
 alias clean='git clean -dfX'
 alias clone='git clone --recursive'
 alias clop='feh ~/p0'
 alias commit='git commit -v'
+alias conf='cd ~/.config'
 alias cp='/bin/cp -i'
 alias cpan='sudo perl -MCPAN -e'
+alias crontab='nvim /var/spool/cron/$USER'
 alias diff='git diff --patience'
 alias dnf='sudo dnf'
 alias dnfy='sudo dnf install -y'
+alias dow='watch -n1 -d "ls -sh ~/Downloads/*.part"'
 alias f='find . -name'
 alias fzf='/usr/bin/ruby ~/.nvim/bundle/fzf/fzf'
 alias gpg='rlwrap gpg2 --expert'
@@ -104,6 +103,7 @@ alias stash='git stash'
 alias stats='git show --oneline --stat'
 alias tab='gvim --remote-tab-silent'
 alias tag='git tag -f'
+alias updatedb='sudo updatedb'
 alias v="nvim -O"
 alias vim="nvim -O"
 alias yay='ponysay -f Fluttershy yay'
