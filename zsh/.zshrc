@@ -1,11 +1,14 @@
 # Basic configuration and options
 setopt chase_links autocd autopushd pushdsilent pushdtohome
 setopt noclobber
+setopt null_glob globdots
 setopt hist_ignore_all_dups hist_reduce_blanks
 setopt interactivecomments
 setopt prompt_subst prompt_percent
 autoload compinit && compinit
+setopt menu_complete
 zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
 LISTMAX=0
 WORDCHARS=.+-~_
@@ -16,6 +19,7 @@ PROMPT="%(???%F{red}(%?%) )$MAIL%f%T %(##%F{red}%m:#%F{green})%~%f%% "
 
 # Keybindings
 bindkey -e
+bindkey '^I' complete-word
 bindkey '^[[A' history-search-backward
 bindkey '^[[B' history-search-forward
 bindkey '^[[F' end-of-line
@@ -29,8 +33,6 @@ bindkey '^[[3;5~' delete-word
 
 POPD() { popd; zle reset-prompt; }
 zle -N POPD
-# backward-word-or-popd
-
 
 # Environment
 export TERM=xterm-256color

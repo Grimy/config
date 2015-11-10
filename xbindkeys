@@ -1,0 +1,14 @@
+"xdotool keyup F1 type $(echo E-; echo Elbereth)"
+	F1
+
+"echo pause >/tmp/mplayer.fifo"
+	F9
+
+"echo pt_step 1 >/tmp/mplayer.fifo"
+	F10
+
+"amixer set Master 2+"
+	F12
+
+"amixer set Master 2-"
+	F11

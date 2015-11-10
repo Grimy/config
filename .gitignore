@@ -1,13 +1,12 @@
-Trolltech.conf
 */*
+Trolltech.conf
 !bin/*
-!fish/functions
 !git/config
 !htop/htoprc
+!nvim/Makefile
 !nvim/bundle
 !nvim/ctrl
 !nvim/init.vim
-!nvim/Makefile
 !nvim/plugin
 !nvim/syntax
 !pentadactyl/init
