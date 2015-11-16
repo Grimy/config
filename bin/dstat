@@ -1,12 +1,12 @@
-#!/usr/bin/perl -l
+#!/usr/bin/perl
 
 use strict;
 use feature qw(state);
 use List::Util qw(first sum max);
 
 my %files = ();
-my @colors = ("", "\e[0;33m", "\e[1;31m", "\e[0;31m"),
-$|--;
+my @colors = ("\e[0;38m", "\e[0;33m", "\e[1;31m", "\e[0;31m"),
+$\=$";
 
 sub lines(_) {
 	my ($file) = @_;
@@ -16,66 +16,51 @@ sub lines(_) {
 
 sub percent {
 	my ($part, $total) = @_;
-	my $percent = $total && $part / $total * 100;
-	sprintf "$colors[$percent / 30]%3d%%", $percent;
+	$% = $total && $part / $total * 100;
+	print "$colors[$% / 30]$%%\e[m";
 }
 
 sub bytes {
 	s;\d\K(\d{3})+\b;qw(k M G T P)[$&=~y///c/3-1];e for @_;
-	sprintf "%5s", @_;
+	print @_;
 }
 
 sub top {
 	my ($score, $name) = split ' ', max(@_), 2;
-	sprintf " %-10.10s%s", $name, bytes $score;
+	print $name;
+	bytes $score;
 }
 
-sub time {
-	my ($sec, $min, $hour) = map sprintf("%02d", $_), localtime(time);
-	" $hour:$min";
-}
+my ($sec, $min, $hour) = map sprintf("%02d", $_), localtime(time);
+print "$hour:$min";
 
-sub lavg {
-	my ($avg1, $avg5, $avg15) = split ' ', lines "/proc/loadavg";
-	my $nproc = `nproc`;
-	percent($avg1, $nproc), percent($avg15, $nproc);
-}
+my ($avg1, $avg5, $avg15) = split ' ', lines "/proc/loadavg";
+my $nproc = `nproc`;
+percent $avg1, $nproc;
+percent $avg15, $nproc;
 
-sub top_cpu {
-	my @cpu;
-	for (map lines, </proc/*/stat>) {
-		@_ = split;
-		my $cpu = $_[13] + $_[14];
-		$cpu[$_[0]] = $cpu . " " . substr $_[1], 1, -1;
-	}
-	top @cpu;
+my @cpu;
+for (map lines, </proc/*/stat>) {
+	@_ = split;
+	my $cpu = $_[13] + $_[14];
+	$cpu[$_[0]] = $cpu . " " . substr $_[1], 1, -1;
 }
+top @cpu;
 
-sub mem {
-	my ($total, $free, $buffers, $cached) = grep s/\w+://, lines "/proc/meminfo";
-	percent($total - $free - $buffers - $cached, $total);
+my %h;
+/:/, $h{$`} = $' for lines "/proc/meminfo";
+percent $h{MemTotal} - $h{MemFree} - $h{Buffers} - $h{Cached}, $h{MemTotal};
+
+my @mem;
+for (map lines, </proc/*/stat>) {
+	@_ = split;
+	$mem[$_[0]] = 4096 * $_[23] . ' ' . substr $_[1], 1, -1;
 }
+top @mem;
 
-sub top_mem {
-	my @mem;
-	for (map lines, </proc/*/stat>) {
-		@_ = split;
-		$mem[$_[0]] = 4096 * $_[23] . ' ' . substr $_[1], 1, -1;
-	}
-	top @mem;
-}
+print ~~map /procs_blocked \K\d+/g, lines "/proc/stat";
 
-sub io {
-	sprintf "% 4d", map /procs_blocked \K\d+/g, lines "/proc/stat";
-}
+my ($total, $used, $free) = `df -B1 /var` =~ /\b\d+\b/g;
+percent $total - $free, $total;
 
-sub disk {
-	my ($total, $used, $free) = `df -B1 /var` =~ /\b\d+\b/g;
-	percent($total - $free, $total);
-}
-
-sub mail {
-	system('mail -e 2>/dev/null') ? "  " : "$colors[2] !"
-}
-
-print "│\e[32m@ARGV\e[m│", map "$_\e[m │", &time, &lavg, &top_cpu, &mem, &top_mem, &io, &disk, &mail;
+print system('mail -e 2>/dev/null') ? "  " : " $colors[2]!\e[m"

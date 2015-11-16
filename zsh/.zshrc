@@ -18,11 +18,12 @@ MAIL='$(mail -e 2>/dev/null && printf "\e[33mYou’ve got mail! ")'
 PROMPT="%(???%F{red}(%?%) )$MAIL%f%T %(##%F{red}%m:#%F{green})%~%f> "
 
 # Keybindings
+zlebind() { autoload "$2"; zle -N "$2"; bindkey "$@"; }
 bindkey -e
 bindkey '^I' complete-word
 bindkey '^U' vi-kill-line
-bindkey '^[[A' history-search-backward
-bindkey '^[[B' history-search-forward
+zlebind '^[[A' up-line-or-beginning-search
+zlebind '^[[B' down-line-or-beginning-search
 bindkey '^[[F' end-of-line
 bindkey '^[[H' beginning-of-line
 bindkey '^[[1;5A' insert-last-word
@@ -45,7 +46,6 @@ export RUST_BACKTRACE=1
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 export PATH="$HOME/bin:$XDG_CONFIG_HOME/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin"
 
-export XDG_CACHE_HOME="$HOME/.cache"
 export MYSQL_HISTFILE="$XDG_CACHE_HOME/mysql"
 export CARGO_HOME="$XDG_CACHE_HOME/cargo"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
@@ -57,12 +57,13 @@ export PENTADACTYL_INIT=":source $XDG_CONFIG_HOME/pentadactyl/init"
 export PENTADACTYL_RUNTIME="$XDG_CONFIG_HOME/pentadactyl"
 export PYLINTHOME="$XDG_CONFIG_HOME/pylint"
 export PYLINTRC="$PYLINTHOME/pylintrc"
+export RLWRAP_HOME="$XDG_CACHE_HOME/rlwrap"
 #export XAUTHORITY="$XDG_RUNTIME_DIR"/X11/xauthority
 #export XINITRC="$XDG_CONFIG_HOME/xinitrc"
 export __GL_SHADER_DISK_CACHE_PATH="$XDG_CACHE_HOME/nv"
 
 # Plugin config
-source "$XDG_CONFIG_HOME/zsh/highlighting/zsh-syntax-highlighting.zsh"
+# source "$XDG_CONFIG_HOME/zsh/highlighting/zsh-syntax-highlighting.zsh"
 
 # Aliases
 alias :q='exit'

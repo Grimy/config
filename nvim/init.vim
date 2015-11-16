@@ -6,7 +6,7 @@
 augroup VimRC
 autocmd!
 
-let $VIM = $HOME . '/.config/nvim'
+let $VIM = $XDG_CONFIG_HOME . '/nvim'
 
 let g:python_host_skip_check=1
 let g:loaded_python3_provider=1
