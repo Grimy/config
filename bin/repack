@@ -1,8 +1,8 @@
 #!/bin/sh
 
-du -sh "$@"
-git --git-dir="$@" reflog expire --expire-unreachable=now --all
-git --git-dir="$@" repack -adfq --window=500 --window-memory=512m
-git --git-dir="$@" gc --prune=now --quiet
-git --git-dir="$@" fsck --unreachable --no-reflogs --no-progress
-du -sh "$@"
+du -sh
+git reflog expire --expire-unreachable=now --all
+git repack -adfq --window=500 --window-memory=512m
+git gc --prune=now --quiet
+git fsck --unreachable --no-reflogs --no-progress
+du -sh

@@ -1,2 +1,0 @@
-#!/bin/sh
-git merge --ff-only "${@-origin/$(cb)}"

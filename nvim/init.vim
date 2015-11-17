@@ -1,17 +1,11 @@
-" Copyright © 2014, 2015 Victor Adam (Grimy) <victor@drawall.cc> {{{1
-" This work is free software. You can redistribute it and/or modify it under
-" the terms of the Do What The Fuck You Want To Public License, Version 2, as
-" published by Sam Hocevar. See the LICENCE file for more details.
-
-augroup VimRC
+augroup Vimrc
 autocmd!
 
 let $VIM = $XDG_CONFIG_HOME . '/nvim'
-
 let g:python_host_skip_check=1
 let g:loaded_python3_provider=1
 
-command! -nargs=1 Man exe 'b' . bufnr("man <args>", 1) | setf manpage | %!/bin/man <args> | col -bx
+command! -nargs=1 Man exe 'b' . bufnr("man <args>", 1) | setf manpage | %!man <args> | col -bx
 
 function! FoldText() abort
 	let nbLines = v:foldend - v:foldstart

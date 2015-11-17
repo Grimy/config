@@ -14,8 +14,8 @@ WORDCHARS=.+-~_
 HISTSIZE=65535
 SAVEHIST="$HISTSIZE"
 HISTFILE="$ZDOTDIR/history"
-MAIL='$(mail -e 2>/dev/null && printf "\e[33mYou’ve got mail! ")'
-PROMPT="%(???%F{red}(%?%) )$MAIL%f%T %(##%F{red}%m:#%F{green})%~%f> "
+mail='$(mail -e 2>&- && printf "\e[33mYou’ve got mail! ")'
+PROMPT="%(???%F{red}(%?%) )$mail%f%T %(##%F{red}%m #%F{green})%~%f> "
 
 # Keybindings
 zlebind() { autoload "$2"; zle -N "$2"; bindkey "$@"; }
@@ -75,6 +75,7 @@ alias cherry='git cherry-pick'
 alias clean='git clean -dfX'
 alias clone='git clone --recursive'
 alias clop='feh ~/p0'
+alias co='git checkout'
 alias commit='git commit -v'
 alias conf='cd ~/.config'
 alias cp='/bin/cp -i'
@@ -96,6 +97,7 @@ alias ll='ls -GAhl --color=auto'
 alias mv='/bin/mv -i'
 alias push='git push'
 alias pushf='git push --force-with-lease'
+alias rainbow='echo -e "\033["{,1}\;3{0,1,2,3,4,5,6,7}moOOo'
 alias reflog='git reflog'
 alias remote='git remote -v'
 alias s='git status'
@@ -103,8 +105,21 @@ alias show='git show'
 alias stash='git stash'
 alias stats='git show --oneline --stat'
 alias tab='gvim --remote-tab-silent'
-alias tag='git tag -f'
 alias updatedb='sudo updatedb'
 alias v="nvim -O"
 alias vim="nvim -O"
 alias yay='ponysay -f Fluttershy yay'
+cb()     { git rev-parse --abbrev-ref HEAD; }
+del()    { git branch -D "$@" || git tag -d "$@"; }
+fes()    { git submodule foreach "git $* &"; }
+fetch()  { git fetch --prune "${@---all}"; }
+ff()     { git merge --ff-only "${@-origin/$(cb)}"; }
+fuck()   { [ -f "${@##* }" ] && git checkout "$@" || git reset --hard "$@"; }
+man()    { command man -w "${@:?}" >&- && nvim +"Man $*"; }
+merge()  { git merge --no-ff "$@" && git branch -d "$@"; }
+p()      { perf stat -d -e{task-clock,page-faults,cycles,instructions,branch,branch-misses} "$@"; }
+pull()   { fetch "${@-origin}" && ff "${@-origin}/$(cb)"; }
+rebase() { git rebase "${@-origin/$(cb)}"; }
+tag()    { git tag ${@:+-f} "$@"; }
+wtf()    { curl -s http://whatthecommit.com | perl -p0e '($_)=m{<p>(.+?)</p>}s'; }
+x()      { atool -x "$@" && rm "$@"; }
