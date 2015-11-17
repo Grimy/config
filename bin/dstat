@@ -58,8 +58,6 @@ for (map lines, </proc/*/stat>) {
 }
 top @mem;
 
-print ~~map /procs_blocked \K\d+/g, lines "/proc/stat";
-
 my ($total, $used, $free) = `df -B1 /var` =~ /\b\d+\b/g;
 percent $total - $free, $total;
 

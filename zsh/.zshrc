@@ -1,11 +1,13 @@
 # Basic configuration and options
-setopt chase_links autocd autopushd pushdsilent pushdtohome
-setopt noclobber
-setopt null_glob globdots
+emulate sh
+setopt no_ignore_braces bang_hist equals
+setopt no_unset null_glob glob_dots
+setopt no_clobber no_rm_star_silent
+setopt chase_links auto_cd auto_pushd pushd_silent pushd_to_home
 setopt hist_ignore_all_dups hist_reduce_blanks
-setopt interactivecomments
 setopt prompt_subst prompt_percent
-autoload compinit && compinit
+
+emulate zsh -c 'autoload -Uz compinit' && compinit
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
@@ -18,7 +20,7 @@ mail='$(mail -e 2>&- && printf "\e[33mYou’ve got mail! ")'
 PROMPT="%(???%F{red}(%?%) )$mail%f%T %(##%F{red}%m #%F{green})%~%f> "
 
 # Keybindings
-zlebind() { autoload "$2"; zle -N "$2"; bindkey "$@"; }
+zlebind() { autoload -Uz "$2"; zle -N "$2"; bindkey "$@"; }
 bindkey -e
 bindkey '^I' complete-word
 bindkey '^U' vi-kill-line
@@ -45,6 +47,7 @@ export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 export RUST_BACKTRACE=1
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 export PATH="$HOME/bin:$XDG_CONFIG_HOME/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin"
+export SSH_AUTH_SOCK=/home/grimy/.gnupg/S.gpg-agent.ssh
 
 export MYSQL_HISTFILE="$XDG_CACHE_HOME/mysql"
 export CARGO_HOME="$XDG_CACHE_HOME/cargo"
@@ -58,8 +61,6 @@ export PENTADACTYL_RUNTIME="$XDG_CONFIG_HOME/pentadactyl"
 export PYLINTHOME="$XDG_CONFIG_HOME/pylint"
 export PYLINTRC="$PYLINTHOME/pylintrc"
 export RLWRAP_HOME="$XDG_CACHE_HOME/rlwrap"
-#export XAUTHORITY="$XDG_RUNTIME_DIR"/X11/xauthority
-#export XINITRC="$XDG_CONFIG_HOME/xinitrc"
 export __GL_SHADER_DISK_CACHE_PATH="$XDG_CACHE_HOME/nv"
 
 # Plugin config
@@ -102,6 +103,7 @@ alias reflog='git reflog'
 alias remote='git remote -v'
 alias s='git status'
 alias show='git show'
+alias startx='xinit "$XDG_CONFIG_HOME/xinitrc" -- =X :0 vt1 -keeptty -nolisten tcp'
 alias stash='git stash'
 alias stats='git show --oneline --stat'
 alias tab='gvim --remote-tab-silent'

@@ -192,13 +192,13 @@ let g:bangmap = {
 	\ 'h': "vert help ",
 	\ 'i': "set inv",
 	\ 's': "source % | setlocal filetype=vim fileencoding=utf-8 nohlsearch\n",
-	\ 'S': 'silent! source ' . $VIM . "/shada/session\n",
+	\ 'S': 'silent! source ' . $VIM . "/session\n",
 	\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
 	\ 'q': "q\n", 'Q': "q!\n",
 	\ 'l': "silent grep ''\<Left>", 'm': "make\n",
 	\ }
 nnoremap <expr> ! ":\<C-U>" . get(g:bangmap, nr2char(getchar()), "\e")
-autocmd VimLeave * execute 'mksession!' $VIM.'/shada/session'
+autocmd VimLeave * execute 'mksession!' $VIM.'/session'
 
 " Huffman-coding
 noremap <silent> v <C-V>
