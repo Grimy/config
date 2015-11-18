@@ -18,23 +18,20 @@ endfunction
 
 " Options {{{1
 
-set all& nomodified
-set shell=/bin/sh
+set all&
 set helpfile=$VIM/init.vim runtimepath=$VIM,$VIM/bundle/*
 set timeoutlen=1 grepprg=ag clipboard=unnamed
 set diffopt=filler,context:5,foldcolumn:0
 set virtualedit=onemore,block | noremap $ $l
 set nostartofline | noremap G G$l
 set whichwrap=[,<,>,] matchpairs+=<:>
-set scrolljump=4 scrolloff=20 sidescroll=2
+set mouse= scrolljump=4 scrolloff=20 sidescroll=2
 set ignorecase smartcase gdefault
 set shiftround copyindent tabstop=4 shiftwidth=0
 set fileencodings=ucs-bom,utf-8,latin1
 set wildmode=longest,full showfulltag
 set complete=.,t,i completeopt=noselect,menuone pumheight=8
-set keymodel=startsel mouse=
 set conceallevel=2 concealcursor=nc
-set synmaxcol=256
 set fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
 set cursorline list listchars=tab:»\ ,eol:\ ,nbsp:·,precedes:«,extends:»
 set nojoinspaces linebreak showbreak=…\ 
