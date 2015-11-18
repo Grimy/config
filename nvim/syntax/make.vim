@@ -1,2 +1,3 @@
-syntax match PreProc /\v$[^(]/
-syntax region PreProc start='$(' end=')' contains=PreProc
+Comments #
+syn match PreProc /\v$[^(]/
+syn region PreProc start='$(' end=')' contains=PreProc

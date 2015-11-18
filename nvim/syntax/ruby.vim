@@ -1,4 +1,6 @@
 Flow begin|case|if|for|do|while|def|class else|elsif|when|rescue|ensure end
+Comments #
+
 syn keyword Flow if then unless else elsif end for in do while until
 syn keyword Flow begin rescue ensure
 syn keyword Flow next redo retry break case when return and or

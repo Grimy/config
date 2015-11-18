@@ -32,10 +32,9 @@ set shiftround copyindent tabstop=4 shiftwidth=0
 set fileencodings=ucs-bom,utf-8,latin1
 set wildmode=longest,full showfulltag
 set complete=.,t,i completeopt=noselect,menuone pumheight=8
-set keymodel=startsel mouse=nvr
+set keymodel=startsel mouse=
 set conceallevel=2 concealcursor=nc
 set synmaxcol=256
-set commentstring=#\ %s
 set fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
 set cursorline list listchars=tab:»\ ,eol:\ ,nbsp:·,precedes:«,extends:»
 set nojoinspaces linebreak showbreak=…\ 
@@ -114,8 +113,8 @@ tnoremap <C-^> <C-\><C-N><C-^>
 " Ctrl-mappings {{{1
 
 " UNIX shortcuts
+map <M-BS> <C-W>
 nnoremap <C-U> d^
-nnoremap <M-BS> <C-W>
 noremap! <M-BS> <C-W>
 noremap! <C-B> <Left>
 noremap! <C-F> <Right>
@@ -198,7 +197,7 @@ let g:bangmap = {
 	\ 'l': "silent grep ''\<Left>", 'm': "make\n",
 	\ }
 nnoremap <expr> ! ":\<C-U>" . get(g:bangmap, nr2char(getchar()), "\e")
-autocmd VimLeave * execute 'mksession!' $VIM.'/session'
+autocmd VimLeave * exe 'mksession!' $VIM.'/session'
 
 " Huffman-coding
 noremap <silent> v <C-V>
@@ -251,9 +250,9 @@ xnoremap <C-U>   :SubliminalInsert<CR><C-U>
 xnoremap <C-W>   :SubliminalInsert<CR><C-W>
 xnoremap <C-A>   :SubliminalInsert<CR><C-A>
 xnoremap <C-X>   :SubliminalInsert<CR><C-X>
-xnoremap <C-Del> :SubliminalAppend<CR><C-Del>
+xnoremap <C-Del> :SubliminalInsert<CR><C-Del>
 xnoremap <C-Y>   :SubliminalInsert<CR><C-Y>
-execute "xnoremap <C-Q>   :SubliminalInsert<CR><C-E>"
+xnoremap <C-Q>   :SubliminalInsert<CR><C-Q>
 
 " Dragonfly
 xmap H <Plug>(dragonfly_left)
@@ -270,12 +269,12 @@ onoremap s ib
 onoremap < i<
 onoremap > i>
 
-nnoremap <C-Down> }
-nnoremap <C-Up> {
+noremap <C-Down> }
+noremap <C-Up> {
 
-function! s:autocompl() abort
-	if getline('.')[col('.') - 2] =~# '\k'
-		call feedkeys("\<C-N>", 'n')
-	endif
-endfunction
+" function! s:autocompl() abort
+	" if getline('.')[col('.') - 2] =~# '\k'
+		" call feedkeys("\<C-N>", 'n')
+	" endif
+" endfunction
 " autocmd TextChangedI * call s:autocompl()

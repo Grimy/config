@@ -1,4 +1,5 @@
 " Map extensions / executable names to filetypes
+let s:shebang = '\v^%(#!%(\f+/)?|\<\?)%(env\s*)?\zs\f+'
 let s:ftmap = {
 	\ 'bash': 'sh', 'zshrc': 'sh', 'zshenv': 'sh',
 	\ 'COMMIT_EDITMSG': 'gitcommit',
@@ -19,18 +20,14 @@ let s:ftmap = {
 	\ }
 
 function! s:filetype(name)
-	syntax clear
+	syn clear
 	augroup FileTypePlugin
 		autocmd!
-		execute 'runtime syntax/common.vim'
-		execute 'runtime syntax/'   . a:name . '.vim'
-		execute 'runtime indent/'   . a:name . '.vim'
-		execute 'runtime ftplugin/' . a:name . '.vim'
+		runtime syntax/common.vim
+		exe 'runtime syntax/'   . a:name . '.vim'
+		exe 'runtime indent/'   . a:name . '.vim'
+		exe 'runtime ftplugin/' . a:name . '.vim'
 	augroup END
-endfunction
-
-function! s:detect_shebang()
-	call s:setft(matchstr(getline(1), '\v^%(#!%(\f+/)?|\<\?)%(env\s*)?\zs\f+'))
 endfunction
 
 function! s:setft(type)
@@ -41,16 +38,9 @@ endfunction
 
 augroup filetypedetect
 	autocmd!
-
-	" Filetype detection
 	autocmd CmdwinEnter * setf vim
 	autocmd TermOpen * setf term
 	autocmd BufNewFile,BufRead * call s:setft(substitute(expand("<afile>"), '\v.*[./]|\~', '', 'g'))
-	autocmd BufRead,StdinReadPost,BufWritePost * call s:detect_shebang()
-
-	" Indent-style detection
-	autocmd BufRead,StdinReadPost * let &l:expandtab = getline(search('^\s', 'wn'))[0] == ' '
-
-	" Execute filetype plugins
+	autocmd BufRead,StdinReadPost,BufWritePost * call s:setft(matchstr(getline(1), s:shebang))
 	autocmd FileType * call s:filetype(expand('<amatch>'))
 augroup END

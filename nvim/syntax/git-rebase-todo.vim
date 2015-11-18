@@ -1,3 +1,4 @@
+Comments #
 syn match Error /^./
 syn match Keyword /\v^%([efprsx]|edit|fixup|pick|reword|squash|exec)>/
 syn match Error /\v%^[sf]/

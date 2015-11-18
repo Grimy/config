@@ -1,3 +1,3 @@
 Comments %
 
-syntax keyword PreProc stack
+syn keyword PreProc stack

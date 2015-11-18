@@ -3,9 +3,9 @@ Comments //
 
 syn region Comment start='\V/*' end='\V*/'
 
+syn keyword Flow in break continue return
 syn keyword Error alignof become do offsetof priv pure sizeof typeof unsized
 syn keyword Error yield abstract virtual final override macro once
-syn keyword Flow in break continue return
 syn keyword Keyword as box extern fn pub impl let unsafe where super self
 syn keyword Keyword mod trait struct enum move mut ref static const true false
 syn keyword Type isize usize char bool u8 u16 u32 u64 f32

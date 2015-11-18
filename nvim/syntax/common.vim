@@ -1,14 +1,18 @@
-" Smart indent detection
+" Common options
+setlocal formatoptions=croqljn iskeyword=@,48-57,_
+setlocal comments=sr:/**,mb:*,ex:*/,sr:/*,mb:*,ex:*/
 let &l:expandtab = getline(search('^%(\t|  )', 'wn'))[0] == ' '
-
-" Handle non-ASCII word charcacters
-execute 'setlocal iskeyword+=' . (&fenc == 'utf-8' ? '128-167,224-235' : '192-255')
-setlocal iskeyword=@,48-57,_
 
 " Common syntax
 syn sync minlines=200
 syn keyword Todo TODO contained containedin=Comment
-syn match Comment /\v#.*/
+syn match ErrorChar "\\." contained
+syn match SpecialChar /\v\\([bfnrt\\"]|\o{1,3})/ contained
+
+" set conceallevel=1 concealcursor+=i
+" syn match Operator '<=' conceal cchar=≤
+" syn match Operator '>=' conceal cchar=≥
+" syn match Operator '::' conceal cchar=∷
 
 function! s:comments(begin, ...)
 	let &l:commentstring = a:begin . join([' %s'] + a:000)
@@ -17,13 +21,6 @@ function! s:comments(begin, ...)
 	execute 'syn region Comment start=_\V' . begin . '_ end=_\V' . end . '_'
 endfunction
 command! -nargs=* Comments call s:comments(<f-args>)
-
-syn match ErrorChar "\\." contained
-syn match SpecialChar /\v\\([bfnrt\\"]|\o{1,3})/ contained
-
-" Common options
-setlocal formatoptions=croqljn nrformats-=octal
-setlocal comments=sr:/**,mb:*,ex:*/,sr:/*,mb:*,ex:*/ autoindent
 
 function! s:flow(...) abort
 	setlocal number indentexpr=Indent()
@@ -67,8 +64,3 @@ function! Indent() abort
 		\ + (line == line('.') - 1 && prev =~# b:indent_conted)
 		\ - (getline(line - 1) =~# b:indent_conted))
 endfunction
-
-set conceallevel=1 concealcursor+=i
-syntax match Operator '<=' conceal cchar=≤
-syntax match Operator '>=' conceal cchar=≥
-syntax match Operator '::' conceal cchar=∷
