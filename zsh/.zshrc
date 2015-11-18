@@ -7,7 +7,7 @@ setopt chase_links auto_cd auto_pushd pushd_silent pushd_to_home
 setopt hist_ignore_all_dups hist_reduce_blanks
 setopt prompt_subst prompt_percent
 
-emulate zsh -c 'autoload -Uz compinit' && compinit
+emulate zsh -c 'setopt glob_dots; autoload -Uz compinit' && compinit
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 

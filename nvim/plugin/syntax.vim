@@ -39,8 +39,6 @@ function! s:filetype(name)
 	augroup FileTypePlugin
 		autocmd!
 		exe 'runtime syntax/'   . a:name . '.vim'
-		exe 'runtime indent/'   . a:name . '.vim'
-		exe 'runtime ftplugin/' . a:name . '.vim'
 	augroup END
 endfunction
 
@@ -88,8 +86,8 @@ function! Indent() abort
 		return indent + 1
 	endif
 	return indent + &ts * ((prev =~ b:indent_start) - (cur =~ b:indent_end)
-	\ + (line == line('.') - 1 && prev =~# b:indent_conted)
-	\ - (getline(line - 1) =~# b:indent_conted))
+		\ + (line == line('.') - 1 && prev =~# b:indent_conted)
+		\ - (getline(line - 1) =~# b:indent_conted))
 endfunction
 
 augroup filetypedetect
