@@ -57,8 +57,8 @@ export GIMP2_DIRECTORY="$XDG_CONFIG_HOME/Gimp"
 export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
 export LESSHISTFILE=-
 export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
-export PENTADACTYL_INIT=":source $XDG_CONFIG_HOME/pentadactyl/init"
-export PENTADACTYL_RUNTIME="$XDG_CONFIG_HOME/pentadactyl"
+export VIMPERATOR_INIT=":source $XDG_CONFIG_HOME/vimperator/init"
+export VIMPERATOR_RUNTIME="$XDG_CONFIG_HOME/vimperator"
 export PYLINTHOME="$XDG_CONFIG_HOME/pylint"
 export PYLINTRC="$PYLINTHOME/pylintrc"
 export RLWRAP_HOME="$XDG_CACHE_HOME/rlwrap"
@@ -80,7 +80,7 @@ alias clop='feh ~/p0'
 alias co='git checkout'
 alias commit='git commit -v'
 alias conf='cd ~/.config'
-alias cp='/bin/cp -i'
+alias cp='cp -i'
 alias cpan='sudo perl -MCPAN -e'
 alias crontab='nvim /var/spool/cron/$USER'
 alias diff='git diff --patience'
@@ -88,7 +88,7 @@ alias dnf='sudo dnf'
 alias dnfy='sudo dnf install -y'
 alias dow='watch -n1 -d "ls -sh ~/Downloads/*.part"'
 alias f='find . -name'
-alias fzf='/usr/bin/ruby ~/.nvim/bundle/fzf/fzf'
+alias fzf='ruby ~/.nvim/bundle/fzf/fzf'
 alias gpg='rlwrap gpg2 --expert'
 alias gs='rlwrap gs'
 alias gsql='ssh gerrit gerrit gsql'
@@ -96,7 +96,7 @@ alias hcf='sudo shutdown -h 0'
 alias k='k -A'
 alias l='ls -GAhl --color=auto'
 alias ll='ls -GAhl --color=auto'
-alias mv='/bin/mv -i'
+alias mv='mv -i'
 alias push='git push'
 alias pushf='git push --force-with-lease'
 alias rainbow='echo -e "\033["{,1}\;3{0,1,2,3,4,5,6,7}moOOo'
@@ -121,8 +121,8 @@ fuck()   { [ -f "${@##* }" ] && git checkout "$@" || git reset --hard "$@"; }
 man()    { command man -w "${@:?}" >&- && nvim +"Man $*"; }
 merge()  { git merge --no-ff "$@" && git branch -d "$@"; }
 p()      { perf stat -d -e{task-clock,page-faults,cycles,instructions,branch,branch-misses} "$@"; }
-pull()   { fetch "${@-origin}" && ff "${@-origin}/$(cb)"; }
-rebase() { git rebase "${@-origin/$(cb)}"; }
+pull()   { fetch "${@-origin}" && ff; }
+rebase() { git rebase "${@:-origin/$(cb)}"; }
 tag()    { git tag ${@:+-f} "$@"; }
 wtf()    { curl -s http://whatthecommit.com | perl -p0e '($_)=m{<p>(.+?)</p>}s'; }
 x()      { atool -x "$@" && rm "$@"; }

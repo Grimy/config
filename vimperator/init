@@ -1,0 +1,49 @@
+set hinttimeout=500
+set defsearch=google
+
+nnoremap gy gT
+nnoremap d <C-W>
+nnoremap A '
+nnoremap AY :b ▶<CR>
+nnoremap AT :b tweetdeck<CR>
+nnoremap AM :b mail<CR>
+
+nnoremap <C-Q> <Nop>
+inoremap <C-Z> <C-V><C-Z>
+inoremap <C-V> <C-V><C-V>
+
+" Panorama is awesome
+nnoremap e <C-S-E>
+
+" French localization
+set nextpattern+=\\bsuivant
+set previouspattern+=\\bprécédent
+
+" Horizontal scrolling? Why?
+nnoremap h H
+nnoremap l L
+nnoremap H 10h
+nnoremap L 10l
+
+" Standard shortcuts
+inoremap <C-B> <Left>
+inoremap <C-F> <Right>
+cnoremap <C-B> <Left>
+cnoremap <C-F> <Right>
+
+" Completion
+cnoremap <C-J> <Tab>
+cnoremap <C-K> <S-Tab>
+
+" Scroll more
+nnoremap j 8j
+nnoremap k 8k
+nnoremap <Down> 8j
+nnoremap <Up> 8k
+cnoremap <C-N> <Down>
+cnoremap <C-P> <Up>
+nnoremap <C-J> <PageDown>
+nnoremap <C-K> <PageUp>
+
+" Special
+nnoremap <silent> Y :!yt (xsel) &<CR>

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 cd /tmp
-export CFLAGS+='-xc -std=c99 -Wall -Wextra -pedantic -Werror -Wno-unused -march=native -g'
+export CFLAGS="-xc -std=c99 -Wall -Wextra -pedantic -Werror -Wno-unused -march=native -g"
 
 perl -le 'print for <#include<{string,std{lib,io}}.h>>' >tmp.c
 echo 'int main(void) {' >>tmp.c
