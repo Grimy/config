@@ -1,5 +1,6 @@
 # Basic configuration and options
 emulate sh
+setopt no_auto_remove_slash
 setopt interactive_comments no_ignore_braces bang_hist equals
 setopt no_unset null_glob glob_dots
 setopt no_clobber no_rm_star_silent
