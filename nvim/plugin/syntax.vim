@@ -35,7 +35,7 @@ function! s:filetype(name)
 	" Common options
 	setlocal formatoptions=croqljn iskeyword=@,48-57,_ synmaxcol=256
 	setlocal comments=sr:/**,mb:*,ex:*/,sr:/*,mb:*,ex:*/
-	let &l:expandtab = getline(search('^%(\t|  )', 'wn'))[0] == ' '
+	let &l:expandtab = getline(search('\v^%(\t|  )', 'wn'))[0] == ' '
 
 	augroup FileTypePlugin
 		autocmd!
