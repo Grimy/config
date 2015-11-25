@@ -118,7 +118,7 @@ fes()    { git submodule foreach "git $* &"; }
 fetch()  { git fetch --prune "${@---all}"; }
 ff()     { git merge --ff-only "${@-origin/$(cb)}"; }
 fuck()   { [ -f "${@##* }" ] && git checkout "$@" || git reset --hard "$@"; }
-man()    { command man -w "${@:?}" >&- && nvim +"Man $*"; }
+man()    { command man -w "${@:?}" >/dev/null && nvim +"Man $*"; }
 merge()  { git merge --no-ff "$@" && git branch -d "$@"; }
 p()      { perf stat -d -e{task-clock,page-faults,cycles,instructions,branch,branch-misses} "$@"; }
 pull()   { fetch "${@-origin}" && ff; }

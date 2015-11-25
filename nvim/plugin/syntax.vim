@@ -15,6 +15,7 @@ let s:ftmap = {
 	\ 'rb': 'ruby', 'rake': 'ruby',
 	\ 'rs': 'rust',
 	\ 's': 'gas', 'S': 'gas',
+	\ 'tt': 'html',
 	\ 'wiki': 'mediawiki',
 	\ 'yml': 'yaml', 'fish_history': 'yaml', 'fish_read_history': 'yaml',
 	\ }

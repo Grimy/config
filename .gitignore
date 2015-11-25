@@ -10,7 +10,7 @@ Trolltech.conf
 !nvim/init.vim
 !nvim/plugin
 !nvim/syntax
-!pentadactyl/init
+!vimperator/init
 !zsh/.zshrc
 !zsh/autosuggestions
 !zsh/highlighting
