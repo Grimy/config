@@ -11,12 +11,14 @@ nnoremap l L
 cnoremap <C-J> <Tab>
 cnoremap <C-K> <S-Tab>
 nnoremap <C-Q> <Nop>
+nnoremap <S-Insert> <Nop>
+nnoremap <C-S-N> i<C-S-P>
 
 nnoremap gy gT
-nnoremap A '
+nnoremap AM g@
+nnoremap AD g@gt
 nnoremap AY :b ▶<CR>
 nnoremap AT :b tweetdeck<CR>
-nnoremap AM :b mail<CR>
 
 nnoremap H 10h
 nnoremap L 10l
@@ -35,15 +37,12 @@ cnoremap <C-P> <Up>
 nnoremap <C-J> <PageDown>
 nnoremap <C-K> <PageUp>
 
-" Special
-nnoremap <silent> Y :!yt (xsel) &<CR>
-
 " Autohide statusbar
 js var bb = document.getElementById('liberator-bottombar');
 js bb.style.overflow = 'hidden';
 js function show_bottombar(on) { bb.style.height = on ? '' : '0' }
 js function map(c) { liberator.execute('nnoremap ' + c + ' :js show_bottombar(1)<CR>' + c) }
-js ":boOtT/?".split('').forEach(map)
+js ":bBiIoOtT/?!".split('').forEach(map)
 js show_bottombar();
 cnoremap <CR> <CR>:js show_bottombar()<CR>
 cnoremap <Esc> <Esc>:js show_bottombar()<CR>
