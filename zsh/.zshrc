@@ -47,7 +47,7 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 export RUST_BACKTRACE=1
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
-export PATH="$HOME/bin:$XDG_CONFIG_HOME/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin"
+export PATH="$HOME/bin:$XDG_CONFIG_HOME/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/bin/site_perl"
 export SSH_AUTH_SOCK=/home/grimy/.gnupg/S.gpg-agent.ssh
 
 export MYSQL_HISTFILE="$XDG_CACHE_HOME/mysql"

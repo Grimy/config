@@ -275,3 +275,9 @@ noremap <C-Up> {
 	" endif
 " endfunction
 " autocmd TextChangedI * call s:autocompl()
+
+let g:neomake_perl_perl_maker = { 'args': ['-cw'], 'errorformat': '%m at %f line %l%s' }
+let g:neomake_perl_perlcritic_maker = {
+	\ 'args': ['-p', $XDG_CONFIG_HOME . '/perlcritic', '-1', '/dev/null'],
+	\ 'errorformat': '%f: %m at line %l\, column %c%s' }
+let g:neomake_perl_enabled_makers = ['perl', 'perlcritic']
