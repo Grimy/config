@@ -7,8 +7,8 @@
 "echo pt_step 1 >/tmp/mplayer.fifo"
 	F10
 
-"amixer set Master 2+"
+"amixer set Master 2%+"
 	F12
 
-"amixer set Master 2-"
+"amixer set Master 2%-"
 	F11

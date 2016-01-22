@@ -42,7 +42,7 @@ js var bb = document.getElementById('liberator-bottombar');
 js bb.style.overflow = 'hidden';
 js function show_bottombar(on) { bb.style.height = on ? '' : '0' }
 js function map(c) { liberator.execute('nnoremap ' + c + ' :js show_bottombar(1)<CR>' + c) }
-js ":bBiIoOtT/?!".split('').forEach(map)
+js ":iIboOtTy/?!".split('').forEach(map)
 js show_bottombar();
 cnoremap <CR> <CR>:js show_bottombar()<CR>
 cnoremap <Esc> <Esc>:js show_bottombar()<CR>
