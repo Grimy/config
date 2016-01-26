@@ -1,0 +1,9 @@
+#!/bin/sh
+
+set -euo pipefail
+
+empty=$(git hash-object -t tree /dev/null)
+for m in $(seq 0 42); do
+	commit=$(git rev-list -1 --all --before="$m months ago")
+	git diff --shortstat "$empty" "$commit" 2>/dev/null | cut -d' ' -f5
+done

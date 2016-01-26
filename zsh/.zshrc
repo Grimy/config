@@ -111,7 +111,7 @@ alias updatedb='sudo updatedb'
 alias v="nvim -O"
 alias vim="nvim -O"
 alias yay='ponysay -f Fluttershy yay'
-alias yum='dnf'
+alias yum='sudo dnf'
 cb()     { git rev-parse --abbrev-ref HEAD; }
 del()    { git branch -D "$@" || git tag -d "$@"; }
 fes()    { git submodule foreach "git $* &"; }
