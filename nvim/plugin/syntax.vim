@@ -1,5 +1,5 @@
 " Map extensions / executable names to filetypes
-let s:shebang = '\v^%(#!%(\f+/)?|\<\?)%(env\s*)?\zs\f+'
+let s:shebang = '\v^%(#!\s*%(\f+/)?|\<\?)%(env\s*)?\zs\f+'
 let s:ftmap = {
 	\ 'bash': 'sh', 'zshrc': 'sh', 'zshenv': 'sh',
 	\ 'COMMIT_EDITMSG': 'gitcommit',
@@ -11,7 +11,7 @@ let s:ftmap = {
 	\ 'md': 'markdown', 'mkd': 'markdown',
 	\ 'nvimrc': 'vim',
 	\ 'pl': 'perl',
-	\ 'py': 'python', 'python2.6': 'python',
+	\ 'py': 'python',
 	\ 'rb': 'ruby', 'rake': 'ruby',
 	\ 'rs': 'rust',
 	\ 's': 'gas', 'S': 'gas',
@@ -63,9 +63,9 @@ function! s:flow(...) abort
 	let b:indent_start = '\v^[\t }]*<%(' . a:1 . '|' . a:2 .')>' . (braces ? '|\{$' : '')
 	let b:indent_conted = '\v[\[(\\,' . (braces ? '' : '{') . ']$'
 	let b:indent_end = '\v^[\t }]*<%(' . a:2 . (a:0 == 3 ? '|' . a:3 : '') . ')>' . (braces ? '|^\s*\}' : '')
-	let any = split(join(a:000, '|'), '|')
-	execute 'syn keyword Flow' join(any)
-	let &l:indentkeys='0),0},0],o,O,=' . join(any, ',=')
+	let any = join(a:000, '|')
+	execute 'syn match Flow /\v<%(' . any . ')>/'
+	let &l:indentkeys='0),0},0],o,O,=' . substitute(any, '|', ',=', 'g')
 endfunction
 command! -nargs=* Flow call s:flow(<f-args>)
 
@@ -86,9 +86,10 @@ function! Indent() abort
 	if (&commentstring == '// %s' && cur =~# '\v^\s*\*')
 		return indent + 1
 	endif
-	return indent + &ts * ((prev =~ b:indent_start) - (cur =~ b:indent_end)
-		\ + (line == line('.') - 1 && prev =~# b:indent_conted)
-		\ - (getline(line - 1) =~# b:indent_conted))
+	let flow = (prev =~ b:indent_start) - (cur =~ b:indent_end)
+	let cont = (line == line('.') - 1 && prev =~# b:indent_conted)
+	let conted = (getline(line - 1) =~# b:indent_conted))
+	return indent + &ts * (flow + cont - conted)
 endfunction
 
 augroup filetypedetect

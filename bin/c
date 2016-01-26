@@ -7,7 +7,7 @@ perl -le 'print for <#include<{string,std{lib,io}}.h>>' >tmp.c
 echo 'int main(void) {' >>tmp.c
 echo 'return 0; }' >>tmp.c
 
-while read -p 'C> ' C; do
+until C=$(rlwrap -S 'C> ' sed q1); do
 	if sed "\$i$C;" tmp.c | gcc $CFLAGS -; then
 		printf "br %d\nr\np %s" $(wc -l <tmp.c) "$C" |\
 			gdb -q ./a.out 2>&1 | sed '/quit/Q; s/(gdb) $1 = //; s/(gdb) A syntax error.*/OK/; 1,6d'

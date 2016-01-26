@@ -2,7 +2,7 @@
 
 use strict;
 use feature qw(state);
-use List::Util qw(first sum max);
+use List::Util qw(first sum min max);
 
 my %files = ();
 my @colors = ("\e[0;38m", "\e[0;33m", "\e[1;31m", "\e[0;31m"),
@@ -17,7 +17,7 @@ sub lines(_) {
 sub percent {
 	my ($part, $total) = @_;
 	$% = $total && $part / $total * 100;
-	print "$colors[$% / 30]$%%\e[m";
+	print "$colors[min $% / 30, $#colors]$%%\e[m";
 }
 
 sub bytes {

@@ -42,6 +42,7 @@ zle -N POPD
 # Environment
 export TERM=xterm-256color
 export LANG=en_US.UTF-8
+export LC_COLLATE=C
 export EDITOR=nvim
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
@@ -64,12 +65,10 @@ export PYLINTRC="$PYLINTHOME/pylintrc"
 export RLWRAP_HOME="$XDG_CACHE_HOME/rlwrap"
 export __GL_SHADER_DISK_CACHE_PATH="$XDG_CACHE_HOME/nv"
 
-# Plugin config
-# source "$XDG_CONFIG_HOME/zsh/highlighting/zsh-syntax-highlighting.zsh"
-
 # Aliases
 alias :q='exit'
 alias add='git add'
+alias ag='ag -t'
 alias amend='git commit -v --amend --no-edit'
 alias bisect='git bisect'
 alias branch='git branch -f'
@@ -112,6 +111,7 @@ alias updatedb='sudo updatedb'
 alias v="nvim -O"
 alias vim="nvim -O"
 alias yay='ponysay -f Fluttershy yay'
+alias yum='dnf'
 cb()     { git rev-parse --abbrev-ref HEAD; }
 del()    { git branch -D "$@" || git tag -d "$@"; }
 fes()    { git submodule foreach "git $* &"; }
