@@ -12,4 +12,3 @@ syn region String matchgroup=Normal start=/\v\z((['"])%(\1\1)?)/ end=/\v\z1/ con
 syn region String matchgroup=Normal start='/' skip='\\.' end='/' contains=SpecialChar oneline
 
 syn match SpecialChar /\v\\([aesv']|c.|[MC]-.|M-\\C-.|x\x{1,2}|u\x{4})/ contained
-hi! link SingleEscape SpecialChar

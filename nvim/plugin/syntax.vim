@@ -26,6 +26,8 @@ function! s:filetype(name)
 	syn keyword Todo TODO contained containedin=Comment
 	syn match ErrorChar "\\." contained
 	syn match SpecialChar /\v\\([bfnrt\\"]|\o{1,3})/ contained
+	hi! link SingleEscape SpecialChar
+	hi! link DoubleEscape SpecialChar
 
 	" set conceallevel=1 concealcursor+=i
 	" syn match Operator '<=' conceal cchar=≤
@@ -63,9 +65,9 @@ function! s:flow(...) abort
 	let b:indent_start = '\v^[\t }]*<%(' . a:1 . '|' . a:2 .')>' . (braces ? '|\{$' : '')
 	let b:indent_conted = '\v[\[(\\,' . (braces ? '' : '{') . ']$'
 	let b:indent_end = '\v^[\t }]*<%(' . a:2 . (a:0 == 3 ? '|' . a:3 : '') . ')>' . (braces ? '|^\s*\}' : '')
-	let any = join(a:000, '|')
-	execute 'syn match Flow /\v<%(' . any . ')>/'
-	let &l:indentkeys='0),0},0],o,O,=' . substitute(any, '|', ',=', 'g')
+	let any = split(join(a:000, '|'), '|')
+	execute 'syn keyword Flow' join(any)
+	let &l:indentkeys='0),0},0],o,O,=' . join(any, ',=')
 endfunction
 command! -nargs=* Flow call s:flow(<f-args>)
 
@@ -87,8 +89,8 @@ function! Indent() abort
 		return indent + 1
 	endif
 	let flow = (prev =~ b:indent_start) - (cur =~ b:indent_end)
-	let cont = (line == line('.') - 1 && prev =~# b:indent_conted)
-	let conted = (getline(line - 1) =~# b:indent_conted))
+	let cont = line == line('.') - 1 && prev =~# b:indent_conted
+	let conted = getline(line - 1) =~# b:indent_conted
 	return indent + &ts * (flow + cont - conted)
 endfunction
 

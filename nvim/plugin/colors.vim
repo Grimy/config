@@ -20,10 +20,10 @@ HiBright 8    LineNr SignColumn VertSplit
 HiRev    8    Visual
 HiBold   9    Todo Title WarningMsg
 HiBright 9    DiffText
-Hi       10   DiffAdd
+Hi       10   DiffAdd User1 Green
 HiBright 10   StatusLine CursorLineNr Folded Pmenu Question MoreMsg StatusLineNC
 HiRev    10   WildMenu PmenuSel Search IncSearch MatchParen
 Hi       11   Keyword Type
-HiBold   11   Flow User1
+HiBold   11   Flow
 Hi       12   String Character Directory
 Hi       13   PreProc SpecialChar

@@ -15,7 +15,6 @@ syn region String matchgroup=Normal start='`' end='`' contains=SpecialChar,Error
 syn region String matchgroup=Normal start='/' skip='\\.' end='/' contains=SpecialChar oneline
 
 syn match SingleEscape /\\[\\']/ contained
-hi! link SingleEscape SpecialChar
 syn match SpecialChar /\v\\([aesv]|c.|[MC]-.|M-\\C-.|x\x{1,2}|u\x{4})/ contained
 syn region Interpolation matchgroup=SpecialChar start='#{' end='}' contains=TOP
 
