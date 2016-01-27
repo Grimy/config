@@ -29,7 +29,7 @@ set mouse= scrolljump=4 scrolloff=20 sidescroll=2
 set ignorecase smartcase gdefault
 set shiftround copyindent tabstop=4 shiftwidth=0
 set fileencodings=ucs-bom,utf-8,latin1
-set wildmode=longest,full showfulltag
+set wildmode=longest,full showfulltag suffixes+=.class
 set complete=.,t,i completeopt=noselect,menuone pumheight=8
 set conceallevel=2 concealcursor=nc
 set fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
@@ -140,8 +140,8 @@ cnoremap <silent> <C-G> <C-R>.
 autocmd InsertEnter * let g:last_insert_col = virtcol('.')
 inoremap <silent> <expr> <C-J> "\<Esc>j" . g:last_insert_col . "\<Bar>i"
 inoremap <silent> <expr> <C-K> "\<Esc>k" . g:last_insert_col . "\<Bar>i"
-noremap <silent> <C-J> }j
-noremap <silent> <C-K> {{j
+noremap <silent> <C-J> 12<C-D>
+noremap <silent> <C-K> 12<C-U>
 cnoremap <silent> <C-J> <Down>
 cnoremap <silent> <C-K> <Up>
 

@@ -15,4 +15,4 @@ syn region Diff start=/^index/ end=/^diff|\%$/
 syn match DiffAdd    /^+.*/ contained containedin=Diff
 syn match DiffDelete /^-.*/ contained containedin=Diff
 
-setlocal nofoldenable
+setlocal nofoldenable textwidth=80

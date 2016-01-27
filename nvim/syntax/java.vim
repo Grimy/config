@@ -17,9 +17,7 @@ syn region Character matchgroup=Normal start="'"  end="'" contains=SpecialChar,E
 syn region String    matchgroup=Normal start='"'  end='"' contains=SpecialChar,ErrorChar oneline
 syn match SpecialChar /\v\\('|u+\x{4})/
 
-setlocal textwidth=96
 setlocal formatlistpat=@
-set suffixes+=.class
 
 inoreabbrev <silent> <buffer> syso System.out.println();<Left><Left>
 inoremap . .<C-X><C-O><C-P>

@@ -14,5 +14,3 @@ syn region Comment start='\V/*' end='\V*/'
 syn region Character matchgroup=Normal start="'" end="'" contains=SpecialChar,ErrorChar oneline
 syn region String    matchgroup=Normal start='"' end='"' contains=SpecialChar,ErrorChar oneline
 syn match SpecialChar /\v\\([aev'?]|x\x{1,2}|u\x{4})/ contained
-
-setlocal textwidth=80
