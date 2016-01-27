@@ -20,6 +20,7 @@ let s:ftmap = {
 	\ 'yml': 'yaml', 'fish_history': 'yaml', 'fish_read_history': 'yaml',
 	\ }
 
+" Sets some common syntax and options, then sources syntax/&ft.vim
 function! s:filetype(name)
 	syn clear
 	syn sync minlines=200
@@ -28,21 +29,10 @@ function! s:filetype(name)
 	syn match SpecialChar /\v\\([bfnrt\\"]|\o{1,3})/ contained
 	hi! link SingleEscape SpecialChar
 	hi! link DoubleEscape SpecialChar
-
-	" set conceallevel=1 concealcursor+=i
-	" syn match Operator '<=' conceal cchar=≤
-	" syn match Operator '>=' conceal cchar=≥
-	" syn match Operator '::' conceal cchar=∷
-
-	" Common options
 	setlocal formatoptions=croqljn iskeyword=@,48-57,_ synmaxcol=256
 	setlocal comments=sr:/**,mb:*,ex:*/,sr:/*,mb:*,ex:*/
-	let &l:expandtab = getline(search('\v^%(\t|  )', 'wn'))[0] == ' '
-
-	augroup FileTypePlugin
-		autocmd!
-		exe 'runtime syntax/'   . a:name . '.vim'
-	augroup END
+	let &l:expandtab = getline(search('\v^%(\t|  )', 'wn'))[0] ==# ' '
+	exe 'runtime syntax/' . a:name . '.vim'
 endfunction
 
 function! s:setft(type)
@@ -82,16 +72,16 @@ function! Indent() abort
 		endif
 		let line -= 1
 	endwhile
-	let indent = indent(line) / &ts * &ts
+	let indent = indent(line) / &tabstop * &tabstop
 	let prev = getline(line)
 	let cur = getline('.')
-	if (&commentstring == '// %s' && cur =~# '\v^\s*\*')
+	if (&commentstring ==# '// %s' && cur =~# '\v^\s*\*')
 		return indent + 1
 	endif
 	let flow = (prev =~ b:indent_start) - (cur =~ b:indent_end)
 	let cont = line == line('.') - 1 && prev =~# b:indent_conted
 	let conted = getline(line - 1) =~# b:indent_conted
-	return indent + &ts * (flow + cont - conted)
+	return indent + &tabstop * (flow + cont - conted)
 endfunction
 
 augroup filetypedetect

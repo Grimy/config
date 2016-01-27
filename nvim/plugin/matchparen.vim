@@ -4,7 +4,7 @@ function! s:match_pair()
 	let i = stridx(&matchpairs, c)
 
 	if and(i, 1) || c ==# ''
-		" c isn’t in 'matchpairs': abort
+		" c isn't in 'matchpairs': abort
 		return [0, 0]
 	endif
 

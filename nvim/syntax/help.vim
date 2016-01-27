@@ -1,8 +1,6 @@
 nnoremap <buffer> K <C-]>
 nnoremap <buffer> <CR> <C-]>
 setlocal iskeyword+=:,#
-autocmd BufEnter <buffer> set scrolloff=999 scrolljump=1
-autocmd BufLeave <buffer> set scrolloff=20  scrolljump=4
 
 syn region Example  matchgroup=helpIgnore start=" >$" start="^>$" end="^[^ \t]"me=e-1 end="^<" concealends
 syn keyword Todo    note Note NOTE note: Note: NOTE: Notes Notes:

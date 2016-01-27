@@ -1,3 +1,5 @@
+scriptencoding utf-8
+
 augroup Vimrc
 autocmd!
 
@@ -8,12 +10,8 @@ let g:loaded_python3_provider=1
 command! -nargs=1 Man exe 'b' . bufnr("man <args>", 1) | setf manpage | %!man <args> | col -bx
 
 function! FoldText() abort
-	let nbLines = v:foldend - v:foldstart
-	let line = getline(v:foldstart)
-	let line = substitute(line, '^\v\W+|\{+\d*$', '', 'g')
-	let space = 64 - strwidth(line . nbLines)
-	let line = space < 0 ? line[0:space-3] . '… ' : line . repeat(' ', space)
-	return line . printf('(%d lines)', nbLines)
+	let l:line = substitute(getline(v:foldstart), '^\v\W+|\{+\d*$', '', 'g')
+	return printf('%-69.68s(%d lines)', l:line, v:foldend - v:foldstart)
 endfunction
 
 " Options {{{1
@@ -25,7 +23,7 @@ set diffopt=filler,context:5,foldcolumn:0
 set virtualedit=onemore,block | noremap $ $l
 set nostartofline | noremap G G$l
 set whichwrap=[,<,>,] matchpairs+=<:>
-set mouse= scrolljump=4 scrolloff=20 sidescroll=2
+set mouse= scrolljump=1 scrolloff=20 sidescroll=2
 set ignorecase smartcase gdefault
 set shiftround copyindent tabstop=4 shiftwidth=0
 set fileencodings=ucs-bom,utf-8,latin1
@@ -103,10 +101,6 @@ autocmd QuickFixCmdPost * redraw! | cwindow
 " Autoquit when the last buffer is useless
 autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
 
-" Make t_<Esc> consistent with other modes
-tnoremap <Esc> <C-\><C-N>`.
-tnoremap <C-^> <C-\><C-N><C-^>
-
 " Ctrl-mappings {{{1
 
 " UNIX shortcuts
@@ -183,12 +177,12 @@ onoremap p ap
 
 " Common commands with “!”
 let g:bangmap = {
-	\ 'b': "b ", 'v': "vs ", 't': "tab drop ",
+	\ 'b': 'b ', 'v': 'vs ', 't': 'tab drop ',
 	\ 'c': "cd %:h\n",
 	\ 'T': "tab drop term://fish\r",
-	\ 'e': "e ", 'E': "e! ",
-	\ 'h': "vert help ",
-	\ 'i': "set inv",
+	\ 'e': 'e ', 'E': 'e! ',
+	\ 'h': 'vert help ',
+	\ 'i': 'set inv',
 	\ 's': "source % | setlocal filetype=vim fileencoding=utf-8 nohlsearch\n",
 	\ 'S': 'silent! source ' . $VIM . "/session\n",
 	\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
@@ -237,7 +231,7 @@ let g:zmap = {
 	\ 'I': "JavaImportOrganize\r",
 	\ 'J': "!cd ~/src/drawall/bin && java cc.drawall.ConVector\r",
 	\ 'H': "JavaCallHierarchy\r",
-	\ 'R': "JavaRename ",
+	\ 'R': 'JavaRename ',
 	\ 'P': "ProjectProblems\r",
 	\ 'O': "JavaImpl\r",
 	\ }
