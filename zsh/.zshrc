@@ -8,6 +8,7 @@ setopt chase_links auto_cd auto_pushd pushd_silent pushd_to_home
 setopt hist_ignore_all_dups hist_reduce_blanks
 setopt prompt_subst prompt_percent
 
+emulate zsh -c 'source "$XDG_CONFIG_HOME/zsh/k/k.sh"'
 emulate zsh -c 'setopt glob_dots; autoload -Uz compinit' && compinit
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
@@ -89,7 +90,7 @@ alias fzf='ruby ~/.nvim/bundle/fzf/fzf'
 alias gpg='rlwrap gpg2 --expert'
 alias gs='rlwrap gs'
 alias hcf='sudo shutdown -h 0'
-alias k='k -A'
+alias k='k -Ah'
 alias l='ls -GAhl --color=auto'
 alias ll='ls -GAhl --color=auto'
 alias mv='mv -i'
