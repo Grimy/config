@@ -12,5 +12,4 @@ Trolltech.conf
 !nvim/syntax
 !vimperator/init
 !zsh/.zshrc
-!zsh/autosuggestions
-!zsh/highlighting
+!zsh/k
