@@ -140,8 +140,8 @@ cnoremap <silent> <C-G> <C-R>.
 autocmd InsertEnter * let g:last_insert_col = virtcol('.')
 inoremap <silent> <expr> <C-J> "\<Esc>j" . g:last_insert_col . "\<Bar>i"
 inoremap <silent> <expr> <C-K> "\<Esc>k" . g:last_insert_col . "\<Bar>i"
-noremap <silent> <C-J> 12<C-D>
-noremap <silent> <C-K> 12<C-U>
+noremap <silent> <C-J> }j
+noremap <silent> <C-K> {{j
 cnoremap <silent> <C-J> <Down>
 cnoremap <silent> <C-K> <Up>
 
@@ -178,6 +178,8 @@ nnoremap <silent> ; .wn
 onoremap <silent> c :<C-U>normal! ^v$h<CR>
 onoremap <C-U> ^
 onoremap Q ap
+onoremap r :<C-U>normal! `[v`]<CR>
+onoremap p ap
 
 " Common commands with “!”
 let g:bangmap = {
@@ -209,9 +211,14 @@ nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> 
 " Plugin config {{{1
 
 " NeoMake
+autocmd BufWritePost * Neomake
 let g:neomake_error_sign = {'text': '!!', 'texthl': 'Error'}
 let g:neomake_warning_sign = {'text': '??', 'texthl': 'TODO'}
-autocmd BufWritePost * Neomake
+let g:neomake_perl_perl_maker = { 'args': ['-cw'], 'errorformat': '%m at %f line %l%s' }
+let g:neomake_perl_perlcritic_maker = {
+	\ 'args': ['-p', $XDG_CONFIG_HOME . '/perlcritic', '-1', '/dev/null'],
+	\ 'errorformat': '%f: %m at line %l\, column %c%s' }
+let g:neomake_perl_enabled_makers = ['perl', 'perlcritic']
 
 " EasyAlign, Undotree
 let g:spacemap = {
@@ -257,27 +264,3 @@ xmap J <Plug>(dragonfly_down)
 xmap K <Plug>(dragonfly_up)
 xmap L <Plug>(dragonfly_right)
 xmap P <Plug>(dragonfly_copy)
-
-" Experimental {{{1
-
-onoremap r :<C-U>normal! `[v`]<>
-onoremap p ap
-onoremap s ib
-onoremap < i<
-onoremap > i>
-
-noremap <C-Down> }
-noremap <C-Up> {
-
-" function! s:autocompl() abort
-	" if getline('.')[col('.') - 2] =~# '\k'
-		" call feedkeys("\<C-N>", 'n')
-	" endif
-" endfunction
-" autocmd TextChangedI * call s:autocompl()
-
-let g:neomake_perl_perl_maker = { 'args': ['-cw'], 'errorformat': '%m at %f line %l%s' }
-let g:neomake_perl_perlcritic_maker = {
-	\ 'args': ['-p', $XDG_CONFIG_HOME . '/perlcritic', '-1', '/dev/null'],
-	\ 'errorformat': '%f: %m at line %l\, column %c%s' }
-let g:neomake_perl_enabled_makers = ['perl', 'perlcritic']

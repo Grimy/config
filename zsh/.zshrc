@@ -66,7 +66,6 @@ export RLWRAP_HOME="$XDG_CACHE_HOME/rlwrap"
 export __GL_SHADER_DISK_CACHE_PATH="$XDG_CACHE_HOME/nv"
 
 # Aliases
-alias :q='exit'
 alias add='git add'
 alias ag='ag -t'
 alias amend='git commit -v --amend --no-edit'
@@ -78,19 +77,17 @@ alias clone='git clone --recursive'
 alias clop='feh ~/p0'
 alias co='git checkout'
 alias commit='git commit -v'
-alias conf='cd ~/.config'
 alias cp='cp -i'
-alias cpan='sudo perl -MCPAN -e'
 alias crontab='nvim /var/spool/cron/$USER'
 alias diff='git diff --patience'
 alias dnf='sudo dnf'
 alias dnfy='sudo dnf install -y'
 alias dow='watch -n1 -d "ls -sh ~/Downloads/*.part"'
+alias empty='git hash-object -t tree /dev/null'
 alias f='find . -name'
 alias fzf='ruby ~/.nvim/bundle/fzf/fzf'
 alias gpg='rlwrap gpg2 --expert'
 alias gs='rlwrap gs'
-alias gsql='ssh gerrit gerrit gsql'
 alias hcf='sudo shutdown -h 0'
 alias k='k -A'
 alias l='ls -GAhl --color=auto'
@@ -106,12 +103,12 @@ alias show='git show'
 alias startx='xinit "$XDG_CONFIG_HOME/xinitrc" -- =X :0 vt1 -keeptty -nolisten tcp'
 alias stash='git stash'
 alias stats='git show --oneline --stat'
-alias tab='gvim --remote-tab-silent'
 alias updatedb='sudo updatedb'
 alias v="nvim -O"
 alias vim="nvim -O"
 alias yay='ponysay -f Fluttershy yay'
 alias yum='sudo dnf'
+
 cb()     { git rev-parse --abbrev-ref HEAD; }
 del()    { git branch -D "$@" || git tag -d "$@"; }
 fes()    { git submodule foreach "git $* &"; }
@@ -123,6 +120,7 @@ merge()  { git merge --no-ff "$@" && git branch -d "$@"; }
 p()      { perf stat -d -e{task-clock,page-faults,cycles,instructions,branch,branch-misses} "$@"; }
 pull()   { fetch "${@-origin}" && ff; }
 rebase() { git rebase "${@:-origin/$(cb)}"; }
+sloc()   { git diff --shortstat "$(empty)" "${1-HEAD}" | cut -d\  -f5; }
 tag()    { git tag ${@:+-f} "$@"; }
-wtf()    { curl -s http://whatthecommit.com | perl -p0e '($_)=m{<p>(.+?)</p>}s'; }
+wtf()    { git commit -m "$(curl -s http://whatthecommit.com | perl -p0e '($_)=m{<p>(.+?)</p>}s')" "$@"; }
 x()      { atool -x "$@" && rm "$@"; }
