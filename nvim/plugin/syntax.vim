@@ -1,5 +1,5 @@
 " Map extensions / executable names to filetypes
-let s:shebang = '\v^%(#!\s*%(\f+/)?|\<\?)%(env\s*)?\zs\f+'
+let s:shebang = '\v^%(#!\s*%(\f+/)?|\<\?)%(env\s*)?\zs[a-z-]+'
 let s:ftmap = {
 	\ 'bash': 'sh', 'zshrc': 'sh', 'zshenv': 'sh',
 	\ 'COMMIT_EDITMSG': 'gitcommit',

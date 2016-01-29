@@ -9,6 +9,3 @@ allow = if unless
 
 [InputOutput::RequireCheckedSyscalls]
 functions = open opendir read readline readdir close closedir
-
-[Variables::ProhibitPunctuationVars]
-allow = $@ $! $/
