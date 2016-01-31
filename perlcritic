@@ -1,5 +1,8 @@
 [-Modules::RequireVersionVar]
 [-RegularExpressions::ProhibitEnumeratedClasses]
+[-RegularExpressions::RequireDotMatchAnything]
+[-RegularExpressions::RequireExtendedFormatting]
+[-RegularExpressions::RequireLineBoundaryMatching]
 [-ValuesAndExpressions::ProhibitEmptyQuotes]
 [-ValuesAndExpressions::ProhibitMagicNumbers]
 [-ValuesAndExpressions::ProhibitNoisyQuotes]
@@ -7,5 +10,5 @@
 [ControlStructures::ProhibitPostfixControls]
 allow = if unless
 
-[InputOutput::RequireCheckedSyscalls]
-functions = open opendir read readline readdir close closedir
+[InputOutput::ProhibitBacktickOperators]
+only_in_void_context = 1

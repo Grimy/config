@@ -10,7 +10,7 @@ let s:ftmap = {
 	\ 'js': 'javascript', 'node': 'javascript',
 	\ 'md': 'markdown', 'mkd': 'markdown',
 	\ 'nvimrc': 'vim',
-	\ 'pl': 'perl',
+	\ 'pl': 'perl', 'pm': 'perl',
 	\ 'py': 'python',
 	\ 'rb': 'ruby', 'rake': 'ruby',
 	\ 'rs': 'rust',
