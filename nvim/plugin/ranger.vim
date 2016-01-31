@@ -1,15 +1,8 @@
 """
 let $EDITOR = 'python2 ' . expand('<sfile>:p')
-function! s:ranger(dir) abort
-	if isdirectory(a:dir)
-		call termopen('ranger ' . a:dir)
-		startinsert
-	endif
-endfunction
-
 augroup Ranger
 	autocmd!
-	autocmd BufEnter,BufNewFile * call s:ranger(expand('<afile>'))
+	autocmd BufEnter * if isdirectory(expand('<afile>')) | call termopen('ranger ' . expand('<afile>')) | endif
 augroup END
 finish
 """
@@ -18,5 +11,4 @@ import sys
 import os
 from neovim import socket_session, Nvim
 
-NVIM = Nvim.from_session(socket_session(os.environ['NVIM_LISTEN_ADDRESS']))
-NVIM.command('edit ' + sys.argv[-1])
+Nvim.from_session(socket_session(os.environ['NVIM_LISTEN_ADDRESS'])).command('edit ' + sys.argv[-1])

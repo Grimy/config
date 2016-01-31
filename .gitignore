@@ -10,6 +10,7 @@ Trolltech.conf
 !nvim/init.vim
 !nvim/plugin
 !nvim/syntax
+!ranger/rc.conf
 !vimperator/init
 !zsh/.zshrc
 !zsh/k
