@@ -82,7 +82,6 @@ alias cpan='sudo perl -MCPAN -e'
 alias crontab='nvim /var/spool/cron/$USER'
 alias diff='git diff --patience'
 alias dnf='sudo dnf'
-alias dnfy='sudo dnf install -y'
 alias dow='watch -n1 -d "ls -sh ~/Downloads/*.part"'
 alias empty='git hash-object -t tree /dev/null'
 alias f='find . -name'
@@ -109,6 +108,7 @@ alias v="nvim -O"
 alias vim="nvim -O"
 alias yay='ponysay -f Fluttershy yay'
 alias yum='sudo dnf'
+alias yummy='sudo dnf install -y'
 
 cb()     { git rev-parse --abbrev-ref HEAD; }
 del()    { git branch -D "$@" || git tag -d "$@"; }

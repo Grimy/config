@@ -34,7 +34,7 @@ set fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
 set cursorline list listchars=tab:»\ ,eol:\ ,nbsp:·,precedes:«,extends:»
 set nojoinspaces linebreak showbreak=…\ 
 set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
-set showcmd ruler rulerformat=%42(%=%1*%m%f\ %-(#%-2B%5l,%-4v%P%)%)
+set showcmd ruler rulerformat=%24(%=%1*%f%3(%m%)%-6.6(%l,%v%)%)
 set splitright splitbelow noequalalways winwidth=88 winminwidth=6 previewheight=16
 set hidden backup noswapfile undofile autowrite history=50 shada=!,%,'42,h,s10
 set foldmethod=marker foldminlines=3 foldnestmax=3 foldlevelstart=0 foldcolumn=0
@@ -142,6 +142,7 @@ cnoremap <silent> <C-K> <Up>
 " Various
 nnoremap <C-N> <C-I>
 nnoremap <C-P> :<C-P>
+nnoremap <C-B> :e %:h<CR>
 
 " Mappings galore {{{1
 
@@ -208,11 +209,8 @@ nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> 
 autocmd BufWritePost * Neomake
 let g:neomake_error_sign = {'text': '!!', 'texthl': 'Error'}
 let g:neomake_warning_sign = {'text': '??', 'texthl': 'TODO'}
-let g:neomake_perl_perl_maker = { 'args': ['-cw'], 'errorformat': '%m at %f line %l%s' }
-let g:neomake_perl_perlcritic_maker = {
-	\ 'args': ['-p', $XDG_CONFIG_HOME . '/perlcritic', '-1', '/dev/null'],
-	\ 'errorformat': '%f: %m at line %l\, column %c%s' }
-let g:neomake_perl_enabled_makers = ['perl', 'perlcritic']
+let g:neomake_perl_perl_maker = {'args': ['-cw'], 'errorformat': '%m at %f line %l%s'}
+let g:neomake_perl_enabled_makers = ['perl']
 
 " EasyAlign, Undotree
 let g:spacemap = {
