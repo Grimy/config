@@ -10,4 +10,4 @@ xautolock -time 5 -locker slock &
 husl | xrdb
 feh -z --bg-max --no-fehbg ~/Pictures/
 wmname LG3D
-xterm
+exec xterm

@@ -1,6 +1,0 @@
-* sh syntax: {a,b}, ${a%b}
-* switch to the new directory structure
-* Move lyra to ~/bin
-
-* Mettre en place l’envoi automatique de mails pour les pwd trop simples (lc, jfp, ja et wj)
-* EDF : /etc/httpd/conf.d/ssl.conf investiguer ca/localhost.{cert,key}
