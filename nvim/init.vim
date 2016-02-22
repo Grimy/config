@@ -10,13 +10,14 @@ let g:loaded_python3_provider=1
 command! -nargs=1 Man exe 'b' . bufnr("man <args>", 1) | setf manpage | %!man <args> | col -bx
 
 function! FoldText() abort
-	let l:line = substitute(getline(v:foldstart), '^\v\W+|\{+\d*$', '', 'g')
-	return printf('%-69.68s(%d lines)', l:line, v:foldend - v:foldstart)
+	let l:line = substitute(getline(v:foldstart), '^\v\S+\s*', '', 'g')
+	return printf('%-69.68S(%d lines)', l:line, v:foldend - v:foldstart)
 endfunction
 
-" Options {{{1
+"""1 Options
 
 set all&
+set commentstring=#\ %s
 set helpfile=$VIM/init.vim runtimepath=$VIM,$VIM/bundle/*
 set timeoutlen=1 grepprg=ag clipboard=unnamed
 set diffopt=filler,context:5,foldcolumn:0
@@ -42,7 +43,7 @@ set foldopen=insert,jump,block,hor,mark,percent,quickfix,search,tag,undo
 set foldclose= foldtext=FoldText()
 set spelllang=en,fr langmap=à@,è`,é~,ç_,’`,ù%
 
-" DWIM harder {{{1
+"""1 DWIM harder
 
 " Fold open/close
 nnoremap <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zc' : 'h'
@@ -101,7 +102,7 @@ autocmd QuickFixCmdPost * redraw! | cwindow
 " Autoquit when the last buffer is useless
 autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
 
-" Ctrl-mappings {{{1
+"""1 Ctrl-mappings
 
 " UNIX shortcuts
 map <M-BS> <C-W>
@@ -144,7 +145,7 @@ nnoremap <C-N> <C-I>
 nnoremap <C-P> :<C-P>
 nnoremap <C-B> :e %:h<CR>
 
-" Mappings galore {{{1
+"""1 Mappings galore
 
 " Esc: fix everything
 nnoremap <silent> <Esc> :<C-U>lcl<Bar>pc<Bar>ccl<Bar>set ch=2 ch=1<Bar>UndotreeHide<CR>
@@ -203,7 +204,7 @@ nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> 
 	\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
 	\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
 
-" Plugin config {{{1
+"""1 Plugin config
 
 " NeoMake
 autocmd BufWritePost * Neomake
