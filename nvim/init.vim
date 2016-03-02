@@ -9,19 +9,13 @@ let g:loaded_python3_provider=1
 
 command! -nargs=1 Man exe 'b' . bufnr("man <args>", 1) | setf manpage | %!man <args> | col -bx
 
-function! FoldText() abort
-	let l:line = substitute(getline(v:foldstart), '^\v\S+\s*', '', 'g')
-	return printf('%-69.68S(%d lines)', l:line, v:foldend - v:foldstart)
-endfunction
-
 """1 Options
 
 set all&
 set helpfile=$VIM/init.vim runtimepath=$VIM,$VIM/bundle/*
 set timeoutlen=1 grepprg=ag clipboard=unnamed
 set diffopt=filler,context:5,foldcolumn:0
-set virtualedit=onemore,block | noremap $ $l
-set nostartofline | noremap G G$l
+set virtualedit=onemore,block nostartofline
 set whichwrap=[,<,>,] matchpairs+=<:> commentstring=#\ %s
 set mouse= scrolljump=1 scrolloff=20 sidescroll=2
 set ignorecase smartcase gdefault
@@ -37,8 +31,9 @@ set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
 set showcmd ruler rulerformat=%24(%=%1*%f%3(%m%)%-6.6(%l,%v%)%)
 set splitright splitbelow noequalalways winwidth=88 winminwidth=6 previewheight=16
 set hidden backup backupdir-=. noswapfile undofile history=50 shada=!,%,'42,h,s10
-set foldmethod=marker foldlevelstart=0 foldcolumn=0 foldtext=FoldText()
 set spelllang=en,fr langmap=à@,è`,é~,ç_,’`,ù%
+set foldmethod=marker foldlevelstart=0 foldcolumn=0
+set foldtext=printf('%-69.68S(%d\ lines)',getline(v:foldstart)[5:],v:foldend-v:foldstart)
 
 """1 DWIM harder
 
@@ -58,6 +53,7 @@ autocmd BufReadPost * silent! normal! g`"zz
 
 " Y yanks until EOL, like D and C
 nnoremap <silent> Y y$
+noremap $ $l
 
 " Redo with U
 nnoremap <silent> U <C-R>
@@ -141,6 +137,7 @@ cnoremap <silent> <C-K> <Up>
 nnoremap <C-N> <C-I>
 nnoremap <C-P> :<C-P>
 nnoremap <C-B> :e %:h<CR>
+nnoremap <silent> <C-S> :<C-U>w<CR>
 
 """1 Mappings galore
 
@@ -178,11 +175,10 @@ onoremap p ap
 let g:bangmap = {
 	\ 'b': 'b ', 'v': 'vs ', 't': 'tab drop ',
 	\ 'c': "cd %:h\n",
-	\ 'T': "tab drop term://fish\r",
 	\ 'e': 'e ', 'E': 'e! ',
 	\ 'h': 'vert help ',
 	\ 'i': 'set inv',
-	\ 's': "source % | setlocal filetype=vim fileencoding=utf-8 nohlsearch\n",
+	\ 's': "source % | setlocal filetype=vim fileencoding=utf-8\nzx",
 	\ 'S': 'silent! source ' . $VIM . "/session\n",
 	\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
 	\ 'q': "q\n", 'Q': "q!\n",
