@@ -1,6 +1,6 @@
-Flow if|for|do|while|try|switch else|catch|finally|case|default
 Comments //
 
+syn keyword Flow if for do while try switch else catch finally case default
 syn keyword Flow break continue goto return
 syn keyword Keyword sizeof inline
 syn keyword Keyword static extern auto register
@@ -14,3 +14,5 @@ syn region Comment start='\V/*' end='\V*/'
 syn region Character matchgroup=Normal start="'" end="'" contains=SpecialChar,ErrorChar oneline
 syn region String    matchgroup=Normal start='"' end='"' contains=SpecialChar,ErrorChar oneline
 syn match SpecialChar /\v\\([aev'?]|x\x{1,2}|u\x{4})/ contained
+
+setlocal number cindent

@@ -1,0 +1,11 @@
+#!/bin/sh
+set -euo pipefail
+
+if [ $# -eq 0 ]; then
+	gcalcli calm
+	gcalcli calm 1month
+elif [ $# -eq 1 ]; then
+	gcalcli --calendar gr1mg4r@gmail.com quick "$1"
+else
+	gcalcli "$@"
+fi

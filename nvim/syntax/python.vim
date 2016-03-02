@@ -1,9 +1,9 @@
-Flow if|for|while|try else|elif|except|finally ^$
+Flow if|for|while|try|def else|elif|except|finally
 Comments #
 
 syn keyword Flow in and or try raise assert
 syn keyword Flow return yield pass break continue
-syn keyword Keyword print del exec with as is global class def
+syn keyword Keyword print del exec with as is global class
 syn keyword Keyword True False None lambda not
 syn keyword PreProc import from
 

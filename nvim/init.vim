@@ -17,13 +17,12 @@ endfunction
 """1 Options
 
 set all&
-set commentstring=#\ %s
 set helpfile=$VIM/init.vim runtimepath=$VIM,$VIM/bundle/*
 set timeoutlen=1 grepprg=ag clipboard=unnamed
 set diffopt=filler,context:5,foldcolumn:0
 set virtualedit=onemore,block | noremap $ $l
 set nostartofline | noremap G G$l
-set whichwrap=[,<,>,] matchpairs+=<:>
+set whichwrap=[,<,>,] matchpairs+=<:> commentstring=#\ %s
 set mouse= scrolljump=1 scrolloff=20 sidescroll=2
 set ignorecase smartcase gdefault
 set shiftround copyindent tabstop=4 shiftwidth=0
@@ -37,10 +36,8 @@ set nojoinspaces linebreak showbreak=…\
 set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
 set showcmd ruler rulerformat=%24(%=%1*%f%3(%m%)%-6.6(%l,%v%)%)
 set splitright splitbelow noequalalways winwidth=88 winminwidth=6 previewheight=16
-set hidden backup noswapfile undofile autowrite history=50 shada=!,%,'42,h,s10
-set foldmethod=marker foldminlines=3 foldnestmax=3 foldlevelstart=0 foldcolumn=0
-set foldopen=insert,jump,block,hor,mark,percent,quickfix,search,tag,undo
-set foldclose= foldtext=FoldText()
+set hidden backup backupdir-=. noswapfile undofile history=50 shada=!,%,'42,h,s10
+set foldmethod=marker foldlevelstart=0 foldcolumn=0 foldtext=FoldText()
 set spelllang=en,fr langmap=à@,è`,é~,ç_,’`,ù%
 
 """1 DWIM harder

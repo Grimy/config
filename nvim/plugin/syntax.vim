@@ -52,9 +52,10 @@ command! -nargs=* Comments call s:comments(<f-args>)
 function! s:flow(...) abort
 	setlocal number indentexpr=Indent()
 	let braces = a:0 == 2 || &filetype ==# 'sh'
-	let b:indent_start = '\v^[\t }]*<%(' . a:1 . '|' . a:2 .')>' . (braces ? '|\{$' : '')
+	let b:indent_start = '\v^[\t }]*%(' . a:1 . '|' . a:2 .')\k@!' . (braces ? '|\{$' : '')
+	let b:indent_cont = '\v<>'
 	let b:indent_conted = '\v[\[(\\,' . (braces ? '' : '{') . ']$'
-	let b:indent_end = '\v^[\t }]*<%(' . a:2 . (a:0 == 3 ? '|' . a:3 : '') . ')>' . (braces ? '|^\s*\}' : '')
+	let b:indent_end = '\v^[\t }]*%(' . a:2 . (a:0 == 3 ? '|' . a:3 : '') . ')\k@!' . (braces ? '|^\s*\}' : '')
 	let any = split(join(a:000, '|'), '|')
 	execute 'syn keyword Flow' join(any)
 	let &l:indentkeys='0),0},0],o,O,=' . join(any, ',=')
@@ -79,8 +80,8 @@ function! Indent() abort
 		return indent + 1
 	endif
 	let flow = (prev =~ b:indent_start) - (cur =~ b:indent_end)
-	let cont = line == line('.') - 1 && prev =~# b:indent_conted
-	let conted = getline(line - 1) =~# b:indent_conted
+	let cont = cur =~ b:indent_cont || (line == line('.') - 1 && prev =~# b:indent_conted)
+	let conted = prev =~# b:indent_cont || getline(line - 1) =~# b:indent_conted
 	return indent + &tabstop * (flow + cont - conted)
 endfunction
 

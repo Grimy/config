@@ -1,7 +1,7 @@
 Flow augroup%(\sEND)@!|if|for|while|function else|elseif augroup\sEND|endif|endfor|endwhile|endfunction
 Comments "
 
-setlocal iskeyword+=:,# foldmarker=\"\"\",\"\"\"
+setlocal iskeyword+=:,# foldmarker=\"\"\",\"\"\" indentkeys+=,0\
 nnoremap <buffer> K :vert help <C-R><C-W><CR>
 
 inoreabbrev <buffer> function function!() abort<End><CR>endfunction<Left><Left><Up>
@@ -15,3 +15,5 @@ syn region String matchgroup=Normal start=/\v\/%(\\v)@=/ end='/' contains=Specia
 
 syn match SingleEscape /''/ contained
 syn match SpecialChar /\v\\(e|\/|[xX]\x{1,2}|[uU]\x{1,4}|\<%([CMS]-)?%(\k{-}|.)\>)/ contained
+
+let b:indent_cont = '^\s*\\'
