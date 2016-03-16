@@ -107,7 +107,6 @@ alias updatedb='sudo updatedb'
 alias v="nvim -O"
 alias vim="nvim -O"
 alias yay='ponysay -f Fluttershy yay'
-alias yum='sudo dnf'
 alias yummy='sudo dnf install -y'
 
 cb()     { git rev-parse --abbrev-ref HEAD; }
