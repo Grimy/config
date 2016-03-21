@@ -4,24 +4,24 @@ use strict;
 use Convert::Color::HUSL;
 
 my @colors = (
-	[foreground =>   0,   0, 95],
-	[background => 270,   3,  9],
-	[color0     =>   0,   0, 16],   # Black   Cursorline
-	[color1     =>  11, 100, 59],   # Red     Error
-	[color2     => 126, 100, 59],   # Green   --
-	[color3     =>  52, 100, 79],   # Gold    --
-	[color4     => 243, 100, 59],   # Blue    --
-	[color5     => 336, 100, 59],   # Magenta --
-	[color6     => 144, 100, 59],   # Cyan    --
-	[color7     =>   0,   0, 99],   # White   --
-	[color8     => 215,  34, 59],   # Black   Comments
-	[color9     =>  20, 100, 59],   # Orange  Todo
-	[color10    => 126, 100, 79],   # Green   Menus
-	[color11    =>  52, 100, 79],   # Yellow  Keywords
-	[color12    => 243, 100, 79],   # Blue    String
-	[color13    => 272, 100, 59],   # Purple  PreProc
-	[color14    => 144, 100, 79],   # Cyan    --
-	[color15    =>   0,   0, 79],   # Gray    --
+	[foreground => 270, 11, 95],
+	[background => 270, 11,  9],
+	[color0     => 270, 11, 16],   # Black   Cursorline
+	[color1     =>  11, 88, 59],   # Red     Error
+	[color2     => 126, 88, 59],   # Green   --
+	[color3     =>  69, 88, 79],   # Gold    --
+	[color4     => 243, 88, 59],   # Blue    --
+	[color5     => 336, 88, 59],   # Magenta --
+	[color6     => 144, 88, 59],   # Cyan    --
+	[color7     => 270, 11, 99],   # White   --
+	[color8     => 270, 11, 59],   # Black   Comments
+	[color9     =>  20, 88, 59],   # Orange  Todo
+	[color10    => 126, 88, 79],   # Green   Menus
+	[color11    =>  51, 88, 79],   # Yellow  Keywords
+	[color12    => 243, 88, 79],   # Blue    String
+	[color13    => 272, 88, 59],   # Purple  PreProc
+	[color14    => 144, 88, 79],   # Cyan    --
+	[color15    => 270, 11, 79],   # Gray    --
 );
 
 sub hsl2rgb { map int(255.5 * $_), Convert::Color::HUSL->new(@_)->rgb() }
@@ -48,7 +48,7 @@ xterm*faceName:    Hack
 xterm*faceSize:    11
 xterm*scaleHeight: 1.00
 Xft.antialias:     1
-Xft.autohint:      1
-Xft.hinting:       0
+Xft.autohint:      0
+Xft.hinting:       1
 Xft.hintstyle:     hintfull
 Xft.rgba:          rgb
