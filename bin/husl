@@ -3,7 +3,9 @@
 use strict;
 use Convert::Color::HUSL;
 
-my @colors = (
+sub hsl2rgb { map int(255.5 * $_), Convert::Color::HUSL->new(@_)->rgb() }
+
+printf "*%s: #%02x%02x%02x\n", shift @$_, hsl2rgb(@$_) for (
 	[foreground => 270, 11, 95],
 	[background => 270, 11,  9],
 	[color0     => 270, 11, 16],   # Black   Cursorline
@@ -24,31 +26,18 @@ my @colors = (
 	[color15    => 270, 11, 79],   # Gray    --
 );
 
-sub hsl2rgb { map int(255.5 * $_), Convert::Color::HUSL->new(@_)->rgb() }
-print <DATA>;
-printf "*%s: #%02x%02x%02x\n", shift @$_, hsl2rgb(@$_) for @colors;
-
-__DATA__
-! Main settings
-xterm*termName:        xterm-256color
-xterm*saveLines:       65535
+print <<'END';
+xterm*termName: xterm-256color
+xterm*saveLines: 65535
 xterm*showBlinkAsBold: true
-xterm*scrollBar:       false
-xterm*charClass:       45-47:48,58:48,126:48
-
-! Key mappings
-xterm.VT100.translations: #override \
+xterm*scrollBar: false
+xterm*charClass: 45-47:48,58:48,126:48
+xterm*faceName: Hack
+xterm*faceSize: 11
+Xft.hintstyle:     hintslight
+xterm*VT100*translations: #override \
 	Ctrl<Key>BackSpace:   string("\033\177")\n\
 	Shift<Key>exclam:     string(0x5c)\n\
 	Shift<Key>parenright: string("|")\n\
 	Shift<Key>asterisk:   string("#")
-
-! Font
-xterm*faceName:    Hack
-xterm*faceSize:    11
-xterm*scaleHeight: 1.00
-Xft.antialias:     1
-Xft.autohint:      0
-Xft.hinting:       1
-Xft.hintstyle:     hintfull
-Xft.rgba:          rgb
+END

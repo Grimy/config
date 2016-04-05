@@ -1,17 +1,18 @@
 Flow case|if|for|while|until else|elif esac|fi|done
 Comments #
 
-setlocal foldmarker=###,### iskeyword+=[,],-,+,.
+setlocal foldmarker=###,### iskeyword+=[,],-,+,.,:,/
 
 syn cluster D add=PreProc,Expansion
 syn keyword Flow then in do continue break return
-syn region Command matchgroup=Keyword start=/\v\k+\)@!/ end=/\v%([\n;|)]|\&\d@!)@=/ contains=TOP,Command
+syn region Command matchgroup=Keyword start=/\v\k+/ end=/\v%([\n;|)]|\&\d@!)@=/ contains=TOP,Command
 syn region Assignment start=/\v\k+\=/ end=/\v\_s@=/ contains=TOP,Command,Assignment
 syn match Continuation '\\\n'
 syn match DoubleEscape /\\[$`"\\]/
 syn match Error /\v\k+\+\=/
 syn match PreProc /\v\$%([-0-9@*#$?!]|\w+)/
 syn match String /\v\\./
+syn match Normal /\v\k+\)/
 syn region Expansion matchgroup=PreProc start='$(' end=')' contains=TOP
 syn region Expansion matchgroup=PreProc start='$((' end='))'
 syn region Expansion matchgroup=PreProc start=/\v\$\{%([-0-9@*#$?!]|\w+)%(:?[-=?+]|[#%]{1,2})/ end='}' transparent
