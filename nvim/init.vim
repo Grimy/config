@@ -22,7 +22,7 @@ set ignorecase smartcase gdefault
 set shiftround copyindent tabstop=4 shiftwidth=0
 set fileencodings=ucs-bom,utf-8,latin1
 set wildmode=longest,full showfulltag suffixes+=.class
-set complete=.,t,i completeopt=noselect,menuone pumheight=8
+set complete=.,t,i completeopt=menuone pumheight=8
 set conceallevel=2 concealcursor=nc
 set fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
 set cursorline list listchars=tab:»\ ,eol:\ ,nbsp:·,precedes:«,extends:»

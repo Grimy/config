@@ -8,7 +8,7 @@ setopt chase_links auto_cd auto_pushd pushd_silent pushd_to_home
 setopt hist_ignore_all_dups hist_reduce_blanks
 setopt prompt_subst prompt_percent
 
-emulate zsh -c 'source "$XDG_CONFIG_HOME/zsh/k/k.sh"'
+emulate zsh -c 'source "$ZDOTDIR/k/k.sh"'
 emulate zsh -c 'setopt glob_dots; autoload -Uz compinit' && compinit
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
@@ -41,6 +41,10 @@ POPD() { popd; zle reset-prompt; }
 zle -N POPD
 
 # Environment
+export XDG_CONFIG_HOME="$HOME/config"
+export XDG_CACHE_HOME="$HOME/data"
+export XDG_DATA_HOME="$HOME/data"
+
 export TERM=xterm-256color
 export LANG=en_US.UTF-8
 export LC_COLLATE=C
