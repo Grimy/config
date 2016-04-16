@@ -128,5 +128,6 @@ pull()   { fetch "${@-origin}" && ff; }
 rebase() { git rebase "${@:-origin/$(cb)}"; }
 sloc()   { git diff --shortstat "$(empty)" "${1-HEAD}" | cut -d\  -f5; }
 tag()    { git tag ${@:+-f} "$@"; }
+twitch() { livestreamer http://www.twitch.tv/"${1#*tv/}" best; }
 wtf()    { git commit -m "$(curl -s http://whatthecommit.com | perl -p0e '($_)=m{<p>(.+?)</p>}s')" "$@"; }
 x()      { atool -x "$@" && rm "$@"; }
