@@ -1,5 +1,6 @@
 */*
 Trolltech.conf
+!awesome/rc.lua
 !bin/*
 !feh/themes
 !git/config
