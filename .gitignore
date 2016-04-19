@@ -1,5 +1,6 @@
 */*
 Trolltech.conf
+mimeapps.list
 !awesome/rc.lua
 !bin/*
 !feh/themes

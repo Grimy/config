@@ -34,7 +34,6 @@ xterm*scrollBar: false
 xterm*charClass: 45-47:48,58:48,126:48
 xterm*faceName: Hack
 xterm*faceSize: 11
-Xft.hintstyle:     hintslight
 xterm*VT100*translations: #override \
 	Ctrl<Key>BackSpace:   string("\033\177")\n\
 	Shift<Key>exclam:     string(0x5c)\n\

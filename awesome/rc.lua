@@ -1,4 +1,4 @@
-local awful = require("awful")
+awful = require("awful")
 awful.rules = require("awful.rules")
 require("awful.autofocus")
 
@@ -6,14 +6,7 @@ require("awful.autofocus")
 super = {"Mod4"}
 shift = {"Mod4", "Shift"}
 prompt = awful.widget.prompt()
-
-local layouts = {
-    awful.layout.suit.max.fullscreen,
-    awful.layout.suit.tile,
-    awful.layout.suit.floating,
-    awful.layout.suit.magnifier
-}
-
+layouts = {awful.layout.suit.max.fullscreen, awful.layout.suit.tile}
 tags = {
     'a', 'z', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
     'q', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm',
