@@ -31,7 +31,7 @@ for i = 1, 26 do
 end
 
 awful.rules.rules = {{rule = {}, properties = {
-    border_width = 1,
+    border_width = 0,
     raise = true,
     buttons = awful.util.table.join(
         awful.button({},    1, function(c) client.focus = c end),
