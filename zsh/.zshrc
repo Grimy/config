@@ -54,7 +54,6 @@ export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 export RUST_BACKTRACE=1
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 export PATH="$HOME/bin:$XDG_CONFIG_HOME/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/bin/site_perl"
-export SSH_AUTH_SOCK=/home/grimy/.gnupg/S.gpg-agent.ssh
 
 export MYSQL_HISTFILE="$XDG_CACHE_HOME/mysql"
 export CARGO_HOME="$XDG_CACHE_HOME/cargo"
@@ -86,7 +85,6 @@ alias cp='cp -i'
 alias cpan='sudo perl -MCPAN -e'
 alias crontab='nvim /var/spool/cron/$USER'
 alias diff='git diff --patience'
-alias dnf='sudo dnf'
 alias dow='watch -n1 -d "ls -sh ~/Downloads/*.part"'
 alias empty='git hash-object -t tree /dev/null'
 alias f='find . -name'
@@ -108,11 +106,11 @@ alias show='git show'
 alias startx='xinit "$XDG_CONFIG_HOME/xinitrc" -- =X :0 vt1 -keeptty -nolisten tcp'
 alias stash='git stash'
 alias stats='git show --oneline --stat'
+alias unstage='git reset -q HEAD --'
 alias updatedb='sudo updatedb'
 alias v="nvim -O"
 alias vim="nvim -O"
 alias yay='ponysay -f Fluttershy yay'
-alias yummy='sudo dnf install -y'
 
 cb()     { git rev-parse --abbrev-ref HEAD; }
 del()    { git branch -D "$@" || git tag -d "$@"; }
