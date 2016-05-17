@@ -1,6 +1,7 @@
 */*
 Trolltech.conf
 mimeapps.list
+xbindkeys
 !awesome/rc.lua
 !bin/*
 !feh/themes
