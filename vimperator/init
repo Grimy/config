@@ -1,4 +1,4 @@
-set fullscreen
+set nofullscreen
 set hinttimeout=500 defsearch=google
 set nextpattern+=\\bsuivant
 set previouspattern+=\\bprécédent
