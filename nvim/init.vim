@@ -13,10 +13,10 @@ command! -nargs=1 Man exe 'b' . bufnr("man <args>", 1) | setf manpage | %!man <a
 
 set all&
 set helpfile=$VIM/init.vim runtimepath=$VIM,$VIM/bundle/*
-set timeoutlen=1 grepprg=ag clipboard=unnamed
+set updatetime=1000 timeoutlen=1 grepprg=ag clipboard=unnamed
 set diffopt=filler,context:5,foldcolumn:0
 set virtualedit=onemore,block nostartofline
-set whichwrap=[,<,>,] matchpairs+=<:> commentstring=#\ %s
+set nowrap whichwrap=[,<,>,] matchpairs+=<:> commentstring=#\ %s
 set mouse= scrolljump=1 scrolloff=20 sidescroll=2
 set ignorecase smartcase gdefault
 set shiftround copyindent tabstop=4 shiftwidth=0
@@ -89,11 +89,56 @@ nnoremap <silent> k gk
 noremap <silent> <Down> gj
 noremap <silent> <Up>   gk
 
-" Automatically open the quickfix window when there are errors
-autocmd QuickFixCmdPost * redraw! | cwindow
-
 " Autoquit when the last buffer is useless
 autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
+
+"""1 Quick fix
+
+" make on save
+autocmd BufWritePost * call AsyncMake()
+
+sign define qf text=!! texthl=Error
+
+function! OnOutput(job_id, data, event_type) abort
+	caddexpr a:data
+endfunction
+
+function! OnExit(job_id, data, event_type) abort
+	let list = []
+	sign unplace *
+	for qf in getqflist()
+		if !qf.bufnr
+			continue
+		endif
+		call add(list, qf)
+		execute 'sign' 'place' string(len(list)) 'name=qf' 'line='.qf.lnum 'buffer='.qf.bufnr
+	endfor
+	call setqflist(list)
+	call ShowError()
+endfunction
+
+function! AsyncMake() abort
+	let argv = split(&makeprg)
+	let argv[-1] = expand(argv[-1])
+	call setqflist([])
+	call jobstart(argv, {
+		\ 'on_stdout': function('OnOutput'),
+		\ 'on_stderr': function('OnOutput'),
+		\ 'on_exit': function('OnExit')})
+endfunction
+
+function! ShowError() abort
+	let lnum = getpos('.')[1]
+	let bufnr = bufnr('%')
+	for qf in getqflist()
+		if qf.bufnr == bufnr && qf.lnum == lnum
+			echo qf.text
+			return
+		endif
+	endfor
+	echo
+endfunction
+autocmd CursorMoved * call ShowError()
 
 """1 Ctrl-mappings
 
@@ -124,6 +169,12 @@ inoremap <nowait> <C-G> <C-A>
 nnoremap <C-G> ".P
 cnoremap <silent> <C-G> <C-R>.
 
+" Ctrl-L: clear highlighting
+noremap <silent> <C-L> :<C-U>noh<CR>
+" diffupdate<Bar>redraw!<CR>
+inoremap <C-L> <C-O>:<C-U>noh<CR>
+autocmd CursorHold,TextChanged * call feedkeys("\<C-L>")
+
 " Scrolling
 autocmd InsertEnter * let g:last_insert_col = virtcol('.')
 inoremap <silent> <expr> <C-J> "\<Esc>j" . g:last_insert_col . "\<Bar>i"
@@ -142,10 +193,10 @@ nnoremap <silent> <C-S> :<C-U>w<CR>
 """1 Mappings galore
 
 " Esc: fix everything
-nnoremap <silent> <Esc> :<C-U>lcl<Bar>pc<Bar>ccl<Bar>set ch=2 ch=1<Bar>UndotreeHide<CR>
+nnoremap <silent> <Esc> :<C-U>lcl<Bar>pc<Bar>ccl<Bar>set ch=2 ch=1<CR>
 
 " Return: goto next error/search result
-nnoremap <CR> :<C-U>try<Bar>lnext<Bar>catch<Bar>silent! lfirst<Bar>endtry<CR>zx
+nnoremap <CR> :<C-U>try<Bar>cnext<Bar>catch<Bar>cfirst<Bar>endtry<CR>zx
 
 " Super Tab!
 inoremap <expr> <Tab>   virtcol('.') > indent('.') + 1 ? "\<C-N>" : "\<C-T>"
@@ -187,6 +238,14 @@ let g:bangmap = {
 nnoremap <expr> ! ":\<C-U>" . get(g:bangmap, nr2char(getchar()), "\e")
 autocmd VimLeave * exe 'mksession!' $VIM.'/session'
 
+" Various commands with “ ”
+let g:spacemap = {
+	\ ' ': "vip:!column -t\r",
+	\ '=': "vip:!column -s= -to=\r",
+	\ 'g': ':silent! lvimgrep /\v([<=>])\1{6}/ %' . "\r",
+	\ }
+nmap <expr> <Space> get(g:spacemap, nr2char(getchar()), "\e")
+
 " Huffman-coding
 noremap <silent> v <C-V>
 noremap <silent> <C-V> v
@@ -199,39 +258,9 @@ nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> 
 
 """1 Plugin config
 
-" NeoMake
-autocmd BufWritePost * Neomake
-let g:neomake_error_sign = {'text': '!!', 'texthl': 'Error'}
-let g:neomake_warning_sign = {'text': '??', 'texthl': 'TODO'}
-let g:neomake_perl_perl_maker = {'args': ['-cw'], 'errorformat': '%m at %f line %l%s'}
-let g:neomake_perl_enabled_makers = ['perl']
-
-" EasyAlign, Undotree
-let g:spacemap = {
-	\ '=': "\<Plug>(EasyAlign)ap",
-	\ 'g': ':silent! lvimgrep /\v([<=>])\1{6}/ %' . "\r",
-	\ 'u': ":UndotreeHide\rLo:UndotreeShow|UndotreeFocus\r",
-	\ }
-nmap <expr> <Space> get(g:spacemap, nr2char(getchar()), "\e")
-
 " FZF
 nnoremap <C-F> :FZF<CR>
 autocmd TermOpen */fzf* tnoremap <buffer> <Esc> <C-U><C-D>
-
-" Eclim
-let g:zmap = {
-	\ 'I': "JavaImportOrganize\r",
-	\ 'J': "!cd ~/src/drawall/bin && java cc.drawall.ConVector\r",
-	\ 'H': "JavaCallHierarchy\r",
-	\ 'R': 'JavaRename ',
-	\ 'P': "ProjectProblems\r",
-	\ 'O': "JavaImpl\r",
-	\ }
-nnoremap <expr> Z ":\<C-U>" . get(g:zmap, nr2char(getchar()), "\e") 
-
-let g:EclimPythonValidate = 1
-let g:EclimCompletionMethod = 'omnifunc'
-let g:EclimJavaCallHierarchyDefaultAction = 'vert split'
 
 " Subliminal
 xnoremap <BS>    :SubliminalInsert<CR><BS>

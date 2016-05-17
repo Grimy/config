@@ -6,7 +6,7 @@ nnoremap <buffer> K :vert help <C-R><C-W><CR>
 
 inoreabbrev <buffer> function function!() abort<End><CR>endfunction<Left><Left><Up>
 
-syn keyword Flow return augroup END
+syn keyword Flow return augroup END continue break
 syn match PreProc /\v\<%([fq]-args|args|bang|line[12]|count|reg|lt)\>/
 
 syn region String matchgroup=Normal start=/'/ end=/'/ contains=SingleEscape oneline

@@ -1,5 +1,7 @@
 MAKEFLAGS += --no-builtin-rules --no-builtin-vars --quiet
 
+default:
+
 .PHONY: all
 all:
 	mkdir -p '$(XDG_DATA_HOME)'/nvim/{undo,backup,swap}
