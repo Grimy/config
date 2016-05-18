@@ -13,8 +13,8 @@ command! -nargs=+ HiRev    call s:hi(',reverse', 0, <f-args>)
 
 HiBright NONE ColorColumn CursorColumn CursorLine
 Hi       NONE Normal DiffChange Conceal
-Hi       1    DiffDelete
-Hi       1    Error ErrorChar ErrorMsg SpellBad SpellCap SpellLocal SpellRare
+HiBright 1    ErrorSign
+Hi       1    DiffDelete Error ErrorChar ErrorMsg SpellBad
 Hi       8    Comment Special SpecialKey NonText EndOfBuffer
 HiBright 8    LineNr SignColumn VertSplit
 HiRev    8    Visual

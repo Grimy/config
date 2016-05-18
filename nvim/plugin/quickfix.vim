@@ -4,7 +4,7 @@ augroup QuickFix
 	autocmd BufWritePost * call AsyncMake()
 augroup END
 
-sign define qf text=!! texthl=Error
+sign define qf text=>< texthl=ErrorSign
 
 nnoremap <CR> :<C-U>try<Bar>cnext<Bar>catch<Bar>cfirst<Bar>endtry<CR>zx
 
