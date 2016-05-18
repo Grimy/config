@@ -9,10 +9,8 @@ let g:loaded_python3_provider=1
 
 command! -nargs=1 Man exe 'b' . bufnr("man <args>", 1) | setf manpage | %!man <args> | col -bx
 
-"""1 Options
-
 set all&
-set helpfile=$VIM/init.vim runtimepath=$VIM,$VIM/bundle/*
+set helpfile=$VIM/init.vim runtimepath=$VIM
 set updatetime=1000 timeoutlen=1 grepprg=ag clipboard=unnamed
 set diffopt=filler,context:5,foldcolumn:0
 set virtualedit=onemore,block nostartofline
@@ -35,12 +33,6 @@ set spelllang=en,fr langmap=à@,è`,é~,ç_,’`,ù%
 set foldmethod=marker foldlevelstart=0 foldcolumn=0
 set foldtext=printf('%-69.68S(%d\ lines)',getline(v:foldstart)[5:],v:foldend-v:foldstart)
 
-"""1 DWIM harder
-
-" Fold open/close
-nnoremap <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zc' : 'h'
-nnoremap <expr> l foldclosed(line('.')) != -1 ? 'zv0' : 'l'
-
 " Do not highlight spaces when typing
 autocmd InsertEnter * set listchars-=trail:.
 autocmd InsertLeave * set listchars+=trail:.
@@ -50,6 +42,11 @@ autocmd BufEnter,FocusGained,CursorMoved * checktime
 
 " Jump  to  the  last  position  when reopening file
 autocmd BufReadPost * silent! normal! g`"zz
+
+
+" Fold open/close
+nnoremap <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zc' : 'h'
+nnoremap <expr> l foldclosed(line('.')) != -1 ? 'zv0' : 'l'
 
 " Y yanks until EOL, like D and C
 nnoremap <silent> Y y$
@@ -81,66 +78,9 @@ xnoremap y ygv<Esc>
 
 " Replace relative to the screen (e.g. it takes 4 letters te replace a tab)
 nnoremap R gR
-inoremap <Insert> <C-O>gR
-
-" Vertical movement relative to the screen (matters when 'wrap' is on)
-nnoremap <silent> j gj
-nnoremap <silent> k gk
-noremap <silent> <Down> gj
-noremap <silent> <Up>   gk
 
 " Autoquit when the last buffer is useless
 autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
-
-"""1 Quick fix
-
-" make on save
-autocmd BufWritePost * call AsyncMake()
-
-sign define qf text=!! texthl=Error
-
-function! OnOutput(job_id, data, event_type) abort
-	caddexpr a:data
-endfunction
-
-function! OnExit(job_id, data, event_type) abort
-	let list = []
-	sign unplace *
-	for qf in getqflist()
-		if !qf.bufnr
-			continue
-		endif
-		call add(list, qf)
-		execute 'sign' 'place' string(len(list)) 'name=qf' 'line='.qf.lnum 'buffer='.qf.bufnr
-	endfor
-	call setqflist(list)
-	call ShowError()
-endfunction
-
-function! AsyncMake() abort
-	let argv = split(&makeprg)
-	let argv[-1] = expand(argv[-1])
-	call setqflist([])
-	call jobstart(argv, {
-		\ 'on_stdout': function('OnOutput'),
-		\ 'on_stderr': function('OnOutput'),
-		\ 'on_exit': function('OnExit')})
-endfunction
-
-function! ShowError() abort
-	let lnum = getpos('.')[1]
-	let bufnr = bufnr('%')
-	for qf in getqflist()
-		if qf.bufnr == bufnr && qf.lnum == lnum
-			echo qf.text
-			return
-		endif
-	endfor
-	echo
-endfunction
-autocmd CursorMoved * call ShowError()
-
-"""1 Ctrl-mappings
 
 " UNIX shortcuts
 map <M-BS> <C-W>
@@ -170,8 +110,9 @@ nnoremap <C-G> ".P
 cnoremap <silent> <C-G> <C-R>.
 
 " Ctrl-L: clear highlighting
+" TODO diffupdate ? redraw! ?
 noremap <silent> <C-L> :<C-U>noh<CR>
-" diffupdate<Bar>redraw!<CR>
+vnoremap <silent> <C-L> <Nop>
 inoremap <C-L> <C-O>:<C-U>noh<CR>
 autocmd CursorHold,TextChanged * call feedkeys("\<C-L>")
 
@@ -187,10 +128,7 @@ cnoremap <silent> <C-K> <Up>
 " Various
 nnoremap <C-N> <C-I>
 nnoremap <C-P> :<C-P>
-nnoremap <C-B> :e %:h<CR>
-nnoremap <silent> <C-S> :<C-U>w<CR>
-
-"""1 Mappings galore
+nnoremap <C-F> :e %:h<CR>i
 
 " Esc: fix everything
 nnoremap <silent> <Esc> :<C-U>lcl<Bar>pc<Bar>ccl<Bar>set ch=2 ch=1<CR>
@@ -233,20 +171,16 @@ let g:bangmap = {
 	\ 'S': 'silent! source ' . $VIM . "/session\n",
 	\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
 	\ 'q': "q\n", 'Q': "q!\n",
-	\ 'l': "silent grep ''\<Left>", 'm': "make\n",
+	\ 'l': "silent! grep ''\<Left>", 'm': "make\n",
+	\ 'g': 'silent! grep /\v([<=>])\1{6}/ %' . "\n",
+	\ ' ': "normal! Vip\n:!column -t\n",
+	\ '=': "normal! Vip\n:!column -s= -to=\n",
 	\ }
 nnoremap <expr> ! ":\<C-U>" . get(g:bangmap, nr2char(getchar()), "\e")
 autocmd VimLeave * exe 'mksession!' $VIM.'/session'
 
-" Various commands with “ ”
-let g:spacemap = {
-	\ ' ': "vip:!column -t\r",
-	\ '=': "vip:!column -s= -to=\r",
-	\ 'g': ':silent! lvimgrep /\v([<=>])\1{6}/ %' . "\r",
-	\ }
-nmap <expr> <Space> get(g:spacemap, nr2char(getchar()), "\e")
-
 " Huffman-coding
+nnoremap <Space> :<C-U>if &modified<Bar>w<Bar>else<Bar>echo 'No changes made'<Bar>endif<CR>
 noremap <silent> v <C-V>
 noremap <silent> <C-V> v
 nnoremap <silent> a A
@@ -255,27 +189,3 @@ nnoremap <silent> a A
 nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'
 	\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
 	\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
-
-"""1 Plugin config
-
-" FZF
-nnoremap <C-F> :FZF<CR>
-autocmd TermOpen */fzf* tnoremap <buffer> <Esc> <C-U><C-D>
-
-" Subliminal
-xnoremap <BS>    :SubliminalInsert<CR><BS>
-xnoremap <Del>   :SubliminalAppend<CR><Del>
-xnoremap <C-U>   :SubliminalInsert<CR><C-U>
-xnoremap <C-W>   :SubliminalInsert<CR><C-W>
-xnoremap <C-A>   :SubliminalInsert<CR><C-A>
-xnoremap <C-X>   :SubliminalInsert<CR><C-X>
-xnoremap <C-Del> :SubliminalInsert<CR><C-Del>
-xnoremap <C-Y>   :SubliminalInsert<CR><C-Y>
-xnoremap <C-Q>   :SubliminalInsert<CR><C-Q>
-
-" Dragonfly
-xmap H <Plug>(dragonfly_left)
-xmap J <Plug>(dragonfly_down)
-xmap K <Plug>(dragonfly_up)
-xmap L <Plug>(dragonfly_right)
-xmap P <Plug>(dragonfly_copy)
