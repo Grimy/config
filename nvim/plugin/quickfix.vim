@@ -1,6 +1,5 @@
-" make on save
+autocmd CursorMoved * call ShowError()
 autocmd BufWritePost * call AsyncMake()
-
 sign define qf text=!! texthl=Error
 
 function! OnOutput(job_id, data, event_type) abort
@@ -41,4 +40,3 @@ function! ShowError() abort
 		endif
 	endfor
 endfunction
-autocmd CursorMoved * call ShowError()

@@ -18,10 +18,6 @@
 [difftool "vimdiff"]
 	cmd = vim -d $REMOTE $LOCAL
 
-[core]
-	editor = nvim
-	pager = less
-
 [interactive]
 	singlekey = true
 
@@ -33,12 +29,6 @@
 [status]
 	short = true
 	branch = true
-
-[merge]
-	ff = false
-
-[rerere]
-	enabled = 1
 
 [credential]
 	helper = cache --timeout=18000 --socket="$XDG_RUNTIME_DIR/git-credential.socket"

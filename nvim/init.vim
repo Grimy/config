@@ -110,7 +110,6 @@ nnoremap <C-G> ".P
 cnoremap <silent> <C-G> <C-R>.
 
 " Ctrl-L: clear highlighting
-" TODO diffupdate ? redraw! ?
 noremap <silent> <C-L> :<C-U>noh<CR>
 vnoremap <silent> <C-L> <Nop>
 inoremap <C-L> <C-O>:<C-U>noh<CR>
@@ -131,7 +130,7 @@ nnoremap <C-P> :<C-P>
 nnoremap <C-F> :e %:h<CR>i
 
 " Esc: fix everything
-nnoremap <silent> <Esc> :<C-U>lcl<Bar>pc<Bar>ccl<Bar>set ch=2 ch=1<CR>
+nnoremap <silent> <Esc> :<C-U>diffu<Bar>lcl<Bar>pc<Bar>ccl<Bar>redr!<CR>
 
 " Return: goto next error/search result
 nnoremap <CR> :<C-U>try<Bar>cnext<Bar>catch<Bar>cfirst<Bar>endtry<CR>zx
