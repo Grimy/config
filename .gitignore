@@ -8,12 +8,10 @@ xbindkeys
 !git/config
 !htop/htoprc
 !nvim/Makefile
-!nvim/bundle
-!nvim/ctrl
 !nvim/init.vim
+!nvim/.vintrc.yaml
 !nvim/plugin
 !nvim/syntax
 !ranger/rc.conf
 !vimperator/init
 !zsh/.zshrc
-!zsh/k

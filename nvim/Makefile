@@ -2,7 +2,7 @@ MAKEFLAGS += --no-builtin-rules --no-builtin-vars --quiet
 
 .PHONY: vint
 vint:
-	vint -s init.vim plugin/*.vim syntax/*.vim | grep -Pv 'Make the scope explicit|tnoremap'
+	vint -s init.vim plugin/*.vim syntax/*.vim
 
 .PHONE: all
 all:

@@ -30,7 +30,7 @@ function! dragonfly#init(v, h)
 	let s:mincol  = min([virtcol("'<"), virtcol("'>")])
 	let s:maxcol  = s:mincol + stridx(@" . "\n", "\n")
 	" Fix off-by-one errors due to inclusive selections
-	let s:maxcol -= &selection !~ 'exclusive'
+	let s:maxcol -= &selection !~# 'exclusive'
 
 	normal! p
 	call s:reselect()

@@ -1,5 +1,9 @@
-autocmd CursorMoved * call ShowError()
-autocmd BufWritePost * call AsyncMake()
+augroup QuickFix
+	autocmd!
+	autocmd CursorMoved * call ShowError()
+	autocmd BufWritePost * call AsyncMake()
+augroup END
+
 sign define qf text=!! texthl=Error
 
 function! OnOutput(job_id, data, event_type) abort

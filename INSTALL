@@ -1,5 +1,6 @@
 * Add `ZDOTDIR="$HOME/config/zsh"` to `/etc/zshenv`!
-* Run `git update-index --assume-unchanged`
+* pip install vint
+* Run `git update-index --assume-unchanged htop/htoprc`
 
 # Server: copy what follows to /etc/ssh/sshd_config
 # Client: add a “Host *” section to ~/.ssh/config, then copy what follows
