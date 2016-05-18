@@ -132,9 +132,6 @@ nnoremap <C-F> :e %:h<CR>i
 " Esc: fix everything
 nnoremap <silent> <Esc> :<C-U>diffu<Bar>lcl<Bar>pc<Bar>ccl<Bar>redr!<CR>
 
-" Return: goto next error/search result
-nnoremap <CR> :<C-U>try<Bar>cnext<Bar>catch<Bar>cfirst<Bar>endtry<CR>zx
-
 " Super Tab!
 inoremap <expr> <Tab>   virtcol('.') > indent('.') + 1 ? "\<C-N>" : "\<C-T>"
 inoremap <expr> <S-Tab> virtcol('.') > indent('.') + 1 ? "\<C-P>" : "\<C-D>"

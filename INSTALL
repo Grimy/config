@@ -1,5 +1,5 @@
 * Add `ZDOTDIR="$HOME/config/zsh"` to `/etc/zshenv`!
-* pip install vint
+* pip install vim-vint
 * Run `git update-index --assume-unchanged htop/htoprc`
 
 # Server: copy what follows to /etc/ssh/sshd_config
