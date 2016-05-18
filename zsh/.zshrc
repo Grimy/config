@@ -20,6 +20,7 @@ SAVEHIST="$HISTSIZE"
 HISTFILE="$ZDOTDIR/history"
 mail='$(mail -e 2>&- && printf "\e[33mYou’ve got mail! ")'
 PROMPT="%(???%F{red}(%?%) )$mail%f%T %(##%F{red}%m #%F{green})%~%f> "
+format='%C(yellow)%h %C(bold blue)%aN, %ad%Cgreen%d%Creset %<(80,trunc)%s'
 
 # Keybindings
 zlebind() { autoload -Uz "$2"; zle -N "$2"; bindkey "$@"; }
@@ -118,6 +119,7 @@ fes()    { git submodule foreach "git $* &"; }
 fetch()  { git fetch --prune "${@---all}"; }
 ff()     { git merge --ff-only "${@-origin/$(cb)}"; }
 fuck()   { [ -f "${@##* }" ] && git checkout "$@" || git reset --hard "$@"; }
+g()      { git log --graph --topo-order --date=short --pretty=format:"$format" "${@---all}" }
 hoc()    { git log --format= --shortstat | perl -040pe '$\+=$_}{'; }
 man()    { command man -w "${@:?}" >/dev/null && nvim +"Man $*"; }
 merge()  { git merge --no-ff "$@" && git branch -d "$@"; }
