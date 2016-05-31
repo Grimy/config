@@ -119,7 +119,7 @@ fes()    { git submodule foreach "git $* &"; }
 fetch()  { git fetch --prune "${@---all}"; }
 ff()     { git merge --ff-only "${@-origin/$(cb)}"; }
 fuck()   { [ -f "${@##* }" ] && git checkout "$@" || git reset --hard "$@"; }
-g()      { git log --graph --topo-order --date=short --pretty=format:"$format" "${@---all}" }
+g()      { git log --graph --topo-order --date=short --pretty=format:"$format" "${@:---all}" }
 hoc()    { git log --format= --shortstat | perl -040pe '$\+=$_}{'; }
 man()    { command man -w "${@:?}" >/dev/null && nvim +"Man $*"; }
 merge()  { git merge --no-ff "$@" && git branch -d "$@"; }

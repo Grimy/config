@@ -28,7 +28,7 @@ set nojoinspaces linebreak showbreak=…\
 set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
 set showcmd ruler rulerformat=%24(%=%1*%f%3(%m%)%-6.6(%l,%v%)%)
 set splitright splitbelow noequalalways winwidth=88 winminwidth=6 previewheight=16
-set hidden backup backupdir-=. noswapfile undofile history=50 shada=!,%,'42,h,s10
+set hidden backup backupdir-=. noswapfile undofile history=50 shada=<0,'4,/4,:1,@0,h
 set spelllang=en,fr langmap=à@,è`,é~,ç_,’`,ù%
 set foldmethod=marker foldlevelstart=0 foldcolumn=0
 set foldtext=printf('%-69.68S(%d\ lines)',getline(v:foldstart)[5:],v:foldend-v:foldstart)
