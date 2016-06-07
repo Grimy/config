@@ -1,7 +1,7 @@
 Flow augroup%(\sEND)@!|if|for|while|function else|elseif augroup\sEND|endif|endfor|endwhile|endfunction
 Comments "
 
-setlocal iskeyword+=:,# foldmarker=\"\"\",\"\"\" indentkeys+=,0\
+setlocal iskeyword+=:,# indentkeys+=,0\
 nnoremap <buffer> K :vert help <C-R><C-W><CR>
 
 inoreabbrev <buffer> function function!() abort<End><CR>endfunction<Left><Left><Up>

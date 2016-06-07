@@ -87,8 +87,6 @@ endfunction
 
 augroup filetypedetect
 	autocmd!
-	autocmd CmdwinEnter * setf vim
-	autocmd TermOpen * setf term
 	autocmd BufNewFile,BufRead * call s:setft(substitute(expand("<afile>"), '\v.*[./]|\~', '', 'g'))
 	autocmd BufRead,StdinReadPost,BufWritePost * call s:setft(matchstr(getline(1), s:shebang))
 	autocmd FileType * call s:filetype(expand('<amatch>'))

@@ -159,7 +159,7 @@ onoremap p ap
 " Common commands with “!”
 let g:bangmap = {
 	\ 'b': 'b ', 'v': 'vs ', 't': 'tab drop ',
-	\ 'c': "cd %:h\n",
+	\ 'd': "call jobstart('cscope -1 \<C-R>\<C-W>')\n",
 	\ 'e': 'e ', 'E': 'e! ',
 	\ 'h': 'vert help ',
 	\ 'i': 'set inv',
