@@ -1,16 +1,15 @@
 #!/bin/sh
 
-cd /tmp
-export CFLAGS="-xc -std=c99 -Wall -Wextra -pedantic -Werror -Wno-unused -march=native -g"
+set -euo pipefail
+set -- -xc -std=c99 -Wall -Wextra -Wno-unused -g
 
-perl -le 'print for <#include<{string,std{lib,io}}.h>>' >tmp.c
-echo 'int main(void) {' >>tmp.c
-echo 'return 0; }' >>tmp.c
+cd /tmp
+printf 'int main(void){\n return 0;}\n' >tmp.c
 
 until C=$(rlwrap -S 'C> ' sed q1); do
-	if sed "\$i$C;" tmp.c | gcc $CFLAGS -; then
-		printf "br %d\nr\np %s" $(wc -l <tmp.c) "$C" |\
-			gdb -q ./a.out 2>&1 | sed '/quit/Q; s/(gdb) $1 = //; s/(gdb) A syntax error.*/OK/; 1,6d'
+	if sed "\$i$C;" tmp.c | clang "$@" -; then
+		printf "br %d\nr\np %s" "$(wc -l <tmp.c)" "$C" |\
+			gdb -q ./a.out 2>&1 | sed -n 's/.*$1 = //;T;p'
 		sed -i "\$i$C;" tmp.c
 	fi
 done

@@ -118,7 +118,7 @@ del()    { git branch -D "$@" || git tag -d "$@"; }
 fes()    { git submodule foreach "git $* &"; }
 fetch()  { git fetch --prune "${@---all}"; }
 ff()     { git merge --ff-only "${@-origin/$(cb)}"; }
-fuck()   { [ -f "${@##* }" ] && git checkout "$@" || git reset --hard "$@"; }
+fuck()   { [ -f "${@##* }" ] && git checkout "$@" || git reset --hard "${@-HEAD}"; }
 g()      { git log --graph --topo-order --date=short --pretty=format:"$format" "${@:---all}" }
 hoc()    { git log --format= --shortstat | perl -040pe '$\+=$_}{'; }
 man()    { command man -w "${@:?}" >/dev/null && nvim +"Man $*"; }

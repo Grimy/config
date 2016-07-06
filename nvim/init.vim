@@ -27,7 +27,7 @@ set cursorline list listchars=tab:»\ ,eol:\ ,nbsp:·,precedes:«,extends:»
 set nojoinspaces linebreak showbreak=…\ 
 set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
 set showcmd ruler rulerformat=%24(%=%1*%f%3(%m%)%-6.6(%l,%v%)%)
-set splitright splitbelow noequalalways winwidth=88 winminwidth=6 previewheight=16
+set splitright splitbelow noequalalways winwidth=90
 set hidden backup backupdir-=. noswapfile undofile history=50 shada=<0,'4,/4,:1,@0,h
 set spelllang=en,fr langmap=à@,è`,é~,ç_,’`,ù%
 set foldmethod=marker foldlevelstart=0 foldcolumn=0
@@ -40,9 +40,11 @@ autocmd InsertLeave * set listchars+=trail:.
 " Automatically check if the file changed on disk
 autocmd BufEnter,FocusGained,CursorMoved * checktime
 
+" Check for .c
+autocmd BufRead * if filereadable(expand('%').'.c') | exec 'e' expand('%').'.c' | endif
+
 " Jump  to  the  last  position  when reopening file
 autocmd BufReadPost * silent! normal! g`"zz
-
 
 " Fold open/close
 nnoremap <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zc' : 'h'
@@ -160,7 +162,7 @@ onoremap p ap
 let g:bangmap = {
 	\ 'b': 'b ', 'v': 'vs ', 't': 'tab drop ',
 	\ 'd': "call jobstart('cscope -1 \<C-R>\<C-W>')\n",
-	\ 'e': 'e ', 'E': 'e! ',
+	\ 'c': "cd %:h\n", 'e': 'e ', 'E': 'e! ',
 	\ 'h': 'vert help ',
 	\ 'i': 'set inv',
 	\ 's': "source % | setlocal filetype=vim fileencoding=utf-8\nzx",
