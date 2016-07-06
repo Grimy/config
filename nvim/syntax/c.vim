@@ -9,6 +9,7 @@ syn keyword Type const volatile restrict
 syn keyword Type void char short unsigned signed int long float double _Bool _Imaginary _Complex
 
 syn match PreProc /#\w*/
+syn match PreProc /\v<pthread_mutex_.*/
 syn region Comment start='\V/*' end='\V*/'
 
 syn region Character matchgroup=Normal start="'" end="'" contains=SpecialChar,ErrorChar oneline
