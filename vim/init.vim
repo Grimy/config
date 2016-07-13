@@ -1,25 +1,23 @@
 scriptencoding utf-8
 
+command! -nargs=1 Man exe 'b' . bufnr("man <args>", 1) | setf manpage | %!man <args> | col -bx
+
 augroup Vimrc
 autocmd!
 
-let $VIM = $XDG_CONFIG_HOME . '/nvim'
-let g:python_host_skip_check=1
-let g:loaded_python3_provider=1
-
-command! -nargs=1 Man exe 'b' . bufnr("man <args>", 1) | setf manpage | %!man <args> | col -bx
-
 set all&
+set display=lastline autoread backspace=2
+set ttyfast t_RV=! t_RB=! t_SI=[6\ q t_SR=[4\ q t_EI=[2\ q
 set helpfile=$VIM/init.vim runtimepath=$VIM
 set updatetime=1000 timeoutlen=1 grepprg=ag clipboard=unnamed
 set diffopt=filler,context:5,foldcolumn:0
 set virtualedit=onemore,block nostartofline
 set nowrap whichwrap=[,<,>,] matchpairs+=<:> commentstring=#\ %s
-set mouse= scrolljump=1 scrolloff=20 sidescroll=2
-set ignorecase smartcase gdefault
-set shiftround copyindent tabstop=4 shiftwidth=0
+set scrolljump=1 scrolloff=20 sidescroll=2
+set hlsearch incsearch ignorecase smartcase gdefault
+set autoindent copyindent smarttab shiftround tabstop=4 shiftwidth=0
 set fileencodings=ucs-bom,utf-8,latin1
-set wildmode=longest,full showfulltag suffixes+=.class
+set wildmenu wildmode=longest,full showfulltag suffixes+=.class
 set complete=.,t,i completeopt=menuone pumheight=8
 set conceallevel=2 concealcursor=nc
 set fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
@@ -28,10 +26,15 @@ set nojoinspaces linebreak showbreak=…\
 set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
 set showcmd ruler rulerformat=%24(%=%1*%f%3(%m%)%-6.6(%l,%v%)%)
 set splitright splitbelow noequalalways winwidth=90
-set hidden backup backupdir-=. noswapfile undofile history=50 shada=<0,'4,/4,:1,@0,h
-set spelllang=en,fr langmap=à@,è`,é~,ç_,’`,ù%
+set hidden backup noswapfile undofile history=50
+set spelllang=en,fr langnoremap langmap=à@,è`,é~,ç_,’`,ù%
 set foldmethod=marker foldlevelstart=0 foldcolumn=0
 set foldtext=printf('%-69.68S(%d\ lines)',getline(v:foldstart)[5:],v:foldend-v:foldstart)
+
+" XDG
+let &backupdir = $XDG_DATA_HOME . '/vim/backup'
+let &undodir   = $XDG_DATA_HOME . '/vim/undo'
+let &viminfo  .= ',n' . $XDG_DATA_HOME . '/vim/viminfo'
 
 " Do not highlight spaces when typing
 autocmd InsertEnter * set listchars-=trail:.
@@ -43,7 +46,7 @@ autocmd BufEnter,FocusGained,CursorMoved * checktime
 " Check for .c
 autocmd BufRead * if filereadable(expand('%').'.c') | exec 'e' expand('%').'.c' | endif
 
-" Jump  to  the  last  position  when reopening file
+" Jump to the last position when reopening file
 autocmd BufReadPost * silent! normal! g`"zz
 
 " Fold open/close

@@ -49,9 +49,8 @@ export XDG_DATA_HOME="$HOME/data"
 export TERM=xterm-256color
 export LANG=en_US.UTF-8
 export LC_COLLATE=C
-export EDITOR=nvim
+export EDITOR=vim
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-export NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 export RUST_BACKTRACE=1
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 export PATH="$HOME/bin:$XDG_CONFIG_HOME/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/bin/site_perl"
@@ -63,6 +62,7 @@ export GIMP2_DIRECTORY="$XDG_CONFIG_HOME/Gimp"
 export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
 export LESSHISTFILE=-
 export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
+export VIM="$XDG_CONFIG_HOME/vim"
 export VIMPERATOR_INIT=":source $XDG_CONFIG_HOME/vimperator/init"
 export VIMPERATOR_RUNTIME="$XDG_CONFIG_HOME/vimperator"
 export PYLINTHOME="$XDG_CONFIG_HOME/pylint"
@@ -84,12 +84,11 @@ alias co='git checkout'
 alias commit='git commit -v'
 alias cp='cp -i'
 alias cpan='sudo perl -MCPAN -e'
-alias crontab='nvim /var/spool/cron/$USER'
+alias crontab='vim /var/spool/cron/$USER'
 alias diff='git diff --patience'
 alias dow='watch -n1 -d "ls -sh ~/Downloads/*.part"'
 alias empty='git hash-object -t tree /dev/null'
 alias f='find . -name'
-alias fzf='ruby ~/.nvim/bundle/fzf/fzf'
 alias gpg='rlwrap gpg2 --expert'
 alias gs='rlwrap gs'
 alias hcf='sudo shutdown -h 0'
@@ -109,8 +108,7 @@ alias stash='git stash'
 alias stats='git show --oneline --stat'
 alias unstage='git reset -q HEAD --'
 alias updatedb='sudo updatedb'
-alias v="nvim -O"
-alias vim="nvim -O"
+alias v="vim"
 alias yay='ponysay -f Fluttershy yay'
 
 cb()     { git rev-parse --abbrev-ref HEAD; }
@@ -121,7 +119,7 @@ ff()     { git merge --ff-only "${@-origin/$(cb)}"; }
 fuck()   { [ -f "${@##* }" ] && git checkout "$@" || git reset --hard "${@-HEAD}"; }
 g()      { git log --graph --topo-order --date=short --pretty=format:"$format" "${@:---all}" }
 hoc()    { git log --format= --shortstat | perl -040pe '$\+=$_}{'; }
-man()    { command man -w "${@:?}" >/dev/null && nvim +"Man $*"; }
+man()    { command man -w "${@:?}" >/dev/null && vim +"Man $*"; }
 merge()  { git merge --no-ff "$@" && git branch -d "$@"; }
 p()      { perf stat -d -e{task-clock,page-faults,cycles,instructions,branch,branch-misses} "$@"; }
 pull()   { fetch "${@-origin}" && ff; }

@@ -7,11 +7,11 @@ xbindkeys
 !feh/themes
 !git/config
 !htop/htoprc
-!nvim/Makefile
-!nvim/init.vim
-!nvim/.vintrc.yaml
-!nvim/plugin
-!nvim/syntax
+!vim/Makefile
+!vim/init.vim
+!vim/.vintrc.yaml
+!vim/plugin
+!vim/syntax
 !ranger/rc.conf
 !vimperator/init
 !zsh/.zshrc
