@@ -3,7 +3,7 @@ Comments #
 
 setlocal foldmarker=###,###
 let &l:makeprg = 'perl -cw %'
-let &l:errorformat = '%m at %f line %l%s'
+set errorformat=%m\ at\ %f\ line\ %l%s
 
 syn keyword Error elseif
 syn keyword Flow goto or and next last do redo return die croak confess
