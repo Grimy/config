@@ -6,13 +6,12 @@ augroup Vimrc
 autocmd!
 
 set all&
-set display=lastline autoread backspace=2
+set runtimepath=$VIM packpath=
 set ttyfast t_RV=! t_RB=! t_SI=[6\ q t_SR=[4\ q t_EI=[2\ q
-set helpfile=$VIM/init.vim runtimepath=$VIM
 set updatetime=1000 timeoutlen=1 grepprg=ag clipboard=unnamed
 set diffopt=filler,context:5,foldcolumn:0
 set virtualedit=onemore,block nostartofline
-set nowrap whichwrap=[,<,>,] matchpairs+=<:> commentstring=#\ %s
+set nowrap whichwrap=[,<,>,] backspace=2 matchpairs+=<:> commentstring=#\ %s
 set scrolljump=1 scrolloff=20 sidescroll=2
 set hlsearch incsearch ignorecase smartcase gdefault
 set autoindent copyindent smarttab shiftround tabstop=4 shiftwidth=0
@@ -20,13 +19,13 @@ set fileencodings=ucs-bom,utf-8,latin1
 set wildmenu wildmode=longest,full showfulltag suffixes+=.class
 set complete=.,t,i completeopt=menuone pumheight=8
 set conceallevel=2 concealcursor=nc
-set fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
+set display=lastline fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
 set cursorline list listchars=tab:»\ ,eol:\ ,nbsp:·,precedes:«,extends:»
 set nojoinspaces linebreak showbreak=…\ 
 set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
 set showcmd ruler rulerformat=%24(%=%1*%f%3(%m%)%-6.6(%l,%v%)%)
 set splitright splitbelow noequalalways winwidth=90
-set hidden backup noswapfile undofile history=50
+set hidden backup autoread noswapfile undofile history=50
 set spelllang=en,fr langnoremap langmap=à@,è`,é~,ç_,’`,ù%
 set foldmethod=marker foldlevelstart=0 foldcolumn=0
 set foldtext=printf('%-69.68S(%d\ lines)',getline(v:foldstart)[5:],v:foldend-v:foldstart)
@@ -35,6 +34,9 @@ set foldtext=printf('%-69.68S(%d\ lines)',getline(v:foldstart)[5:],v:foldend-v:f
 let &backupdir = $XDG_DATA_HOME . '/vim/backup'
 let &undodir   = $XDG_DATA_HOME . '/vim/undo'
 let &viminfo  .= ',n' . $XDG_DATA_HOME . '/vim/viminfo'
+
+" Edit directories
+autocmd BufEnter * if isdirectory(expand('<afile>')) | exec '!vidir .' | q | endif
 
 " Do not highlight spaces when typing
 autocmd InsertEnter * set listchars-=trail:.
@@ -70,10 +72,11 @@ noremap <silent> X "_d<Left>
 noremap <silent> <BS> "_d<Left>
 
 " Control + BS/Del deletes entire words
-nnoremap <silent> <nowait> <C-W> "_db
-nnoremap <silent> <C-Del> "_dw
-inoremap <silent> <C-Del> <C-O>"_dw
-cnoremap <C-Del> <C-\>esubstitute(getcmdline(),'\v%'.getcmdpos().'c.{-}(><Bar>$)\s*','','')<CR>
+noremap! <C-H> <C-W>
+nnoremap <C-H> "_db
+nnoremap <silent> [3;5~ "_dw
+inoremap <silent> [3;5~ <C-O>"_dw
+cnoremap [3;5~ <C-\>esubstitute(getcmdline(),'\v%'.getcmdpos().'c.{-}(><Bar>$)\s*','','')<CR>
 
 " Auto-escape '/' in search
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
@@ -81,16 +84,11 @@ cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
 " Don’t move the cursor when yanking in v-mode
 xnoremap y ygv<Esc>
 
-" Replace relative to the screen (e.g. it takes 4 letters te replace a tab)
-nnoremap R gR
-
 " Autoquit when the last buffer is useless
 autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
 
 " UNIX shortcuts
-map <M-BS> <C-W>
 nnoremap <C-U> d^
-noremap! <M-BS> <C-W>
 noremap! <C-B> <Left>
 noremap! <C-F> <Right>
 noremap! <C-P> <Up>
@@ -115,8 +113,7 @@ nnoremap <C-G> ".P
 cnoremap <silent> <C-G> <C-R>.
 
 " Ctrl-L: clear highlighting
-noremap <silent> <C-L> :<C-U>noh<CR>
-vnoremap <silent> <C-L> <Nop>
+nnoremap <silent> <C-L> :<C-U>noh<CR>
 inoremap <C-L> <C-O>:<C-U>noh<CR>
 autocmd CursorHold,TextChanged * call feedkeys("\<C-L>")
 
@@ -161,10 +158,12 @@ onoremap Q ap
 onoremap r :<C-U>normal! `[v`]<CR>
 onoremap p ap
 
+cscope add cscope.out
+
 " Common commands with “!”
 let g:bangmap = {
 	\ 'b': 'b ', 'v': 'vs ', 't': 'tab drop ',
-	\ 'd': "call jobstart('cscope -1 \<C-R>\<C-W>')\n",
+	\ 'd': "cscope find g \<C-R>\<C-W>\n",
 	\ 'c': "cd %:h\n", 'e': 'e ', 'E': 'e! ',
 	\ 'h': 'vert help ',
 	\ 'i': 'set inv',
