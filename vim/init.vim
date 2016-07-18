@@ -39,7 +39,7 @@ augroup Vimrc
 	autocmd BufReadPost * silent! normal! g`"zz
 	autocmd BufEnter * if isdirectory(expand('<afile>')) | exec '!vidir .' | q | endif
 	autocmd BufEnter,FocusGained,CursorMoved * checktime
-	autocmd CursorHold,TextChanged * call feedkeys("\<C-L>")
+	autocmd CursorHold,TextChanged * call feedkeys("\<C-L>", 'i')
 	autocmd InsertEnter * let g:last_insert_col = virtcol('.')
 	autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
 	autocmd VimLeave * exe 'mksession!' $VIM.'/session'
@@ -51,6 +51,7 @@ nnoremap $ $l
 nnoremap U <C-R>
 nnoremap p pv`]=`]
 nnoremap P Pv`]=`]
+vnoremap p "_dP
 nnoremap x "_d<Right>
 nnoremap X "_d<Left>
 nnoremap <BS> "_d<Left>
@@ -101,7 +102,6 @@ cnoremap <C-K> <Up>
 
 " Find and replace
 command! -range=% -nargs=1 S <line1>,<line2>s<args>
-noremap s :S/
 noremap S :S//
 nnoremap <silent> ; .wn
 

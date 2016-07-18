@@ -1,4 +1,4 @@
-Flow augroup%(\sEND)@!|if|for|while|function else|elseif augroup\sEND|endif|endfor|endwhile|endfunction
+Flow augroup%(\sEND)@!|if|for|try|while|function else|catch|finally|elseif augroup\sEND|endif|endfor|endwhile|endfunction|endtry
 Comments "
 
 setlocal iskeyword+=:,# indentkeys+=,0\

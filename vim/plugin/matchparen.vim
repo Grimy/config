@@ -39,4 +39,4 @@ augroup MatchParen
 	autocmd InsertEnter * 3match none
 augroup END
 
-nnoremap r :<C-U>call <SID>do_r()<CR>
+nnoremap <silent> r :<C-U>call <SID>do_r()<CR>
