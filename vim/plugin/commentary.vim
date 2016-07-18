@@ -29,9 +29,9 @@ endfunction
 function! s:textobject() abort
 	let [l, r] = split(&commentstring, '%s', 1)
 	let pattern = '\v^%((\s*)' . s:escape(l) . '(.{-})' . s:escape(r) . ')'
-	if search(pattern . pattern . '@!', 'We')
+	if search(pattern . '@!', 'Wbc') && search(pattern, 'W')
 		normal! V
-		call search(pattern . '@<!', 'Wb')
+		call search('\n' . pattern . '@!', 'W')
 	endif
 endfunction
 
