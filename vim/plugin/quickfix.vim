@@ -10,7 +10,7 @@ endfunction
 
 function! OnOutput(channel, data) abort
 	let qflist = getqflist()
-	cgetexpr a:data
+	silent! cgetexpr a:data
 	for qf in filter(getqflist(), 'v:val.bufnr')
 		execute 'sign place 1 name=qf' 'line='.qf.lnum 'buffer='.qf.bufnr
 		call add(qflist, qf)

@@ -27,6 +27,7 @@ printf "*%s: #%02x%02x%02x\n", shift @$_, hsl2rgb(@$_) for (
 
 print <<'END';
 xterm*termName: xterm-256color
+xterm*backarrowKey: false
 xterm*saveLines: 65535
 xterm*showBlinkAsBold: true
 xterm*scrollBar: false

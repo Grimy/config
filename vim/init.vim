@@ -5,7 +5,7 @@ cscope add cscope.out
 
 set all&
 set runtimepath=$VIM packpath=
-set ttyfast t_RV=! t_RB=! t_SI=[6\ q t_SR=[4\ q t_EI=[2\ q
+set ttyfast t_kb= t_RV=! t_RB=! t_SI=[6\ q t_SR=[4\ q t_EI=[2\ q
 set updatetime=1000 timeoutlen=1 grepprg=ag clipboard=unnamed
 set diffopt=filler,context:5,foldcolumn:0
 set virtualedit=onemore,block nostartofline
@@ -84,7 +84,7 @@ noremap! <C-F> <Right>
 noremap! <C-N> <Down>
 noremap! <C-P> <Up>
 nnoremap <C-U> d^
-nnoremap <C-W> "_db
+nnoremap <nowait> <C-W> "_db
 
 " Indent
 nnoremap <silent> <C-T> a<C-T><Esc>

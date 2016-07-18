@@ -1,4 +1,4 @@
 #!/bin/sh
-vim=vim
-[ -f /bin/vimx ] && vim=vimx
+vim=/bin/vim
+[ -f /bin/vimx ] && vim=/bin/vimx
 exec "$vim" -ONu "$VIM/init.vim" "$@"

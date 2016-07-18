@@ -1,5 +1,6 @@
 */*
-Trolltech.conf
+*.conf
+*.ini
 mimeapps.list
 xbindkeys
 !awesome/rc.lua
