@@ -39,7 +39,7 @@ augroup Vimrc
 	autocmd BufReadPost * silent! normal! g`"zz
 	autocmd BufEnter * if isdirectory(expand('<afile>')) | exec '!vidir .' | q | endif
 	autocmd BufEnter,FocusGained,CursorMoved * checktime
-	autocmd CursorHold,TextChanged * call feedkeys("\<C-L>", 'i')
+	autocmd CursorHold * call feedkeys("\<C-L>", 'i')
 	autocmd InsertEnter * let g:last_insert_col = virtcol('.')
 	autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
 	autocmd VimLeave * exe 'mksession!' $VIM.'/session'
