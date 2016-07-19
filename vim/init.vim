@@ -1,7 +1,7 @@
 scriptencoding utf-8
 
 command! -nargs=1 Man exe 'b' . bufnr("man <args>", 1) | setf manpage | %!man <args> | col -bx
-cscope add cscope.out
+silent! cscope add cscope.out
 
 set all&
 set runtimepath=$VIM packpath=
@@ -27,6 +27,7 @@ set hidden backup autoread noswapfile undofile history=50
 set spelllang=en,fr langnoremap langmap=à@,è`,é~,ç_,’`,ù%
 set foldmethod=marker foldlevelstart=0 foldcolumn=0
 set foldtext=printf('%-69.68S(%d\ lines)',getline(v:foldstart)[5:],v:foldend-v:foldstart)
+set cdpath=.;$HOME path=.,,**
 
 " XDG
 let &backupdir = $XDG_DATA_HOME . '/vim/backup'
@@ -38,6 +39,7 @@ augroup Vimrc
 	autocmd BufRead * if filereadable(expand('%').'.c') | exec 'e' expand('%').'.c' | endif
 	autocmd BufReadPost * silent! normal! g`"zz
 	autocmd BufEnter * if isdirectory(expand('<afile>')) | exec '!vidir .' | q | endif
+	autocmd BufEnter * silent! lcd .git/..
 	autocmd BufEnter,FocusGained,CursorMoved * checktime
 	autocmd CursorHold * call feedkeys("\<C-L>", 'i')
 	autocmd InsertEnter * let g:last_insert_col = virtcol('.')
@@ -133,16 +135,18 @@ nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> 
 
 " Bang!
 let g:bangmap = {
-	\ 'b': 'b ', 'v': 'vs ', 't': 'tab drop ',
+	\ 'b': 'b ',
+	\ 'v': 'vert sfind ', 'V': 'vs ',
 	\ 'd': "cscope find g \<C-R>\<C-W>\n",
-	\ 'c': "cd %:h\n", 'e': 'e ', 'E': 'e! ',
+	\ 'e': 'find ', 'E': "e!\n",
 	\ 'h': 'vert help ',
 	\ 'i': 'set inv',
+	\ 'l': "silent! grep ''\<Left>", 'm': "make\n",
+	\ 'q': "q\n", 'Q': "q!\n",
 	\ 's': "source % | setlocal filetype=vim fileencoding=utf-8\nzx",
 	\ 'S': 'silent! source ' . $VIM . "/session\n",
+	\ 't': 'tabfind ',
 	\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
-	\ 'q': "q\n", 'Q': "q!\n",
-	\ 'l': "silent! grep ''\<Left>", 'm': "make\n",
 	\ ' ': "normal! Vip\n:!column -t\n",
 	\ '=': "normal! Vip\n:!column -s= -to=\n",
 	\ }

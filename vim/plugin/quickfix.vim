@@ -1,7 +1,7 @@
 function! ShowError(lnum, bufnr) abort
 	for qf in getqflist()
 		if qf.bufnr == a:bufnr && qf.lnum == a:lnum
-			echo qf.text[0:&columns - 42]
+			echo qf.text
 			return
 		endif
 	endfor
@@ -13,6 +13,7 @@ function! OnOutput(channel, data) abort
 	silent! cgetexpr a:data
 	for qf in filter(getqflist(), 'v:val.bufnr')
 		execute 'sign place 1 name=qf' 'line='.qf.lnum 'buffer='.qf.bufnr
+		let qf.text = substitute(qf.text, '\n', ' ', 'g')
 		call add(qflist, qf)
 	endfor
 	call setqflist(qflist)
@@ -22,10 +23,10 @@ endfunction
 function! AsyncMake() abort
 	let argv = split(&makeprg)
 	let argv[-1] = expand(argv[-1])
-	while &makeprg ==# 'make' && !filereadable('Makefile') && getcwd() !=# '/'
-		lcd ..
-	endwhile
 	call setqflist([])
+	if &makeprg ==# 'make'
+		execute 'lcd' substitute(findfile('Makefile', '.;'), 'Makefile', '', '')
+	endif
 	sign unplace *
 	call job_start(argv, {'out_cb': 'OnOutput', 'err_cb': 'OnOutput'})
 endfunction

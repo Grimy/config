@@ -10,6 +10,7 @@ let s:ftmap = {
 	\ 'rb': 'ruby', 'rake': 'ruby',
 	\ 'rs': 'rust',
 	\ 'tt': 'html',
+	\ 'svg': 'xml',
 	\ 'yml': 'yaml',
 	\ }
 

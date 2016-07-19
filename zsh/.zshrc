@@ -86,7 +86,6 @@ alias commit='git commit -v'
 alias cp='cp -i'
 alias cpan='sudo perl -MCPAN -e'
 alias crontab='vim /var/spool/cron/$USER'
-alias diff='git diff --patience'
 alias dow='watch -n1 -d "ls -sh ~/Downloads/*.part"'
 alias empty='git hash-object -t tree /dev/null'
 alias f='find . -name'
@@ -114,6 +113,7 @@ alias yay='ponysay -f Fluttershy yay'
 
 cb()     { git rev-parse --abbrev-ref HEAD; }
 del()    { git branch -D "$@" || git tag -d "$@"; }
+diff()   { git diff --patience "$@" }
 fes()    { git submodule foreach "git $* &"; }
 fetch()  { git fetch --prune "${@---all}"; }
 ff()     { git merge --ff-only "${@-origin/$(cb)}"; }
