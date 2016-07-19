@@ -27,7 +27,6 @@ printf "*%s: #%02x%02x%02x\n", shift @$_, hsl2rgb(@$_) for (
 
 print <<'END';
 xterm*termName: xterm-256color
-xterm*backarrowKey: false
 xterm*saveLines: 65535
 xterm*showBlinkAsBold: true
 xterm*scrollBar: false
@@ -36,6 +35,7 @@ xterm*faceName: Hack
 xterm*faceSize: 11
 Xft.hintstyle: hintnone
 xterm*VT100*translations: #override \
+	Ctrl<Key>BackSpace:   string("\027")\n\
 	Shift<Key>exclam:     string(0x5c)\n\
 	Shift<Key>parenright: string("|")\n\
 	Shift<Key>asterisk:   string("#")

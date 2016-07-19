@@ -72,8 +72,7 @@ nnoremap <Esc>   :<C-U>diffu<Bar>lcl<Bar>pc<Bar>ccl<Bar>redr!<CR>
 nnoremap <Space> :<C-U>if &modified<Bar>w<Bar>else<Bar>echo 'No changes made'<Bar>endif<CR>
 
 " Ctrl+BS/Del
-noremap! <C-H> <C-W>
-nnoremap <C-H> "_db
+nnoremap <C-W> "_db
 nnoremap [3;5~ "_dw
 inoremap [3;5~ <C-O>"_dw
 cnoremap [3;5~ <C-\>esubstitute(getcmdline(),'\v%'.getcmdpos().'c.{-}(><Bar>$)\s*','','')<CR>

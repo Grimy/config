@@ -37,7 +37,6 @@ bindkey '^[[1;5C' forward-word
 bindkey '^[[1;5D' backward-word
 bindkey '^[[3~'   delete-char
 bindkey '^[[3;5~' delete-word
-bindkey '^H'      backward-kill-word
 
 POPD() { popd; zle reset-prompt; }
 zle -N POPD

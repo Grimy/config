@@ -19,11 +19,11 @@ function! s:input_loop()
 	endwhile
 endfunction
 
-function! subliminal#insert(regex) range
+function! Subliminal(regex) range
 	execute s:keepall a:firstline.','.a:lastline . 's/' . a:regex . "\\zs/\u2588"
 	let save = [&eventignore, &cursorline, &cursorcolumn, &scrolloff, &gdefault]
 	try
-		set eventignore=all nocursorline nocursorcolumn scrolloff=0 nogdefault
+		set eventignore=all nocursorline nocursorcolumn scrolloff=0 gdefault
 		call s:input_loop()
 	catch | finally
 		echo
@@ -32,7 +32,7 @@ function! subliminal#insert(regex) range
 	endtry
 endfunction
 
-command! -range=% -nargs=1 Subliminal <line1>,<line2>call subliminal#insert(<args>)
+command! -range=% -nargs=1 Subliminal <line1>,<line2>call Subliminal(<args>)
 noremap  <silent> s :Subliminal @/<CR>
 xnoremap <silent> I :Subliminal '\v(%V@!.<Bar>^)%V'<CR>
 xnoremap <silent> A :Subliminal '\v%V.(%V@!<Bar>$)'<CR>
