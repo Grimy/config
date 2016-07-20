@@ -7,6 +7,4 @@ syn match Todo /^\v%(   )?\u.*/
 syn region C matchgroup=Todo start=/SYNOPSIS/ end=/\v\n\n\u+$/ contains=@C keepend
 syn include @C syntax/c.vim
 
-setlocal tabstop=8 colorcolumn= iskeyword+=.
-setlocal nolist nowrap nofoldenable nonumber
-setlocal buftype=nofile bufhidden=hide noswapfile
+setlocal iskeyword+=. keywordprg=:Man nonumber nolist buftype=nofile bufhidden=hide

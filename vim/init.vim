@@ -1,21 +1,22 @@
 scriptencoding utf-8
 
-command! -nargs=1 Man exe 'b' . bufnr("man <args>", 1) | setf manpage | %!man <args> | col -bx
+command! -nargs=1 Man exec 'b' . bufnr(<q-args>, 1) | setf man | %!man <args> | col -bx
+command! -range=% -nargs=1 S <line1>,<line2>s<args>
 silent! cscope add cscope.out
 
 set all&
-set runtimepath=$VIM packpath= cdpath=.;$HOME path=.,,**
+set runtimepath=$VIM packpath= cdpath=.;$HOME path=.,,** suffixesadd=.vim,.c
 set backup backupdir=$XDG_DATA_HOME/vim/backup
 set undofile undodir=$XDG_DATA_HOME/vim/undo
 set autoread noswapfile viminfo+=n$XDG_DATA_HOME/vim/viminfo
 set ttyfast t_RV=! t_RB=! t_SI=[6\ q t_SR=[4\ q t_EI=[2\ q
 set grepprg=ag clipboard=unnamed diffopt=filler,context:5,foldcolumn:0
-set updatetime=777 timeoutlen=1
-set whichwrap=[,] matchpairs+=<:> backspace=2 nojoinspaces commentstring=#\ %s
+set updatetime=888 timeoutlen=1
+set whichwrap=<,>,[,] matchpairs+=<:> backspace=2 nojoinspaces commentstring=#\ %s
 set hlsearch incsearch ignorecase smartcase gdefault
-set autoindent copyindent smarttab shiftround tabstop=4 shiftwidth=0
+set autoindent copyindent smarttab shiftround shiftwidth=0
 set wildmenu wildmode=longest,full showfulltag suffixes+=.class
-set complete=.,t,i completeopt=menuone pumheight=8
+set completeopt=menuone pumheight=8
 set nowrap cursorline conceallevel=2 concealcursor=nc
 set list listchars=tab:»\ ,nbsp:·,extends:… fillchars=vert:\ ,diff:X
 set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
@@ -34,15 +35,13 @@ augroup Vimrc
 	autocmd BufEnter * silent! lcd .git/..
 	autocmd BufEnter,FocusGained,CursorMoved * checktime
 	autocmd CursorHold * call feedkeys("\<C-L>", 'i')
-	autocmd InsertEnter * let g:last_insert_col = virtcol('.')
 	autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
 	autocmd VimLeave * exe 'mksession!' $VIM.'/session'
 augroup END
 
-" Consistency
+" Small fixes to built-ins
 nnoremap Y y$
 nnoremap $ $l
-nnoremap U <C-R>
 nnoremap p pv`]=`]
 nnoremap P Pv`]=`]
 vnoremap p "_dP
@@ -51,78 +50,63 @@ nnoremap X "_d<Left>
 nnoremap <BS> "_d<Left>
 xnoremap y ygv<Esc>
 cnoremap <expr> / getcmdtype() == '/' ? '\/' : '/'
-noremap v <C-V>
-noremap <C-V> v
-nnoremap a A
+nnoremap <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zc' : 'h'
+nnoremap <expr> l foldclosed(line('.')) != -1 ? 'zv0' : 'l'
+nnoremap <silent> <C-L> :<C-U>noh<CR>
 
-" Esc/Tab/Space
-inoremap <expr> <Tab>   virtcol('.') > indent('.') + 1 ? "\<C-N>" : "\<C-T>"
-inoremap <expr> <S-Tab> virtcol('.') > indent('.') + 1 ? "\<C-P>" : "\<C-D>"
-nnoremap <Tab>   <C-W>w
-nnoremap <S-Tab> <C-W>W
-nnoremap <Esc>   :<C-U>diffu<Bar>lcl<Bar>pc<Bar>ccl<Bar>redr!<CR>
-nnoremap <Space> :<C-U>if &modified<Bar>w<Bar>else<Bar>echo 'No changes made'<Bar>endif<CR>
+" Consistency across modes
+nnoremap <C-T> a<C-T><Esc>
+nnoremap <C-D> a<C-D><Esc>
+nnoremap <C-P> :<C-P>
+nnoremap <C-E> i<C-E><Esc>l
+nnoremap <C-Y> i<C-Y><Esc>l
+nnoremap <nowait> <C-W> "_db
+nnoremap <C-U> d^
 
-" Ctrl+BS/Del
-nnoremap <C-W> "_db
+" Handle ctrl+del
 nnoremap [3;5~ "_dw
 inoremap [3;5~ <C-O>"_dw
 cnoremap [3;5~ <C-\>esubstitute(getcmdline(),'\v%'.getcmdpos().'c.{-}(><Bar>$)\s*','','')<CR>
 
+" Shortcuts
+" n-free keys: <C-R>, <C-F>, <C-B>, H, M, -, +, &
+" i-free keys: <C-L>, <C-X>
+inoremap <expr> <Tab>   virtcol('.') > indent('.') + 2 ? "\<C-N>" : "\<C-T>"
+inoremap <expr> <S-Tab> virtcol('.') > indent('.') + 1 ? "\<C-P>" : "\<C-D>"
+nnoremap <Tab>   <C-W>w
+nnoremap <S-Tab> <C-W>W
+nnoremap <Esc>   :<C-U>diffu<Bar>lcl<Bar>pc<Bar>ccl<Bar>redr!<CR>
+nnoremap <Space> :<C-U>w<CR>
+noremap v <C-V>
+nnoremap a A
+nnoremap U <C-R>
+inoremap <C-J> <C-O>`[<Down>
+inoremap <C-K> <C-O>`[<Up>
+noremap <C-J> 12<C-D>
+noremap <C-K> 12<C-U>
+noremap S :S//
+noremap Q gw
+nnoremap <C-@> cgn
+nnoremap ² :echo 'syn ' . synIDattr(synID(line('.'), col('.'), 0), 'name')<CR>
+
 " Unix mappings
 noremap! <C-A> <Home>
 noremap! <C-B> <Left>
-noremap! <C-E> <End>
 noremap! <C-F> <Right>
 noremap! <C-N> <Down>
 noremap! <C-P> <Up>
-nnoremap <C-U> d^
-nnoremap <nowait> <C-W> "_db
-
-" Indent
-nnoremap <silent> <C-T> a<C-T><Esc>
-nnoremap <silent> <C-D> a<C-D><Esc>
-xmap <C-T> VVgv>gv
-xmap <C-D> VVgv<gv
-
-" Scrolling
-inoremap <silent> <expr> <C-J> "\<Esc>j" . g:last_insert_col . "\<Bar>i"
-inoremap <silent> <expr> <C-K> "\<Esc>k" . g:last_insert_col . "\<Bar>i"
-noremap  <silent> <C-J> 12<C-D>
-noremap  <silent> <C-K> 12<C-U>
-cnoremap <C-J> <Down>
-cnoremap <C-K> <Up>
-
-" Find and replace
-command! -range=% -nargs=1 S <line1>,<line2>s<args>
-noremap S :S//
-nnoremap <silent> ; .wn
-
-" Folds
-nnoremap <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zc' : 'h'
-nnoremap <expr> l foldclosed(line('.')) != -1 ? 'zv0' : 'l'
 
 " Custom operators
 onoremap Q ap
 onoremap r :<C-U>normal! `[v`]<CR>
 onoremap p ap
 
-" Various
-nnoremap <silent> <C-L> :<C-U>noh<CR>
+" Fallbacks for things that were overriden earlier
 inoremap <nowait> <C-G> <C-A>
 nnoremap <C-G> ".P
-nnoremap <C-N> <C-I>
-nnoremap <C-P> :<C-P>
-inoremap <C-Q> <C-E>
-nnoremap <C-Q> i<C-E><Esc>l
-nnoremap <C-Y> i<C-Y><Esc>l
 nnoremap <expr> L "\<C-W>" . nr2char(getchar())
-noremap Q gw
-nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'
-	\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
-	\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
-
-" Free keys: <C-E>, <C-R>, <C-F>, <C-B>, H, L, M, -, +, &
+nnoremap <C-N> <C-I>
+noremap <C-V> v
 
 " Bang!
 let g:bangmap = {
@@ -137,8 +121,7 @@ let g:bangmap = {
 	\ 's': "source % | setlocal filetype=vim fileencoding=utf-8\nzx",
 	\ 'S': 'silent! source ' . $VIM . "/session\n",
 	\ 't': 'tabfind ',
-	\ 'w': "w\n", 'W': "silent w !sudo tee % >/dev/null\n",
-	\ ' ': "normal! Vip\n:!column -t\n",
+	\ 'W': "silent w !sudo tee % >/dev/null\n",
 	\ '=': "normal! Vip\n:!column -s= -to=\n",
 	\ }
 nnoremap <expr> ! ":\<C-U>" . get(g:bangmap, nr2char(getchar()), "\e")

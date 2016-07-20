@@ -49,7 +49,7 @@ export XDG_DATA_HOME="$HOME/data"
 export TERM=xterm-256color
 export LANG=en_US.UTF-8
 export LC_COLLATE=C
-export EDITOR=vim
+export EDITOR=v
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export RUST_BACKTRACE=1
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
@@ -84,7 +84,7 @@ alias co='git checkout'
 alias commit='git commit -v'
 alias cp='cp -i'
 alias cpan='sudo perl -MCPAN -e'
-alias crontab='vim /var/spool/cron/$USER'
+alias crontab='v /var/spool/cron/$USER'
 alias dow='watch -n1 -d "ls -sh ~/Downloads/*.part"'
 alias empty='git hash-object -t tree /dev/null'
 alias f='find . -name'
@@ -107,7 +107,6 @@ alias stash='git stash'
 alias stats='git show --oneline --stat'
 alias unstage='git reset -q HEAD --'
 alias updatedb='sudo updatedb'
-alias v="vim"
 alias yay='ponysay -f Fluttershy yay'
 
 cb()     { git rev-parse --abbrev-ref HEAD; }
@@ -119,7 +118,7 @@ ff()     { git merge --ff-only "${@-origin/$(cb)}"; }
 fuck()   { [ -f "${@##* }" ] && git checkout "$@" || git reset --hard "${@-HEAD}"; }
 g()      { git log --graph --topo-order --date=short --pretty=format:"$format" "${@:---all}" }
 hoc()    { git log --format= --shortstat | perl -040pe '$\+=$_}{'; }
-man()    { command man -w "${@:?}" >/dev/null && vim +"Man $*"; }
+man()    { command man -w "${@:?}" >/dev/null && v -c "Man $*"; }
 merge()  { git merge --no-ff "$@" && git branch -d "$@"; }
 p()      { perf stat -d -e{task-clock,page-faults,cycles,instructions,branch,branch-misses} "$@"; }
 pull()   { fetch "${@-origin}" && ff; }

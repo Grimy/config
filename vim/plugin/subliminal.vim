@@ -28,4 +28,4 @@ xmap <Del> I<Del>
 xmap <C-U> I<C-U>
 xmap <C-W> I<C-W>
 xmap <C-Y> I<C-Y>
-xmap <C-Q> I<C-Q>
+xmap <C-E> I<C-E>

@@ -16,4 +16,4 @@ syn region Character matchgroup=Normal start="'" end="'" contains=SpecialChar,Er
 syn region String    matchgroup=Normal start='"' end='"' contains=SpecialChar,ErrorChar oneline
 syn match SpecialChar /\v\\([aev'?]|x\x{1,2}|u\x{4})/ contained
 
-setlocal number cindent sw=8 ts=8
+setlocal number cindent

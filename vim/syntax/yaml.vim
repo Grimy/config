@@ -1,3 +1,2 @@
 Comments #
-
-setlocal expandtab smarttab indentexpr= ts=2 sw=2
+setlocal tabstop=2
