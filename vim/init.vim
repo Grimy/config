@@ -4,35 +4,27 @@ command! -nargs=1 Man exe 'b' . bufnr("man <args>", 1) | setf manpage | %!man <a
 silent! cscope add cscope.out
 
 set all&
-set runtimepath=$VIM packpath=
+set runtimepath=$VIM packpath= cdpath=.;$HOME path=.,,**
+set backup backupdir=$XDG_DATA_HOME/vim/backup
+set undofile undodir=$XDG_DATA_HOME/vim/undo
+set autoread noswapfile viminfo+=n$XDG_DATA_HOME/vim/viminfo
 set ttyfast t_RV=! t_RB=! t_SI=[6\ q t_SR=[4\ q t_EI=[2\ q
-set updatetime=1000 timeoutlen=1 grepprg=ag clipboard=unnamed
-set diffopt=filler,context:5,foldcolumn:0
-set virtualedit=onemore,block nostartofline
-set nowrap whichwrap=[,<,>,] backspace=2 matchpairs+=<:> commentstring=#\ %s
-set scrolljump=1 scrolloff=20 sidescroll=2
+set grepprg=ag clipboard=unnamed diffopt=filler,context:5,foldcolumn:0
+set updatetime=777 timeoutlen=1
+set whichwrap=[,] matchpairs+=<:> backspace=2 nojoinspaces commentstring=#\ %s
 set hlsearch incsearch ignorecase smartcase gdefault
 set autoindent copyindent smarttab shiftround tabstop=4 shiftwidth=0
-set fileencodings=ucs-bom,utf-8,latin1
 set wildmenu wildmode=longest,full showfulltag suffixes+=.class
 set complete=.,t,i completeopt=menuone pumheight=8
-set conceallevel=2 concealcursor=nc
-set display=lastline fillchars=stl:\ ,vert:\ ,stlnc: ,diff:X
-set cursorline list listchars=tab:»\ ,eol:\ ,nbsp:·,precedes:«,extends:»
-set nojoinspaces linebreak showbreak=…\ 
+set nowrap cursorline conceallevel=2 concealcursor=nc
+set list listchars=tab:»\ ,nbsp:·,extends:… fillchars=vert:\ ,diff:X
 set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
 set showcmd ruler rulerformat=%11(%1*%m%=%4.4(%l%),%-3.3(%v%)%)
+set virtualedit=onemore,block nostartofline scrolloff=16
 set splitright splitbelow noequalalways winwidth=90
-set hidden backup autoread noswapfile undofile history=50
-set spelllang=en,fr langnoremap langmap=à@,è`,é~,ç_,’`,ù%
+set spelllang=en,fr langnoremap langmap=à@,è`,é~,’`,ù%
 set foldmethod=marker foldlevelstart=0 foldcolumn=0
 set foldtext=printf('%-69.68S(%d\ lines)',getline(v:foldstart)[5:],v:foldend-v:foldstart)
-set cdpath=.;$HOME path=.,,**
-
-" XDG
-let &backupdir = $XDG_DATA_HOME . '/vim/backup'
-let &undodir   = $XDG_DATA_HOME . '/vim/undo'
-let &viminfo  .= ',n' . $XDG_DATA_HOME . '/vim/viminfo'
 
 augroup Vimrc
 	autocmd!
@@ -111,8 +103,6 @@ nnoremap <expr> h col('.') == 1 && foldlevel(line('.')) > 0 ? 'zc' : 'h'
 nnoremap <expr> l foldclosed(line('.')) != -1 ? 'zv0' : 'l'
 
 " Custom operators
-onoremap <silent> c :<C-U>normal! ^v$h<CR>
-onoremap <C-U> ^
 onoremap Q ap
 onoremap r :<C-U>normal! `[v`]<CR>
 onoremap p ap
@@ -131,6 +121,8 @@ noremap Q gw
 nnoremap ² :echo "hi<" . synIDattr(synID(line("."), col("."), 1), "name") . '> trans<'
 	\ . synIDattr(synID(line("."), col("."), 0), "name") . "> lo<"
 	\ . synIDattr(synIDtrans(synID(line("."), col("."), 1)), "name") . ">"<CR>
+
+" Free keys: <C-E>, <C-R>, <C-F>, <C-B>, H, L, M, -, +, &
 
 " Bang!
 let g:bangmap = {
