@@ -1,4 +1,3 @@
 #!/bin/sh
 [ -f /bin/vimx ] && x=x
-[ $# = 1 ] && set -- "+find $1"
-exec "/bin/vim${x-}" -ONu "$VIM/init.vim" "$@"
+exec "/bin/vim${x-}" -ONu "$VIM/init.vim" "${@-+call feedkeys('!e')}"

@@ -18,7 +18,7 @@ set autoindent copyindent smarttab shiftround shiftwidth=0
 set wildmenu wildmode=longest,full showfulltag suffixes+=.class
 set completeopt=menuone pumheight=8
 set nowrap cursorline conceallevel=2 concealcursor=nc
-set list listchars=tab:»\ ,nbsp:·,extends:… fillchars=vert:\ ,diff:X
+set list listchars=tab:»\ ,nbsp:·,extends:… fillchars=stl:\ ,stlnc:\ ,vert:\ ,diff:X
 set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
 set showcmd ruler rulerformat=%11(%1*%m%=%4.4(%l%),%-3.3(%v%)%)
 set virtualedit=onemore,block nostartofline scrolloff=16

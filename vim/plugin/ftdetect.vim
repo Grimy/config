@@ -2,7 +2,7 @@ let s:shebang = '\v^%(#!\s*%(\f+/)?|\<\?)%(env\s*)?\zs[a-z-]+'
 let s:ftmap = {
 	\ 'bash': 'sh', 'zshrc': 'sh', 'zshenv': 'sh',
 	\ 'COMMIT_EDITMSG': 'gitcommit',
-	\ 'Makefile': 'make',
+	\ 'mk': 'make', 'Makefile': 'make',
 	\ 'h': 'c', 'cpp': 'c', 'ino': 'c',
 	\ 'js': 'javascript', 'node': 'javascript',
 	\ 'pl': 'perl', 'pm': 'perl',
