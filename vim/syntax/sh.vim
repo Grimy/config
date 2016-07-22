@@ -1,7 +1,7 @@
 Flow case|if|for|while|until else|elif esac|fi|done
 Comments #
 
-setlocal foldmarker=###,### iskeyword+=[,],-,+,.,:,/
+setlocal foldmarker=###,### iskeyword+=[,],-,+,.,:,/ tabstop=4
 let &l:makeprg = 'shellcheck -fgcc --exclude=SC2016 %'
 
 syn cluster D add=PreProc,Expansion
