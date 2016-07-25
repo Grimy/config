@@ -6,22 +6,13 @@ set previouspattern+=\\bprécédent
 nnoremap d <C-W>
 nnoremap e <C-S-E>
 nnoremap h H
+nnoremap j 9j
+nnoremap k 9k
 nnoremap l L
 cnoremap <C-J> <Tab>
 cnoremap <C-K> <S-Tab>
 nnoremap <C-Q> <Nop>
-nnoremap <C-S-N> i<C-S-P>
 
-nnoremap gy gT
 nnoremap AM g@
-nnoremap AD g@gt
 nnoremap AY :b ▶<CR>
 nnoremap AT :b tweetdeck<CR>
-
-" Scroll more
-nnoremap j 8j
-nnoremap k 8k
-nnoremap <Down> 8j
-nnoremap <Up> 8k
-nnoremap <C-J> <PageDown>
-nnoremap <C-K> <PageUp>

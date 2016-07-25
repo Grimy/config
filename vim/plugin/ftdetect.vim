@@ -34,7 +34,7 @@ function! s:setft(type)
 	endif
 endfunction
 
-augroup filetypedetect
+augroup FileTypeDetect
 	autocmd!
 	autocmd BufNewFile,BufRead * call s:setft(substitute(expand('%'), '\v.*[./]|\~', '', 'g'))
 	autocmd BufRead,StdinReadPost,BufWritePost * call s:setft(matchstr(getline(1), s:shebang))

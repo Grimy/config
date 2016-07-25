@@ -29,14 +29,13 @@ set foldtext=printf('%-69.68S(%d\ lines)',getline(v:foldstart)[5:],v:foldend-v:f
 
 augroup Vimrc
 	autocmd!
-	autocmd BufRead * if filereadable(expand('%').'.c') | exec 'e' expand('%').'.c' | endif
-	autocmd BufReadPost * silent! normal! g`"zz
-	autocmd BufEnter * if isdirectory(expand('<afile>')) | exec '!vidir .' | q | endif
-	autocmd BufEnter * silent! lcd .git/..
-	autocmd BufEnter,FocusGained,CursorMoved * checktime
-	autocmd CursorHold * call feedkeys("\<C-L>", 'i')
-	autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
-	autocmd FileChangedRO * set noreadonly
+	autocmd BufReadPost         * silent! normal! g`"zz
+	autocmd BufEnter            * if isdirectory(expand('<afile>')) | exec '!vidir .' | q | endif
+	autocmd BufEnter            * silent! lcd .git/..
+	autocmd BufEnter,CursorHold * checktime
+	autocmd CursorHold          * call feedkeys("\<C-L>", 'i')
+	autocmd BufHidden           * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
+	autocmd FileChangedRO       * set noreadonly
 augroup END
 
 " Small fixes to built-ins
@@ -121,6 +120,6 @@ let g:bangmap = {
 	\ 's': "source % | setlocal filetype=vim fileencoding=utf-8\nzx",
 	\ 't': 'tabfind ',
 	\ 'W': "silent w !sudo tee % >/dev/null\n",
-	\ '=': "normal! Vip\n:!column -s= -to=\n",
+	\ '=': "\eVip:!perl -e '$r=qr/(?=\\Q\<C-R>=@/\n\\E)/;\\@l[map-/$r/g+pos,@_=<>];print s/$r/$\"x(@l-pos)/re for@_'\n",
 	\ }
 nnoremap <expr> ! ":\<C-U>" . get(g:bangmap, nr2char(getchar()), "\e")
