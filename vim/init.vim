@@ -37,7 +37,6 @@ augroup Vimrc
 	autocmd CursorHold * call feedkeys("\<C-L>", 'i')
 	autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
 	autocmd FileChangedRO * set noreadonly
-	autocmd VimLeave * exe 'mksession!' $VIM.'/session'
 augroup END
 
 " Small fixes to built-ins
@@ -120,7 +119,6 @@ let g:bangmap = {
 	\ 'l': "silent! grep ''\<Left>", 'm': "make\n",
 	\ 'q': "q\n", 'Q': "q!\n",
 	\ 's': "source % | setlocal filetype=vim fileencoding=utf-8\nzx",
-	\ 'S': 'silent! source ' . $VIM . "/session\n",
 	\ 't': 'tabfind ',
 	\ 'W': "silent w !sudo tee % >/dev/null\n",
 	\ '=': "normal! Vip\n:!column -s= -to=\n",

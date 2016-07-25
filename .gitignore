@@ -8,9 +8,7 @@ xbindkeys
 !feh/themes
 !git/config
 !htop/htoprc
-!vim/Makefile
 !vim/init.vim
-!vim/.vintrc.yaml
 !vim/plugin
 !vim/syntax
 !ranger/rc.conf
