@@ -36,6 +36,7 @@ augroup Vimrc
 	autocmd BufEnter,FocusGained,CursorMoved * checktime
 	autocmd CursorHold * call feedkeys("\<C-L>", 'i')
 	autocmd BufHidden * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
+	autocmd FileChangedRO * set noreadonly
 	autocmd VimLeave * exe 'mksession!' $VIM.'/session'
 augroup END
 
