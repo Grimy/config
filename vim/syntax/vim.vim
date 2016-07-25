@@ -1,7 +1,7 @@
 Flow augroup%(\sEND)@!|if|for|try|while|function else|catch|finally|elseif augroup\sEND|endif|endfor|endwhile|endfunction|endtry
 Comments "
 
-setlocal iskeyword+=:,# indentkeys+=,0\
+setlocal iskeyword+=:,# indentkeys+=,0\  makeprg=vint\ -s\ %
 nnoremap <buffer> K :vert help <C-R><C-W><CR>
 
 inoreabbrev <buffer> function function!() abort<End><CR>endfunction<Left><Left><Up>

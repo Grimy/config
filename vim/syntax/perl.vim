@@ -1,7 +1,6 @@
 Flow sub|if|unless|while|until|for else|elsif
 Comments #
 
-setlocal foldmarker=###,###
 let &l:makeprg = 'perl -cw %'
 set errorformat=%m\ at\ %f\ line\ %l%s
 
