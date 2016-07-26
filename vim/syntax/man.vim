@@ -1,4 +1,3 @@
-nnoremap <buffer> <CR> K
 let $COLUMNS = &columns
 
 syn match Keyword /\v\W\zs--?(\k|-)+/ containedin=ALL
@@ -7,4 +6,4 @@ syn match Todo /^\v%(   )?\u.*/
 syn region C matchgroup=Todo start=/SYNOPSIS/ end=/\v\n\n\u+$/ contains=@C keepend
 syn include @C syntax/c.vim
 
-setlocal iskeyword+=. keywordprg=:Man nonumber nolist buftype=nofile bufhidden=hide
+setlocal iskeyword+=. nonumber nolist buftype=nofile bufhidden=hide

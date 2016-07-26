@@ -1,14 +1,5 @@
-* Add `ZDOTDIR="$HOME/config/zsh"` to `/etc/zshenv`!
-* pip install vim-vint
-* Run `git update-index --assume-unchanged htop/htoprc`
-
-# Server: copy what follows to /etc/ssh/sshd_config
-# Client: add a “Host *” section to ~/.ssh/config, then copy what follows
-# Both: run perl -i.bak -nale 'print if $F[4] > 2000' /etc/ssh/moduli
-PubkeyAuthentication yes
-ChallengeResponseAuthentication no
-GSSAPIAuthentication no
-UseRoaming no
-KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256
-Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes256-ctr
-MACs hmac-sha2-512-etm@openssh.com,hmac-ripemd160-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-ripemd160,umac-128@openssh.com
+# install awesome zsh git htop perf strace mlocate cpan pip
+echo 'ZDOTDIR="$HOME/config/zsh"' >>/etc/zshenv
+git update-index --assume-unchanged htop/htoprc
+pip install vim-vint
+cpan 'install(Convert::Color::HUSL); install(Perl::Critic)'

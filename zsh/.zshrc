@@ -1,3 +1,4 @@
+#!zshrc
 # Basic configuration and options
 emulate sh
 setopt no_auto_remove_slash
@@ -8,7 +9,6 @@ setopt chase_links auto_cd auto_pushd pushd_silent pushd_to_home
 setopt hist_ignore_all_dups hist_reduce_blanks
 setopt prompt_subst prompt_percent
 
-emulate zsh -c 'source "$ZDOTDIR/k/k.sh"'
 emulate zsh -c 'setopt glob_dots; autoload -Uz compinit' && compinit
 zstyle ':completion:*' menu select
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
@@ -18,7 +18,7 @@ WORDCHARS=.+-~_
 HISTSIZE=65535
 SAVEHIST="$HISTSIZE"
 HISTFILE="$ZDOTDIR/history"
-mail='$(mail -e 2>&- && printf "\e[33mYou’ve got mail! ")'
+mail='$(mail -e 2>&- && printf "\e[33mYou got mail! ")'
 PROMPT="%(???%F{red}(%?%) )$mail%f%T %(##%F{red}%m #%F{green})%~%f> "
 format='%C(yellow)%h %C(bold blue)%aN, %ad%Cgreen%d%Creset %<(80,trunc)%s'
 
@@ -71,6 +71,7 @@ export RLWRAP_HOME="$XDG_CACHE_HOME/rlwrap"
 export __GL_SHADER_DISK_CACHE_PATH="$XDG_CACHE_HOME/nv"
 
 # Aliases
+alias abort='git merge --abort||git rebase --abort||git cherry-pick --abort'
 alias add='git add'
 alias ag='ag -t'
 alias amend='git commit -v --amend --no-edit'
@@ -79,25 +80,24 @@ alias branch='git branch -f'
 alias cherry='git cherry-pick'
 alias clean='git clean -diX'
 alias clone='git clone --recursive'
-alias clop='feh ~/p0'
+alias clop='feh -.Z -Bblack -g1920x1200 ~/p0'
 alias co='git checkout'
 alias commit='git commit -v'
 alias cp='cp -i'
-alias cpan='sudo perl -MCPAN -e'
+alias cpan='sudo -E perl -MCPAN -e'
 alias crontab='v /var/spool/cron/$USER'
 alias dow='watch -n1 -d "ls -sh ~/Downloads/*.part"'
-alias empty='git hash-object -t tree /dev/null'
 alias f='find . -name'
+alias feh='feh -.Z -Bblack -g1920x1200'
 alias gpg='rlwrap gpg2 --expert'
 alias gs='rlwrap gs'
 alias hcf='sudo shutdown -h 0'
-alias k='k -Ah'
 alias l='ls -Ahl --color=auto'
 alias ll='ls -Ahl --color=auto'
 alias mv='mv -i'
 alias push='git push'
 alias pushf='git push --force-with-lease'
-alias rainbow='echo -e "\033["{,1}\;3{0,1,2,3,4,5,6,7}moOOo'
+alias rainbow='echo -e "\033["{,1}\;3{0,1,2,3,4,5,6,7}moO0o'
 alias reflog='git reflog'
 alias remote='git remote -v'
 alias s='git status'
@@ -111,20 +111,20 @@ alias yay='ponysay -f Fluttershy yay'
 
 cb()     { git rev-parse --abbrev-ref HEAD; }
 del()    { git branch -D "$@" || git tag -d "$@"; }
-diff()   { git diff --patience "$@" }
-fes()    { git submodule foreach "git $* &"; }
+diff()   { git diff --patience "$@"; }
 fetch()  { git fetch --prune "${@---all}"; }
 ff()     { git merge --ff-only "${@-origin/$(cb)}"; }
-fuck()   { [ -f "${@##* }" ] && git checkout "$@" || git reset --hard "${@-HEAD}"; }
-g()      { git log --graph --topo-order --date=short --pretty=format:"$format" "${@:---all}" }
+fuck()   { git reset --hard "${@-HEAD}"; }
+g()      { git log --graph --topo-order --date=short --pretty=format:"$format" "${@:---all}"; }
 hoc()    { git log --format= --shortstat | perl -040pe '$\+=$_}{'; }
 man()    { command man -w "${@:?}" >/dev/null && v -c "Man $*"; }
 merge()  { git merge --no-ff "$@" && git branch -d "$@"; }
 p()      { perf stat -d -e{task-clock,page-faults,cycles,instructions,branch,branch-misses} "$@"; }
 pull()   { fetch "${@-origin}" && ff; }
 rebase() { git rebase "${@:-origin/$(cb)}"; }
-sloc()   { git diff --shortstat "$(empty)" "${1-HEAD}" | cut -d\  -f5; }
-tag()    { git tag ${@:+-f} "$@"; }
-twitch() { livestreamer http://www.twitch.tv/"${1#*tv/}" best; }
+sloc()   { git diff --stat 4b825dc642cb6eb9a060e54bf8d69288fbee4904 "${1-HEAD}"; }
+tag()    { git tag -f "$@"; }
+twitch() { livestreamer http://www.twitch.tv/"${1#*tv/}" "${2-best}"; }
+v()      { [ $# = 1 ] && [ "${1#-}" = "$1" ] && set -- "+O $1"; vim -ONu "$VIM/init.vim" "$@"; }
 wtf()    { git commit -m "$(curl -s http://whatthecommit.com | perl -p0e '($_)=m{<p>(.+?)</p>}s')" "$@"; }
 x()      { atool -x "$@" && rm "$@"; }

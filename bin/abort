@@ -1,6 +1,0 @@
-#!/bin/sh
-
-git merge  --abort 2>&- ||
-git rebase --abort 2>&- ||
-git cherry --abort 2>&- ||
-echo Nothing to abort

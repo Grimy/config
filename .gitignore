@@ -5,12 +5,10 @@ mimeapps.list
 xbindkeys
 !awesome/rc.lua
 !bin/*
-!feh/themes
 !git/config
 !htop/htoprc
 !vim/init.vim
 !vim/plugin
 !vim/syntax
-!ranger/rc.conf
 !vimperator/init
 !zsh/.zshrc

@@ -12,20 +12,19 @@ set backup backupdir=$XDG_DATA_HOME/vim/backup
 set undofile undodir=$XDG_DATA_HOME/vim/undo
 set autoread noswapfile viminfo+=n$XDG_DATA_HOME/vim/viminfo
 set ttyfast t_RV=! t_RB=! t_SI=[6\ q t_SR=[4\ q t_EI=[2\ q
-set grepprg=git\ grep\ -n\ $* clipboard=unnamed
+set keywordprg=:Man grepprg=git\ grep\ -n\ $* clipboard=unnamed
 set diffopt=filler,context:5,foldcolumn:0
 set updatetime=888 timeoutlen=1
 set whichwrap=<,>,[,] matchpairs+=<:> backspace=2 nojoinspaces commentstring=#\ %s
 set hlsearch incsearch ignorecase smartcase gdefault
 set autoindent copyindent smarttab shiftround shiftwidth=0
-set wildmenu wildmode=longest,full showfulltag suffixes+=.class
-set completeopt=menuone pumheight=8
+set wildmenu wildmode=longest,full showfulltag completeopt=menuone pumheight=8
 set nowrap cursorline conceallevel=2 concealcursor=nc
 set list listchars=tab:» ,nbsp:·,extends:… fillchars=stlnc: ,vert: ,diff:X
 set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
 set showcmd ruler rulerformat=%11(%1*%m%=%4.4(%l%),%-3.3(%v%)%)
 set virtualedit=onemore,block nostartofline scrolloff=16
-set splitright splitbelow noequalalways winwidth=90
+set splitright noequalalways winwidth=84
 set spelllang=en,fr langnoremap langmap=à@,è`,é~,’`,ù%
 set foldmethod=marker foldlevelstart=0
 set foldtext=printf('%-69.68S(%d\ lines)',getline(v:foldstart)[5:],v:foldend-v:foldstart)

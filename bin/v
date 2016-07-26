@@ -1,4 +1,0 @@
-#!/bin/sh
-[ -f /usr/bin/vimx ] && x=x
-[ $# = 1 ] && [ "${1#-}" = "$1" ] && set -- "+O $1"
-exec "/usr/bin/vim${x-}" -ONu "$VIM/init.vim" "$@"
