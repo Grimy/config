@@ -2,6 +2,7 @@ scriptencoding utf-8
 
 command! -nargs=1 Man exec 'b' . bufnr(<q-args>, 1) | setf man | %!man <args> | col -bx
 command! -range=% -nargs=1 S <line1>,<line2>s<args>
+command! -nargs=1 -complete=file_in_path O try|find <args>|catch|e <args>|endtry
 silent! cscope add cscope.out
 
 set all&
@@ -11,7 +12,8 @@ set backup backupdir=$XDG_DATA_HOME/vim/backup
 set undofile undodir=$XDG_DATA_HOME/vim/undo
 set autoread noswapfile viminfo+=n$XDG_DATA_HOME/vim/viminfo
 set ttyfast t_RV=! t_RB=! t_SI=[6\ q t_SR=[4\ q t_EI=[2\ q
-set grepprg=ag clipboard=unnamed diffopt=filler,context:5,foldcolumn:0
+set grepprg=git\ grep\ -n\ $* clipboard=unnamed
+set diffopt=filler,context:5,foldcolumn:0
 set updatetime=888 timeoutlen=1
 set whichwrap=<,>,[,] matchpairs+=<:> backspace=2 nojoinspaces commentstring=#\ %s
 set hlsearch incsearch ignorecase smartcase gdefault
@@ -19,13 +21,13 @@ set autoindent copyindent smarttab shiftround shiftwidth=0
 set wildmenu wildmode=longest,full showfulltag suffixes+=.class
 set completeopt=menuone pumheight=8
 set nowrap cursorline conceallevel=2 concealcursor=nc
-set list listchars=tab:»\ ,nbsp:·,extends:… fillchars=stl:\ ,stlnc:\ ,vert:\ ,diff:X
+set list listchars=tab:» ,nbsp:·,extends:… fillchars=stlnc: ,vert: ,diff:X
 set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
 set showcmd ruler rulerformat=%11(%1*%m%=%4.4(%l%),%-3.3(%v%)%)
 set virtualedit=onemore,block nostartofline scrolloff=16
 set splitright splitbelow noequalalways winwidth=90
 set spelllang=en,fr langnoremap langmap=à@,è`,é~,’`,ù%
-set foldmethod=marker foldlevelstart=0 foldcolumn=0
+set foldmethod=marker foldlevelstart=0
 set foldtext=printf('%-69.68S(%d\ lines)',getline(v:foldstart)[5:],v:foldend-v:foldstart)
 
 augroup Vimrc
@@ -42,9 +44,9 @@ augroup END
 " Small fixes to built-ins
 nnoremap Y y$
 nnoremap $ $l
-nnoremap p pv`]=`]
-nnoremap P Pv`]=`]
-vnoremap p "_dP
+nnoremap p p=`]`]
+nnoremap P P=`]`]
+xnoremap p "_dP
 nnoremap x "_d<Right>
 nnoremap X "_d<Left>
 nnoremap <BS> "_d<Left>
@@ -70,7 +72,7 @@ cnoremap [3;5~ <C-\>esubstitute(getcmdline(),'\v%'.getcmdpos().'c.{-}(><Bar>$)\
 
 " Shortcuts
 " n-free keys: <C-R>, <C-F>, <C-B>, H, M, -, +, &
-" i-free keys: <C-L>, <C-X>
+" i-free keys: <C-L>, <C-X>, <C-G>
 inoremap <expr> <Tab>   virtcol('.') > indent('.') + 2 ? "\<C-N>" : "\<C-T>"
 inoremap <expr> <S-Tab> virtcol('.') > indent('.') + 1 ? "\<C-P>" : "\<C-D>"
 nnoremap <Tab>   <C-W>w
@@ -80,30 +82,25 @@ nnoremap <Space> :<C-U>w<CR>
 noremap v <C-V>
 nnoremap a A
 nnoremap U <C-R>
-inoremap <C-J> <C-O>`[<Down>
-inoremap <C-K> <C-O>`[<Up>
+inoremap <C-J> <C-G>j
+inoremap <C-K> <C-G>k
 noremap <C-J> 12<C-D>
 noremap <C-K> 12<C-U>
 noremap S :S//
 noremap Q gw
+onoremap Q ap
 nnoremap <C-@> cgn
 nnoremap ² :echo 'syn ' . synIDattr(synID(line('.'), col('.'), 0), 'name')<CR>
+onoremap r :<C-U>normal! `[v`]<CR>
+onoremap p ap
 
 " Unix mappings
-noremap! <C-A> <Home>
 noremap! <C-B> <Left>
 noremap! <C-F> <Right>
 noremap! <C-N> <Down>
 noremap! <C-P> <Up>
 
-" Custom operators
-onoremap Q ap
-onoremap r :<C-U>normal! `[v`]<CR>
-onoremap p ap
-
 " Fallbacks for things that were overriden earlier
-inoremap <nowait> <C-G> <C-A>
-nnoremap <C-G> ".P
 nnoremap <expr> L "\<C-W>" . nr2char(getchar())
 nnoremap <C-N> <C-I>
 noremap <C-V> v
@@ -111,15 +108,14 @@ noremap <C-V> v
 " Bang!
 let g:bangmap = {
 	\ 'b': 'b ',
-	\ 'v': 'vert sfind ', 'V': 'vs ',
+	\ 'e': 'O ', 'E': "e!\n",
+	\ 'v': 'vs|O ',
+	\ 't': 'tabnew|O ',
 	\ 'd': "cscope find g \<C-R>\<C-W>\n",
-	\ 'e': 'find ', 'E': "e!\n",
 	\ 'h': 'vert help ',
-	\ 'i': 'set inv',
-	\ 'l': "silent! grep ''\<Left>", 'm': "make\n",
+	\ 'l': "'|redraw!\<Home>silent! grep '",
 	\ 'q': "q\n", 'Q': "q!\n",
 	\ 's': "source % | setlocal filetype=vim fileencoding=utf-8\nzx",
-	\ 't': 'tabfind ',
 	\ 'W': "silent w !sudo tee % >/dev/null\n",
 	\ '=': "\eVip:!perl -e '$r=qr/(?=\\Q\<C-R>=@/\n\\E)/;\\@l[map-/$r/g+pos,@_=<>];print s/$r/$\"x(@l-pos)/re for@_'\n",
 	\ }

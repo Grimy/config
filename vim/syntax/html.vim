@@ -6,7 +6,7 @@ syn keyword Normal required checked selected disabled readonly contained contain
 
 syn match PreProc /\v\$%(\w|\.)+/ containedin=ALL
 syn region TT matchgroup=PreProc start='\[%' end='%\]' containedin=ALL
-" syn region CSS matchgroup=Normal start=/\v\<style.{-}\>/ end='</style' contains=@CSS
+syn region CSS matchgroup=Normal start=/\v\<style.{-}\>/ end='</style' contains=@CSS
 syn region JS matchgroup=Normal start=/\v\<script.{-}\>/ end='</script' contains=@JS
 syn include @CSS syntax/css.vim
 syn include @JS syntax/js.vim
