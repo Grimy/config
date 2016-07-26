@@ -5,7 +5,8 @@ command! -range=% -nargs=1 S <line1>,<line2>s<args>
 silent! cscope add cscope.out
 
 set all&
-set runtimepath=$VIM packpath= cdpath=.;$HOME path=.,,** suffixesadd=.vim,.c
+silent! set packpath=
+set runtimepath=$VIM cdpath=.;$HOME path=.,,** suffixesadd=.vim,.c
 set backup backupdir=$XDG_DATA_HOME/vim/backup
 set undofile undodir=$XDG_DATA_HOME/vim/undo
 set autoread noswapfile viminfo+=n$XDG_DATA_HOME/vim/viminfo

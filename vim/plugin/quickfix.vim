@@ -28,7 +28,7 @@ function! AsyncMake() abort
 		execute 'lcd' substitute(findfile('Makefile', '.;'), 'Makefile', '', '')
 	endif
 	sign unplace *
-	call job_start(argv, {'out_cb': 'OnOutput', 'err_cb': 'OnOutput'})
+	silent! call job_start(argv, {'out_cb': 'OnOutput', 'err_cb': 'OnOutput'})
 endfunction
 
 augroup QuickFix
