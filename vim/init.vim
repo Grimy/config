@@ -3,7 +3,6 @@ scriptencoding utf-8
 command! -nargs=1 Man exec 'b' . bufnr(<q-args>, 1) | setf man | %!man <args> | col -bx
 command! -range=% -nargs=1 S <line1>,<line2>s<args>
 command! -nargs=1 -complete=file_in_path O try|find <args>|catch|e <args>|endtry
-silent! cscope add cscope.out
 
 set all&
 silent! set packpath=
@@ -110,7 +109,7 @@ let g:bangmap = {
 	\ 'e': 'O ', 'E': "e!\n",
 	\ 'v': 'vs|O ',
 	\ 't': 'tabnew|O ',
-	\ 'd': "cscope find g \<C-R>\<C-W>\n",
+	\ 'd': "tag \<C-R>\<C-W>\n",
 	\ 'h': 'vert help ',
 	\ 'l': "'|redraw!\<Home>silent! grep '",
 	\ 'q': "q\n", 'Q': "q!\n",

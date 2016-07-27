@@ -2,7 +2,7 @@ Flow case|if|for|while|until else|elif esac|fi|done
 Comments #
 
 setlocal iskeyword+=[,],-,+,.,:,/ tabstop=4
-let &l:makeprg = 'shellcheck -fgcc --exclude=SC2016 %'
+let &l:makeprg = 'shellcheck -fgcc --exclude=SC2016,SC1071 %'
 
 syn cluster D add=PreProc,Expansion
 syn keyword Flow then in do continue break return
