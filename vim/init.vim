@@ -6,7 +6,7 @@ command! -nargs=1 -complete=file_in_path O try|find <args>|catch|e <args>|endtry
 
 set all&
 silent! set packpath=
-set runtimepath=$VIM cdpath=.;$HOME path=.,,** suffixesadd=.vim,.c
+set runtimepath=$XDG_CONFIG_HOME/vim cdpath=.;$HOME path=.,,** suffixesadd=.vim,.c
 set backup backupdir=$XDG_DATA_HOME/vim/backup
 set undofile undodir=$XDG_DATA_HOME/vim/undo
 set autoread noswapfile viminfo+=n$XDG_DATA_HOME/vim/viminfo

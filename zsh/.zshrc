@@ -49,25 +49,25 @@ export XDG_DATA_HOME="$HOME/data"
 export TERM=xterm-256color
 export LANG=en_US.UTF-8
 export LC_COLLATE=C
-export EDITOR=v
+export EDITOR=vim
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export RUST_BACKTRACE=1
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 export PATH="$HOME/bin:$XDG_CONFIG_HOME/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/bin/site_perl"
 
-export MYSQL_HISTFILE="$XDG_CACHE_HOME/mysql"
 export CARGO_HOME="$XDG_CACHE_HOME/cargo"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
 export GIMP2_DIRECTORY="$XDG_CONFIG_HOME/Gimp"
 export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
 export LESSHISTFILE=-
 export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
-export VIM="$XDG_CONFIG_HOME/vim"
-export VIMPERATOR_INIT=":source $XDG_CONFIG_HOME/vimperator/init"
-export VIMPERATOR_RUNTIME="$XDG_CONFIG_HOME/vimperator"
+export MYSQL_HISTFILE="$XDG_CACHE_HOME/mysql"
 export PYLINTHOME="$XDG_CONFIG_HOME/pylint"
 export PYLINTRC="$PYLINTHOME/pylintrc"
 export RLWRAP_HOME="$XDG_CACHE_HOME/rlwrap"
+export VIMINIT="source $XDG_CONFIG_HOME/vim/init.vim"
+export VIMPERATOR_INIT=":source $XDG_CONFIG_HOME/vimperator/init"
+export VIMPERATOR_RUNTIME="$XDG_CONFIG_HOME/vimperator"
 export __GL_SHADER_DISK_CACHE_PATH="$XDG_CACHE_HOME/nv"
 
 # Aliases
@@ -88,7 +88,7 @@ alias cpan='sudo -E perl -MCPAN -e'
 alias crontab='v /var/spool/cron/$USER'
 alias dow='watch -n1 -d "ls -sh ~/Downloads/*.part"'
 alias f='find . -name'
-alias feh='feh -FZ'
+alias feh='feh -FZ --no-fehbg'
 alias gpg='rlwrap gpg2 --expert'
 alias gs='rlwrap gs'
 alias hcf='sudo shutdown -h 0'
@@ -125,6 +125,6 @@ rebase() { git rebase "${@:-origin/$(cb)}"; }
 sloc()   { git diff --stat 4b825dc642cb6eb9a060e54bf8d69288fbee4904 "${1-HEAD}"; }
 tag()    { git tag -f "$@"; }
 twitch() { livestreamer http://www.twitch.tv/"${1#*tv/}" "${2-best}"; }
-v()      { [ $# = 1 ] && [ "${1#-}" = "$1" ] && set -- "+O $1"; vim -ONu "$VIM/init.vim" "$@"; }
+v()      { [ "${*#-}" = "${1-X}" ] && set -- "+O $1"; vim -O "$@"; }
 wtf()    { git commit -m "$(curl -s http://whatthecommit.com | perl -p0e '($_)=m{<p>(.+?)</p>}s')" "$@"; }
 x()      { atool -x "$@" && rm "$@"; }
