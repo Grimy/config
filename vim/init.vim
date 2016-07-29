@@ -30,12 +30,11 @@ set foldtext=printf('%-69.68S(%d\ lines)',getline(v:foldstart)[5:],v:foldend-v:f
 
 augroup Vimrc
 	autocmd!
+	autocmd VimEnter            * silent! lcd .git/..
 	autocmd BufReadPost         * silent! normal! g`"zz
-	autocmd BufEnter            * if isdirectory(expand('<afile>')) | exec '!vidir .' | q | endif
-	autocmd BufEnter            * silent! lcd .git/..
 	autocmd BufEnter,CursorHold * checktime
 	autocmd CursorHold          * call feedkeys("\<C-L>", 'i')
-	autocmd BufHidden           * if winnr('$') == 1 && (&diff || !len(expand('%'))) | q | endif
+	autocmd BufHidden           * if winnr('$') == 1 && &diff | q | endif
 	autocmd FileChangedRO       * set noreadonly
 augroup END
 
@@ -55,6 +54,8 @@ nnoremap <expr> l foldclosed(line('.')) != -1 ? 'zv0' : 'l'
 nnoremap <silent> <C-L> :<C-U>noh<CR>
 
 " Consistency across modes
+vnoremap <C-T> VVgv>gv
+vnoremap <C-D> VVgv<gv
 nnoremap <C-T> a<C-T><Esc>
 nnoremap <C-D> a<C-D><Esc>
 nnoremap <C-P> :<C-P>
