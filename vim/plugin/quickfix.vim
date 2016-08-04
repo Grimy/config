@@ -24,9 +24,9 @@ function! AsyncMake() abort
 	let argv = split(&makeprg)
 	let argv[-1] = expand(argv[-1])
 	call setqflist([])
-	if &makeprg ==# 'make' && !filereadable('Makefile')
-		execute 'lcd' substitute(findfile('Makefile', '.;'), 'Makefile', '', '')
-	endif
+	" if &makeprg ==# 'make' && !filereadable('Makefile')
+		" execute 'lcd' substitute(findfile('Makefile', '.;'), 'Makefile', '', '')
+	" endif
 	sign unplace *
 	silent! call job_start(argv, {'out_cb': 'OnOutput', 'err_cb': 'OnOutput'})
 endfunction
