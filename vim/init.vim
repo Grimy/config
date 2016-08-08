@@ -5,7 +5,7 @@ command! -range=% -nargs=1 S <line1>,<line2>s<args>
 command! -nargs=1 -complete=file_in_path O try|find <args>|catch|e <args>|endtry
 
 set all&
-silent! set packpath=
+silent! set packpath= nofixeol 
 set runtimepath=$XDG_CONFIG_HOME/vim cdpath=.;$HOME path=.,,** suffixesadd=.vim,.c
 set backup backupdir=$XDG_DATA_HOME/vim/backup
 set undofile undodir=$XDG_DATA_HOME/vim/undo
@@ -15,7 +15,7 @@ set keywordprg=:Man grepprg=git\ grep\ -n\ $* clipboard=unnamed
 set diffopt=filler,context:5,foldcolumn:0
 set updatetime=888 timeoutlen=1 nrformats-=octal
 set whichwrap=<,>,[,] matchpairs+=<:> backspace=2 commentstring=#\ %s
-set fileencodings=utf-8,latin1 nofixeol nojoinspaces
+set fileencodings=utf-8,latin1 nojoinspaces
 set hlsearch incsearch ignorecase smartcase gdefault
 set autoindent copyindent smarttab shiftround shiftwidth=0
 set wildmenu wildmode=longest,full showfulltag completeopt=menuone pumheight=8
