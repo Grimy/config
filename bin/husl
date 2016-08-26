@@ -32,7 +32,7 @@ xterm*showBlinkAsBold: true
 xterm*scrollBar: false
 xterm*charClass: 45-47:48,58:48,126:48
 xterm*faceName: Hack
-xterm*faceSize: 11
+xterm*faceSize: 12
 Xft.hintstyle: hintnone
 xterm*VT100*translations: #override \
 	Ctrl<Key>BackSpace:   string(0x17)\n\

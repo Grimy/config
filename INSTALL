@@ -1,5 +1,14 @@
-# install awesome zsh git htop perf strace mlocate cpan pip
+fdisk /dev/sda
+mount /dev/sdaX /mnt
+pacstrap /mnt base
+arch-chroot /mnt
+
+pacman -S syslinux base-devel xterm zsh ssh git htop strace mlocate unzip atool perf rlwrap python-pip xorg xorg-xinit awesome firefox feh xsel perl-term-readkey
+syslinux-install_update -iam
+
+mkdir -p "$HOME/data/vim/{backup,undo}"
 echo 'ZDOTDIR="$HOME/config/zsh"' >>/etc/zshenv
-git update-index --assume-unchanged htop/htoprc
 pip install vim-vint
 cpan 'install(Convert::Color::HUSL); install(Perl::Critic)'
+
+# Firefox: install vimperator, tab groups, uBlockOrigin, PrivacyBadger

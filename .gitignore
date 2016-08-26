@@ -11,4 +11,5 @@ xbindkeys
 !vim/plugin
 !vim/syntax
 !vimperator/init
+!yaourt/yaourtrc
 !zsh/.zshrc
