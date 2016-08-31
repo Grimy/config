@@ -9,6 +9,7 @@ endfunction
 function! s:flow(...) abort
 	setlocal number indentexpr=Indent()
 	let braces = a:0 == 2 || &filetype ==# 'sh'
+	let b:indent_func = funcref('IndentFunc')
 	let b:indent_start = '\v^[\t }]*%(' . a:1 . '|' . a:2 .')\k@!' . (braces ? '|\{$' : '')
 	let b:indent_cont = '\v<>'
 	let b:indent_conted = '\v[\[(\\,' . (braces ? '' : '{') . ']$'
@@ -26,16 +27,15 @@ function! Indent() abort
 		endif
 		let line -= 1
 	endwhile
-	let indent = indent(line) / &tabstop * &tabstop
-	let prev = getline(line)
-	let cur = getline('.')
-	if (&commentstring ==# '// %s' && cur =~# '\v^\s*\*')
-		return indent + 1
-	endif
-	let flow = (prev =~ b:indent_start) - (cur =~ b:indent_end)
-	let cont = cur =~ b:indent_cont || (line == line('.') - 1 && prev =~# b:indent_conted)
-	let conted = prev =~# b:indent_cont || getline(line - 1) =~# b:indent_conted
-	return indent + &tabstop * (flow + cont - conted)
+	let indent = indent(line) / &tabstop
+	let indent += b:indent_func(getline(line), getline('.'), line < line('.') - 1)
+	return indent < 0 ? 0 : indent * &tabstop
+endfunction
+
+function! IndentFunc(prev, cur, blanks) abort
+	let flow = (a:prev =~ b:indent_start) - (a:cur =~ b:indent_end)
+	let cont = a:cur =~ b:indent_cont || (!a:blanks && a:prev =~# b:indent_conted)
+	return flow + cont
 endfunction
 
 command! -nargs=* Comments call s:comments(<f-args>)

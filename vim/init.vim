@@ -71,7 +71,7 @@ inoremap [3;5~ <C-O>"_dw
 cnoremap [3;5~ <C-\>esubstitute(getcmdline(),'\v%'.getcmdpos().'c.{-}(><Bar>$)\s*','','')<CR>
 
 " Shortcuts
-" n-free keys: <C-R>, <C-F>, <C-B>, H, M, -, +, &
+" n-free keys: <C-R>, <C-B>, H, M, -, +, &
 " i-free keys: <C-L>, <C-X>, <C-G>
 inoremap <expr> <Tab>   virtcol('.') > indent('.') + 2 ? "\<C-N>" : "\<C-T>"
 inoremap <expr> <S-Tab> virtcol('.') > indent('.') + 1 ? "\<C-P>" : "\<C-D>"
@@ -89,6 +89,7 @@ noremap <C-K> 12<C-U>
 noremap S :S//
 noremap Q gw
 onoremap Q ap
+nnoremap <C-F> :<C-U>e %:h<CR>
 nnoremap <C-@> cgn
 nnoremap ² :echo 'syn ' . synIDattr(synID(line('.'), col('.'), 0), 'name')<CR>
 onoremap r :<C-U>normal! `[v`]<CR>
