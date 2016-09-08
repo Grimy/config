@@ -1,11 +1,14 @@
+[user]
+	name = Victor Adam
+
 [push]
 	default = current
 
 [pull]
 	rebase = true
 
-[user]
-	name = Victor Adam
+[color]
+	ui = auto
 
 [diff]
 	tool = vimdiff
@@ -14,9 +17,6 @@
 
 [difftool]
 	prompt = false
-
-[difftool "vimdiff"]
-	cmd = vim -d $REMOTE $LOCAL
 
 [interactive]
 	singlekey = true

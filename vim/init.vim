@@ -5,7 +5,7 @@ command! -range=% -nargs=1 S <line1>,<line2>s<args>
 command! -nargs=1 -complete=file_in_path O try|find <args>|catch|e <args>|endtry
 
 set all&
-silent! set packpath= nofixeol 
+silent! set packpath= nofixeol langnoremap shortmess+=c
 set runtimepath=$XDG_CONFIG_HOME/vim cdpath=.;$HOME path=.,,** suffixesadd=.vim,.c
 set backup backupdir=$XDG_DATA_HOME/vim/backup
 set undofile undodir=$XDG_DATA_HOME/vim/undo
@@ -21,11 +21,11 @@ set autoindent copyindent smarttab shiftround shiftwidth=0
 set wildmenu wildmode=longest,full showfulltag completeopt=menuone pumheight=8
 set nowrap cursorline conceallevel=2 concealcursor=nc
 set list listchars=tab:» ,nbsp:·,extends:… fillchars=stlnc: ,vert: ,diff:X
-set shortmess=aoOstTc showtabline=0 laststatus=0 numberwidth=1
+set shortmess+=as showtabline=0 laststatus=0 numberwidth=1
 set showcmd ruler rulerformat=%11(%1*%m%=%4.4(%l%),%-3.3(%v%)%)
 set virtualedit=onemore,block nostartofline scrolloff=16
 set splitright noequalalways winwidth=84
-set spelllang=en,fr langnoremap langmap=à@,è`,é~,’`,ù%
+set spelllang=en,fr langmap=à@,è`,é~,’`,ù%
 set foldmethod=marker foldlevelstart=0
 set foldtext=printf('%-69.68S(%d\ lines)',getline(v:foldstart)[5:],v:foldend-v:foldstart)
 
