@@ -12,4 +12,5 @@ echo 'ZDOTDIR="$HOME/config/zsh"' >>/etc/zshenv
 pip install vim-vint
 cpan 'install(Convert::Color::HUSL); install(Perl::Critic)'
 
-# Firefox: install vimperator, tab groups, uBlockOrigin, PrivacyBadger
+# Firefox: install dorando keyconfig, tab groups, uBlockOrigin, PrivacyBadger
+ln -s ~/config/user.js ~/.mozilla/firefox/*.default
