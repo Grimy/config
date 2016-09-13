@@ -4,7 +4,7 @@ let s:ftmap = {
 	\ 'COMMIT_EDITMSG': 'gitcommit',
 	\ 'mk': 'make', 'Makefile': 'make',
 	\ 'h': 'c', 'cpp': 'c', 'ino': 'c',
-	\ 'js': 'javascript', 'node': 'javascript',
+	\ 'node': 'js',
 	\ 'pl': 'perl', 'pm': 'perl',
 	\ 'py': 'python',
 	\ 'rb': 'ruby', 'rake': 'ruby',

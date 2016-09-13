@@ -9,6 +9,8 @@ syn keyword Keyword int interface let long native new null package private
 syn keyword Keyword protected public return short static super synchronized this
 syn keyword Keyword throws transient true typeof var void volatile yield
 
-syn region String matchgroup=Normal start=/\v\z(['"])/ end=/\z1/ contains=SpecialChar
+syn region String matchgroup=Normal start=/\v\z(['"])/ end=/\z1/ oneline contains=SpecialChar
 syn region Comment start='\V/*' end='\V*/'
 syn match SpecialChar /\v\\(v|x\x{1,2}|u\x{4})/ contained
+
+setlocal tabstop=4 shiftwidth=4
