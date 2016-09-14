@@ -1,29 +1,29 @@
 #!/usr/bin/perl -w
+
 use strict;
 use Convert::Color::HUSL;
 
-sub hsl2rgb { map int(255.5 * $_), Convert::Color::HUSL->new(@_)->rgb }
+sub hsl2rgb { map { 256 * $_ } Convert::Color::HUSL->new(@_)->rgb }
 
-printf "*%s: #%02x%02x%02x\n", shift @$_, hsl2rgb(@$_) for (
-	[foreground => 270, 11, 95],
-	[background => 270, 11,  9],
-	[color0     => 270, 11, 16],   # Black   Cursorline
-	[color1     =>  11, 88, 59],   # Red     Error
-	[color2     => 126, 88, 59],   # Green   --
-	[color3     =>  69, 88, 79],   # Gold    --
-	[color4     => 243, 88, 59],   # Blue    --
-	[color5     => 336, 88, 59],   # Magenta --
-	[color6     => 144, 88, 59],   # Cyan    --
-	[color7     => 270, 11, 99],   # White   --
-	[color8     => 270, 11, 59],   # Black   Comments
-	[color9     =>  20, 88, 59],   # Orange  Todo
-	[color10    => 126, 88, 79],   # Green   Menus
-	[color11    =>  51, 88, 79],   # Yellow  Keywords
-	[color12    => 243, 88, 79],   # Blue    String
-	[color13    => 272, 88, 59],   # Purple  PreProc
-	[color14    => 144, 88, 79],   # Cyan    --
-	[color15    => 270, 11, 79],   # Gray    --
-);
+printf "*%s: #%02x%02x%02x\n", shift @$_, hsl2rgb(@$_) for
+	[background => 300, 11,  9],
+	[color0     => 300, 11,  9],   # Black   Background
+	[color1     =>   0, 99, 64],   # Red     Error
+	[color2     => 120, 99, 64],   # Green   --
+	[color3     =>  60, 99, 64],   # Brown   --
+	[color4     => 210, 99, 64],   # Azure   --
+	[color5     => 330, 99, 64],   # Pink    --
+	[color6     => 150, 99, 64],   # Spring  --
+	[color7     => 300, 11, 16],   # Dark    Cursorline
+	[color8     => 240, 11, 64],   # Gray    Comments
+	[color9     =>  30, 99, 64],   # Orange  Todo
+	[color10    => 120, 99, 81],   # Green   Menus
+	[color11    =>  60, 99, 81],   # Yellow  Keywords
+	[color12    => 240, 99, 81],   # Blue    String
+	[color13    => 270, 99, 64],   # Magenta PreProc
+	[color14    => 180, 99, 81],   # Cyan    --
+	[color15    => 300, 11, 96],   # White   Foreground
+	[foreground => 300, 11, 96];
 
 print <<'END';
 xterm*termName: xterm-256color
