@@ -23,7 +23,7 @@ function! s:do_r()
 	let old = getline('.')[col('.') - 1]
 	let new = nr2char(getchar())
 	let i = xor(stridx(&matchpairs, new), 2)
-	let match = i >= 0 && and(i - stridx(&matchpairs, old), 3) == 2
+	let match = !and(i, 1) && !and(stridx(&matchpairs, old), 1)
 	return match ? '%%r' . new . '``r' . &matchpairs[i] . '%' : 'r' . new
 endfunction
 

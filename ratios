@@ -1,0 +1,15 @@
+assume loot% = 1/3
+assume equip% = 2/3
+
+carp > 5 arti
+carp > 10 resourceful
+carp > (1+looting/20) looting
+carp ??? agility
+looting > 5 moti
+looting > 4 power
+moti > meditation
+power > toughness
+power > 4 range
+toughness > 2 pheromones
+relentlessness > 2 power (once range is maxed)
+all > packrat > trumps > bait

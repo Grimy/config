@@ -97,7 +97,7 @@ alias mv='mv -i'
 alias ple='perl -ple'
 alias push='git push'
 alias pushf='git push --force-with-lease'
-alias rainbow='echo -e "\033["{,1}\;3{0,1,2,3,4,5,6,7}moO0o'
+alias rainbow='echo -e \\033[{3,9}{o\\n,{0,1,2,3,4,5,6,7}moO0o}'
 alias reflog='git reflog'
 alias remote='git remote -v'
 alias s='git status'
@@ -123,7 +123,7 @@ p()      { perf stat -d -e{task-clock,page-faults,cycles,instructions,branch,bra
 pull()   { fetch "${@-origin}" && ff; }
 rebase() { git rebase "${@:-origin/$(cb)}"; }
 sloc()   { git diff --stat 4b825dc642cb6eb9a060e54bf8d69288fbee4904 "${1-HEAD}"; }
-tag()    { git tag -f "$@"; }
+tag()    { git tag ${1+-f} "$@"; }
 twitch() { livestreamer http://www.twitch.tv/"${1#*tv/}" "${2-best}"; }
 v()      { [ "${*#-}" = "${1-X}" ] && set -- "+O $1"; $EDITOR -O "$@"; }
 wtf()    { git commit -m "$(curl -s http://whatthecommit.com | perl -p0e '($_)=m{<p>(.+?)</p>}s')" "$@"; }
