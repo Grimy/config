@@ -1,8 +1,8 @@
 #!/bin/sh
 
-du -sh $(git rev-parse --git-dir)
+du -sh "$(git rev-parse --git-dir)"
 git reflog expire --expire-unreachable=now --all
-git repack -adfq --window=500 --window-memory=512m
-git gc --prune=now --quiet
+git repack -dFq --window=500 --window-memory=512m
+git gc --aggressive --prune=now --quiet
 git fsck --unreachable --no-reflogs --no-progress
-du -sh $(git rev-parse --git-dir)
+du -sh "$(git rev-parse --git-dir)"

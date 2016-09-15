@@ -50,6 +50,7 @@ export TERM=xterm-256color
 export LANG=en_US.UTF-8
 export LC_COLLATE=C
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32';
 export RUST_BACKTRACE=1
 export FZF_DEFAULT_COMMAND='ag -l -g ""'
 export PATH="$HOME/bin:$XDG_CONFIG_HOME/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/bin/site_perl"

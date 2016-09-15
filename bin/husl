@@ -6,21 +6,21 @@ use Convert::Color::HUSL;
 sub hsl2rgb { map { 256 * $_ } Convert::Color::HUSL->new(@_)->rgb }
 
 printf "*%s: #%02x%02x%02x\n", shift @$_, hsl2rgb(@$_) for
-	[background => 300, 11,  9],
-	[color0     => 300, 11,  9],   # Black   Background
-	[color1     =>   0, 99, 64],   # Red     Error
-	[color2     => 120, 99, 64],   # Green   --
-	[color3     =>  60, 99, 64],   # Brown   --
-	[color4     => 210, 99, 64],   # Azure   --
-	[color5     => 330, 99, 64],   # Pink    --
-	[color6     => 150, 99, 64],   # Spring  --
+	[background => 270, 11,  9],
+	[color0     => 270, 11,  9],   # Black   Background
+	[color1     =>   0, 99, 61],   # Red     Error
+	[color2     => 120, 99, 61],   # Green   --
+	[color3     =>  60, 99, 61],   # Brown   --
+	[color4     => 210, 99, 61],   # Azure   --
+	[color5     => 330, 99, 61],   # Pink    --
+	[color6     => 150, 99, 61],   # Spring  --
 	[color7     => 300, 11, 16],   # Dark    Cursorline
-	[color8     => 240, 11, 64],   # Gray    Comments
-	[color9     =>  30, 99, 64],   # Orange  Todo
+	[color8     => 240, 11, 61],   # Gray    Comments
+	[color9     =>  30, 99, 61],   # Orange  Todo
 	[color10    => 120, 99, 81],   # Green   Menus
 	[color11    =>  60, 99, 81],   # Yellow  Keywords
 	[color12    => 240, 99, 81],   # Blue    String
-	[color13    => 270, 99, 64],   # Magenta PreProc
+	[color13    => 270, 99, 61],   # Magenta PreProc
 	[color14    => 180, 99, 81],   # Cyan    --
 	[color15    => 300, 11, 96],   # White   Foreground
 	[foreground => 300, 11, 96];
