@@ -6,8 +6,8 @@ use Convert::Color::HUSL;
 sub hsl2rgb { map { 256 * $_ } Convert::Color::HUSL->new(@_)->rgb }
 
 printf "*%s: #%02x%02x%02x\n", shift @$_, hsl2rgb(@$_) for
-	[background => 270, 11,  9],
-	[color0     => 270, 11,  9],   # Black   Background
+	[background => 270, 11,  7],
+	[color0     => 270, 11,  7],   # Black   Background
 	[color1     =>   0, 99, 61],   # Red     Error
 	[color2     => 120, 99, 61],   # Green   --
 	[color3     =>  60, 99, 61],   # Brown   --
@@ -20,23 +20,23 @@ printf "*%s: #%02x%02x%02x\n", shift @$_, hsl2rgb(@$_) for
 	[color10    => 120, 99, 81],   # Green   Menus
 	[color11    =>  60, 99, 81],   # Yellow  Keywords
 	[color12    => 240, 99, 81],   # Blue    String
-	[color13    => 270, 99, 61],   # Magenta PreProc
+	[color13    => 270, 99, 61],   # Violet  PreProc
 	[color14    => 180, 99, 81],   # Cyan    --
 	[color15    => 300, 11, 96],   # White   Foreground
 	[foreground => 300, 11, 96];
 
 print <<'END';
-xterm*termName: xterm-256color
-xterm*saveLines: 65535
-xterm*showBlinkAsBold: true
-xterm*scrollBar: false
 xterm*charClass: 45-47:48,58:48,126:48
 xterm*faceName: Hack
+#if X_RESOLUTION > 3543 || Y_RESOLUTION > 3464
 xterm*faceSize: 12
-Xft.hintstyle: hintnone
-xterm*VT100*translations: #override \
-	Ctrl<Key>BackSpace:   string(0x17)\n\
-	Shift<Key>exclam:     string(0x5c)\n\
-	Shift<Key>parenright: string("|")\n\
-	Shift<Key>asterisk:   string("#")
+#else
+xterm*faceSize: 11
+#endif
+xterm*saveLines: 4096
+xterm*scrollBar: false
+xterm*showBlinkAsBold: true
+xterm*termName: xterm-256color
+xft.hintstyle: hintnone
+xterm*VT100*translations: #override Ctrl<Key>BackSpace: string(0x17)
 END

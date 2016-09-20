@@ -25,7 +25,7 @@ set shortmess+=as showtabline=0 laststatus=0 numberwidth=1
 set showcmd ruler rulerformat=%11(%1*%m%=%4.4(%l%),%-3.3(%v%)%)
 set virtualedit=onemore,block nostartofline scrolloff=16
 set splitright noequalalways winwidth=84
-set spelllang=en,fr langmap=à@,è`,é~,’`,ù%
+set spelllang=en,fr langmap=à@,è`,é~,’`,ù%,µ#
 set foldmethod=marker foldlevelstart=0
 set foldtext=printf('%-69.68S(%d\ lines)',getline(v:foldstart)[5:],v:foldend-v:foldstart)
 

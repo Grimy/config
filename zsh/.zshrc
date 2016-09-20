@@ -52,8 +52,8 @@ export LC_COLLATE=C
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32';
 export RUST_BACKTRACE=1
-export FZF_DEFAULT_COMMAND='ag -l -g ""'
-export PATH="$HOME/bin:$XDG_CONFIG_HOME/bin:/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/bin/site_perl"
+export SIMPLE_BACKUP_SUFFIX=.bak
+export PATH="$PATH:$HOME/bin:$XDG_CONFIG_HOME/bin"
 
 export CARGO_HOME="$XDG_CACHE_HOME/cargo"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
@@ -94,7 +94,7 @@ alias gs='rlwrap gs'
 alias hcf='sudo shutdown -h 0'
 alias l='ls -phAl --color=auto'
 alias ll='ls -phAl --color=auto'
-alias mv='mv -i'
+alias mv='mv -vb'
 alias ple='perl -ple'
 alias push='git push'
 alias pushf='git push --force-with-lease'
