@@ -1,7 +1,7 @@
 Comments [ ]
 Flow <> <>
 
-function! InformIndent(prev, cur, blanks) abort
+function! IndentFunc(prev, cur, blanks) abort
 	if a:prev =~# '\v:$'
 		return 1
 	elseif a:cur =~# '\v^\s*else>'
@@ -10,7 +10,6 @@ function! InformIndent(prev, cur, blanks) abort
 		return -9
 	endif
 endfunction
-let b:indent_func = funcref('InformIndent')
 
 syn match Todo /\v^%(Book|Chapter|Volume|Section)>.*/
 syn region String matchgroup=Normal start='"' end='"'

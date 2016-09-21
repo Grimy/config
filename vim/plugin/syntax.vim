@@ -9,7 +9,6 @@ endfunction
 function! s:flow(...) abort
 	setlocal number indentexpr=Indent()
 	let braces = a:0 == 2 || &filetype ==# 'sh'
-	let b:indent_func = funcref('IndentFunc')
 	let b:indent_start = '\v^[\t }]*%(' . a:1 . '|' . a:2 .')\k@!' . (braces ? '|\{$' : '')
 	let b:indent_cont = '\v<>'
 	let b:indent_conted = '\v[\[(\\,' . (braces ? '' : '{') . ']$'
@@ -28,7 +27,7 @@ function! Indent() abort
 		let line -= 1
 	endwhile
 	let indent = indent(line) / &tabstop
-	let indent += b:indent_func(getline(line), getline('.'), line < line('.') - 1)
+	let indent += IndentFunc(getline(line), getline('.'), line < line('.') - 1)
 	return indent < 0 ? 0 : indent * &tabstop
 endfunction
 

@@ -4,7 +4,6 @@ pacstrap /mnt base
 arch-chroot /mnt
 
 pacman -S syslinux base-devel gvim zsh git ssh htop mlocate strace unzip atool perf rlwrap python-pip xorg xorg-xinit awesome xterm firefox feh xsel perl-term-readkey shellcheck ctags
-
 syslinux-install_update -iam
 
 chsh -s /bin/zsh
@@ -12,6 +11,7 @@ mkdir -p "$HOME/data/vim/{backup,undo}"
 echo 'ZDOTDIR="$HOME/config/zsh"' >>/etc/zshenv
 pip install vim-vint
 cpan 'install(Convert::Color::HUSL); install(Perl::Critic)'
+git update-index --assume-unchanged htop/htoprc
 
 # Firefox: install dorando keyconfig, tab groups, uBlockOrigin, PrivacyBadger
 ln -s ~/config/user.js ~/.mozilla/firefox/*.default
