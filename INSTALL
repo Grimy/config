@@ -3,7 +3,8 @@ mount /dev/sdaX /mnt
 pacstrap /mnt base
 arch-chroot /mnt
 
-pacman -S syslinux base-devel gvim zsh git ssh htop mlocate strace unzip atool perf rlwrap python-pip xorg xorg-xinit awesome xterm firefox feh xsel perl-term-readkey
+pacman -S syslinux base-devel gvim zsh git ssh htop mlocate strace unzip atool perf rlwrap python-pip xorg xorg-xinit awesome xterm firefox feh xsel perl-term-readkey shellcheck ctags
+
 syslinux-install_update -iam
 
 chsh -s /bin/zsh
