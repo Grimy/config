@@ -1,3 +1,4 @@
+user_pref("beacon.enabled", false);
 user_pref("browser.autofocus", false);
 user_pref("browser.ctrlTab.previews", true);
 user_pref("browser.fullscreen.animate", false);
@@ -5,6 +6,7 @@ user_pref("browser.tabs.animate", false);
 user_pref("general.autoScroll", true);
 user_pref("general.smoothScroll", false);
 user_pref("general.warnOnAboutConfig", false);
+user_pref("privacy.trackingprotection.enabled", true);
 user_pref("reader.color_scheme", "dark");
 user_pref("signon.rememberSignons", false);
 
@@ -12,8 +14,8 @@ user_pref("extensions.dorandoKeyConfig.main.+", "shift][+][][FullZoom.enlarge()"
 user_pref("extensions.dorandoKeyConfig.main.-", "][-][][FullZoom.reduce()");
 user_pref("extensions.dorandoKeyConfig.main.=", "][=][][FullZoom.reset()");
 user_pref("extensions.dorandoKeyConfig.main.^", "][^][][ctrlTab.open(); ctrlTab.pick()");
-user_pref("extensions.dorandoKeyConfig.main.,", "][,][][gBrowser.mTabContainer.advanceSelectedTab(-1,true)");
-user_pref("extensions.dorandoKeyConfig.main.;", "][;][][gBrowser.mTabContainer.advanceSelectedTab(1,true)");
+user_pref("extensions.dorandoKeyConfig.main.,", "][,][][gBrowser.mTabContainer.advanceSelectedTab(-1, true)");
+user_pref("extensions.dorandoKeyConfig.main.;", "][;][][gBrowser.mTabContainer.advanceSelectedTab(1, true)");
 user_pref("extensions.dorandoKeyConfig.main.1", "][&][][gBrowser.mTabContainer.selectedIndex = 0");
 user_pref("extensions.dorandoKeyConfig.main.2", "][É][][gBrowser.mTabContainer.selectedIndex = 1");
 user_pref("extensions.dorandoKeyConfig.main.3", "][\"][][gBrowser.mTabContainer.selectedIndex = 2");
