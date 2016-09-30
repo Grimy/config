@@ -9,8 +9,13 @@ syn keyword Keyword int interface let long native new null package private
 syn keyword Keyword protected public return short static super synchronized this
 syn keyword Keyword throws transient true typeof var void volatile yield
 
-syn region String matchgroup=Normal start=/\v\z(['"])/ end=/\z1/ oneline contains=SpecialChar
+syn region JSString matchgroup=Normal start=/\v\z(['"])/ end=/\z1/ oneline contains=SpecialChar
+syn region JSString matchgroup=Normal start='`' end='`' oneline contains=SpecialChar,JSInterpolate
 syn region Comment start='\V/*' end='\V*/'
 syn match SpecialChar /\v\\(v|x\x{1,2}|u\x{4})/ contained
+syn match JSInterpolate /\v\$\{.{-}\}/ contained
+
+hi! link JSString String
+hi! link JSInterpolate PrePRoc
 
 setlocal tabstop=4 shiftwidth=4

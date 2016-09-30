@@ -53,7 +53,7 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 export LS_COLORS='rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32';
 export RUST_BACKTRACE=1
 export SIMPLE_BACKUP_SUFFIX=.bak
-export PATH="$PATH:$HOME/bin:$XDG_CONFIG_HOME/bin"
+export PATH="$HOME/bin:$XDG_CONFIG_HOME/bin:$PATH"
 
 export CARGO_HOME="$XDG_CACHE_HOME/cargo"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
@@ -120,7 +120,7 @@ g()      { git log --graph --topo-order --date=short --pretty=format:"$format" "
 hoc()    { git log --format= --shortstat | perl -040pe '$\+=$_}{'; }
 man()    { command man -w "${@:?}" >/dev/null && $EDITOR -c "Man $*"; }
 merge()  { git merge --no-ff "$@" && git branch -d "$@"; }
-p()      { perf stat -d -e{task-clock,page-faults,cycles,instructions,branch,branch-misses} "$@"; }
+p()      { perl -e "print+($*)"; }
 pull()   { fetch "${@-origin}" && ff; }
 rebase() { git rebase "${@:-origin/$(cb)}"; }
 sloc()   { git diff --stat 4b825dc642cb6eb9a060e54bf8d69288fbee4904 "${1-HEAD}"; }

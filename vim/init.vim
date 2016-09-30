@@ -10,7 +10,7 @@ set runtimepath=$XDG_CONFIG_HOME/vim cdpath=.;$HOME path=.,,** suffixesadd=.vim,
 set backup backupdir=$XDG_DATA_HOME/vim/backup
 set undofile undodir=$XDG_DATA_HOME/vim/undo
 set autoread noswapfile viminfo+=n$XDG_DATA_HOME/vim/viminfo
-set ttyfast t_RV=! t_RB=! t_SI=[6\ q t_SR=[4\ q t_EI=[2\ q
+set ttyfast t_RV= t_RB= t_SI=[6\ q t_SR=[4\ q t_EI=[2\ q
 set keywordprg=:Man grepprg=git\ grep\ -n\ $* clipboard=unnamed
 set diffopt=filler,context:5,foldcolumn:0
 set updatetime=888 timeoutlen=1 nrformats-=octal
