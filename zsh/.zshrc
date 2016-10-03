@@ -125,7 +125,7 @@ pull()   { fetch "${@-origin}" && ff; }
 rebase() { git rebase "${@:-origin/$(cb)}"; }
 sloc()   { git diff --stat 4b825dc642cb6eb9a060e54bf8d69288fbee4904 "${1-HEAD}"; }
 tag()    { git tag ${1+-f} "$@"; }
-twitch() { livestreamer http://www.twitch.tv/"${1#*tv/}" "${2-best}"; }
+twitch() { livestreamer --http-header Client-ID=jzkbprff40iqj646a697cyrvl0zt2m6 http://www.twitch.tv/"${1#*tv/}" "${2-best}"; }
 v()      { [ "${*#-}" = "${1-X}" ] && set -- "+O $1"; $EDITOR -O "$@"; }
 wtf()    { git commit -m "$(curl -s http://whatthecommit.com | perl -p0e '($_)=m{<p>(.+?)</p>}s')" "$@"; }
 x()      { atool -x "$@" && rm "$@"; }

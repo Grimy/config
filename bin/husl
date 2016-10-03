@@ -28,7 +28,7 @@ printf "*%s: #%02x%02x%02x\n", shift @$_, hsl2rgb(@$_) for
 print <<'END';
 xterm*charClass: 45-47:48,58:48,126:48
 xterm*faceName: Hack
-#if X_RESOLUTION > 3543 || Y_RESOLUTION > 3464
+#if X_RESOLUTION < 3600
 xterm*faceSize: 12
 #else
 xterm*faceSize: 11
