@@ -95,7 +95,6 @@ alias hcf='sudo shutdown -h 0'
 alias l='ls -phAl --color=auto'
 alias ll='ls -phAl --color=auto'
 alias mv='mv -vb'
-alias ple='perl -ple'
 alias push='git push'
 alias pushf='git push --force-with-lease'
 alias rainbow='echo -e \\033[{3,9}{o\\n,{0,1,2,3,4,5,6,7}moO0o}'
@@ -120,7 +119,7 @@ g()      { git log --graph --topo-order --date=short --pretty=format:"$format" "
 hoc()    { git log --format= --shortstat | perl -040pe '$\+=$_}{'; }
 man()    { command man -w "${@:?}" >/dev/null && $EDITOR -c "Man $*"; }
 merge()  { git merge --no-ff "$@" && git branch -d "$@"; }
-p()      { perl -e "print+($*)"; }
+p()      { perl -E "say $*"; }
 pull()   { fetch "${@-origin}" && ff; }
 rebase() { git rebase "${@:-origin/$(cb)}"; }
 sloc()   { git diff --stat 4b825dc642cb6eb9a060e54bf8d69288fbee4904 "${1-HEAD}"; }
