@@ -19,3 +19,5 @@ hi! link JSString String
 hi! link JSInterpolate PrePRoc
 
 setlocal tabstop=4 shiftwidth=4
+let &l:makeprg = 'jshint %'
+let &errorformat = '%f: line %l\, col %c\, %m'
