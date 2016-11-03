@@ -10,13 +10,12 @@
 [color]
 	ui = auto
 
-[diff]
-	tool = vimdiff
-	algorithm = patience
-	renames = true
+[merge]
+	tool = vim
 
-[difftool]
-	prompt = false
+[mergetool.vim]
+	cmd = vim -NOdu $XDG_CONFIG_HOME/vim/init.vim "$MERGED" "$BASE"
+	trustExitCode = true
 
 [interactive]
 	singlekey = true
