@@ -1,7 +1,7 @@
 runtime! syntax/xml.vim
 
 " Do not treat quoteless or boolean attributes as errors
-syn region String matchgroup=Normal start=/\v(^|\s)\_s*\k+\_s*\=\_s*%(\k|\/)@=/ end=/\v>[\/,]@!/ contained containedin=XMLTag
+syn region String matchgroup=Normal start=/\v(^|\s)\_s*\k+\_s*\=\_s*%(\k|\/)@=/ end=/\v>[\/,.]@!/ contained containedin=XMLTag
 syn keyword Normal required checked selected disabled readonly contained containedin=Error
 
 syn match PreProc /\v\$%(\w|\.)+/ containedin=ALL
