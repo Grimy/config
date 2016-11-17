@@ -1,0 +1,4 @@
+#!/bin/sh
+curl -sL "wikipedia.org/wiki/${1-Special:Random}"|
+perl -CS -p0e'/<p.* (is|are|[hw]as) .*/;$_=$&;s/[<[].*?[]>]|amp;//g;s/&.(\w+);/chr$1/ge'|
+ponysay -fwlght
