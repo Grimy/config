@@ -12,5 +12,7 @@ syn region String matchgroup=Normal start=/\v\z((['"])%(\1\1)?)/ end=/\v\z1/ con
 syn region String matchgroup=Normal start='/' skip='\\.' end='/' contains=SpecialChar oneline
 
 syn match SpecialChar /\v\\([aesv']|c.|[MC]-.|M-\\C-.|x\x{1,2}|u\x{4})/ contained
+
+setlocal expandtab tabstop=4 shiftwidth=4
 let &l:makeprg = 'pylint2 -rn %'
-let &errorformat = '%t:%l\, %c: %m'
+let &errorformat = '%t: %l\, %c: %m'
