@@ -27,7 +27,7 @@ user_pref("extensions.dorandoKeyConfig.main.f", "][F][][gFindBar.startFind(gFind
 user_pref("extensions.dorandoKeyConfig.main.g", "][g][][goDoCommand('cmd_scrollTop')");
 user_pref("extensions.dorandoKeyConfig.main.G", "shift][G][][goDoCommand('cmd_scrollBottom')");
 user_pref("extensions.dorandoKeyConfig.main.h", "][H][][gBrowser.goBack()");
-user_pref("extensions.dorandoKeyConfig.main.i", "][I][][[].slice.apply(content.document.querySelectorAll('input,textarea')).filter((i) => i.clientWidth && i.clientHeight && !i.disabled)[0].focus(); goDoCommand('cmd_endLine')");
+user_pref("extensions.dorandoKeyConfig.main.i", "][I][][foxInput.doCommand(1); goDoCommand('cmd_endLine')");
 user_pref("extensions.dorandoKeyConfig.main.j", "][J][][goDoCommand('cmd_scrollLineDown')");
 user_pref("extensions.dorandoKeyConfig.main.k", "][K][][goDoCommand('cmd_scrollLineUp')");
 user_pref("extensions.dorandoKeyConfig.main.l", "][L][][gBrowser.goForward()");
@@ -45,6 +45,6 @@ user_pref("extensions.dorandoKeyConfig.main.s", "][S][][stop()");
 user_pref("extensions.dorandoKeyConfig.main.t", "][T][][BrowserOpenTab()");
 user_pref("extensions.dorandoKeyConfig.main.u", "][U][][undoCloseTab()");
 user_pref("extensions.dorandoKeyConfig.main.w", "shift][W][][OpenBrowserWindow({private: true})");
-user_pref("extensions.dorandoKeyConfig.main.X", "][][VK_ESCAPE][content.focus(); content.document.activeElement.blur()");
-user_pref("extensions.dorandoKeyConfig.main.y", "][Y][][Components.classes['@mozilla.org/widget/clipboardhelper;1'].getService(Components.interfaces.nsIClipboardHelper).copyString(content.location)");
+user_pref("extensions.dorandoKeyConfig.main.X", "][][VK_ESCAPE][document.querySelector('#content').focus()");
+user_pref("extensions.dorandoKeyConfig.main.y", "][Y][][Components.classes['@mozilla.org/widget/clipboardhelper;1'].getService(Components.interfaces.nsIClipboardHelper).copyString(document.getElementById('urlbar').value)");
 user_pref("extensions.dorandoKeyConfig.main.z", "][Z][][BrowserFullScreen()");
