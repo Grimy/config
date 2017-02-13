@@ -1,7 +1,7 @@
 Flow case|if|for|while|until else|elif esac|fi|done
 Comments #
 
-setlocal iskeyword+=[,],-,+,.,:,/ tabstop=4
+setlocal iskeyword+=[,],-,+,.,: tabstop=4
 let &l:makeprg = 'shellcheck -x -fgcc --exclude=SC2016,SC1071,SC2046,SC2086 %'
 
 syn cluster D add=PreProc,Expansion

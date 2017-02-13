@@ -73,7 +73,6 @@ export __GL_SHADER_DISK_CACHE_PATH="$XDG_CACHE_HOME/nv"
 # Aliases
 alias abort='git merge --abort||git rebase --abort||git cherry-pick --abort'
 alias add='git add'
-alias ag='ag -t'
 alias amend='git commit -v --amend --no-edit'
 alias bisect='git bisect'
 alias branch='git branch -f'
