@@ -34,8 +34,8 @@ xterm*faceSize: 12
 xterm*faceSize: 11
 #endif
 xterm*saveLines: 4096
-xterm*scrollBar: false
-xterm*showBlinkAsBold: true
+xterm*cursorOnTime: 387
+xterm*cursorOffTime: 387
 xterm*termName: xterm-256color
 xft.hintstyle: hintnone
 xterm*VT100*translations: #override Ctrl<Key>BackSpace: string(0x17)
