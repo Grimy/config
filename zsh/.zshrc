@@ -57,7 +57,7 @@ export PATH="$HOME/bin:$XDG_CONFIG_HOME/bin:$PATH"
 
 export CARGO_HOME="$XDG_CACHE_HOME/cargo"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
-export EDITOR="vim -Nu $XDG_CONFIG_HOME/vim/init.vim"
+export EDITOR="vim -ONu $XDG_CONFIG_HOME/vim/init.vim"
 export GIMP2_DIRECTORY="$XDG_CONFIG_HOME/Gimp"
 export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
 export LESSHISTFILE=-
@@ -125,6 +125,6 @@ rebase() { git rebase "${@:-origin/$(cb)}"; }
 sloc()   { git diff --stat 4b825dc642cb6eb9a060e54bf8d69288fbee4904 "${1-HEAD}"; }
 tag()    { git tag ${1+-f} "$@"; }
 twitch() { livestreamer --http-header Client-ID=jzkbprff40iqj646a697cyrvl0zt2m6 http://www.twitch.tv/"${1#*tv/}" "${2-best}"; }
-v()      { [ "${*#-}" = "${1-X}" ] && set -- "+O $1"; $EDITOR -O "$@"; }
+v()      { [ "${*#-}" = "${1-X}" ] && set -- "+O ${1/ /\ }"; $EDITOR "$@"; }
 wtf()    { git commit -m "$(curl -s http://whatthecommit.com | perl -p0e '($_)=m{<p>(.+?)</p>}s')" "$@"; }
 x()      { atool -x "$@" && rm "$@"; }
