@@ -1,16 +1,16 @@
 function! Subliminal(range, regex) abort
 	let save = [&eventignore, &cursorline, &cursorcolumn, &scrolloff, &gdefault]
 	set eventignore=all nocursorline nocursorcolumn scrolloff=0 gdefault
-	exec 'keepjumps keeppatterns' a:range . 's/' . a:regex . "\\zs/\u2588"
+	exec 'keepjumps keeppatterns' a:range . 's/' . a:regex . "\\zs/\u258d"
 
-	while search("\u2588", 'wn')
+	while search("\u258d", 'wn')
 		redraw
-		exec "keepjumps keeppatterns %s/\u2588\\+/\u258c"
+		exec "keepjumps keeppatterns %s/\u258d\\+/\u258c"
 		let char = getchar()
 		let char = type(char) == 0 ? nr2char(char) : char
 		undojoin
 		while search("\u258c", 'w')
-			exec 'normal cl' . char . "\u2588"
+			exec 'normal cl' . char . "\u258d"
 		endwhile
 	endwhile
 

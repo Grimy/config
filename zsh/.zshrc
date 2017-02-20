@@ -31,6 +31,7 @@ zlebind '^[[A' up-line-or-beginning-search
 zlebind '^[[B' down-line-or-beginning-search
 bindkey '^[[F' end-of-line
 bindkey '^[[H' beginning-of-line
+bindkey '^[[Z' reverse-menu-complete
 bindkey '^[[1;5A' insert-last-word
 bindkey '^[[1;5B' POPD
 bindkey '^[[1;5C' forward-word

@@ -7,6 +7,7 @@ syn keyword Keyword static extern auto register
 syn keyword Type enum struct union typedef
 syn keyword Type const volatile restrict
 syn keyword Type void char short unsigned signed int long float double _Bool _Imaginary _Complex
+syn keyword Keyword template constexpr class this true false bool
 
 syn match PreProc /#\w*/
 syn match PreProc /\v<pthread_mutex_.*/
