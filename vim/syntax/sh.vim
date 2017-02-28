@@ -19,6 +19,6 @@ syn region Expansion matchgroup=PreProc start='$((' end='))'
 syn region Expansion matchgroup=PreProc start=/\v\$\{%([-0-9@*#$?!]|\w+)%(:?[-=?+]|[#%]{1,2}|}@=)/ end='}' transparent
 syn region String matchgroup=Normal start="'" end="'"
 syn region String matchgroup=Normal start='"' end='"' contains=DoubleEscape,@D
-syn region String matchgroup=Normal start=/\v\<\<\s*\z(\S+)/    end=/\v^\z1$/ contains=@D
-syn region String matchgroup=Normal start=/\v\<\<\s*'\z(.{-})'/ end=/\v^\z1$/
-syn region String matchgroup=Normal start=/\v\<\<\s*"\z(.{-})"/ end=/\v^\z1$/ contains=@D
+syn region String matchgroup=Normal start=/\v<\<\<\s*-?\z(\k+)/    end=/\v^\s*\z1$/ contains=@D
+syn region String matchgroup=Normal start=/\v<\<\<\s*-?'\z(.{-})'/ end=/\v^\s*\z1$/
+syn region String matchgroup=Normal start=/\v<\<\<\s*-?"\z(.{-})"/ end=/\v^\s*\z1$/ contains=@D
