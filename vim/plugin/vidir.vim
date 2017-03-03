@@ -15,24 +15,22 @@ endfunction
 
 function! s:write_dir() abort
 	let pos = getcurpos()
-	let deletions = 0
+	let line = 1
 
 	for i in range(len(b:files))
 		let old_name = b:files[i]
-		let new_name = getline(i + 1 - deletions)
+		let new_name = getline(line)
 		let index = index(b:files, new_name, i)
 
 		if index == i
-			continue
-		elseif index > 0 && index - i <= len(b:files) - line('$')
-			let deletions += 1
-			let new_name = &backupdir . '/' . old_name
+			let line += 1
+		elseif new_name ==# '' || (index > 0 && index - i <= len(b:files) - line('$'))
+			call rename(old_name, &backupdir . '/' . old_name)
 		elseif len(glob(new_name))
 			echoerr 'Error: ' new_name 'already exists'
-		endif
-
-		if rename(old_name, new_name)
-			echoerr 'Error renaming' old_name 'to' new_name
+		else
+			let line += 1
+			call rename(old_name, new_name)
 		endif
 	endfor
 
