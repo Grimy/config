@@ -3,6 +3,7 @@ let s:ftmap = {
 	\ 'bash': 'sh', 'zshrc': 'sh', 'zshenv': 'sh',
 	\ 'COMMIT_EDITMSG': 'gitcommit',
 	\ 'mk': 'make', 'Makefile': 'make',
+	\ 'txt': 'cmake',
 	\ 'h': 'c', 'cpp': 'c', 'ino': 'c',
 	\ 'node': 'js',
 	\ 'pl': 'perl', 'pm': 'perl',
