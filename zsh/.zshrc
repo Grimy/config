@@ -7,7 +7,7 @@ setopt no_unset null_glob glob_dots
 setopt no_clobber no_rm_star_silent
 setopt chase_links auto_cd auto_pushd pushd_silent pushd_to_home
 setopt hist_ignore_all_dups hist_reduce_blanks
-setopt prompt_subst prompt_percent
+setopt prompt_subst prompt_percent no_prompt_cr no_prompt_sp
 
 emulate zsh -c 'setopt glob_dots; autoload -Uz compinit' && compinit
 zstyle ':completion:*' menu select
@@ -27,10 +27,10 @@ zlebind() { autoload -Uz "$2"; zle -N "$2"; bindkey "$@"; }
 bindkey -e
 bindkey '^I' complete-word
 bindkey '^U' vi-kill-line
-zlebind '^[[A' up-line-or-beginning-search
-zlebind '^[[B' down-line-or-beginning-search
-bindkey '^[[F' end-of-line
-bindkey '^[[H' beginning-of-line
+zlebind '^[OA' up-line-or-beginning-search
+zlebind '^[OB' down-line-or-beginning-search
+bindkey '^[[1~' beginning-of-line
+bindkey '^[[4~' end-of-line
 bindkey '^[[Z' reverse-menu-complete
 bindkey '^[[1;5A' insert-last-word
 bindkey '^[[1;5B' POPD
@@ -120,7 +120,7 @@ g()      { git log --graph --topo-order --date=short --pretty=format:"$format" "
 hoc()    { git log --format= --shortstat | perl -040pe '$\+=$_}{'; }
 man()    { command man -w "${@:?}" >/dev/null && $EDITOR -c "Man $*"; }
 merge()  { git merge --no-ff "$@" && git branch -d "$@"; }
-p()      { perl -E "say $*"; }
+p()      { perl -CADS -E "say $*"; }
 pull()   { fetch "${@-origin}" && ff; }
 rebase() { git rebase "${@:-origin/$(cb)}"; }
 sloc()   { git diff --stat 4b825dc642cb6eb9a060e54bf8d69288fbee4904 "${1-HEAD}"; }
