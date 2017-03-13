@@ -47,7 +47,7 @@ export XDG_CONFIG_HOME="$HOME/config"
 export XDG_CACHE_HOME="$HOME/data"
 export XDG_DATA_HOME="$HOME/data"
 
-export TERM=xterm-256color
+export TERM=vte-256color
 export LANG=en_US.UTF-8
 export LC_COLLATE=C
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -101,7 +101,7 @@ alias rainbow='echo -e \\033[{3,9}{o\\n,{0,1,2,3,4,5,6,7}moO0o}'
 alias reflog='git reflog'
 alias remote='git remote -v'
 alias s='git status'
-alias show='git show'
+alias show='LESS=-r git show'
 alias startx='xinit "$XDG_CONFIG_HOME/xinitrc" -- =X :0 vt1 -keeptty -nolisten tcp'
 alias stash='git stash'
 alias stats='git show --oneline --stat'
@@ -116,7 +116,7 @@ diff()   { git diff --patience "$@"; }
 fetch()  { git fetch --prune "${@---all}"; }
 ff()     { git merge --ff-only "${@-origin/$(cb)}"; }
 fuck()   { git reset --hard "${@-HEAD}"; }
-g()      { git log --graph --topo-order --date=short --pretty=format:"$format" "${@:---all}"; }
+g()      { LESS=-r git log --graph --topo-order --date=short --pretty=format:"$format" "${@:---all}"; }
 hoc()    { git log --format= --shortstat | perl -040pe '$\+=$_}{'; }
 man()    { command man -w "${@:?}" >/dev/null && $EDITOR -c "Man $*"; }
 merge()  { git merge --no-ff "$@" && git branch -d "$@"; }
