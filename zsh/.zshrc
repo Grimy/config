@@ -47,7 +47,7 @@ export XDG_CONFIG_HOME="$HOME/config"
 export XDG_CACHE_HOME="$HOME/data"
 export XDG_DATA_HOME="$HOME/data"
 
-export TERM=vte-256color
+export TERM=xterm-256color
 export LANG=en_US.UTF-8
 export LC_COLLATE=C
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -111,8 +111,7 @@ alias yay='ponysay -f Fluttershy yay'
 
 cb()     { git rev-parse --abbrev-ref HEAD; }
 del()    { git branch -D "$@" || git tag -d "$@"; }
-dif()    { git diff --no-index --patience "$@"; }
-diff()   { git diff --patience "$@"; }
+diff()   { LESS=-r git diff --patience "$@"; }
 fetch()  { git fetch --prune "${@---all}"; }
 ff()     { git merge --ff-only "${@-origin/$(cb)}"; }
 fuck()   { git reset --hard "${@-HEAD}"; }
