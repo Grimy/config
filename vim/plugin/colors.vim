@@ -8,16 +8,16 @@ endfunction
 
 command! -nargs=+ Hi       call s:hi('',         'NONE', <f-args>)
 command! -nargs=+ HiBold   call s:hi(',bold',    'NONE', <f-args>)
-command! -nargs=+ HiBright call s:hi('',         7, <f-args>)
-command! -nargs=+ HiRev    call s:hi(',reverse', 7, <f-args>)
+command! -nargs=+ HiBright call s:hi('',         232, <f-args>)
+command! -nargs=+ HiRev    call s:hi(',reverse', 232, <f-args>)
 
 Hi       NONE Normal DiffChange Conceal
 HiBright NONE ColorColumn CursorColumn CursorLine
 HiBright 1    ErrorSign
 Hi       1    DiffDelete Error ErrorChar ErrorMsg SpellBad
-Hi       8    Comment Special SpecialKey NonText EndOfBuffer
-HiBright 8    LineNr SignColumn VertSplit
-HiRev    8    Visual
+Hi       7    Comment Special SpecialKey NonText EndOfBuffer
+HiBright 7    LineNr SignColumn VertSplit
+HiRev    7    Visual
 HiBold   9    Todo Title WarningMsg
 HiBright 9    DiffText
 Hi       10   DiffAdd User1
