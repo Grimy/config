@@ -20,7 +20,7 @@ SAVEHIST="$HISTSIZE"
 HISTFILE="$ZDOTDIR/history"
 mail='$(mail -e 2>&- && printf "\e[33mYou got mail! ")'
 PROMPT="%(???%F{red}(%?%) )$mail%f%T %(##%F{red}%m #%F{green})%~%f> "
-format='%C(bold yellow)%h %Creset%Cblue%aN, %ad%Cgreen%d%Creset %<(80,trunc)%s'
+format='[93m%h %Creset%Cblue%aN, %ad%Cgreen%d%Creset %<(80,trunc)%s'
 
 # Keybindings
 zlebind() { autoload -Uz "$2"; zle -N "$2"; bindkey "$@"; }
@@ -51,7 +51,7 @@ export TERM=xterm-256color
 export LANG=en_US.UTF-8
 export LC_COLLATE=C
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
-export LS_COLORS='di=94:ln=96:pi=40;33:bd=40;33:cd=40;33:or=40;31:su=37;41:sg=37;41:ex=92';
+export LS_COLORS='di=34:ln=36:pi=40;33:bd=40;33:cd=40;33:or=40;31:su=37;41:sg=37;41:ex=32';
 export RUST_BACKTRACE=1
 export SIMPLE_BACKUP_SUFFIX=.bak
 export PATH="$HOME/bin:$XDG_CONFIG_HOME/bin:$PATH"
@@ -97,7 +97,6 @@ alias ll='ls -phAl --color=auto'
 alias mv='mv -vb'
 alias push='git push'
 alias pushf='git push --force-with-lease'
-alias rainbow='echo -e \\033[{3,9}{o\\n,{0,1,2,3,4,5,6,7}moO0o}'
 alias reflog='git reflog'
 alias remote='git remote -v'
 alias s='git status'

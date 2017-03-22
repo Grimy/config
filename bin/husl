@@ -1,0 +1,42 @@
+#!/usr/bin/perl -w
+use strict;
+use Convert::Color::HUSL;
+
+sub hsl2rgb { map int(255.5 * $_), Convert::Color::HUSL->new(@_)->rgb }
+
+printf "*%s: #%02x%02x%02x\n", shift @$_, hsl2rgb(@$_) for (
+	[foreground => 270, 11, 95],
+	[background => 270, 11,  9],
+	[color0     => 270, 11, 16],   # Black   Cursorline
+	[color1     =>  11, 88, 59],   # Red     Error
+	[color2     => 126, 88, 59],   # Green   --
+	[color3     =>  69, 88, 79],   # Gold    --
+	[color4     => 243, 88, 59],   # Blue    --
+	[color5     => 336, 88, 59],   # Magenta --
+	[color6     => 144, 88, 59],   # Cyan    --
+	[color7     => 270, 11, 99],   # White   --
+	[color8     => 270, 11, 59],   # Black   Comments
+	[color9     =>  20, 88, 59],   # Orange  Todo
+	[color10    => 126, 88, 79],   # Green   Menus
+	[color11    =>  51, 88, 79],   # Yellow  Keywords
+	[color12    => 243, 88, 79],   # Blue    String
+	[color13    => 272, 88, 59],   # Purple  PreProc
+	[color14    => 144, 88, 79],   # Cyan    --
+	[color15    => 270, 11, 79],   # Gray    --
+);
+
+print <<'END';
+xterm*termName: xterm-256color
+xterm*saveLines: 65535
+xterm*showBlinkAsBold: true
+xterm*scrollBar: false
+xterm*charClass: 45-47:48,58:48,126:48
+xterm*faceName: Hack
+xterm*faceSize: 11
+Xft.hintstyle: hintnone
+xterm*VT100*translations: #override \
+	Ctrl<Key>BackSpace:   string("\027")\n\
+	Shift<Key>exclam:     string(0x5c)\n\
+	Shift<Key>parenright: string("|")\n\
+	Shift<Key>asterisk:   string("#")
+END
