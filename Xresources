@@ -1,0 +1,15 @@
+*background: #0a050f
+*foreground: #f0ebf5
+#if X_RESOLUTION < 3600
+*faceName: Hack-12:antialias=true:autohint=true
+#else
+*faceName: Hack-11:antialias=true:autohint=true
+#endif
+todo*saveLines: 4096
+todo*letterSpace: 0
+xterm*scaleHeight: 0.9
+xterm*borderWidth: 2
+xft.hintstyle: hintnone
+xterm*charClass: 45-47:48,58:48,126:48
+xterm*saveLines: 4096
+xterm*VT100*translations: #override Ctrl<Key>BackSpace: string(0x17)

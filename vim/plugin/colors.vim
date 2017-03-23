@@ -8,8 +8,8 @@ endfunction
 
 command! -nargs=+ Hi       call s:hi('',         'NONE', <f-args>)
 command! -nargs=+ HiBold   call s:hi(',bold',    'NONE', <f-args>)
-command! -nargs=+ HiBright call s:hi('',         233, <f-args>)
-command! -nargs=+ HiRev    call s:hi(',reverse', 233, <f-args>)
+command! -nargs=+ HiBright call s:hi('',         234, <f-args>)
+command! -nargs=+ HiRev    call s:hi(',reverse', 234, <f-args>)
 
 Hi       NONE Normal DiffChange Conceal
 HiBright NONE ColorColumn CursorColumn CursorLine

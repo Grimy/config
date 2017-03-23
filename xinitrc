@@ -8,7 +8,7 @@ xmodmap -e 'keycode 61 = exclam backslash exclam backslash exclamdown U203D'
 xcape -t 200
 xbindkeys -f "$XDG_CONFIG_HOME/xbindkeys"
 xautolock -time 5 -locker slock &
-husl | xrdb
+xrdb ~/config/Xresources
 feh -z --bg-max --no-fehbg ~/Pictures/
 wmname LG3D
 exec awesome
