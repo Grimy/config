@@ -22,7 +22,7 @@ root.keys(aw.util.table.join(
     aw.key(super, "Escape",    function() client.focus:kill() end),
     aw.key(super, "Tab",       function() aw.client.focus.byidx( 1) end),
     aw.key(shift, "Tab",       function() aw.client.focus.byidx(-1) end),
-    aw.key(super, "Return",    function() aw.util.spawn('st') end),
+    aw.key(super, "Return",    function() aw.util.spawn('vvvvvt') end),
     aw.key(super, "&",         function() aw.widget.prompt():run() end),
     aw.key(shift, "<",         function() aw.tag.incmwfact( 0.05) end),
     aw.key(super, "<",         function() aw.tag.incmwfact(-0.05) end),
