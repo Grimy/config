@@ -7,7 +7,7 @@ setopt no_unset null_glob glob_dots
 setopt no_clobber no_rm_star_silent
 setopt chase_links auto_cd auto_pushd pushd_silent pushd_to_home
 setopt hist_ignore_all_dups hist_reduce_blanks
-setopt prompt_subst prompt_percent no_prompt_cr no_prompt_sp
+setopt prompt_subst prompt_percent
 
 emulate zsh -c 'setopt glob_dots; autoload -Uz compinit' && compinit
 zstyle ':completion:*' menu select
@@ -27,10 +27,8 @@ zlebind() { autoload -Uz "$2"; zle -N "$2"; bindkey "$@"; }
 bindkey -e
 bindkey '^I' complete-word
 bindkey '^U' vi-kill-line
-zlebind '^[OA' up-line-or-beginning-search
-zlebind '^[OB' down-line-or-beginning-search
-bindkey '^[[1~' beginning-of-line
-bindkey '^[[4~' end-of-line
+bindkey '^[[F' end-of-line
+bindkey '^[[H' beginning-of-line
 bindkey '^[[Z' reverse-menu-complete
 bindkey '^[[1;5A' insert-last-word
 bindkey '^[[1;5B' POPD
