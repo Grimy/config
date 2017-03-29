@@ -27,6 +27,8 @@ zlebind() { autoload -Uz "$2"; zle -N "$2"; bindkey "$@"; }
 bindkey -e
 bindkey '^I' complete-word
 bindkey '^U' vi-kill-line
+zlebind '^[[A' up-line-or-beginning-search
+zlebind '^[[B' down-line-or-beginning-search
 bindkey '^[[F' end-of-line
 bindkey '^[[H' beginning-of-line
 bindkey '^[[Z' reverse-menu-complete
