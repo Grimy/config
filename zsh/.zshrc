@@ -47,7 +47,6 @@ export XDG_CONFIG_HOME="$HOME/config"
 export XDG_CACHE_HOME="$HOME/data"
 export XDG_DATA_HOME="$HOME/data"
 
-export TERM=xterm-256color
 export LANG=en_US.UTF-8
 export LC_COLLATE=C
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'

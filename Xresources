@@ -1,8 +1,7 @@
-xterm*reverseVideo: on
-xterm*metaSendsEscape: on
-xterm*VT100*translations: #override Ctrl<Key>BackSpace: string(0x17)
+*termName: xterm-256color
+*reverseVideo: on
 xterm*charClass: 45-47:48,58:48,126:48
-xterm*backarrowKey: off
+xterm*saveLines: 4096
 
 *color0: #05050f
 *color15: #ebebf5
@@ -13,6 +12,6 @@ xterm*backarrowKey: off
 	*faceName: Hack-11:antialias=true:autohint=false
 #endif
 
-*borderWidth: 2
+*internalBorder: 2
 *scaleHeight: .9
-xterm*saveLines: 4096
+*metaSendsEscape: on

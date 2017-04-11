@@ -4,7 +4,7 @@ rules = require("awful.rules")
 
 super = {"Mod4"}
 shift = {"Mod4", "Shift"}
-layouts = {aw.layout.suit.tile, aw.layout.suit.magnifier}
+layouts = {aw.layout.suit.tile, aw.layout.suit.magnifier, aw.layout.suit.floating}
 tags = {
     'a', 'z', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p',
     'q', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm',
@@ -37,6 +37,9 @@ end
 rules.rules = {{rule = {}, callback = aw.client.setslave, properties = {
     border_width = 0,
     focus = true,
-    buttons = aw.button({}, 1, function(c) client.focus = c end),
+    buttons = aw.util.table.join(
+        aw.button({}, 1, function(c) client.focus = c end),
+        aw.button(super, 1, aw.mouse.client.move),
+        aw.button(super, 3, aw.mouse.client.resize))
 }}}
 client.connect_signal("focus", function(c) c:raise() end)

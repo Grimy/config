@@ -1,7 +1,7 @@
 function! ShowError(lnum, bufnr) abort
 	for qf in getqflist()
 		if qf.bufnr == a:bufnr && qf.lnum == a:lnum
-			echo qf.text
+			echo qf.text[0:&columns - 24]
 			return
 		endif
 	endfor
