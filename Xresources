@@ -1,5 +1,5 @@
 *termName: xterm-256color
-*reverseVideo: on
+xterm*reverseVideo: on
 xterm*charClass: 45-47:48,58:48,126:48
 xterm*saveLines: 4096
 
@@ -13,5 +13,6 @@ xterm*saveLines: 4096
 #endif
 
 *internalBorder: 2
-*scaleHeight: .9
-*metaSendsEscape: on
+*scaleHeight: 0.9
+*metaSendsEscape: yes
+*borderColor: #004

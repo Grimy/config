@@ -83,7 +83,7 @@ noremap v <C-V>
 nnoremap a A
 nnoremap U <C-R>
 inoremap <C-J> <C-G>j
-inoremap <C-K> <C-G>k
+inoremap <C-K> <C-O>d$
 noremap <C-J> 12<C-D>
 noremap <C-K> 12<C-U>
 noremap S :S//
