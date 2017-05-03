@@ -15,4 +15,4 @@ xterm*saveLines: 4096
 *internalBorder: 2
 *scaleHeight: 0.9
 *metaSendsEscape: yes
-*borderColor: #004
+*borderColor: #003

@@ -3,8 +3,7 @@
 emulate sh
 setopt no_auto_remove_slash
 setopt interactive_comments no_ignore_braces bang_hist equals
-setopt no_unset null_glob glob_dots
-setopt no_clobber no_rm_star_silent
+setopt no_unset no_clobber no_rm_star_silent
 setopt chase_links auto_cd auto_pushd pushd_silent pushd_to_home
 setopt hist_ignore_all_dups hist_reduce_blanks
 setopt prompt_subst prompt_percent
