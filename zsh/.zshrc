@@ -62,6 +62,7 @@ export IPYTHONDIR="$XDG_CONFIG_HOME/ipython"
 export LESSHISTFILE=-
 export MPLAYER_HOME="$XDG_CONFIG_HOME/mplayer"
 export MYSQL_HISTFILE="$XDG_CACHE_HOME/mysql"
+export PERL_UNICODE="ADS"
 export PYLINTHOME="$XDG_CONFIG_HOME/pylint"
 export PYLINTRC="$PYLINTHOME/pylintrc"
 export RLWRAP_HOME="$XDG_CACHE_HOME/rlwrap"
@@ -116,7 +117,7 @@ g()      { git log --graph --topo-order --date=short --pretty=format:"$format" "
 hoc()    { git log --format= --shortstat | perl -040pe '$\+=$_}{'; }
 man()    { command man -w "${@:?}" >/dev/null && $EDITOR -c "Man $*"; }
 merge()  { git merge --no-ff "$@" && git branch -d "$@"; }
-p()      { perl -CADS -E "say for sub{$*}->()"; }
+p()      { perl -E "say for sub{$*}->()"; }
 pull()   { fetch "${@-origin}" && ff; }
 rebase() { git rebase "${@:-origin/$(cb)}"; }
 sloc()   { git diff --stat 4b825dc642cb6eb9a060e54bf8d69288fbee4904 "${1-HEAD}"; }

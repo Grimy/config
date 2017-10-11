@@ -11,4 +11,4 @@ syn keyword PreProc BEGIN use no package my our
 
 syn match SpecialChar /\v\\e/
 syn region Comment start=/\v^\=/ end=/\v^\=cut/
-syn region String matchgroup=Normal start=/\v\$@<!\z((['"])%(\1\1)?)/ end=/\v\z1/ contains=SpecialChar,ErrorChar
+" syn region String matchgroup=Normal start=/\v\$@<!\z((['"])%(\1\1)?)/ end=/\v\z1/ contains=SpecialChar,ErrorChar

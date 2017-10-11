@@ -1,6 +1,5 @@
 function! s:comments(begin, ...)
 	let &l:commentstring = a:begin . join([' %s'] + a:000)
-	let &l:foldmarker = repeat(a:begin[0], 3) . ',' . repeat(a:begin[0], 3)
 	let begin = (len(a:begin) == 1 ? '\%(\^\|  \)\s\*' : '') . a:begin
 	let end = a:0 ? a:1 : '\$'
 	execute 'syn region Comment start=_\V' . begin . '_ end=_\V' . end . '_'
