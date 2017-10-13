@@ -41,6 +41,9 @@ bindkey '^[[3;5~' delete-word
 POPD() { popd; zle reset-prompt; }
 zle -N POPD
 
+cd() { builtin cd "$@"; command z --add "$PWD" }
+z() { cd "$(command z "$@")"; }
+
 # Environment
 export XDG_CONFIG_HOME="$HOME/config"
 export XDG_CACHE_HOME="$HOME/data"

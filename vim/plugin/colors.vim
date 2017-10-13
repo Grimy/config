@@ -1,3 +1,4 @@
+set background=dark
 highlight clear
 
 function! s:hi(mode, bg, fg, ...)

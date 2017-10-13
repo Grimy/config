@@ -1,0 +1,23 @@
+#!/bin/perl -l
+
+use List::Util qw(first);
+
+open my $fh, '<', "$ENV{XDG_CACHE_HOME}/z" or die;
+my @dirs = <$fh>;
+chomp for @dirs;
+
+if ($ARGV[0] eq '--add') {
+	open my $fh, '>', "$ENV{XDG_CACHE_HOME}/z" or die;
+	$i = first { $dirs[$_] eq $ARGV[1] } 0..$#dirs;
+	if (defined $i) {
+		splice @dirs, $i>>1, 0, splice @dirs, $i, 1;
+	} else {
+		push @dirs, $ARGV[1];
+	}
+	print $fh join "\n", @dirs;
+	exit;
+}
+
+$" = '.*';
+@ARGV = map quotemeta, @ARGV;
+print first { /@ARGV/i } @dirs;

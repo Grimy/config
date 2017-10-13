@@ -6,6 +6,7 @@ xbindkeys
 !awesome/rc.lua
 !bin/*
 !git/config
+!git/ignore
 !htop/htoprc
 !vim/init.vim
 !vim/plugin
