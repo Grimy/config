@@ -121,6 +121,7 @@ hoc()    { git log --format= --shortstat | perl -040pe '$\+=$_}{'; }
 man()    { command man -w "${@:?}" >/dev/null && $EDITOR -c "Man $*"; }
 merge()  { git merge --no-ff "$@" && git branch -d "$@"; }
 p()      { perl -E "say for sub{$*}->()"; }
+p6()     { if [ $# -gt 0 ]; then perl6 -e "no strict; .say for $*"; else rlwrap perl6; fi; }
 pull()   { fetch "${@-origin}" && ff; }
 rebase() { git rebase "${@:-origin/$(cb)}"; }
 sloc()   { git diff --stat 4b825dc642cb6eb9a060e54bf8d69288fbee4904 "${1-HEAD}"; }

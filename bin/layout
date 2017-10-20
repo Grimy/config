@@ -1,0 +1,46 @@
+#!/bin/sh
+
+remap() { xmodmap -e "keysym $1 = $1 $2 $1 $2 $3 $4 $3 $4"; }
+keypad() { xmodmap -e "keycode $1 = $2 KP_$3 $2 KP_$3 $4 $5 $4 $5"; }
+
+if [ "$1" = fr ]; then
+	setxkbmap fr -variant oss_nodeadkeys
+	
+	remap twosuperior threesuperior zerosuperior onesuperior
+	remap ampersand 1 U266A U266B
+	remap quotedbl 3 numbersign U266F
+
+	remap e E U20AC U1D452
+	remap t T U03C4 U03C0
+	remap asciicircum U2296 U2245 U2248
+	remap dollar cent U2205 U221E
+
+	remap s S U2211 U222B
+	remap g G U2019 U201E
+	remap h H U27E8 U27E9
+	remap l L odiaeresis Odiaeresis
+	remap m M U2200 U2203
+	remap ugrave percent U2030 U2031
+	remap asterisk U2115 U211D U2124
+
+	remap v V U222A U2229
+	remap b B U2208 U2209
+	remap n N U2282 U2284
+	remap exclam backslash U2E2E U203D
+
+	keypad 79 U250C 7 U2196 U21D6
+	keypad 80 U252C 8 U2191 U21D1
+	keypad 81 U2510 9 U2197 U21D7
+	keypad 83 U251C 4 U2190 U21D0
+	keypad 84 U253C 5 U21AF U21BB
+	keypad 85 U2524 6 U2192 U21D2
+	keypad 87 U2514 1 U2199 U21D9
+	keypad 88 U2534 2 U2193 U21D3
+	keypad 89 U2518 3 U2198 U21D8
+	keypad 90 U2500 0 U2194 U21D4
+	keypad 91 U2502 Decimal U2195 U21D5
+else
+	setxkbmap "$1"
+fi
+
+xmodmap -e 'clear Lock' -e 'keycode 66 = Control_L' -e 'add Control = Control_L'
