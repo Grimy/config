@@ -1,0 +1,32 @@
+"xdotool click 1"
+	F1
+
+"i3lock -f -c000000"
+	F2
+
+"necrodancer"
+	F4
+
+"layout fr"
+	F5
+
+"layout gr"
+	F6
+
+"layout il"
+	F7
+
+"layout us"
+	F8
+
+"echo pause >/tmp/mplayer.fifo"
+	F9
+
+"echo pt_step 1 >/tmp/mplayer.fifo"
+	F10
+
+"amixer set Master 2%-"
+	F11
+
+"amixer set Master 2%+"
+	F12
