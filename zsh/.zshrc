@@ -74,17 +74,28 @@ export VIMPERATOR_RUNTIME="$XDG_CONFIG_HOME/vimperator"
 export __GL_SHADER_DISK_CACHE_PATH="$XDG_CACHE_HOME/nv"
 
 # Aliases
+for cmd in add bisect pull push rebase reflog show stash; do
+	alias "$cmd=git $cmd"
+done
+
 alias abort='git merge --abort||git rebase --abort||git cherry-pick --abort'
-alias add='git add'
+alias continue='git merge --continue||git rebase --continue||git cherry-pick --continue'
 alias amend='git commit -v --amend --no-edit'
-alias bisect='git bisect'
 alias branch='git branch -f'
 alias cherry='git cherry-pick'
 alias clean='git clean -diX'
 alias clone='git clone --recursive'
-alias clop='feh -FZ ~/p0'
 alias co='git checkout'
 alias commit='git commit -v'
+alias diff='git diff --patience'
+alias op='git commit -p; push'
+alias pushf='git push --force-with-lease'
+alias remote='git remote -v'
+alias s='git status'
+alias stats='git show --oneline --stat'
+alias unstage='git reset -q HEAD --'
+
+alias clop='feh -FZ ~/p0'
 alias cp='cp -i'
 alias cpan='sudo -E perl -MCPAN -e'
 alias crontab='v /var/spool/cron/$USER'
@@ -97,22 +108,17 @@ alias hcf='sudo shutdown -h 0'
 alias l='ls -phAl --color=auto'
 alias ll='ls -phAl --color=auto'
 alias mv='mv -vb'
-alias push='git push'
-alias pushf='git push --force-with-lease'
-alias reflog='git reflog'
-alias remote='git remote -v'
-alias s='git status'
-alias show='git show'
 alias startx='xinit "$XDG_CONFIG_HOME/xinitrc" -- =X :0 vt1 -keeptty -nolisten tcp'
-alias stash='git stash'
-alias stats='git show --oneline --stat'
-alias unstage='git reset -q HEAD --'
 alias updatedb='sudo updatedb'
+alias v="$EDITOR"
 alias yay='ponysay -f Fluttershy yay'
+
+# a e r t y u i o
+# q d f h j k l m
+# c b n
 
 cb()     { git rev-parse --abbrev-ref HEAD; }
 del()    { git branch -D "$@" || git tag -d "$@"; }
-diff()   { git diff --patience "$@"; }
 fetch()  { git fetch --prune "${@---all}"; }
 ff()     { git merge --ff-only "${@-origin/$(cb)}"; }
 fuck()   { git reset --hard "${@-HEAD}"; }
@@ -121,12 +127,9 @@ hoc()    { git log --format= --shortstat | perl -040pe '$\+=$_}{'; }
 man()    { command man -w "${@:?}" >/dev/null && $EDITOR -c "Man $*"; }
 merge()  { git merge --no-ff "$@" && git branch -d "$@"; }
 p()      { perl -E "say for sub{$*}->()"; }
-p6()     { if [ $# -gt 0 ]; then perl6 -e "no strict; .say for $*"; else rlwrap perl6; fi; }
-pull()   { fetch "${@-origin}" && ff; }
-rebase() { git rebase "${@:-origin/$(cb)}"; }
+p6()     { if [ $# -gt 0 ]; then perl6 -e "no strict; .say for {$*}()"; else rlwrap perl6; fi; }
 sloc()   { git diff --stat 4b825dc642cb6eb9a060e54bf8d69288fbee4904 "${1-HEAD}"; }
 tag()    { git tag ${1+-f} "$@"; }
 twitch() { livestreamer --http-header Client-ID=jzkbprff40iqj646a697cyrvl0zt2m6 http://www.twitch.tv/"${1#*tv/}" "${2-best}"; }
-v()      { [ "${*#-}" = "${1-X}" ] && set -- "+O ${1/ /\ }"; $EDITOR "$@"; }
 wtf()    { git commit -m "$(curl -s http://whatthecommit.com | perl -p0e '($_)=m{<p>(.+?)</p>}s')" "$@"; }
 x()      { atool -x "$@" && rm "$@"; }
