@@ -1,7 +1,6 @@
 scriptencoding utf-8
 
 command! -nargs=1 Man exec 'b' . bufnr(<q-args>, 1) | setf man | %!man <args> | col -bx
-command! -range=% -nargs=1 S <line1>,<line2>s<args>
 command! -nargs=1 -complete=file_in_path O try|find <args>|catch|e <args>|endtry
 
 set all&
@@ -10,7 +9,6 @@ set runtimepath=$XDG_CONFIG_HOME/vim cdpath=.;$HOME path=.,,** suffixesadd=.vim,
 set backup backupdir=$XDG_DATA_HOME/vim/backup
 set undofile undodir=$XDG_DATA_HOME/vim/undo
 set autoread noswapfile viminfo+=n$XDG_DATA_HOME/vim/viminfo
-set ttyfast t_RV= t_RB= t_SI=[6\ q t_SR=[4\ q t_EI=[2\ q
 set keywordprg=:Man grepprg=git\ grep\ -n\ $* clipboard=unnamed
 set diffopt=filler,context:5,foldcolumn:0
 set updatetime=888 timeoutlen=1 nrformats-=octal
@@ -21,13 +19,21 @@ set autoindent copyindent smarttab shiftround shiftwidth=0
 set wildmenu wildmode=longest,full showfulltag completeopt=menuone pumheight=8
 set nowrap cursorline conceallevel=2 concealcursor=nc
 set list listchars=tab:» ,nbsp:·,extends:… fillchars=stlnc: ,vert: ,diff:X
-set shortmess+=as showtabline=0 laststatus=0 numberwidth=1
+set shortmess+=Was showtabline=0 laststatus=0 numberwidth=1
 set showcmd ruler rulerformat=%11(%1*%m%=%4.4(%l%),%-3.3(%v%)%)
 set virtualedit=onemore,block nostartofline scrolloff=16
 set splitright noequalalways winwidth=84
 set spelllang=en,fr langmap=à@,è`,é~,’`,ù%,ℕ#
 set foldmethod=marker foldlevelstart=0
 set foldtext=printf('%-69.68S(%d\ lines)',getline(v:foldstart)[5:],v:foldend-v:foldstart)
+
+if has('nvim')
+	set inccommand=nosplit
+	set viminfo+=n$XDG_DATA_HOME/vim/shada
+	set guicursor=n-v-c:block,i-ci:ver25,r-cr:hor25
+else
+	set ttyfast t_RV= t_RB= t_SI=[6\ q t_SR=[4\ q t_EI=[2\ q
+endif
 
 augroup Vimrc
 	autocmd!
@@ -86,7 +92,8 @@ inoremap <C-J> <C-G>j
 inoremap <C-K> <C-O>d$
 noremap <C-J> 12<C-D>
 noremap <C-K> 12<C-U>
-noremap S :S//
+nnoremap S :%s//
+xnoremap S :s//
 noremap Q gw
 onoremap Q ap
 nnoremap <C-F> :<C-U>e %:h<CR>

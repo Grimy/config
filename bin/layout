@@ -15,7 +15,7 @@ if [ "$1" = fr ]; then
 	remap asciicircum U2296 U2245 U2248
 	remap dollar cent U2205 U221E
 
-	remap s S U2211 U222B
+	remap s S U2211 U221A
 	remap g G U2019 U201E
 	remap h H U27E8 U27E9
 	remap l L odiaeresis Odiaeresis

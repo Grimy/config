@@ -8,9 +8,9 @@ function! ShowError(lnum, bufnr) abort
 	echo
 endfunction
 
-function! OnOutput(channel, data) abort
+function! OnOutput(...) abort
 	let qflist = getqflist()
-	silent! cgetexpr a:data
+	silent! cgetexpr a:2
 	for qf in filter(getqflist(), 'v:val.valid')
 		let qf.bufnr = qf.bufnr ? qf.bufnr : bufnr('%')
 		execute 'sign place 1 name=qf' 'line='.qf.lnum 'buffer='.qf.bufnr
@@ -26,7 +26,12 @@ function! AsyncMake() abort
 	let argv[-1] = expand(argv[-1])
 	call setqflist([])
 	sign unplace *
-	silent! call job_start(argv, {'out_cb': 'OnOutput', 'err_cb': 'OnOutput'})
+
+	if has('nvim')
+		silent! call jobstart(argv, {'on_stdout': 'OnOutput', 'on_stderr': 'OnOutput', 'on_exit': 'OnOutput'})
+	else
+		silent! call job_start(argv, {'out_cb': 'OnOutput', 'err_cb': 'OnOutput'})
+	endif
 endfunction
 
 augroup QuickFix

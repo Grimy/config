@@ -1,0 +1,29 @@
+https://duckduckgo.com/\?q=*   jk
+
+map d removeTab
+map e Vomnibar.activateTabSelection
+map g scrollToTop
+map h goBack
+map i focusInput
+map l goForward
+map t Vomnibar.activateInNewTab
+map u restoreTab
+map y copyCurrentUrl
+map , previousTab
+map ; nextTab
+map [ goPrevious
+map ] goNext
+unmap /
+
+w: https://www.wikipedia.org/w/index.php?title=Special:Search&search=%s Wikipedia
+g: https://www.google.com/search?q=%s Google
+y: https://www.youtube.com/results?search_query=%s Youtube
+gm: https://www.google.com/maps?q=%s Google maps
+d: https://duckduckgo.com/?q=%s DuckDuckGo
+az: https://www.amazon.com/s/?field-keywords=%s Amazon
+
+
+no yes yes yes no no no
+
+
+https://www.duckduckgo.com?q=
