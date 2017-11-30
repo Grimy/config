@@ -30,3 +30,6 @@
 
 "amixer set Master 2%+"
 	F12
+
+"scrot ~/Desktop/0.png"
+	Print

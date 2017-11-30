@@ -96,7 +96,7 @@ alias stats='git show --oneline --stat'
 alias unstage='git reset -q HEAD --'
 
 alias clop='feh -FZ ~/p0'
-alias cp='cp -i'
+alias cp='cp -ri'
 alias cpan='sudo -E perl -MCPAN -e'
 alias crontab='v /var/spool/cron/$USER'
 alias dow='watch -n1 -d "ls -sh ~/Downloads/*.part"'
