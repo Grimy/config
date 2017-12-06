@@ -16,10 +16,7 @@ syn match SpecialChar /\v\\(v|x\x{1,2}|u\x{4})/ contained
 syn match JSInterpolate /\v\$\{.{-}\}/ contained
 
 hi! link JSString String
-hi! link JSInterpolate PreProc
+hi! link JSInterpolate PrePRoc
 
 setlocal tabstop=4 shiftwidth=4
-if &filetype ==# 'js'
-	let &l:makeprg = 'jshint %'
-	let &errorformat = '%f: line %l\, col %c\, %m'
-endif
+let &errorformat = '%f(%l\,%c): error %m'

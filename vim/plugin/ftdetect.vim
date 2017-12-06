@@ -10,7 +10,7 @@ let s:ftmap = {
 	\ 'py': 'python',
 	\ 'rb': 'ruby', 'rake': 'ruby',
 	\ 'rs': 'rust',
-	\ 'tt': 'html',
+	\ 'tt': 'html', 'md': 'html',
 	\ 'svg': 'xml',
 	\ 'yml': 'yaml',
 	\ }
