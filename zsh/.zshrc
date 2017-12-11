@@ -17,8 +17,7 @@ WORDCHARS=.+-~_
 HISTSIZE=65535
 SAVEHIST="$HISTSIZE"
 HISTFILE="$ZDOTDIR/history"
-mail='$(mail -e 2>&- && printf "\e[33mYou got mail! ")'
-PROMPT="%(???%F{red}(%?%) )$mail%f%T %(##%F{red}%m #%F{green})%~%f> "
+PROMPT="%(???%F{red}(%?%) )%f%T %(##%F{red}%m #%F{green})%~%f> "
 format='[93m%h %Creset%Cblue%aN, %ad%Cgreen%d%Creset %<(80,trunc)%s'
 
 # Keybindings
