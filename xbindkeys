@@ -1,7 +1,4 @@
 "xdotool click 1"
-	F1
-
-"i3lock -f -c000000"
 	F2
 
 "necrodancer"
