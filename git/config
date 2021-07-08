@@ -1,5 +1,9 @@
 [user]
 	name = Victor Adam
+	email = gr1mg4r@gmail.com
+
+[init]
+	defaultBranch = master
 
 [push]
 	default = current

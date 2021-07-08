@@ -1,0 +1,20 @@
+#!/bin/perl -l
+
+use v5.016;
+
+say `luajit -bl '$ARGV[0]' 2>&1 >&-` =~ s/^luajit: //r;
+my %id = map { $_ => 1 } qw(
+	require local function return or and not true false nil self
+	if then elseif else end for in while do repeat until break
+	math string table bit log
+	pairs ipairs type pcall xpcall error next tonumber tostring getmetatable setmetatable rawget rawset select
+	bridge event jit dbg script
+);
+
+while (<>) {
+	s/--.*|(["']).*?\1//g;
+	my $decl = qr/(?!function\b|local\b)([_a-zA-Z]\w*\b,? *)++/;
+	say($&), map ++$_, @id{$& =~ /\w+/g} while
+		/\blocal *\K$decl|function\b\K[\w. ]*\($decl?([.]{3})?\)|^$decl *=|for ([\w, ]+) (in |=)/g;
+	$id{$&} or say "$ARGV:$.: undeclared identifier '$&'" while /(?<=[\s])[a-z]\w*\b(?! =)/g;
+}

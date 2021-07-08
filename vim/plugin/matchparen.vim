@@ -12,10 +12,8 @@ function! s:match_pair()
 	let stopline = and(i, 2) ? line('w0') : line('w$')
 	let start = '\V' . &matchpairs[and(i, 253)]
 	let end = '\V' . &matchpairs[or(i, 2)]
-	let skip = 'synIDattr(synID(line("."), col("."), 0), "name") =~? "\\vstring|character|comment"'
-	execute 'if' skip '| let skip = 0 | endif'
 
-	let [lnum, col] = searchpairpos(start, '', end, flags, skip, stopline)
+	let [lnum, col] = searchpairpos(start, '', end, flags, '', stopline)
 	execute '3match MatchParen /\v%(%' . lnum . 'l%' . col . 'c)/'
 endfunction
 

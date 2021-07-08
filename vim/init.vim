@@ -15,11 +15,11 @@ set updatetime=888 timeoutlen=1 nrformats-=octal
 set whichwrap=<,>,[,] matchpairs+=<:> backspace=2 commentstring=#\ %s
 set fileencodings=utf-8,latin1 nojoinspaces
 set hlsearch incsearch ignorecase smartcase gdefault
-set autoindent copyindent smarttab shiftround shiftwidth=0
+set autoindent copyindent smarttab tabstop=4 shiftround shiftwidth=0
 set wildmenu wildmode=longest,full showfulltag completeopt=menuone pumheight=8
 set nowrap cursorline conceallevel=2 concealcursor=nc
 set list listchars=tab:» ,nbsp:·,extends:… fillchars=stlnc: ,vert: ,diff:X
-set shortmess+=Was showtabline=0 laststatus=0 numberwidth=1
+set shortmess+=Was showtabline=0 laststatus=0 number numberwidth=1
 set showcmd ruler rulerformat=%11(%1*%m%=%4.4(%l%),%-3.3(%v%)%)
 set virtualedit=onemore,block nostartofline scrolloff=16
 set splitright noequalalways winwidth=84
@@ -120,11 +120,13 @@ let g:bangmap = {
 	\ 'v': 'vs|O ',
 	\ 't': 'tabnew|O ',
 	\ 'd': "tag \<C-R>\<C-W>\n",
+	\ 'g': "'|redraw!\<Home>silent! lgrep '",
 	\ 'h': 'vert help ',
-	\ 'l': "'|redraw!\<Home>silent! grep '",
 	\ 'q': "q\n", 'Q': "q!\n",
 	\ 's': "source % | setlocal filetype=vim fileencoding=utf-8\nzx",
 	\ 'W': "silent w !sudo tee % >/dev/null\n",
 	\ '=': "\eVip:!perl -e '$r=qr/(?=\\Q\<C-R>=@/\n\\E)/;\\@l[map-/$r/g+pos,@_=<>];print s/$r/$\"x(@l-pos)/re for@_'\n",
 	\ }
 nnoremap <expr> ! ":\<C-U>" . get(g:bangmap, nr2char(getchar()), "\e")
+
+cnoremap <C-G> <C-R><C-W>

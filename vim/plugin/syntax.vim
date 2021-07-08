@@ -6,12 +6,12 @@ function! s:comments(begin, ...)
 endfunction
 
 function! s:flow(...) abort
-	setlocal number indentexpr=Indent()
-	let braces = a:0 == 2 || &filetype ==# 'sh'
+	setlocal indentexpr=Indent()
+	let braces = a:0 == 2 || a:0 == 4
 	let b:indent_start = '\v^[\t }]*%(' . a:1 . '|' . a:2 .')\k@!' . (braces ? '|\{$' : '')
 	let b:indent_cont = '\v<>'
 	let b:indent_conted = '\v[\[(\\' . (braces ? '' : '{') . ']$'
-	let b:indent_end = '\v^[\t }]*%(' . a:2 . (a:0 == 3 ? '|' . a:3 : '') . ')\k@!' . (braces ? '|^\s*\}' : '')
+	let b:indent_end = '\v^[\t }]*%(' . a:2 . (a:0 > 2 ? '|' . a:3 : '') . ')\k@!' . (braces ? '|^\s*\}' : '')
 	let any = split(join(a:000, '|'), '|')
 	execute 'syn keyword Flow' join(any)
 	let &l:indentkeys='0),0},0],o,O,=' . join(any, ',=')

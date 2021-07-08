@@ -1,25 +1,25 @@
 "xdotool click 1"
 	F2
 
-"necrodancer"
-	F4
+"xdotool sleep 0.1 key f sleep 0.1 key f sleep 0.1 key j sleep 0.1 key Escape sleep 0.01 key i"
+	F6
+
+"killall xbindkeys; xbindkeys -f ~/config/xbindkeys"
+	F7
+
+"xdotool click --delay 1 --repeat 30 5"
+	Shift+F7
 
 "layout fr"
 	F5
 
-"layout gr"
-	F6
-
-"layout il"
-	F7
-
 "layout us"
 	F8
 
-"echo pause >/tmp/mplayer.fifo"
+"lyra_ctrl space"
 	F9
 
-"echo pt_step 1 >/tmp/mplayer.fifo"
+"lyra_ctrl greater"
 	F10
 
 "amixer set Master 2%-"
@@ -28,5 +28,5 @@
 "amixer set Master 2%+"
 	F12
 
-"scrot ~/Desktop/0.png"
+"scrot -o ~/Desktop/0.png"
 	Print

@@ -1,4 +1,4 @@
-Flow case|if|for|while|until else|elif esac|fi|done
+Flow case|if|for|while|until else|elif esac|fi|done braces
 Comments #
 
 setlocal iskeyword+=[,],-,+,.,: tabstop=4

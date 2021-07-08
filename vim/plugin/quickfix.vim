@@ -27,11 +27,7 @@ function! AsyncMake() abort
 	call setqflist([])
 	sign unplace *
 
-	if has('nvim')
-		silent! call jobstart(argv, {'on_stdout': 'OnOutput', 'on_stderr': 'OnOutput', 'on_exit': 'OnOutput'})
-	else
-		silent! call job_start(argv, {'out_cb': 'OnOutput', 'err_cb': 'OnOutput'})
-	endif
+	silent! call job_start(argv, {'out_cb': 'OnOutput', 'err_cb': 'OnOutput'})
 endfunction
 
 augroup QuickFix
@@ -42,4 +38,20 @@ augroup END
 
 sign define qf text=>< texthl=ErrorSign
 
-nnoremap <CR> :<C-U>try<Bar>cnext<Bar>catch<Bar>cfirst<Bar>endtry<CR>hl
+function! CR() abort
+	try
+		cnext
+	catch
+		try
+			cfirst
+		catch
+			try
+				lnext
+			catch
+				lfirst
+			endtry
+		endtry
+	endtry
+endfunction
+
+nnoremap <CR> :<C-U>call CR()<CR>hl

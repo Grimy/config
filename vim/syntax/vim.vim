@@ -4,8 +4,6 @@ Comments "
 setlocal iskeyword+=:,# indentkeys+=,0\  makeprg=vint\ -s\ %
 nnoremap <buffer> K :vert help <C-R><C-W><CR>
 
-inoreabbrev <buffer> function function!() abort<End><CR>endfunction<Left><Left><Up>
-
 syn keyword Flow return in augroup END continue break
 syn match PreProc /\v\<%([fq]-args|args|bang|line[12]|count|reg|lt)\>/
 

@@ -27,6 +27,7 @@ if [ "$1" = fr ]; then
 	remap b B U2208 U2209
 	remap n N U2282 U2284
 	remap exclam backslash U2E2E U203D
+	remap colon slash U046A U046A
 
 	keypad 79 U250C 7 U2196 U21D6
 	keypad 80 U252C 8 U2191 U21D1
@@ -44,3 +45,5 @@ else
 fi
 
 xmodmap -e 'clear Lock' -e 'keycode 66 = Control_L' -e 'add Control = Control_L'
+killall xcape
+xcape -t 200

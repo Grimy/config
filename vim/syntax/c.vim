@@ -17,5 +17,5 @@ syn region Character matchgroup=Normal start="'" end="'" contains=SpecialChar,Er
 syn region String    matchgroup=Normal start='"' end='"' contains=SpecialChar,ErrorChar oneline
 syn match SpecialChar /\v\\([aev'?]|x\x{1,2}|u\x{4})/ contained
 
-setlocal number cindent
+setlocal number cindent ts=4 sw=4
 autocmd BufWritePost * silent! !ctags -a %

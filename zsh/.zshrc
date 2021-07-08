@@ -54,7 +54,7 @@ export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quo
 export LS_COLORS='di=34:ln=36:pi=40;33:bd=40;33:cd=40;33:or=40;31:su=37;41:sg=37;41:ex=32';
 export RUST_BACKTRACE=1
 export SIMPLE_BACKUP_SUFFIX=.bak
-export PATH="$HOME/bin:$XDG_CONFIG_HOME/bin:$PATH"
+export PATH="$HOME/bin:$XDG_CONFIG_HOME/bin:$HOME/.gem/ruby/2.5.0/bin:$PATH"
 
 export CARGO_HOME="$XDG_CACHE_HOME/cargo"
 export CUDA_CACHE_PATH="$XDG_CACHE_HOME/nv"
@@ -104,13 +104,17 @@ alias feh='feh -FZ --no-fehbg'
 alias gpg='rlwrap gpg2 --expert'
 alias gs='rlwrap gs'
 alias hcf='sudo shutdown -h 0'
+alias kf='killall -9 firefox'
 alias l='ls -phAl --color=auto'
 alias ll='ls -phAl --color=auto'
 alias mv='mv -vb'
+alias pie='perl -pi -e'
 alias startx='xinit "$XDG_CONFIG_HOME/xinitrc" -- =X :0 vt1 -keeptty -nolisten tcp'
 alias updatedb='sudo updatedb'
 alias v="$EDITOR"
 alias yay='ponysay -f Fluttershy yay'
+alias cds='cd ~/src/Synchrony/scripts/necro/game'
+alias cdd='cd ~/Games/data'
 
 # a e r t y u i o
 # q d f h j k l m
@@ -122,7 +126,7 @@ fetch()  { git fetch --prune "${@---all}"; }
 ff()     { git merge --ff-only "${@-origin/$(cb)}"; }
 fuck()   { git reset --hard "${@-HEAD}"; }
 g()      { git log --graph --topo-order --date=short --pretty=format:"$format" "${@:---all}"; }
-hoc()    { git log --format= --shortstat | perl -040pe '$\+=$_}{'; }
+hoc()    { git log --format= --shortstat "$@" | perl -pe '$$1+=$&while/\d+ (.)/g}{$_="+$i -$d"' }
 man()    { command man -w "${@:?}" >/dev/null && $EDITOR -c "Man $*"; }
 merge()  { git merge --no-ff "$@" && git branch -d "$@"; }
 p()      { perl -E "say for sub{$*}->()"; }
@@ -132,3 +136,8 @@ tag()    { git tag ${1+-f} "$@"; }
 twitch() { livestreamer --http-header Client-ID=jzkbprff40iqj646a697cyrvl0zt2m6 http://www.twitch.tv/"${1#*tv/}" "${2-best}"; }
 wtf()    { git commit -m "$(curl -s http://whatthecommit.com | perl -p0e '($_)=m{<p>(.+?)</p>}s')" "$@"; }
 x()      { atool -x "$@" && rm "$@"; }
+
+if [ "$(tty)" = /dev/tty1 ]; then
+	sudo dhclient &
+	startx
+fi

@@ -43,3 +43,7 @@ rules.rules = {{rule = {}, callback = aw.client.setslave, properties = {
         aw.button(super, 3, aw.mouse.client.resize))
 }}}
 client.connect_signal("focus", function(c) c:raise() end)
+
+aw.util.spawn("firefox")
+aw.util.spawn("discord")
+aw.util.spawn("vvvvvt zsh -c 'lyra & zsh'")

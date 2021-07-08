@@ -1,4 +1,4 @@
-Flow if|for|while|try|def else|elif|except|finally
+Flow if|for|while|try|def|{ else|elif|except|finally|}
 Comments #
 
 syn keyword Flow in and or try raise assert
