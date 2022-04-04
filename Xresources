@@ -6,13 +6,9 @@ xterm*saveLines: 4096
 *color0: #05050f
 *color15: #ebebf5
 
-#if X_RESOLUTION < 3600
-	*faceName: Hack-12:antialias=true:autohint=false
-#else
-	*faceName: Hack-11:antialias=true:autohint=false
-#endif
+*faceName: Hack-11:antialias=true:autohint=false
 
-*internalBorder: 2
+*internalBorder: 0
 *scaleHeight: 0.9
 *metaSendsEscape: yes
 *borderColor: #003

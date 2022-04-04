@@ -39,19 +39,19 @@ augroup END
 sign define qf text=>< texthl=ErrorSign
 
 function! CR() abort
-	try
-		cnext
-	catch
-		try
-			cfirst
-		catch
+	" try
+		" cnext
+	" catch
+		" try
+			" cfirst
+		" catch
 			try
 				lnext
 			catch
 				lfirst
 			endtry
-		endtry
-	endtry
+		" endtry
+	" endtry
 endfunction
 
 nnoremap <CR> :<C-U>call CR()<CR>hl

@@ -91,7 +91,7 @@ alias op='git commit -p; push'
 alias pushf='git push --force-with-lease'
 alias remote='git remote -v'
 alias s='git status'
-alias stats='git show --oneline --stat'
+alias stats='git show --oneline --stat --patience'
 alias unstage='git reset -q HEAD --'
 
 alias clop='feh -FZ ~/p0'
